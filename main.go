@@ -67,50 +67,40 @@ func inputs(f *ast.File) (ret []Value) {
 	for _, n := range list.Items {
 		if is(n.Keys, "variable") {
 			name := n.Keys[1].Token.Text
-			vals := n.Val.(*ast.ObjectType)
-
-			var defaultText string
-			var description string
-
-			if items := vals.List.Items; len(items) > 0 {
-				for _, item := range items {
-					if is(item.Keys, "default") {
-						defaultText = item.Val.(*ast.LiteralType).Token.Text
-						break
-					}
-
-					if is(item.Keys, "description") {
-						description = item.Val.(*ast.LiteralType).Token.Text
-						break
-					}
-
-					if is(item.Keys, "value") {
-						description = item.Val.(*ast.LiteralType).Token.Text
-						break
-					}
-				}
-			}
+			items := n.Val.(*ast.ObjectType).List.Items
 
 			ret = append(ret, Value{
 				Type:        "variable",
 				Name:        clean(name),
-				Description: clean(description),
-				Default:     defaultText,
+				Description: clean(get(items, "description")),
+				Default:     get(items, "default"),
 			})
 			continue
 		}
 
 		if is(n.Keys, "output") {
 			name := n.Keys[1].Token.Text
+			items := n.Val.(*ast.ObjectType).List.Items
+			value := get(items, "value")
 			ret = append(ret, Value{
-				Type: "output",
-				Name: name[1 : len(name)-1],
+				Type:  "output",
+				Name:  clean(name),
+				Value: value,
 			})
 			continue
 		}
 	}
 
 	return ret
+}
+
+func get(items []*ast.ObjectItem, key string) string {
+	for _, item := range items {
+		if is(item.Keys, key) {
+			return item.Val.(*ast.LiteralType).Token.Text
+		}
+	}
+	return ""
 }
 
 func is(keys []*ast.ObjectKey, t string) bool {
