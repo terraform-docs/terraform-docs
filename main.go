@@ -54,8 +54,11 @@ func main() {
 }
 
 type Value struct {
-	Type string
-	Name string
+	Type        string
+	Name        string
+	Value       string
+	Default     string
+	Description string
 }
 
 func inputs(f *ast.File) (ret []Value) {
@@ -64,9 +67,35 @@ func inputs(f *ast.File) (ret []Value) {
 	for _, n := range list.Items {
 		if is(n.Keys, "variable") {
 			name := n.Keys[1].Token.Text
+			vals := n.Val.(*ast.ObjectType)
+
+			var defaultText string
+			var description string
+
+			if items := vals.List.Items; len(items) > 0 {
+				for _, item := range items {
+					if is(item.Keys, "default") {
+						defaultText = item.Val.(*ast.LiteralType).Token.Text
+						break
+					}
+
+					if is(item.Keys, "description") {
+						description = item.Val.(*ast.LiteralType).Token.Text
+						break
+					}
+
+					if is(item.Keys, "value") {
+						description = item.Val.(*ast.LiteralType).Token.Text
+						break
+					}
+				}
+			}
+
 			ret = append(ret, Value{
-				Type: "variable",
-				Name: name[1 : len(name)-1],
+				Type:        "variable",
+				Name:        clean(name),
+				Description: clean(description),
+				Default:     defaultText,
 			})
 			continue
 		}
@@ -90,4 +119,11 @@ func is(keys []*ast.ObjectKey, t string) bool {
 	}
 
 	return false
+}
+
+func clean(s string) string {
+	if len(s) >= 2 {
+		return s[1 : len(s)-1]
+	}
+	return ""
 }
