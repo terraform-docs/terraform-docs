@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"path/filepath"
+	"strings"
 
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
@@ -82,10 +83,17 @@ func values(f *ast.File) (ret []Value) {
 			name := n.Keys[1].Token.Text
 			items := n.Val.(*ast.ObjectType).List.Items
 			value := get(items, "value")
+			desc := ""
+
+			if c := n.LeadComment; c != nil {
+				desc = comment(c.List)
+			}
+
 			ret = append(ret, Value{
-				Type:  "output",
-				Name:  clean(name),
-				Value: value,
+				Type:        "output",
+				Name:        clean(name),
+				Description: desc,
+				Value:       value,
 			})
 			continue
 		}
@@ -109,6 +117,19 @@ func is(keys []*ast.ObjectKey, t string) bool {
 	}
 
 	return false
+}
+
+func comment(l []*ast.Comment) string {
+	var line string
+	var ret string
+
+	for _, t := range l {
+		line = strings.TrimSpace(t.Text)
+		line = strings.TrimPrefix(line, "//")
+		ret += strings.TrimSpace(line) + "\n"
+	}
+
+	return ret
 }
 
 func clean(s string) string {
