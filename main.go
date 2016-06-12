@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -15,7 +16,9 @@ import (
 
 const version = ""
 const usage = `
-  Usage: tf-docs <dir>
+  Usage:
+		tf-docs <dir>
+		tf-docs md <dir>
 `
 
 func main() {
@@ -46,6 +49,11 @@ func main() {
 		vals = append(vals, values(f)...)
 	}
 
+	if args["md"].(bool) {
+		markdown(vals)
+		return
+	}
+
 	buf, err := json.MarshalIndent(vals, "", "  ")
 	if err != nil {
 		log.Fatal(err)
@@ -62,6 +70,56 @@ type Value struct {
 	Description string
 }
 
+func markdown(vals []Value) {
+	var inputs bytes.Buffer
+	var outputs bytes.Buffer
+
+	inputs.WriteString("| Name | Description | Default | Required |\n")
+	inputs.WriteString("|------|-------------|:-----:|:-----:|\n")
+	outputs.WriteString("| Name | Description |\n")
+	outputs.WriteString("|------|-------------|\n")
+
+	for _, v := range vals {
+		if v.Type == "input" {
+			def := v.Default
+
+			if def == "" {
+				def = "-"
+			} else {
+				def = fmt.Sprintf("`%s`", def)
+			}
+
+			inputs.WriteString(fmt.Sprintf("| %s | %s | %s | %v |\n",
+				v.Name,
+				v.Description,
+				def,
+				humanize(v.Default == "")))
+		} else {
+			outputs.WriteString(fmt.Sprintf("| %s | %s |\n",
+				v.Name,
+				v.Description))
+		}
+
+	}
+
+	fmt.Println("## Inputs")
+	fmt.Println(inputs.String())
+	fmt.Println("## Outputs")
+	fmt.Println(outputs.String())
+}
+
+func humanize(v interface{}) string {
+	switch v.(type) {
+	case bool:
+		if v.(bool) {
+			return "yes"
+		}
+		return "no"
+	default:
+		panic("unknown type")
+	}
+}
+
 func values(f *ast.File) (ret []Value) {
 	list := f.Node.(*ast.ObjectList)
 
@@ -71,7 +129,7 @@ func values(f *ast.File) (ret []Value) {
 			items := n.Val.(*ast.ObjectType).List.Items
 
 			ret = append(ret, Value{
-				Type:        "variable",
+				Type:        "input",
 				Name:        clean(name),
 				Description: clean(get(items, "description")),
 				Default:     get(items, "default"),
