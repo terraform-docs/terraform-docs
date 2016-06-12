@@ -97,9 +97,8 @@ func markdown(vals []Value) {
 		} else {
 			outputs.WriteString(fmt.Sprintf("| %s | %s |\n",
 				v.Name,
-				v.Description))
+				strings.TrimSpace(v.Description)))
 		}
-
 	}
 
 	fmt.Println("## Inputs")
@@ -163,9 +162,14 @@ func values(f *ast.File) (ret []Value) {
 func get(items []*ast.ObjectItem, key string) string {
 	for _, item := range items {
 		if is(item.Keys, key) {
-			return item.Val.(*ast.LiteralType).Token.Text
+			if lit, ok := item.Val.(*ast.LiteralType); ok {
+				return lit.Token.Text
+			}
+
+			return ""
 		}
 	}
+
 	return ""
 }
 
