@@ -29,7 +29,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var values []Value
+	var vals []Value
 
 	for _, name := range names {
 		buf, err := ioutil.ReadFile(name)
@@ -42,10 +42,10 @@ func main() {
 			log.Fatal(err)
 		}
 
-		values = append(values, inputs(f)...)
+		vals = append(vals, values(f)...)
 	}
 
-	buf, err := json.MarshalIndent(values, "", "  ")
+	buf, err := json.MarshalIndent(vals, "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,7 +61,7 @@ type Value struct {
 	Description string
 }
 
-func inputs(f *ast.File) (ret []Value) {
+func values(f *ast.File) (ret []Value) {
 	list := f.Node.(*ast.ObjectList)
 
 	for _, n := range list.Items {
