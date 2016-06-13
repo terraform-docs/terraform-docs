@@ -1,3 +1,11 @@
+//
+// Module usage:
+//
+//      module "foo" {
+//        source = "github.com/foo/baz"
+//        subnet_ids = "${join(",", subnet.*.id)}"
+//      }
+//
 
 variable "subnet_ids" {
   description = "a comma-separated list of subnet IDs"

@@ -1,6 +1,8 @@
 package doc
 
 import (
+	"fmt"
+	"path"
 	"strconv"
 	"strings"
 
@@ -32,12 +34,24 @@ type Doc struct {
 func Create(files map[string]*ast.File) *Doc {
 	doc := new(Doc)
 
-	for _, f := range files {
+	for name, f := range files {
 		list := f.Node.(*ast.ObjectList)
 		doc.Inputs = append(doc.Inputs, inputs(list)...)
 		doc.Outputs = append(doc.Outputs, outputs(list)...)
+
+		filename := path.Base(name)
+		comments := f.Comments
+
+		if filename == "main.tf" && len(comments) > 0 {
+			if c := comments[0]; c.Pos().Line == 1 {
+				for _, item := range c.List {
+					doc.Comment += strings.TrimPrefix(item.Text, "//") + "\n"
+				}
+			}
+		}
 	}
 
+	fmt.Println(doc.Comment)
 	return doc
 }
 
