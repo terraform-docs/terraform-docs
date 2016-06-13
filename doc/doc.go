@@ -45,6 +45,10 @@ func Create(files map[string]*ast.File) *Doc {
 		if filename == "main.tf" && len(comments) > 0 {
 			if c := comments[0]; c.Pos().Line == 1 {
 				for _, item := range c.List {
+					if !strings.HasPrefix(item.Text, "//") {
+						break
+					}
+
 					doc.Comment += strings.TrimPrefix(item.Text, "//") + "\n"
 				}
 			}
