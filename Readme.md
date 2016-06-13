@@ -18,21 +18,25 @@ go get github.com/segmentio/tf-docs
 ```bash
 
   Usage:
-    tf-docs <dir>
-    tf-docs md <dir>
-    tf-docs -h | --help
+    terraform-docs <dir>
+    terraform-docs json <dir>
+    terraform-docs markdown <dir>
+    terraform-docs md <dir>
+    terraform-docs -h | --help
 
   Examples:
 
+    # View inputs and outputs
+    $ teraform-docs ./my-module
+
     # Generate a JSON of inputs and outputs
-    $ tf-docs ./my-module
+    $ teraform-docs json ./my-module
 
     # Generate markdown tables of inputs and outputs
-    $ tf-docs md ./my-module
+    $ teraform-docs md ./my-module
 
   Options:
     -h, --help     show help information
-
 
 ```
 
@@ -53,41 +57,51 @@ output "vpc_id" {
 
 ```
 
+To view docs:
+
+```bash
+$ terraform-docs _example
+```
+
 To output JSON docs:
 
 ```bash
-$ tf-docs _example
-[
-  {
-    "Type": "input",
-    "Name": "subnet_ids",
-    "Value": "",
-    "Default": "",
-    "Description": "a comma-separated list of subnet IDs"
-  },
-  {
-    "Type": "output",
-    "Name": "vpc_id",
-    "Value": "\"vpc-5c1f55fd\"",
-    "Default": "",
-    "Description": "The VPC ID.\n"
-  }
-]
+$ terraform-docs json _example
+{
+  "Comment": "",
+  "Inputs": [
+    {
+      "Name": "subnet_ids",
+      "Description": "a comma-separated list of subnet IDs",
+      "Default": ""
+    }
+  ],
+  "Outputs": [
+    {
+      "Name": "vpc_id",
+      "Description": "The VPC ID.\n"
+    }
+  ]
+}
 ```
 
 To output markdown docs:
 
 ```bash
-$ tf-docs md _example
+$ terraform-docs md _example
+
 ## Inputs
+
 | Name | Description | Default | Required |
 |------|-------------|:-----:|:-----:|
 | subnet_ids | a comma-separated list of subnet IDs | - | yes |
 
 ## Outputs
+
 | Name | Description |
 |------|-------------|
 | vpc_id | The VPC ID. |
+
 ```
 
 ## License
