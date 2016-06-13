@@ -7,6 +7,12 @@
   - Generate JSON docs (for customizing presentation)
   - Generate markdown tables of inputs and outputs
 
+## Installation
+
+```bash
+go get github.com/segmentio/tf-docs
+```
+
 ## Usage
 
 ```bash
