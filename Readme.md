@@ -68,7 +68,7 @@ $ tf-docs _example
   {
     "Type": "output",
     "Name": "vpc_id",
-    "Value": "\"\"",
+    "Value": "\"vpc-5c1f55fd\"",
     "Default": "",
     "Description": "The VPC ID.\n"
   }
