@@ -20,7 +20,6 @@ const usage = `
     tf-docs <dir>
     tf-docs md <dir>
     tf-docs -h | --help
-    tf-docs -v | --version
 
   Examples:
 
@@ -31,13 +30,12 @@ const usage = `
     $ tf-docs md ./my-module
 
   Options:
-    -h, --help			show help information
-    -v, --version		show version information
+    -h, --help     show help information
 
 `
 
 func main() {
-	args, err := docopt.Parse(usage, nil, true, version, false)
+	args, err := docopt.Parse(usage, nil, true, version, true)
 	if err != nil {
 		log.Fatal(err)
 	}
