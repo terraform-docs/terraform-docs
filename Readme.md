@@ -1,5 +1,5 @@
 
-  `tf-docs(1)` &sdot; a quick utility to generate markdown docs.
+  `tf-docs(1)` &sdot; a quick utility to generate docs from terraform modules.
 
 ## Features
 
