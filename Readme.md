@@ -48,7 +48,7 @@ variable "subnet_ids" {
 
 // The VPC ID.
 output "vpc_id" {
-  value = ""
+  value = "vpc-5c1f55fd"
 }
 
 ```
