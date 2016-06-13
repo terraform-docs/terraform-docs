@@ -17,8 +17,23 @@ import (
 const version = ""
 const usage = `
   Usage:
-		tf-docs <dir>
-		tf-docs md <dir>
+    tf-docs <dir>
+    tf-docs md <dir>
+    tf-docs -h | --help
+    tf-docs -v | --version
+
+  Examples:
+
+    # Generate a JSON of inputs and outputs
+    $ tf-docs ./my-module
+
+    # Generate markdown tables of inputs and outputs
+    $ tf-docs md ./my-module
+
+  Options:
+    -h, --help			show help information
+    -v, --version		show version information
+
 `
 
 func main() {
