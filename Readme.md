@@ -40,7 +40,7 @@ go get github.com/segmentio/tf-docs
 
 Given a simple module at `./_example`:
 
-```terraform
+```tf
 
 variable "subnet_ids" {
   description = "a comma-separated list of subnet IDs"
