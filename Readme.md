@@ -1,8 +1,9 @@
 
-  `tf-docs(1)` &sdot; a quick utility to generate docs from terraform modules.
+  `terraform-docs(1)` &sdot; a quick utility to generate docs from terraform modules.
 
 ## Features
 
+  - View docs for inputs and outputs
   - Generate docs for inputs and outputs
   - Generate JSON docs (for customizing presentation)
   - Generate markdown tables of inputs and outputs
@@ -10,7 +11,7 @@
 ## Installation
 
 ```bash
-go get github.com/segmentio/tf-docs
+go get github.com/segmentio/terraform-docs
 ```
 
 ## Usage
