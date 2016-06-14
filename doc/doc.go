@@ -1,7 +1,6 @@
 package doc
 
 import (
-	"fmt"
 	"path"
 	"strconv"
 	"strings"
@@ -55,7 +54,6 @@ func Create(files map[string]*ast.File) *Doc {
 		}
 	}
 
-	fmt.Println(doc.Comment)
 	return doc
 }
 

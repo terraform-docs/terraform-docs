@@ -4,52 +4,51 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 
-	"github.com/segmentio/tf-docs/doc"
+	"github.com/segmentio/terraform-docs/doc"
 )
 
 // Pretty printer pretty prints a doc.
 func Pretty(d *doc.Doc) (string, error) {
 	var buf bytes.Buffer
 
+	if len(d.Comment) > 0 {
+		buf.WriteString(fmt.Sprintf("\n%s\n", d.Comment))
+	}
+
 	if len(d.Inputs) > 0 {
 		buf.WriteString("\n")
-		pad := 2
 
 		for _, i := range d.Inputs {
-			if l := len(i.Name); l > pad {
-				pad = l
+			format := "  \033[36mvar.%s\033[0m (%s)\n  \033[90m%s\033[0m\n\n"
+			desc := i.Description
+			def := i.Default
+
+			if def == "" {
+				def = "required"
 			}
+
+			if desc == "" {
+				desc = "-"
+			}
+
+			buf.WriteString(fmt.Sprintf(format, i.Name, def, desc))
 		}
 
-		for _, i := range d.Inputs {
-			format := "  \033[36m%" + strconv.Itoa(pad) + "s\033[0m: \033[90m%s\033[0m\n"
-			s := fmt.Sprintf(format, i.Name, i.Description)
-			buf.WriteString(s)
-		}
-
-		buf.WriteString("\n\n")
+		buf.WriteString("\n")
 	}
 
 	if len(d.Outputs) > 0 {
 		buf.WriteString("\n")
-		pad := 2
 
 		for _, i := range d.Outputs {
-			if l := len(i.Name); l > pad {
-				pad = l
-			}
-		}
-
-		for _, i := range d.Outputs {
-			format := "  \033[36m%" + strconv.Itoa(pad) + "s\033[0m: \033[90m%s\033[0m\n"
+			format := "  \033[36moutput.%s\033[0m\n  \033[90m%s\033[0m\n\n"
 			s := fmt.Sprintf(format, i.Name, strings.TrimSpace(i.Description))
 			buf.WriteString(s)
 		}
 
-		buf.WriteString("\n\n")
+		buf.WriteString("\n")
 	}
 
 	return buf.String(), nil
