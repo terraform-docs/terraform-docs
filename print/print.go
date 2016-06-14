@@ -58,6 +58,10 @@ func Pretty(d *doc.Doc) (string, error) {
 func Markdown(d *doc.Doc) (string, error) {
 	var buf bytes.Buffer
 
+	if len(d.Comment) > 0 {
+		buf.WriteString(fmt.Sprintf("%s\n", d.Comment))
+	}
+
 	if len(d.Inputs) > 0 {
 		buf.WriteString("\n## Inputs\n\n")
 		buf.WriteString("| Name | Description | Default | Required |\n")
