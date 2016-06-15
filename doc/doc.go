@@ -42,15 +42,7 @@ func Create(files map[string]*ast.File) *Doc {
 		comments := f.Comments
 
 		if filename == "main.tf" && len(comments) > 0 {
-			if c := comments[0]; c.Pos().Line == 1 {
-				for _, item := range c.List {
-					if !strings.HasPrefix(item.Text, "//") {
-						break
-					}
-
-					doc.Comment += strings.TrimPrefix(item.Text, "//") + "\n"
-				}
-			}
+			doc.Comment = header(comments[0])
 		}
 	}
 
@@ -143,4 +135,36 @@ func comment(l []*ast.Comment) string {
 	}
 
 	return ret
+}
+
+// Header returns the header comment from the list
+// or an empty comment. The head comment must start
+// at line 1 and start with `/**`.
+func header(c *ast.CommentGroup) (comment string) {
+	if len(c.List) == 0 {
+		return comment
+	}
+
+	if c.Pos().Line != 1 {
+		return comment
+	}
+
+	cm := strings.TrimSpace(c.List[0].Text)
+
+	if strings.HasPrefix(cm, "/**") {
+		lines := strings.Split(cm, "\n")
+
+		if len(lines) < 2 {
+			return comment
+		}
+
+		lines = lines[1 : len(lines)-1]
+		for _, l := range lines {
+			l = strings.TrimSpace(l)
+			l = strings.TrimPrefix(l, "*")
+			comment += l + "\n"
+		}
+	}
+
+	return comment
 }
