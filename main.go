@@ -13,7 +13,8 @@ import (
 	"github.com/tj/docopt"
 )
 
-const version = ""
+var version = ""
+
 const usage = `
   Usage:
     terraform-docs <dir>
