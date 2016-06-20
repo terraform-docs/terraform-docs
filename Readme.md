@@ -13,9 +13,8 @@
 
 ## Installation
 
-```bash
-go get github.com/segmentio/terraform-docs
-```
+  - `go get github.com/segmentio/terraform-docs`
+  - [Binaries](https://github.com/segmentio/terraform-docs/releases)
 
 ## Usage
 
