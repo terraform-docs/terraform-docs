@@ -64,10 +64,18 @@ func Markdown(d *doc.Doc) (string, error) {
 	}
 
 	for _, v := range d.Inputs {
+		def := v.Value()
+
+		if def == "required" {
+			def = "-"
+		} else {
+			def = fmt.Sprintf("`%s`", def)
+		}
+
 		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %v |\n",
 			v.Name,
 			v.Description,
-			v.Value(),
+			def,
 			humanize(v.Default)))
 	}
 
