@@ -12,7 +12,27 @@ import (
 type Input struct {
 	Name        string
 	Description string
-	Default     string
+	Default     *Value
+}
+
+// Value returns the default value as a string.
+func (i *Input) Value() string {
+	if i.Default != nil {
+		switch i.Default.Type {
+		case "string":
+			return i.Default.Literal
+		case "map":
+			return "<map>"
+		}
+	}
+
+	return "required"
+}
+
+// Value represents a terraform value.
+type Value struct {
+	Type    string
+	Literal string
 }
 
 // Output represents a terraform output.
@@ -57,7 +77,7 @@ func inputs(list *ast.ObjectList) []Input {
 		if is(item, "variable") {
 			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
 			items := item.Val.(*ast.ObjectType).List.Items
-			desc, _ := strconv.Unquote(get(items, "description"))
+			desc, _ := strconv.Unquote(description(items))
 			def := get(items, "default")
 			ret = append(ret, Input{
 				Name:        name,
@@ -94,15 +114,33 @@ func outputs(list *ast.ObjectList) []Output {
 }
 
 // Get `key` from the list of object `items`.
-func get(items []*ast.ObjectItem, key string) string {
+func get(items []*ast.ObjectItem, key string) *Value {
 	for _, item := range items {
 		if is(item, key) {
+			v := new(Value)
+
 			if lit, ok := item.Val.(*ast.LiteralType); ok {
-				return lit.Token.Text
+				v.Literal = lit.Token.Text
+				v.Type = "string"
+				return v
 			}
 
-			return ""
+			if _, ok := item.Val.(*ast.ObjectType); ok {
+				v.Type = "map"
+				return v
+			}
+
+			return nil
 		}
+	}
+
+	return nil
+}
+
+// description returns a description from items or an empty string.
+func description(items []*ast.ObjectItem) string {
+	if v := get(items, "description"); v != nil {
+		return v.Literal
 	}
 
 	return ""

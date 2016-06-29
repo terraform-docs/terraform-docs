@@ -23,17 +23,12 @@ func Pretty(d *doc.Doc) (string, error) {
 		for _, i := range d.Inputs {
 			format := "  \033[36mvar.%s\033[0m (%s)\n  \033[90m%s\033[0m\n\n"
 			desc := i.Description
-			def := i.Default
-
-			if def == "" {
-				def = "required"
-			}
 
 			if desc == "" {
 				desc = "-"
 			}
 
-			buf.WriteString(fmt.Sprintf(format, i.Name, def, desc))
+			buf.WriteString(fmt.Sprintf(format, i.Name, i.Value(), desc))
 		}
 
 		buf.WriteString("\n")
@@ -69,19 +64,11 @@ func Markdown(d *doc.Doc) (string, error) {
 	}
 
 	for _, v := range d.Inputs {
-		def := v.Default
-
-		if def == "" {
-			def = "-"
-		} else {
-			def = fmt.Sprintf("`%s`", def)
-		}
-
 		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %v |\n",
 			v.Name,
 			v.Description,
-			def,
-			humanize(v.Default == "")))
+			v.Value(),
+			humanize(v.Default)))
 	}
 
 	if len(d.Outputs) > 0 {
@@ -110,14 +97,10 @@ func JSON(d *doc.Doc) (string, error) {
 }
 
 // Humanize the given `v`.
-func humanize(v interface{}) string {
-	switch v.(type) {
-	case bool:
-		if v.(bool) {
-			return "yes"
-		}
-		return "no"
-	default:
-		panic("unknown type")
+func humanize(def *doc.Value) string {
+	if def == nil {
+		return "yes"
 	}
+
+	return "no"
 }
