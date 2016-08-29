@@ -77,7 +77,7 @@ func inputs(list *ast.ObjectList) []Input {
 		if is(item, "variable") {
 			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
 			items := item.Val.(*ast.ObjectType).List.Items
-			desc, _ := strconv.Unquote(description(items))
+			desc := description(items)
 			def := get(items, "default")
 			ret = append(ret, Input{
 				Name:        name,
@@ -120,7 +120,11 @@ func get(items []*ast.ObjectItem, key string) *Value {
 			v := new(Value)
 
 			if lit, ok := item.Val.(*ast.LiteralType); ok {
-				v.Literal = lit.Token.Text
+				if value, ok := lit.Token.Value().(string); ok {
+					v.Literal = value
+				} else {
+					v.Literal = lit.Token.Text
+				}
 				v.Type = "string"
 				return v
 			}
