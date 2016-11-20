@@ -23,6 +23,8 @@ func (i *Input) Value() string {
 			return i.Default.Literal
 		case "map":
 			return "<map>"
+		case "list":
+			return "<list>"
 		}
 	}
 
@@ -137,6 +139,11 @@ func get(items []*ast.ObjectItem, key string) *Value {
 
 			if _, ok := item.Val.(*ast.ObjectType); ok {
 				v.Type = "map"
+				return v
+			}
+
+			if _, ok := item.Val.(*ast.ListType); ok {
+				v.Type = "list"
 				return v
 			}
 
