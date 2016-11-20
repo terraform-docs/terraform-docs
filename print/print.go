@@ -74,7 +74,7 @@ func Markdown(d *doc.Doc) (string, error) {
 
 		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %v |\n",
 			v.Name,
-			strings.TrimSpace(v.Description),
+			strings.Replace(strings.TrimSpace(v.Description), "\n", "<br>", -1),
 			def,
 			humanize(v.Default)))
 	}
