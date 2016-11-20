@@ -77,7 +77,13 @@ func inputs(list *ast.ObjectList) []Input {
 		if is(item, "variable") {
 			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
 			items := item.Val.(*ast.ObjectType).List.Items
-			desc := description(items)
+			var desc string
+			switch {
+			case description(items) != "":
+				desc = description(items)
+			case item.LeadComment != nil:
+				desc = comment(item.LeadComment.List)
+			}
 			def := get(items, "default")
 			ret = append(ret, Input{
 				Name:        name,
