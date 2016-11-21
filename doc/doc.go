@@ -216,7 +216,12 @@ func header(c *ast.CommentGroup) (comment string) {
 		lines = lines[1 : len(lines)-1]
 		for _, l := range lines {
 			l = strings.TrimSpace(l)
-			l = strings.TrimPrefix(l, "*")
+			switch {
+			case strings.TrimPrefix(l, "* ") != l:
+				l = strings.TrimPrefix(l, "* ")
+			default:
+				l = strings.TrimPrefix(l, "*")
+			}
 			comment += l + "\n"
 		}
 	}
