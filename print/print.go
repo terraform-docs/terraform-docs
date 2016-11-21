@@ -74,7 +74,7 @@ func Markdown(d *doc.Doc) (string, error) {
 
 		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %v |\n",
 			v.Name,
-			strings.TrimSpace(v.Description),
+			normalizeMarkdownDesc(v.Description),
 			def,
 			humanize(v.Default)))
 	}
@@ -88,7 +88,7 @@ func Markdown(d *doc.Doc) (string, error) {
 	for _, v := range d.Outputs {
 		buf.WriteString(fmt.Sprintf("| %s | %s |\n",
 			v.Name,
-			strings.TrimSpace(v.Description)))
+			normalizeMarkdownDesc(v.Description)))
 	}
 
 	return buf.String(), nil
@@ -111,4 +111,12 @@ func humanize(def *doc.Value) string {
 	}
 
 	return "no"
+}
+
+// normalizeMarkdownDesc fixes line breaks in descriptions for markdown:
+//
+//  * Double newlines are converted to <br><br>
+//  * A second pass replaces all other newlines with spaces
+func normalizeMarkdownDesc(s string) string {
+	return strings.Replace(strings.Replace(strings.TrimSpace(s), "\n\n", "<br><br>", -1), "\n", " ", -1)
 }

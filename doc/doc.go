@@ -23,6 +23,8 @@ func (i *Input) Value() string {
 			return i.Default.Literal
 		case "map":
 			return "<map>"
+		case "list":
+			return "<list>"
 		}
 	}
 
@@ -77,7 +79,13 @@ func inputs(list *ast.ObjectList) []Input {
 		if is(item, "variable") {
 			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
 			items := item.Val.(*ast.ObjectType).List.Items
-			desc := description(items)
+			var desc string
+			switch {
+			case description(items) != "":
+				desc = description(items)
+			case item.LeadComment != nil:
+				desc = comment(item.LeadComment.List)
+			}
 			def := get(items, "default")
 			ret = append(ret, Input{
 				Name:        name,
@@ -131,6 +139,11 @@ func get(items []*ast.ObjectItem, key string) *Value {
 
 			if _, ok := item.Val.(*ast.ObjectType); ok {
 				v.Type = "map"
+				return v
+			}
+
+			if _, ok := item.Val.(*ast.ListType); ok {
+				v.Type = "list"
 				return v
 			}
 
@@ -203,7 +216,12 @@ func header(c *ast.CommentGroup) (comment string) {
 		lines = lines[1 : len(lines)-1]
 		for _, l := range lines {
 			l = strings.TrimSpace(l)
-			l = strings.TrimPrefix(l, "*")
+			switch {
+			case strings.TrimPrefix(l, "* ") != l:
+				l = strings.TrimPrefix(l, "* ")
+			default:
+				l = strings.TrimPrefix(l, "*")
+			}
 			comment += l + "\n"
 		}
 	}
