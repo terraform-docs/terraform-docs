@@ -48,6 +48,9 @@
 Given a simple module at `./_example`:
 
 ```tf
+/**
+ * This module has a variable and an output.  This text here will be output before any inputs or outputs!
+ */
 
 variable "subnet_ids" {
   description = "a comma-separated list of subnet IDs"
@@ -71,7 +74,7 @@ To output JSON docs:
 ```bash
 $ terraform-docs json _example
 {
-  "Comment": "",
+  "Comment": "This module has a variable and an output.  This text here will be output before any inputs or outputs!\n",
   "Inputs": [
     {
       "Name": "subnet_ids",
@@ -92,6 +95,8 @@ To output markdown docs:
 
 ```bash
 $ terraform-docs md _example
+This module has a variable and an output.  This text here will be output before any inputs or outputs!
+
 
 ## Inputs
 
