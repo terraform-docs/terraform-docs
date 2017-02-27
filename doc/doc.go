@@ -4,7 +4,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
-
+	"sort"
 	"github.com/hashicorp/hcl/hcl/ast"
 )
 
@@ -50,6 +50,16 @@ type Doc struct {
 	Outputs []Output
 }
 
+type InputNameSorter []Input
+func (a InputNameSorter) Len() int { return len(a) }
+func (a InputNameSorter) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a InputNameSorter) Less(i, j int) bool { return a[i].Name < a[j].Name }
+
+type OutputNameSorter []Output
+func (a OutputNameSorter) Len() int { return len(a) }
+func (a OutputNameSorter) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a OutputNameSorter) Less(i, j int) bool { return a[i].Name < a[j].Name }
+
 // Create creates a new *Doc from the supplied map
 // of filenames and *ast.File.
 func Create(files map[string]*ast.File) *Doc {
@@ -67,7 +77,8 @@ func Create(files map[string]*ast.File) *Doc {
 			doc.Comment = header(comments[0])
 		}
 	}
-
+	sort.Sort(InputNameSorter(doc.Inputs))
+	sort.Sort(OutputNameSorter(doc.Outputs))
 	return doc
 }
 
