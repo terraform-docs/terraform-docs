@@ -14,7 +14,7 @@ import (
 	"github.com/tj/docopt"
 )
 
-var version = ""
+var version = "v0.1.0"
 
 const usage = `
   Usage:
