@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/hashicorp/hcl"
@@ -17,10 +18,7 @@ var version = ""
 
 const usage = `
   Usage:
-    terraform-docs <dir>
-    terraform-docs json <dir>
-    terraform-docs markdown <dir>
-    terraform-docs md <dir>
+    terraform-docs [json | md | markdown] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -28,11 +26,17 @@ const usage = `
     # View inputs and outputs
     $ teraform-docs ./my-module
 
+    # View inputs and outputs for variables.tf and outputs.tf only
+    $ terraform-docs variables.tf outputs.tf
+
     # Generate a JSON of inputs and outputs
     $ teraform-docs json ./my-module
 
     # Generate markdown tables of inputs and outputs
     $ teraform-docs md ./my-module
+
+    # Generate markdown tables of inputs and outputs for the given module and ../config.tf
+    $ teraform-docs md ./my-module ../config.tf
 
   Options:
     -h, --help     show help information
@@ -45,10 +49,25 @@ func main() {
 		log.Fatal(err)
 	}
 
-	dir := args["<dir>"].(string)
-	names, err := filepath.Glob(fmt.Sprintf("%s/*.tf", dir))
-	if err != nil {
-		log.Fatal(err)
+	var names []string
+	paths := args["<path>"].([]string)
+	for _, p := range paths {
+		pi, err := os.Stat(p)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if !pi.IsDir() {
+			names = append(names, p)
+			continue
+		}
+
+		files, err := filepath.Glob(fmt.Sprintf("%s/*.tf", p))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		names = append(names, files...)
 	}
 
 	files := make(map[string]*ast.File, len(names))
