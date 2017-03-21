@@ -21,10 +21,7 @@
 ```bash
 
   Usage:
-    terraform-docs <dir>
-    terraform-docs json <dir>
-    terraform-docs markdown <dir>
-    terraform-docs md <dir>
+    terraform-docs [json | md | markdown] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -32,11 +29,17 @@
     # View inputs and outputs
     $ teraform-docs ./my-module
 
+    # View inputs and outputs for variables.tf and outputs.tf only
+    $ terraform-docs variables.tf outputs.tf
+
     # Generate a JSON of inputs and outputs
     $ teraform-docs json ./my-module
 
     # Generate markdown tables of inputs and outputs
     $ teraform-docs md ./my-module
+
+    # Generate markdown tables of inputs and outputs for the given module and ../config.tf
+    $ teraform-docs md ./my-module ../config.tf
 
   Options:
     -h, --help     show help information
