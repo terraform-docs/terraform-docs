@@ -196,6 +196,7 @@ func comment(l []*ast.Comment) string {
 
 	for _, t := range l {
 		line = strings.TrimSpace(t.Text)
+		line = strings.TrimPrefix(line, "#")
 		line = strings.TrimPrefix(line, "//")
 		ret += strings.TrimSpace(line) + "\n"
 	}
