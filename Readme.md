@@ -15,6 +15,7 @@
 
   - `go get github.com/segmentio/terraform-docs`
   - [Binaries](https://github.com/segmentio/terraform-docs/releases)
+  - `brew install terraform-docs` (on macOS)
 
 ## Usage
 
