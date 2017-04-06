@@ -59,8 +59,8 @@ func Markdown(d *doc.Doc) (string, error) {
 
 	if len(d.Inputs) > 0 {
 		buf.WriteString("\n## Inputs\n\n")
-		buf.WriteString("| Name | Description | Default | Required |\n")
-		buf.WriteString("|------|-------------|:-----:|:-----:|\n")
+		buf.WriteString("| Name | Description | Type | Default | Required |\n")
+		buf.WriteString("|------|-------------|:----:|:-----:|:-----:|\n")
 	}
 
 	for _, v := range d.Inputs {
@@ -72,9 +72,10 @@ func Markdown(d *doc.Doc) (string, error) {
 			def = fmt.Sprintf("`%s`", def)
 		}
 
-		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %v |\n",
+		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %s | %v |\n",
 			v.Name,
 			normalizeMarkdownDesc(v.Description),
+			v.Type,
 			def,
 			humanize(v.Default)))
 	}
