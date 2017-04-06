@@ -117,9 +117,13 @@ func outputs(list *ast.ObjectList) []Output {
 		if is(item, "output") {
 			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
 
+			items := item.Val.(*ast.ObjectType).List.Items
 			var desc string
-			if c := item.LeadComment; c != nil {
-				desc = comment(c.List)
+			switch {
+			case description(items) != "":
+				desc = description(items)
+			case item.LeadComment != nil:
+				desc = comment(item.LeadComment.List)
 			}
 
 			ret = append(ret, Output{
