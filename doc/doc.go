@@ -13,6 +13,7 @@ type Input struct {
 	Name        string
 	Description string
 	Default     *Value
+	Type        string
 }
 
 // Value returns the default value as a string.
@@ -97,11 +98,21 @@ func inputs(list *ast.ObjectList) []Input {
 			case item.LeadComment != nil:
 				desc = comment(item.LeadComment.List)
 			}
+
+			var item_type string
+			items_type := get(items, "type")
+			if items_type == nil || items_type.Literal == "" {
+				item_type = "string"
+			} else {
+				item_type = items_type.Literal
+			}
+
 			def := get(items, "default")
 			ret = append(ret, Input{
 				Name:        name,
 				Description: desc,
 				Default:     def,
+				Type:        item_type,
 			})
 		}
 	}
