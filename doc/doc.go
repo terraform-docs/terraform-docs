@@ -2,9 +2,10 @@ package doc
 
 import (
 	"path"
+	"sort"
 	"strconv"
 	"strings"
-	"sort"
+
 	"github.com/hashicorp/hcl/hcl/ast"
 )
 
@@ -51,15 +52,17 @@ type Doc struct {
 	Outputs []Output
 }
 
-type InputNameSorter []Input
-func (a InputNameSorter) Len() int { return len(a) }
-func (a InputNameSorter) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a InputNameSorter) Less(i, j int) bool { return a[i].Name < a[j].Name }
+type inputsByName []Input
 
-type OutputNameSorter []Output
-func (a OutputNameSorter) Len() int { return len(a) }
-func (a OutputNameSorter) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a OutputNameSorter) Less(i, j int) bool { return a[i].Name < a[j].Name }
+func (a inputsByName) Len() int           { return len(a) }
+func (a inputsByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a inputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
+
+type outputsByName []Output
+
+func (a outputsByName) Len() int           { return len(a) }
+func (a outputsByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a outputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
 // Create creates a new *Doc from the supplied map
 // of filenames and *ast.File.
@@ -78,8 +81,8 @@ func Create(files map[string]*ast.File) *Doc {
 			doc.Comment = header(comments[0])
 		}
 	}
-	sort.Sort(InputNameSorter(doc.Inputs))
-	sort.Sort(OutputNameSorter(doc.Outputs))
+	sort.Sort(inputsByName(doc.Inputs))
+	sort.Sort(outputsByName(doc.Outputs))
 	return doc
 }
 
@@ -99,12 +102,13 @@ func inputs(list *ast.ObjectList) []Input {
 				desc = comment(item.LeadComment.List)
 			}
 
-			var item_type string
-			items_type := get(items, "type")
-			if items_type == nil || items_type.Literal == "" {
-				item_type = "string"
+			var itemsType = get(items, "type")
+			var itemType string
+
+			if itemsType == nil || itemsType.Literal == "" {
+				itemType = "string"
 			} else {
-				item_type = items_type.Literal
+				itemType = itemsType.Literal
 			}
 
 			def := get(items, "default")
@@ -112,7 +116,7 @@ func inputs(list *ast.ObjectList) []Input {
 				Name:        name,
 				Description: desc,
 				Default:     def,
-				Type:        item_type,
+				Type:        itemType,
 			})
 		}
 	}
