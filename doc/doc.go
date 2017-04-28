@@ -120,10 +120,10 @@ func outputs(list *ast.ObjectList) []Output {
 			items := item.Val.(*ast.ObjectType).List.Items
 			var desc string
 			switch {
-			case description(items) != "":
-				desc = description(items)
 			case item.LeadComment != nil:
 				desc = comment(item.LeadComment.List)
+			case description(items) != "":
+				desc = description(items)
 			}
 
 			ret = append(ret, Output{
