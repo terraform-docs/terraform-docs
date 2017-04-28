@@ -18,7 +18,7 @@ var version = "v0.1.0"
 
 const usage = `
   Usage:
-    terraform-docs [json | md | markdown] <path>...
+    terraform-docs [--no-required] [json | md | markdown] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -34,6 +34,9 @@ const usage = `
 
     # Generate markdown tables of inputs and outputs
     $ teraform-docs md ./my-module
+
+    # Generate markdown tables of inputs and outputs, but don't print "Required" column
+    $ teraform-docs --no-required md ./my-module
 
     # Generate markdown tables of inputs and outputs for the given module and ../config.tf
     $ teraform-docs md ./my-module ../config.tf
@@ -87,14 +90,15 @@ func main() {
 	}
 
 	doc := doc.Create(files)
+	printRequired := !args["--no-required"].(bool)
 
 	var out string
 
 	switch {
 	case args["markdown"].(bool):
-		out, err = print.Markdown(doc)
+		out, err = print.Markdown(doc, printRequired)
 	case args["md"].(bool):
-		out, err = print.Markdown(doc)
+		out, err = print.Markdown(doc, printRequired)
 	case args["json"].(bool):
 		out, err = print.JSON(doc)
 	default:
