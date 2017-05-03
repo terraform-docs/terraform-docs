@@ -50,7 +50,7 @@ func Pretty(d *doc.Doc) (string, error) {
 }
 
 // Markdown prints the given doc as markdown.
-func Markdown(d *doc.Doc) (string, error) {
+func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 	var buf bytes.Buffer
 
 	if len(d.Comment) > 0 {
@@ -59,8 +59,20 @@ func Markdown(d *doc.Doc) (string, error) {
 
 	if len(d.Inputs) > 0 {
 		buf.WriteString("\n## Inputs\n\n")
-		buf.WriteString("| Name | Description | Type | Default | Required |\n")
-		buf.WriteString("|------|-------------|:----:|:-----:|:-----:|\n")
+		buf.WriteString("| Name | Description | Type | Default |")
+
+		if printRequired {
+			buf.WriteString(" Required |\n")
+		} else {
+			buf.WriteString("\n")
+		}
+
+		buf.WriteString("|------|-------------|:----:|:-----:|")
+		if printRequired {
+			buf.WriteString(":-----:|\n")
+		} else {
+			buf.WriteString("\n")
+		}
 	}
 
 	for _, v := range d.Inputs {
@@ -72,12 +84,18 @@ func Markdown(d *doc.Doc) (string, error) {
 			def = fmt.Sprintf("`%s`", def)
 		}
 
-		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %s | %v |\n",
+		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %s |",
 			v.Name,
 			normalizeMarkdownDesc(v.Description),
 			v.Type,
-			def,
-			humanize(v.Default)))
+			def))
+
+		if printRequired {
+			buf.WriteString(fmt.Sprintf(" %v |\n",
+				humanize(v.Default)))
+		} else {
+			buf.WriteString("\n")
+		}
 	}
 
 	if len(d.Outputs) > 0 {
