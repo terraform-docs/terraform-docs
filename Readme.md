@@ -28,19 +28,19 @@
   Examples:
 
     # View inputs and outputs
-    $ teraform-docs ./my-module
+    $ terraform-docs ./my-module
 
     # View inputs and outputs for variables.tf and outputs.tf only
     $ terraform-docs variables.tf outputs.tf
 
     # Generate a JSON of inputs and outputs
-    $ teraform-docs json ./my-module
+    $ terraform-docs json ./my-module
 
     # Generate markdown tables of inputs and outputs
-    $ teraform-docs md ./my-module
+    $ terraform-docs md ./my-module
 
     # Generate markdown tables of inputs and outputs for the given module and ../config.tf
-    $ teraform-docs md ./my-module ../config.tf
+    $ terraform-docs md ./my-module ../config.tf
 
   Options:
     -h, --help     show help information
