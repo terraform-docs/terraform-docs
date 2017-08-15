@@ -93,6 +93,9 @@ func inputs(list *ast.ObjectList) []Input {
 	for _, item := range list.Items {
 		if is(item, "variable") {
 			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
+			if name == "" {
+				name = item.Keys[1].Token.Text
+			}
 			items := item.Val.(*ast.ObjectType).List.Items
 			var desc string
 			switch {
@@ -131,7 +134,9 @@ func outputs(list *ast.ObjectList) []Output {
 	for _, item := range list.Items {
 		if is(item, "output") {
 			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
-
+			if name == "" {
+				name = item.Keys[1].Token.Text
+			}
 			items := item.Val.(*ast.ObjectType).List.Items
 			var desc string
 			switch {
