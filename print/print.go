@@ -88,7 +88,7 @@ func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 			v.Name,
 			normalizeMarkdownDesc(v.Description),
 			v.Type,
-			def))
+			normalizeMarkdownDesc(def)))
 
 		if printRequired {
 			buf.WriteString(fmt.Sprintf(" %v |\n",
