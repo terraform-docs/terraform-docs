@@ -1,4 +1,8 @@
 
+v0.3.0 / 2017-10-22
+===================
+
+  * auto version
 
 v0.2.0 / 2017-08-15
 ===================
@@ -6,7 +10,7 @@ v0.2.0 / 2017-08-15
   * fixed name handling to handle unquoted hcl variable names.
   * fix typo
   * Prefer leading comments over description for outputs to maintain compatability.
-  *: add --no-required option
+  * *: add --no-required option
   * doc: snakecase -> camelcase
   * Add support for printing the variable 'type' in Markdown. Currently only markdown supported, but trivial to add to other outputs.
   * Add support for reading `description` tag from `output` resources. Fixes #24
