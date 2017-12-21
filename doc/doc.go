@@ -140,15 +140,15 @@ func outputs(list *ast.ObjectList) []Output {
 			items := item.Val.(*ast.ObjectType).List.Items
 			var desc string
 			switch {
-			case item.LeadComment != nil:
-				desc = comment(item.LeadComment.List)
 			case description(items) != "":
 				desc = description(items)
+			case item.LeadComment != nil:
+				desc = comment(item.LeadComment.List)
 			}
 
 			ret = append(ret, Output{
 				Name:        name,
-				Description: desc,
+				Description: strings.TrimSpace(desc),
 			})
 		}
 	}
