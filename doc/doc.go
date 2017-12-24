@@ -12,10 +12,10 @@ import (
 
 // Input represents a terraform input variable.
 type Input struct {
-	Name        string `json:"Name,omitempty" xml:",attr"`
-	Description string `json:"Description,omitempty" xml:",comment"`
-	Default     *Value `json:"Default,omitempty"`
-	Type        string `json:"Type,omitempty" xml:",attr"`
+	Name        string `xml:",attr"`
+	Description string `json:",omitempty" xml:",comment"`
+	Default     *Value `json:",omitempty"`
+	Type        string `json:",omitempty" xml:",attr"`
 }
 
 // Value returns the default value as a string.

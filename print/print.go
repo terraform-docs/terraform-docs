@@ -108,18 +108,13 @@ func Markdown(d *doc.Doc, mode RenderMode, printRequired, printValues bool) (str
 			if def == "required" {
 				def = "-"
 			} else {
-				def = fmt.Sprintf("`%s`", def)
+				def = fmt.Sprintf("`%s `", def)
 			}
 
-			buf.WriteString(fmt.Sprintf("| %s | %s | %s | %s |",
-				v.Name,
-				normalizeMarkdownDesc(v.Description),
-				v.Type,
-				normalizeMarkdownDesc(def)))
+			buf.WriteString(fmt.Sprintf("| %s | %s | %s | %s |", v.Name, normalizeMarkdownDesc(v.Description), v.Type, normalizeMarkdownDesc(def)))
 
 			if printRequired {
-				buf.WriteString(fmt.Sprintf(" %v |\n",
-					humanize(v.Default)))
+				buf.WriteString(fmt.Sprintf(" %v |\n", humanize(v.Default == nil)))
 			} else {
 				buf.WriteString("\n")
 			}
@@ -141,7 +136,7 @@ func Markdown(d *doc.Doc, mode RenderMode, printRequired, printValues bool) (str
 		for _, v := range d.Outputs {
 			var val string
 			if printValues {
-				val = fmt.Sprintf(" %v | %s | %t |", v.Result.Value, v.Result.Type, v.Result.Sensitive)
+				val = fmt.Sprintf(" `%v ` | %s | %s |", v.Result.Value, v.Result.Type, humanize(v.Result.Sensitive))
 			}
 			buf.WriteString(fmt.Sprintf("| %s | %s |%s\n", v.Name, normalizeMarkdownDesc(v.Description), val))
 		}
@@ -207,13 +202,12 @@ func filter(d doc.Doc, mode RenderMode) doc.Doc {
 	return d
 }
 
-// Humanize the given `v`.
-func humanize(def *doc.Value) string {
-	if def == nil {
-		return "yes"
-	}
-
-	return "no"
+// Humanize the given boolean value.
+func humanize(value bool) string {
+	return map[bool]string{
+		true:  "yes",
+		false: "no",
+	}[value]
 }
 
 // normalizeMarkdownDesc fixes line breaks in descriptions for markdown:
