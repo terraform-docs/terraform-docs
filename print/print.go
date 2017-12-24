@@ -141,7 +141,7 @@ func Markdown(d *doc.Doc, mode RenderMode, printRequired, printValues bool) (str
 		for _, v := range d.Outputs {
 			var val string
 			if printValues {
-				val = fmt.Sprintf(" %v | %s | %t |", v.OutputResult.Value, v.OutputResult.Type, v.OutputResult.Sensitive)
+				val = fmt.Sprintf(" %v | %s | %t |", v.Result.Value, v.Result.Type, v.Result.Sensitive)
 			}
 			buf.WriteString(fmt.Sprintf("| %s | %s |%s\n", v.Name, normalizeMarkdownDesc(v.Description), val))
 		}
@@ -176,10 +176,10 @@ func XML(d *doc.Doc, mode RenderMode) (string, error) {
 
 	for i := range data.Outputs {
 		output := &data.Outputs[i]
-		if output.OutputResult != nil {
-			switch value := output.OutputResult.Value.(type) {
+		if output.Result.Value != nil {
+			switch value := output.Result.Value.(type) {
 			case map[string]interface{}:
-				output.OutputResult.Value = coveoutils.ToHCL(value)
+				output.Result.Value = coveoutils.ToHCL(value)
 			}
 		}
 	}

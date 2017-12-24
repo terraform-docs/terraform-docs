@@ -42,23 +42,23 @@ type Value struct {
 
 // Output represents a terraform output.
 type Output struct {
-	Name          string `xml:",attr"`
-	Description   string `json:",omitempty" yaml:",omitempty" xml:",comment"`
-	*OutputResult `json:",omitempty" yaml:"result,omitempty"`
+	Name        string `xml:",attr"`
+	Description string `json:",omitempty" yaml:",omitempty" xml:",comment"`
+	Result      `yaml:",inline,omitempty"`
 }
 
-// OutputResult represents a terraform output value.
-type OutputResult struct {
+// Result represents a terraform output value.
+type Result struct {
 	Sensitive bool        `json:",omitempty" yaml:",omitempty" xml:",attr,omitempty"`
 	Type      string      `json:",omitempty" yaml:",omitempty" xml:",attr,omitempty"`
 	Value     interface{} `json:",omitempty" yaml:",omitempty" xml:",omitempty"`
 }
 
 func (o Output) String() string {
-	if o.OutputResult == nil {
+	if o.Result.Value == nil {
 		return ""
 	}
-	return fmt.Sprintf("%v", o.OutputResult.Value)
+	return fmt.Sprintf("%v", o.Result.Value)
 }
 
 // Doc represents a terraform module doc.
