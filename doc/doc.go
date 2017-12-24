@@ -1,6 +1,7 @@
 package doc
 
 import (
+	"fmt"
 	"path"
 	"sort"
 	"strconv"
@@ -11,10 +12,10 @@ import (
 
 // Input represents a terraform input variable.
 type Input struct {
-	Name        string
-	Description string
-	Default     *Value
-	Type        string
+	Name        string `json:"Name,omitempty" xml:",attr"`
+	Description string `json:"Description,omitempty" xml:",comment"`
+	Default     *Value `json:"Default,omitempty"`
+	Type        string `json:"Type,omitempty" xml:",attr"`
 }
 
 // Value returns the default value as a string.
@@ -41,15 +42,30 @@ type Value struct {
 
 // Output represents a terraform output.
 type Output struct {
-	Name        string
-	Description string
+	Name          string `xml:",attr"`
+	Description   string `json:",omitempty" yaml:",omitempty" xml:",comment"`
+	*OutputResult `json:",omitempty" yaml:"result,omitempty"`
+}
+
+// OutputResult represents a terraform output value.
+type OutputResult struct {
+	Sensitive bool        `json:",omitempty" yaml:",omitempty" xml:",attr,omitempty"`
+	Type      string      `json:",omitempty" yaml:",omitempty" xml:",attr,omitempty"`
+	Value     interface{} `json:",omitempty" yaml:",omitempty" xml:",omitempty"`
+}
+
+func (o Output) String() string {
+	if o.OutputResult == nil {
+		return ""
+	}
+	return fmt.Sprintf("%v", o.OutputResult.Value)
 }
 
 // Doc represents a terraform module doc.
 type Doc struct {
-	Comment string
-	Inputs  []Input
-	Outputs []Output
+	Comment string   `json:",omitempty" yaml:",omitempty"  xml:",comment"`
+	Inputs  []Input  `json:",omitempty" yaml:",omitempty" xml:"Inputs>Input"`
+	Outputs []Output `json:",omitempty" yaml:",omitempty" xml:"Outputs>Output"`
 }
 
 type inputsByName []Input
