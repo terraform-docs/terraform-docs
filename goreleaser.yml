@@ -1,0 +1,31 @@
+# Build customization
+builds:
+  - binary: terraform-docs
+    ldflags: -s -w -X main.version={{.Version}}
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - 386
+    ignore:
+      - goos: darwin
+        goarch: 386
+
+# Archive customization
+archive:
+  format: zip
+
+  replacements:
+    amd64: 64-bits
+    386: 32-bits
+    darwin: macOS
+
+  files:
+    - nothing.*
+
+# GitHub release customization
+release:
+  draft: true
+  prerelease: true

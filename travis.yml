@@ -1,0 +1,29 @@
+language: go
+go:
+- 1.9.x
+
+sudo: false
+
+before_install:
+- if [ ${TRAVIS_TAG::1} = v ];
+  then
+    go get github.com/Masterminds/glide &&
+    cd ../.. &&
+    mv coveo segmentio/ &&
+    cd segmentio/terraform-docs;
+  fi
+
+install:
+- if [ ${TRAVIS_TAG::1} = v ];
+  then
+    glide install;
+  fi
+
+script:
+- if [ ${TRAVIS_TAG::1} = v ];
+  then
+    curl -sL https://git.io/goreleaser | bash;
+  fi
+
+notifications:
+  email: false
