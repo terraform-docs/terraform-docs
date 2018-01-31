@@ -173,7 +173,7 @@ func main() {
 	case args["yaml"].(bool):
 		out, err = print.YAML(document, renderMode)
 	case args["hcl"].(bool):
-		out = print.HCL(document, renderMode)
+		out, err = print.HCL(document, renderMode)
 	case args["xml"].(bool):
 		out, err = print.XML(document, renderMode)
 	default:

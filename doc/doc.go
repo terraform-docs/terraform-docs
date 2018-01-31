@@ -44,7 +44,7 @@ type Value struct {
 type Output struct {
 	Name        string `xml:",attr"`
 	Description string `json:",omitempty" yaml:",omitempty" xml:",comment"`
-	Result      `yaml:",inline,omitempty"`
+	Result      `yaml:",inline,omitempty" hcl:",inline,omitempty"`
 }
 
 // Result represents a terraform output value.
@@ -63,9 +63,9 @@ func (o Output) String() string {
 
 // Doc represents a terraform module doc.
 type Doc struct {
-	Comment string   `json:",omitempty" yaml:",omitempty"  xml:",comment"`
-	Inputs  []Input  `json:",omitempty" yaml:",omitempty" xml:"Inputs>Input"`
-	Outputs []Output `json:",omitempty" yaml:",omitempty" xml:"Outputs>Output"`
+	Comment string   `json:",omitempty" yaml:",omitempty" xml:",comment"`
+	Inputs  []Input  `json:"inputs,omitempty" yaml:",omitempty" xml:"Inputs>Input"`
+	Outputs []Output `json:"outputs,omitempty" yaml:",omitempty" xml:"Outputs>Output"`
 }
 
 type inputsByName []Input

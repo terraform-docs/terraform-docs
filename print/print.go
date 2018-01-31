@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	coveoutils "github.com/coveo/gotemplate/utils"
+	"github.com/coveo/gotemplate/hcl"
 	"github.com/fatih/color"
 	"github.com/segmentio/terraform-docs/doc"
 	yaml "gopkg.in/yaml.v2"
@@ -60,7 +60,11 @@ func Pretty(d *doc.Doc, mode RenderMode) (string, error) {
 		for _, i := range d.Inputs {
 			value := i.Value()
 			if mode&RenderDetailed != 0 {
-				value = string(coveoutils.ToHCL(i.Default.Literal))
+				hcl, err := hcl.Marshal(i.Default.Literal)
+				if err != nil {
+					return "", err
+				}
+				value = string(hcl)
 			}
 			buf.WriteString(fmt.Sprintf("%s%s%s\n\n", varStr(i.Name), valStr(value), desStr(i.Description)))
 		}
@@ -165,7 +169,7 @@ func YAML(d *doc.Doc, mode RenderMode) (string, error) {
 	return string(result), nil
 }
 
-// XML prints the given doc as hcl.
+// XML prints the given doc as xml.
 func XML(d *doc.Doc, mode RenderMode) (string, error) {
 	data := filter(*d, mode)
 
@@ -174,7 +178,7 @@ func XML(d *doc.Doc, mode RenderMode) (string, error) {
 		if output.Result.Value != nil {
 			switch value := output.Result.Value.(type) {
 			case map[string]interface{}:
-				output.Result.Value = coveoutils.ToHCL(value)
+				output.Result.Value, _ = hcl.Marshal(value)
 			}
 		}
 	}
@@ -188,8 +192,13 @@ func XML(d *doc.Doc, mode RenderMode) (string, error) {
 }
 
 // HCL prints the given doc as hcl.
-func HCL(d *doc.Doc, mode RenderMode) string {
-	return string(coveoutils.ToPrettyHCL(filter(*d, mode)))
+func HCL(d *doc.Doc, mode RenderMode) (string, error) {
+	result, err := hcl.MarshalIndent(filter(*d, mode), "", "  ")
+	if err != nil {
+		return "", err
+	}
+
+	return string(result), nil
 }
 
 func filter(d doc.Doc, mode RenderMode) doc.Doc {
