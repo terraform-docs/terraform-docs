@@ -8,10 +8,6 @@ builds:
       - linux
     goarch:
       - amd64
-      - 386
-    ignore:
-      - goos: darwin
-        goarch: 386
 
 # Archive customization
 archive:
@@ -19,7 +15,6 @@ archive:
 
   replacements:
     amd64: 64-bits
-    386: 32-bits
     darwin: macOS
 
   files:
