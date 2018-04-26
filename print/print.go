@@ -14,7 +14,7 @@ func Pretty(d *doc.Doc) (string, error) {
 	var buf bytes.Buffer
 
 	if len(d.Version) > 0 {
-		format := "  \033[36mterraform.required_version\033[0m (%s)\n"
+		format := "  \033[36mterraform.required_version\033[0m (%s)\n\n\n"
 		buf.WriteString(fmt.Sprintf(format, d.Version))
 	}
 
@@ -26,7 +26,7 @@ func Pretty(d *doc.Doc) (string, error) {
 		buf.WriteString("\n")
 
 		for _, i := range d.Providers {
-			format := "  \033[36mprovider.%s\033[0m (%s)"
+			format := "  \033[36mprovider.%s\033[0m\n  \033[90m%s\033[0m\n\n"
 			buf.WriteString(fmt.Sprintf(format, i.Name, i.Documentation))
 		}
 
