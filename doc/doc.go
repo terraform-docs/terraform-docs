@@ -98,9 +98,7 @@ func version(list *ast.ObjectList) string {
 	var ret string
 
 	for _, item := range list.Items {
-		kind := item.Keys[0].Token.Text
-
-		if kind == "terraform" && item.Val.(*ast.ObjectType).List.Items[0].Keys[0].Token.Text == "required_version" {
+		if is(item, "terraform") && item.Val.(*ast.ObjectType).List.Items[0].Keys[0].Token.Text == "required_version" {
 			version := item.Val.(*ast.ObjectType).List.Items[0].Val.(*ast.LiteralType).Token.Text
 			version = strings.Trim(version, "\"")
 
