@@ -13,6 +13,11 @@ import (
 func Pretty(d *doc.Doc) (string, error) {
 	var buf bytes.Buffer
 
+	if len(d.Version) > 0 {
+		format := "  \033[36mterraform.required_version\033[0m (%s)\n"
+		buf.WriteString(fmt.Sprintf(format, d.Version))
+	}
+
 	if len(d.Comment) > 0 {
 		buf.WriteString(fmt.Sprintf("\n%s\n", d.Comment))
 	}
@@ -52,6 +57,10 @@ func Pretty(d *doc.Doc) (string, error) {
 // Markdown prints the given doc as markdown.
 func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 	var buf bytes.Buffer
+
+	if len(d.Version) > 0 {
+		buf.WriteString(fmt.Sprintf("Terraform required version %s\n", d.Version))
+	}
 
 	if len(d.Comment) > 0 {
 		buf.WriteString(fmt.Sprintf("%s\n", d.Comment))
@@ -120,7 +129,15 @@ func JSON(d *doc.Doc) (string, error) {
 		return "", err
 	}
 
-	return string(s), nil
+	// <, >, and & are printed as code points by the json package.
+	// The brackets are needed to pretty-print required_version.
+	// Convert the brackets back into printable chars, limiting the
+	// number of printed brackets to 1 each, which is enough to
+	// prevent HTML injection (json's concern - why they encode).
+	jsonString := strings.Replace(string(s), "\\u003c", "<", 1)
+	jsonString = strings.Replace(jsonString, "\\u003e", ">", 1)
+
+	return jsonString, nil
 }
 
 // Humanize the given `v`.

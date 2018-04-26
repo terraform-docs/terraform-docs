@@ -47,6 +47,7 @@ type Output struct {
 
 // Doc represents a terraform module doc.
 type Doc struct {
+	Version string
 	Comment string
 	Inputs  []Input
 	Outputs []Output
@@ -71,6 +72,12 @@ func Create(files map[string]*ast.File) *Doc {
 
 	for name, f := range files {
 		list := f.Node.(*ast.ObjectList)
+
+		required_version := version(list)
+		if len(required_version) > 0 {
+			doc.Version = required_version
+		}
+
 		doc.Inputs = append(doc.Inputs, inputs(list)...)
 		doc.Outputs = append(doc.Outputs, outputs(list)...)
 
@@ -84,6 +91,26 @@ func Create(files map[string]*ast.File) *Doc {
 	sort.Sort(inputsByName(doc.Inputs))
 	sort.Sort(outputsByName(doc.Outputs))
 	return doc
+}
+
+// Version returns the terraform version_required string from 'list'.
+func version(list *ast.ObjectList) string {
+	var ret string
+
+	for _, item := range list.Items {
+		kind := item.Keys[0].Token.Text
+
+		if kind == "terraform" && item.Val.(*ast.ObjectType).List.Items[0].Keys[0].Token.Text == "required_version" {
+			version := item.Val.(*ast.ObjectType).List.Items[0].Val.(*ast.LiteralType).Token.Text
+			version = strings.Trim(version, "\"")
+
+			if len(version) > 0 {
+				ret = version
+			}
+		}
+	}
+
+	return ret
 }
 
 // Inputs returns all variables from `list`.
