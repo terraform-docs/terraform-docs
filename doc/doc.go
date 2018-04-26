@@ -9,6 +9,12 @@ import (
 	"github.com/hashicorp/hcl/hcl/ast"
 )
 
+// Provider represents a terraform provider block.
+type Provider struct {
+	Name          string
+	Documentation string
+}
+
 // Input represents a terraform input variable.
 type Input struct {
 	Name        string
@@ -47,10 +53,11 @@ type Output struct {
 
 // Doc represents a terraform module doc.
 type Doc struct {
-	Version string
-	Comment string
-	Inputs  []Input
-	Outputs []Output
+	Version   string
+	Comment   string
+	Providers []Provider
+	Inputs    []Input
+	Outputs   []Output
 }
 
 type inputsByName []Input
@@ -78,6 +85,7 @@ func Create(files map[string]*ast.File) *Doc {
 			doc.Version = required_version
 		}
 
+		doc.Providers = append(doc.Providers, providers(list)...)
 		doc.Inputs = append(doc.Inputs, inputs(list)...)
 		doc.Outputs = append(doc.Outputs, outputs(list)...)
 
@@ -105,6 +113,27 @@ func version(list *ast.ObjectList) string {
 			if len(version) > 0 {
 				ret = version
 			}
+		}
+	}
+
+	return ret
+}
+
+// Providers returns all providers from 'list' along with links
+// to their Terraform documentation.
+func providers(list *ast.ObjectList) []Provider {
+	var ret []Provider
+
+	for _, item := range list.Items {
+		if is(item, "provider") {
+			name := item.Keys[1].Token.Text
+			name = strings.Trim(name, "\"")
+			link := fmt.Sprintf("https://www.terraform.io/docs/providers/%s", name)
+
+			ret = append(ret, Provider{
+				Name:          name,
+				Documentation: link,
+			})
 		}
 	}
 
