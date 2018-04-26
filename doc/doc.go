@@ -1,6 +1,7 @@
 package doc
 
 import (
+	"fmt"
 	"path"
 	"sort"
 	"strconv"
@@ -12,6 +13,13 @@ import (
 // Provider represents a terraform provider block.
 type Provider struct {
 	Name          string
+	Documentation string
+}
+
+// Resource represents a terraform resource block.
+type Resource struct {
+	Name          string
+	Type          string
 	Documentation string
 }
 
@@ -56,6 +64,7 @@ type Doc struct {
 	Version   string
 	Comment   string
 	Providers []Provider
+	Resources []Resource
 	Inputs    []Input
 	Outputs   []Output
 }
@@ -86,6 +95,7 @@ func Create(files map[string]*ast.File) *Doc {
 		}
 
 		doc.Providers = append(doc.Providers, providers(list)...)
+		doc.Resources = append(doc.Resources, resources(list)...)
 		doc.Inputs = append(doc.Inputs, inputs(list)...)
 		doc.Outputs = append(doc.Outputs, outputs(list)...)
 
@@ -132,6 +142,35 @@ func providers(list *ast.ObjectList) []Provider {
 
 			ret = append(ret, Provider{
 				Name:          name,
+				Documentation: link,
+			})
+		}
+	}
+
+	return ret
+}
+
+// Resources returns all resources from 'list' along with links
+// to their Terraform documentation.
+func resources(list *ast.ObjectList) []Resource {
+	var ret []Resource
+
+	for _, item := range list.Items {
+		if is(item, "resource") {
+			name := item.Keys[2].Token.Text
+			name = strings.Trim(name, "\"")
+
+			resourceType := item.Keys[1].Token.Text
+			resourceType = strings.Trim(resourceType, "\"")
+
+			resourceTypes := strings.SplitN(resourceType, "_", 2)
+			namespace := resourceTypes[0]
+			item := resourceTypes[1]
+			link := fmt.Sprintf("https://www.terraform.io/docs/providers/%s/r/%s.html", namespace, item)
+
+			ret = append(ret, Resource{
+				Name:          name,
+				Type:          resourceType,
 				Documentation: link,
 			})
 		}

@@ -33,6 +33,17 @@ func Pretty(d *doc.Doc) (string, error) {
 		buf.WriteString("\n")
 	}
 
+	if len(d.Resources) > 0 {
+		buf.WriteString("\n")
+
+		for _, i := range d.Resources {
+			format := "  \033[36mresource.%s.%s\033[0m\n  \033[90m%s\033[0m\n\n"
+			buf.WriteString(fmt.Sprintf(format, i.Type, i.Name, i.Documentation))
+		}
+
+		buf.WriteString("\n")
+	}
+
 	if len(d.Inputs) > 0 {
 		buf.WriteString("\n")
 
@@ -85,6 +96,19 @@ func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 		for _, i := range d.Providers {
 			format := "| %s | [%s](%s) |\n"
 			buf.WriteString(fmt.Sprintf(format, i.Name, i.Documentation, i.Documentation))
+		}
+
+		buf.WriteString("\n")
+	}
+
+	if len(d.Resources) > 0 {
+		buf.WriteString("\n## Resources\n\n")
+		buf.WriteString("| Name | Type | Documentation |\n")
+		buf.WriteString("|------|------|---------------|\n")
+
+		for _, i := range d.Resources {
+			format := "| %s | %s | [%s](%s) |\n"
+			buf.WriteString(fmt.Sprintf(format, i.Name, i.Type, i.Documentation, i.Documentation))
 		}
 
 		buf.WriteString("\n")
