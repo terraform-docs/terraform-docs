@@ -13,13 +13,13 @@ import (
 func Pretty(d *doc.Doc) (string, error) {
 	var buf bytes.Buffer
 
+	if len(d.Comment) > 0 {
+		buf.WriteString(fmt.Sprintf("\n%s\n", d.Comment))
+	}
+
 	if len(d.Version) > 0 {
 		format := "  \033[36mterraform.required_version\033[0m (%s)\n\n\n"
 		buf.WriteString(fmt.Sprintf(format, d.Version))
-	}
-
-	if len(d.Comment) > 0 {
-		buf.WriteString(fmt.Sprintf("\n%s\n", d.Comment))
 	}
 
 	if len(d.Providers) > 0 {
@@ -80,12 +80,12 @@ func Pretty(d *doc.Doc) (string, error) {
 func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 	var buf bytes.Buffer
 
-	if len(d.Version) > 0 {
-		buf.WriteString(fmt.Sprintf("Terraform required version %s\n", d.Version))
-	}
-
 	if len(d.Comment) > 0 {
 		buf.WriteString(fmt.Sprintf("%s\n", d.Comment))
+	}
+
+	if len(d.Version) > 0 {
+		buf.WriteString(fmt.Sprintf("Terraform required version %s\n", d.Version))
 	}
 
 	if len(d.Providers) > 0 {
