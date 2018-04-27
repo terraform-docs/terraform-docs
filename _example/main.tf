@@ -8,6 +8,24 @@
  *
  */
 
+terraform {
+  required_version = ">= 0.10.0"
+}
+
+provider "aws" {
+  region     = "us-west-2"
+  access_key = "anaccesskey"
+  secret_key = "asecretkey"
+}
+
+resource "aws_instance" "web" {
+  ami           = "${var.amis[us-east-1]}"
+  instance_type = "t2.micro"
+  vpc_id        = "${var.vpc_id}"
+  subnet_id     = ["${var.subnet_ids}"]
+  vpc_security_group_ids = ["${var.security_group_ids}"]
+}
+
 variable "subnet_ids" {
   description = "a comma-separated list of subnet IDs"
 }
