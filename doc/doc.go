@@ -58,6 +58,20 @@ func (a inputsByName) Len() int           { return len(a) }
 func (a inputsByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a inputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
+type inputsByRequired []Input
+
+func (a inputsByRequired) Len() int      { return len(a) }
+func (a inputsByRequired) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a inputsByRequired) Less(i, j int) bool {
+	if a[i].Value() == "required" && a[j].Value() == "required" {
+		return a[i].Name < a[j].Name
+	} else if a[j].Value() == "required" {
+		return false
+	} else {
+		return a[i].Name < a[j].Name
+	}
+}
+
 type outputsByName []Output
 
 func (a outputsByName) Len() int           { return len(a) }
@@ -66,7 +80,7 @@ func (a outputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
 // Create creates a new *Doc from the supplied map
 // of filenames and *ast.File.
-func Create(files map[string]*ast.File) *Doc {
+func Create(files map[string]*ast.File, sortBy string) *Doc {
 	doc := new(Doc)
 
 	for name, f := range files {
@@ -81,7 +95,11 @@ func Create(files map[string]*ast.File) *Doc {
 			doc.Comment = header(comments[0])
 		}
 	}
-	sort.Sort(inputsByName(doc.Inputs))
+	if sortBy == "required" {
+		sort.Sort(inputsByRequired(doc.Inputs))
+	} else {
+		sort.Sort(inputsByName(doc.Inputs))
+	}
 	sort.Sort(outputsByName(doc.Outputs))
 	return doc
 }

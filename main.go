@@ -18,7 +18,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [json | md | markdown] <path>...
+    terraform-docs [--no-required] [--sort-by=<field>] [json | md | markdown] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -42,6 +42,7 @@ const usage = `
     $ terraform-docs md ./my-module ../config.tf
 
   Options:
+    --sort-by=<field>  Field to sort by [default: name].
     -h, --help     show help information
 
 `
@@ -51,7 +52,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	var names []string
 	paths := args["<path>"].([]string)
 	for _, p := range paths {
@@ -89,7 +89,8 @@ func main() {
 		files[name] = f
 	}
 
-	doc := doc.Create(files)
+	sortBy := args["--sort-by"].(string)
+	doc := doc.Create(files, sortBy)
 	printRequired := !args["--no-required"].(bool)
 
 	var out string
