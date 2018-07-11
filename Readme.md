@@ -8,9 +8,10 @@
 
   - View docs for inputs and outputs
   - Generate docs for inputs and outputs
+    * (And AWS SSM Parameters)  
   - Generate JSON docs (for customizing presentation)
   - Generate markdown tables of inputs and outputs
-
+  
 ## Installation
 
   - `go get github.com/segmentio/terraform-docs`
@@ -115,6 +116,11 @@ This module has a variable and an output.  This text here will be output before 
 | vpc_id | The VPC ID. |
 
 ```
+## Output and Parameters
+
+While using outputs is great within a given terraform "project" using outputs with remote states is dififcult at best.  To use the output from another terraform project
+requires you to specify a bucket name, a bucket region, a key in the bucket to point at the state, and then the output name.  Where using something like AWS parameter store
+allows you to just specify a name.   As such we currently allow [AWS SSM Parameters](https://www.terraform.io/docs/providers/aws/r/ssm_parameter.html) to be documented like outputs
 
 ## License
 
