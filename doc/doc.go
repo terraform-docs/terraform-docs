@@ -45,11 +45,6 @@ type Output struct {
 	Description string
 }
 
-type SSMParam struct {
-	Name        string
-	Description string
-}
-
 // Doc represents a terraform module doc.
 type Doc struct {
 	Comment string
