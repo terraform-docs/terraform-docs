@@ -45,6 +45,11 @@ type Output struct {
 	Description string
 }
 
+type SSMParam struct {
+	Name        string
+	Description string
+}
+
 // Doc represents a terraform module doc.
 type Doc struct {
 	Comment string
@@ -52,6 +57,11 @@ type Doc struct {
 	Outputs []Output
 }
 
+// Opts allows us to look for more than just outputs for outputs
+type Opts struct {
+	ResourceOutput        string
+	ResourceNameAttribute string
+}
 type inputsByName []Input
 
 func (a inputsByName) Len() int           { return len(a) }
@@ -66,13 +76,13 @@ func (a outputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
 // Create creates a new *Doc from the supplied map
 // of filenames and *ast.File.
-func Create(files map[string]*ast.File) *Doc {
+func Create(opts Opts, files map[string]*ast.File) *Doc {
 	doc := new(Doc)
 
 	for name, f := range files {
 		list := f.Node.(*ast.ObjectList)
 		doc.Inputs = append(doc.Inputs, inputs(list)...)
-		doc.Outputs = append(doc.Outputs, outputs(list)...)
+		doc.Outputs = append(doc.Outputs, outputs(opts, list)...)
 
 		filename := path.Base(name)
 		comments := f.Comments
@@ -128,7 +138,7 @@ func inputs(list *ast.ObjectList) []Input {
 }
 
 // Outputs returns all outputs from `list`.
-func outputs(list *ast.ObjectList) []Output {
+func outputs(opts Opts, list *ast.ObjectList) []Output {
 	var ret []Output
 
 	for _, item := range list.Items {
@@ -137,23 +147,33 @@ func outputs(list *ast.ObjectList) []Output {
 			if name == "" {
 				name = item.Keys[1].Token.Text
 			}
-			items := item.Val.(*ast.ObjectType).List.Items
-			var desc string
-			switch {
-			case description(items) != "":
-				desc = description(items)
-			case item.LeadComment != nil:
-				desc = comment(item.LeadComment.List)
-			}
-
+			desc := extractDescription(item)
+			ret = append(ret, Output{
+				Name:        name,
+				Description: strings.TrimSpace(desc),
+			})
+		} else if opts.ResourceOutput != "" && isResource(item, "aws_ssm_parameter") {
+			name := keyvalue(item.Val.(*ast.ObjectType).List.Items, opts.ResourceNameAttribute)
+			desc := extractDescription(item)
 			ret = append(ret, Output{
 				Name:        name,
 				Description: strings.TrimSpace(desc),
 			})
 		}
 	}
-
 	return ret
+}
+
+func extractDescription(item *ast.ObjectItem) string {
+	items := item.Val.(*ast.ObjectType).List.Items
+	var desc string
+	switch {
+	case description(items) != "":
+		desc = description(items)
+	case item.LeadComment != nil:
+		desc = comment(item.LeadComment.List)
+	}
+	return desc
 }
 
 // Get `key` from the list of object `items`.
@@ -191,10 +211,14 @@ func get(items []*ast.ObjectItem, key string) *Value {
 
 // description returns a description from items or an empty string.
 func description(items []*ast.ObjectItem) string {
-	if v := get(items, "description"); v != nil {
+	return keyvalue(items, "description")
+}
+
+// returns any given key's value from a list of items
+func keyvalue(items []*ast.ObjectItem, key string) string {
+	if v := get(items, key); v != nil {
 		return v.Literal
 	}
-
 	return ""
 }
 
@@ -204,6 +228,14 @@ func is(item *ast.ObjectItem, kind string) bool {
 		return item.Keys[0].Token.Text == kind
 	}
 
+	return false
+}
+
+func isResource(item *ast.ObjectItem, kind string) bool {
+	if is(item, "resource") {
+		resourceType, _ := strconv.Unquote(item.Keys[1].Token.Text)
+		return resourceType == kind
+	}
 	return false
 }
 
