@@ -1,12 +1,19 @@
 package doc
 
 import (
+	"bytes"
+	"fmt"
 	"path"
 	"sort"
 	"strconv"
 	"strings"
 
+	"encoding/json"
+
+	"github.com/buger/jsonparser"
+	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
+	hclprinter "github.com/hashicorp/hcl/hcl/printer"
 )
 
 // Input represents a terraform input variable.
@@ -17,16 +24,22 @@ type Input struct {
 	Type        string
 }
 
-// Value returns the default value as a string.
-func (i *Input) Value() string {
+// Value returns the default value as an interface{} type.
+func (i *Input) Value() interface{} {
 	if i.Default != nil {
 		switch i.Default.Type {
 		case "string":
-			return i.Default.Literal
+			return i.Default.Value
 		case "map":
-			return "<map>"
+			if i.Default.Value != "" {
+				return i.Default.Value
+			}
+			return "{}"
 		case "list":
-			return "<list>"
+			if i.Default.Value != "" {
+				return i.Default.Value
+			}
+			return "[]"
 		}
 	}
 
@@ -35,8 +48,8 @@ func (i *Input) Value() string {
 
 // Value represents a terraform value.
 type Value struct {
-	Type    string
-	Literal string
+	Type  string
+	Value interface{}
 }
 
 // Output represents a terraform output.
@@ -108,10 +121,10 @@ func inputs(list *ast.ObjectList) []Input {
 			var itemsType = get(items, "type")
 			var itemType string
 
-			if itemsType == nil || itemsType.Literal == "" {
+			if itemsType == nil || itemsType.Value == "" {
 				itemType = "string"
 			} else {
-				itemType = itemsType.Literal
+				itemType = itemsType.Value.(string)
 			}
 
 			def := get(items, "default")
@@ -164,22 +177,30 @@ func get(items []*ast.ObjectItem, key string) *Value {
 
 			if lit, ok := item.Val.(*ast.LiteralType); ok {
 				if value, ok := lit.Token.Value().(string); ok {
-					v.Literal = value
+					v.Value = value
 				} else {
-					v.Literal = lit.Token.Text
+					v.Value = lit.Token.Text
 				}
 				v.Type = "string"
 				return v
-			}
+			} else {
+				if _, ok := item.Val.(*ast.ObjectType); ok {
+					v.Type = "map"
+					json, err := hclAstNodeToJSON(&item.Val, v.Type)
+					if err == nil {
+						v.Value = json
+					}
+					return v
+				}
 
-			if _, ok := item.Val.(*ast.ObjectType); ok {
-				v.Type = "map"
-				return v
-			}
-
-			if _, ok := item.Val.(*ast.ListType); ok {
-				v.Type = "list"
-				return v
+				if _, ok := item.Val.(*ast.ListType); ok {
+					v.Type = "list"
+					json, err := hclAstNodeToJSON(&item.Val, v.Type)
+					if err == nil {
+						v.Value = json
+					}
+					return v
+				}
 			}
 
 			return nil
@@ -192,7 +213,7 @@ func get(items []*ast.ObjectItem, key string) *Value {
 // description returns a description from items or an empty string.
 func description(items []*ast.ObjectItem) string {
 	if v := get(items, "description"); v != nil {
-		return v.Literal
+		return v.Value.(string)
 	}
 
 	return ""
@@ -263,4 +284,50 @@ func header(c *ast.CommentGroup) (comment string) {
 	}
 
 	return comment
+}
+
+// hclAstNodeToJSON returns a JSON representation of an HCL AST node
+func hclAstNodeToJSON(node *ast.Node, nodeType string) (interface{}, error) {
+	var result interface{}
+
+	// Marshals the HCL Ast Node Object into HCL text
+	config := hclprinter.Config{
+		SpacesWidth: 2,
+	}
+
+	buffer := bytes.NewBufferString("value = ")
+	if err := config.Fprint(buffer, *node); err != nil {
+		return nil, err
+	}
+
+	// Unmarshals HCL Text into a Golang data structure
+	err := hcl.Unmarshal(buffer.Bytes(), &result)
+	if err != nil {
+		return nil, fmt.Errorf("Unable to parse HCL: %s", err)
+	}
+
+	// Marshals the Golang data structure into JSON text
+	data, err := json.Marshal(result)
+	if err != nil {
+		return nil, fmt.Errorf("Unable to marshal JSON: %s", err)
+	}
+
+	// Extract the desired value from JSON text
+	path := []string{"value"}
+	if nodeType == "map" {
+		path = append(path, "[0]")
+	}
+
+	data, _, _, err = jsonparser.Get(data, path...)
+	if err != nil {
+		return nil, fmt.Errorf("Unable to extract value from JSON: %s", err)
+	}
+
+	// Unmarshal JSON text into a Golang data structure
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		return nil, fmt.Errorf("Unable to unmarshal JSON: %s", err)
+	}
+
+	return result, nil
 }
