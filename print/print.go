@@ -82,7 +82,7 @@ func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 
 	for _, v := range d.Inputs {
 		var def string
-		if def == "required" {
+		if v.Value() == "required" {
 			def = "-"
 		} else {
 			value, err := getDefaultValueFromInput(v)
