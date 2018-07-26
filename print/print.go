@@ -22,13 +22,13 @@ func Pretty(d *doc.Doc) (string, error) {
 
 		for _, i := range d.Inputs {
 			format := "  \033[36mvar.%s\033[0m (%s)\n  \033[90m%s\033[0m\n\n"
-			desc := i.Description
 
+			desc := i.Description
 			if desc == "" {
 				desc = "-"
 			}
 
-			def, err := valueToJSON(i)
+			def, err := getDefaultValueFromInput(i)
 			if err != nil {
 				return "", err
 			}
@@ -81,24 +81,23 @@ func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 	}
 
 	for _, v := range d.Inputs {
-		def := v.Value()
-
+		var def string
 		if def == "required" {
 			def = "-"
 		} else {
-			json, err := valueToJSON(v)
+			value, err := getDefaultValueFromInput(v)
 			if err != nil {
 				return "", err
 			}
 
-			def = fmt.Sprintf("`%s`", json)
+			def = fmt.Sprintf("`%s`", value)
 		}
 
 		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %s |",
 			v.Name,
 			normalizeMarkdownDesc(v.Description),
 			v.Type,
-			normalizeMarkdownDesc(def.(string))))
+			normalizeMarkdownDesc(def)))
 
 		if printRequired {
 			buf.WriteString(fmt.Sprintf(" %v |\n",
@@ -133,14 +132,19 @@ func JSON(d *doc.Doc) (string, error) {
 	return string(s), nil
 }
 
-// Creates a json string from a doc.Input object.
-func valueToJSON(input doc.Input) (string, error) {
-	json, err := json.MarshalIndent(input.Value(), "", "")
-	if err != nil {
-		return "", err
-	}
+func getDefaultValueFromInput(input doc.Input) (string, error) {
+	var result string
 
-	result := strings.Replace(string(json), "\n", " ", -1)
+	if input.Type != "string" {
+		json, err := json.MarshalIndent(input.Value(), "", "")
+		if err != nil {
+			return "", err
+		}
+
+		result = strings.Replace(string(json), "\n", " ", -1)
+	} else {
+		result = input.Value().(string)
+	}
 
 	return result, nil
 }
