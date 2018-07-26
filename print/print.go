@@ -28,7 +28,12 @@ func Pretty(d *doc.Doc) (string, error) {
 				desc = "-"
 			}
 
-			buf.WriteString(fmt.Sprintf(format, i.Name, i.Value(), desc))
+			def, err := valueToJSON(i)
+			if err != nil {
+				return "", err
+			}
+
+			buf.WriteString(fmt.Sprintf(format, i.Name, def, desc))
 		}
 
 		buf.WriteString("\n")
@@ -81,14 +86,19 @@ func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 		if def == "required" {
 			def = "-"
 		} else {
-			def = fmt.Sprintf("`%s`", def)
+			json, err := valueToJSON(v)
+			if err != nil {
+				return "", err
+			}
+
+			def = fmt.Sprintf("`%s`", json)
 		}
 
 		buf.WriteString(fmt.Sprintf("| %s | %s | %s | %s |",
 			v.Name,
 			normalizeMarkdownDesc(v.Description),
 			v.Type,
-			normalizeMarkdownDesc(def)))
+			normalizeMarkdownDesc(def.(string))))
 
 		if printRequired {
 			buf.WriteString(fmt.Sprintf(" %v |\n",
@@ -121,6 +131,18 @@ func JSON(d *doc.Doc) (string, error) {
 	}
 
 	return string(s), nil
+}
+
+// Creates a json string from a doc.Input object.
+func valueToJSON(input doc.Input) (string, error) {
+	json, err := json.MarshalIndent(input.Value(), "", "")
+	if err != nil {
+		return "", err
+	}
+
+	result := strings.Replace(string(json), "\n", " ", -1)
+
+	return result, nil
 }
 
 // Humanize the given `v`.
