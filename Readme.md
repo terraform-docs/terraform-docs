@@ -1,5 +1,7 @@
-## Warning: Unmaintained
-This project currently has no active maintainers
+## Maintenance
+This project is currently maintained by [Martin Etmajer](https://github.com/metmajer) of [GetCloudnative](https://github.com/getcloudnative) who is unafiliated with Segment.
+
+Thanks for your help keeping this project healthy, Martin!
 
 ## Overview
 
