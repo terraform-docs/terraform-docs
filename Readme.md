@@ -1,12 +1,13 @@
-## Warning: Unmaintained
-This project currently has no active maintainers
-
 ## Overview
 
 `terraform-docs(1)` &sdot; a quick utility to generate docs from terraform modules.
 
 <img width="1284" alt="screen shot 2016-06-14 at 5 38 37 pm" src="https://cloud.githubusercontent.com/assets/1661587/16049202/1ad63c16-3257-11e6-9e2c-6bb83e684ba4.png">
 
+## Maintenance
+This project is no longer maintained by Segment.  Instead, [Martin Etmajer](https://github.com/metmajer), unaffiliated with Segment, from [GetCloudnative](https://github.com/getcloudnative) is maintaining the project.
+
+Thanks for your help keeping this project healthy, Martin!
 
 ## Features
 
