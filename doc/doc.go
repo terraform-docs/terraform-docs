@@ -120,14 +120,18 @@ func inputs(list *ast.ObjectList) []Input {
 
 			var itemsType = get(items, "type")
 			var itemType string
+			def := get(items, "default")
 
 			if itemsType == nil || itemsType.Value == "" {
-				itemType = "string"
+				if def == nil {
+					itemType = "string"
+				} else {
+					itemType = def.Type
+				}
 			} else {
 				itemType = itemsType.Value.(string)
 			}
 
-			def := get(items, "default")
 			ret = append(ret, Input{
 				Name:        name,
 				Description: desc,
