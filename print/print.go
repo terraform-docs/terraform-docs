@@ -17,6 +17,33 @@ func Pretty(d *doc.Doc) (string, error) {
 		buf.WriteString(fmt.Sprintf("\n%s\n", d.Comment))
 	}
 
+	if len(d.Version) > 0 {
+		format := "  \033[36mterraform.required_version\033[0m (%s)\n\n\n"
+		buf.WriteString(fmt.Sprintf(format, d.Version))
+	}
+
+	if len(d.Providers) > 0 {
+		buf.WriteString("\n")
+
+		for _, i := range d.Providers {
+			format := "  \033[36mprovider.%s\033[0m\n  \033[90m%s\033[0m\n\n"
+			buf.WriteString(fmt.Sprintf(format, i.Name, i.Documentation))
+		}
+
+		buf.WriteString("\n")
+	}
+
+	if len(d.Resources) > 0 {
+		buf.WriteString("\n")
+
+		for _, i := range d.Resources {
+			format := "  \033[36mresource.%s.%s\033[0m\n  \033[90m%s\033[0m\n\n"
+			buf.WriteString(fmt.Sprintf(format, i.Type, i.Name, i.Documentation))
+		}
+
+		buf.WriteString("\n")
+	}
+
 	if len(d.Inputs) > 0 {
 		buf.WriteString("\n")
 
@@ -55,6 +82,36 @@ func Markdown(d *doc.Doc, printRequired bool) (string, error) {
 
 	if len(d.Comment) > 0 {
 		buf.WriteString(fmt.Sprintf("%s\n", d.Comment))
+	}
+
+	if len(d.Version) > 0 {
+		buf.WriteString(fmt.Sprintf("Terraform required version %s\n", d.Version))
+	}
+
+	if len(d.Providers) > 0 {
+		buf.WriteString("\n## Providers\n\n")
+		buf.WriteString("| Name | Documentation |\n")
+		buf.WriteString("|------|---------------|\n")
+
+		for _, i := range d.Providers {
+			format := "| %s | [%s](%s) |\n"
+			buf.WriteString(fmt.Sprintf(format, i.Name, i.Documentation, i.Documentation))
+		}
+
+		buf.WriteString("\n")
+	}
+
+	if len(d.Resources) > 0 {
+		buf.WriteString("\n## Resources\n\n")
+		buf.WriteString("| Name | Type | Documentation |\n")
+		buf.WriteString("|------|------|---------------|\n")
+
+		for _, i := range d.Resources {
+			format := "| %s | %s | [%s](%s) |\n"
+			buf.WriteString(fmt.Sprintf(format, i.Name, i.Type, i.Documentation, i.Documentation))
+		}
+
+		buf.WriteString("\n")
 	}
 
 	if len(d.Inputs) > 0 {
@@ -120,7 +177,15 @@ func JSON(d *doc.Doc) (string, error) {
 		return "", err
 	}
 
-	return string(s), nil
+	// <, >, and & are printed as code points by the json package.
+	// The brackets are needed to pretty-print required_version.
+	// Convert the brackets back into printable chars, limiting the
+	// number of printed brackets to 1 each, which is enough to
+	// prevent HTML injection (json's concern - why they encode).
+	jsonString := strings.Replace(string(s), "\\u003c", "<", 1)
+	jsonString = strings.Replace(jsonString, "\\u003e", ">", 1)
+
+	return jsonString, nil
 }
 
 // Humanize the given `v`.

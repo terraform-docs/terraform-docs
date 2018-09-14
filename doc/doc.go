@@ -1,6 +1,7 @@
 package doc
 
 import (
+	"fmt"
 	"path"
 	"sort"
 	"strconv"
@@ -8,6 +9,19 @@ import (
 
 	"github.com/hashicorp/hcl/hcl/ast"
 )
+
+// Provider represents a terraform provider block.
+type Provider struct {
+	Name          string
+	Documentation string
+}
+
+// Resource represents a terraform resource block.
+type Resource struct {
+	Name          string
+	Type          string
+	Documentation string
+}
 
 // Input represents a terraform input variable.
 type Input struct {
@@ -47,9 +61,12 @@ type Output struct {
 
 // Doc represents a terraform module doc.
 type Doc struct {
-	Comment string
-	Inputs  []Input
-	Outputs []Output
+	Version   string
+	Comment   string
+	Providers []Provider
+	Resources []Resource
+	Inputs    []Input
+	Outputs   []Output
 }
 
 type inputsByName []Input
@@ -71,6 +88,14 @@ func Create(files map[string]*ast.File) *Doc {
 
 	for name, f := range files {
 		list := f.Node.(*ast.ObjectList)
+
+		required_version := version(list)
+		if len(required_version) > 0 {
+			doc.Version = required_version
+		}
+
+		doc.Providers = append(doc.Providers, providers(list)...)
+		doc.Resources = append(doc.Resources, resources(list)...)
 		doc.Inputs = append(doc.Inputs, inputs(list)...)
 		doc.Outputs = append(doc.Outputs, outputs(list)...)
 
@@ -84,6 +109,74 @@ func Create(files map[string]*ast.File) *Doc {
 	sort.Sort(inputsByName(doc.Inputs))
 	sort.Sort(outputsByName(doc.Outputs))
 	return doc
+}
+
+// Version returns the terraform version_required string from 'list'.
+func version(list *ast.ObjectList) string {
+	var ret string
+
+	for _, item := range list.Items {
+		if is(item, "terraform") && item.Val.(*ast.ObjectType).List.Items[0].Keys[0].Token.Text == "required_version" {
+			version := item.Val.(*ast.ObjectType).List.Items[0].Val.(*ast.LiteralType).Token.Text
+			version = strings.Trim(version, "\"")
+
+			if len(version) > 0 {
+				ret = version
+			}
+		}
+	}
+
+	return ret
+}
+
+// Providers returns all providers from 'list' along with links
+// to their Terraform documentation.
+func providers(list *ast.ObjectList) []Provider {
+	var ret []Provider
+
+	for _, item := range list.Items {
+		if is(item, "provider") {
+			name := item.Keys[1].Token.Text
+			name = strings.Trim(name, "\"")
+			link := fmt.Sprintf("https://www.terraform.io/docs/providers/%s", name)
+
+			ret = append(ret, Provider{
+				Name:          name,
+				Documentation: link,
+			})
+		}
+	}
+
+	return ret
+}
+
+// Resources returns all resources from 'list' along with links
+// to their Terraform documentation.
+func resources(list *ast.ObjectList) []Resource {
+	var ret []Resource
+
+	for _, item := range list.Items {
+		if is(item, "resource") {
+			name := item.Keys[2].Token.Text
+			name = strings.Trim(name, "\"")
+
+			resourceType := item.Keys[1].Token.Text
+			resourceType = strings.Trim(resourceType, "\"")
+
+			resourceTypes := strings.SplitN(resourceType, "_", 2)
+			namespace := resourceTypes[0]
+			item := resourceTypes[1]
+			link := fmt.Sprintf("https://www.terraform.io/docs/providers/%s/r/%s.html", namespace, item)
+
+			ret = append(ret, Resource{
+				Name:          name,
+				Type:          resourceType,
+				Documentation: link,
+			})
+		}
+	}
+
+	return ret
 }
 
 // Inputs returns all variables from `list`.

@@ -11,7 +11,7 @@ Thanks for your help keeping this project healthy, Martin!
 
 ## Features
 
-  - View docs for inputs and outputs
+  - View docs for providers and resources used, and details about inputs and outputs
   - Generate docs for inputs and outputs
   - Generate JSON docs (for customizing presentation)
   - Generate markdown tables of inputs and outputs
@@ -61,6 +61,16 @@ Given a simple module at `./_example`:
  * This module has a variable and an output.  This text here will be output before any inputs or outputs!
  */
 
+terraform {
+  required_version = ">= 0.10.0"
+}
+
+provider "aws" {}
+
+resource "aws_instance" "web" {
+  vpc_id = "${var.vpc_id}"
+}
+
 variable "subnet_ids" {
   description = "a comma-separated list of subnet IDs"
 }
@@ -83,12 +93,27 @@ To output JSON docs:
 ```bash
 $ terraform-docs json _example
 {
+  "Version": ">= 0.10.0",
   "Comment": "This module has a variable and an output.  This text here will be output before any inputs or outputs!\n",
+  "Providers": [
+    {
+      "Name": "aws",
+      "Documentation": "https://www.terraform.io/docs/providers/aws"
+    }
+  ],
+  "Resources": [
+    {
+      "Name": "web",
+      "Type": "aws_instance",
+      "Documentation": "https://www.terraform.io/docs/providers/aws/r/instance.html"
+    }
+  ],
   "Inputs": [
     {
       "Name": "subnet_ids",
       "Description": "a comma-separated list of subnet IDs",
-      "Default": ""
+      "Default": null,
+      "Type": "string"
     }
   ],
   "Outputs": [
@@ -106,12 +131,27 @@ To output markdown docs:
 $ terraform-docs md _example
 This module has a variable and an output.  This text here will be output before any inputs or outputs!
 
+Terraform required version >= 0.10.0
+
+## Providers
+
+| Name | Documentation |
+|------|---------------|
+| aws | [https://www.terraform.io/docs/providers/aws](https://www.terraform.io/docs/providers/aws) |
+
+
+## Resources
+
+| Name | Type | Documentation |
+|------|------|---------------|
+| web | aws_instance | [https://www.terraform.io/docs/providers/aws/r/instance.html](https://www.terraform.io/docs/providers/aws/r/instance.html) |
+
 
 ## Inputs
 
-| Name | Description | Default | Required |
-|------|-------------|:-----:|:-----:|
-| subnet_ids | a comma-separated list of subnet IDs | - | yes |
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| subnet_ids | a comma-separated list of subnet IDs | string | - | yes |
 
 ## Outputs
 
