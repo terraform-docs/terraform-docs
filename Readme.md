@@ -13,21 +13,24 @@ Thanks for your help keeping this project healthy, Martin!
 
   - View docs for inputs and outputs
   - Generate docs for inputs and outputs
+    * (And AWS SSM Parameters)  
   - Generate JSON docs (for customizing presentation)
   - Generate markdown tables of inputs and outputs
-
+  
 ## Installation
 
   - `go get github.com/segmentio/terraform-docs`
   - [Binaries](https://github.com/segmentio/terraform-docs/releases)
   - `brew install terraform-docs` (on macOS)
+  - docker 
 
 ## Usage
 
 ```bash
+ Usage:
+    terraform-docs  [--no-required]  [json | md | markdown]  <path>...
+    terraform-docs  [-o=RESOURCE_NAME] [-a RESOURCE_ATTR] [json | md | markdown]  <path>...
 
-  Usage:
-    terraform-docs [json | md | markdown] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -44,13 +47,30 @@ Thanks for your help keeping this project healthy, Martin!
     # Generate markdown tables of inputs and outputs
     $ terraform-docs md ./my-module
 
+    # Geneerate markdown tables of inputs and outputs, including amazon ssm parameters as outputs
+    $ terraform-docs -o aws_ssm_parameter md ./my-module
+
+    # Generate markdown tables of inputs and outputs, but don't print "Required" column
+    $ terraform-docs --no-required md ./my-module
+
     # Generate markdown tables of inputs and outputs for the given module and ../config.tf
     $ terraform-docs md ./my-module ../config.tf
 
-  Options:
-    -h, --help     show help information
 
+
+  Options:
+    -h, --help                    show help information
+    -o, --output-resource-name=RESOURCE_NAME  If you want to use any additional terraform resoruces as an output (e.g. aws_ssm_parameter,azurerm_key_vault_secret)
+    -a, --output-resource-attr=RESOURCE_ATTR  If using an additional output resource, what attribute should be uesed to get the name [default: name]
 ```
+
+### With Docker
+
+If you use the docker file, e.g. run `docker build . -t terraform-docs` you can subsequently run with
+
+`docker run -v $(pwd):/workspace terraform-docs` 
+(the default uses markdown and `.`, i.e. the above is equavilent to )
+`docker run -v $(pwd):/workspace terraform-docs md .` 
 
 ## Example
 
@@ -120,6 +140,11 @@ This module has a variable and an output.  This text here will be output before 
 | vpc_id | The VPC ID. |
 
 ```
+## Output and Parameters
+
+While using outputs is great within a given terraform "project" using outputs with remote states is dififcult at best.  To use the output from another terraform project
+requires you to specify a bucket name, a bucket region, a key in the bucket to point at the state, and then the output name.  Where using something like AWS parameter store
+allows you to just specify a name.   As such we currently allow [AWS SSM Parameters](https://www.terraform.io/docs/providers/aws/r/ssm_parameter.html) to be documented like outputs
 
 ## License
 
