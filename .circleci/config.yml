@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/segmentio/terraform-docs
+    steps:
+      - checkout
+      - run:
+          name: Test
+          command: |
+            echo 'Not implemented yet'
+workflows:
+  version: 2
+  test-dist-publish-linux:
+    jobs:
+      - test
