@@ -260,7 +260,7 @@ func comment(l []*ast.Comment) string {
 		line = strings.TrimSpace(t.Text)
 		line = strings.TrimPrefix(line, "#")
 		line = strings.TrimPrefix(line, "//")
-		ret += strings.TrimSpace(line) + "\n"
+		ret += strings.TrimSpace(line)
 	}
 
 	return ret
