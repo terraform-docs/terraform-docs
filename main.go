@@ -43,6 +43,7 @@ const usage = `
 
   Options:
     -h, --help     show help information
+    --version      print version
 
 `
 

@@ -49,6 +49,7 @@ Thanks for your help keeping this project healthy, Martin!
 
   Options:
     -h, --help     show help information
+    --version      print version
 
 ```
 
