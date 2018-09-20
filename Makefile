@@ -8,7 +8,7 @@ LICENSE     := MIT
 VERSION     := $(shell cat ./VERSION)
 
 GOBUILD     := go build -ldflags "-X main.version=$(VERSION)"
-GOPKGS        := $(shell go list ./... | grep -v /vendor)
+GOPKGS      := $(shell go list ./... | grep -v /vendor)
 
 
 .PHONY: all
