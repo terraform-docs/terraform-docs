@@ -13,8 +13,12 @@ GOBUILD     := go build -ldflags "-X main.version=$(VERSION)"
 .PHONY: all
 all: clean deps build
 
+.PHONY: authors
+authors:
+	git log --all --format='%aN <%cE>' | sort -u | egrep -v noreply > AUTHORS
+
 .PHONY: build
-build: deps build-darwin-amd64 build-freebsd-amd64 build-linux-amd64 build-windows-amd64
+build: authors deps build-darwin-amd64 build-freebsd-amd64 build-linux-amd64 build-windows-amd64
 
 build-darwin-amd64:
 	GOOS=darwin GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-darwin-amd64
