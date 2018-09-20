@@ -11,7 +11,7 @@ GOBUILD     := go build -ldflags "-X main.version=$(VERSION)"
 
 
 .PHONY: all
-all: clean deps build
+all: clean deps lint build
 
 .PHONY: authors
 authors:
@@ -35,6 +35,10 @@ build-windows-amd64:
 .PHONY: clean
 clean:
 	rm -rf ./bin ./vendor
+
+.PHONY: lint
+lint:
+	gometalinter --config gometalinter.json ./...
 
 .PHONY: deps
 deps:
