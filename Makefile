@@ -8,10 +8,11 @@ LICENSE     := MIT
 VERSION     := $(shell cat ./VERSION)
 
 GOBUILD     := go build -ldflags "-X main.version=$(VERSION)"
+GOPKGS        := $(shell go list ./... | grep -v /vendor)
 
 
 .PHONY: all
-all: clean deps lint build
+all: clean deps lint test build
 
 .PHONY: authors
 authors:
@@ -48,3 +49,7 @@ deps:
 release:
 	git tag -a v$(VERSION) -m v$(VERSION)
 	git push --tags
+
+.PHONY: test
+test:
+	go test -v $(GOPKGS)
