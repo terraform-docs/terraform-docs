@@ -207,12 +207,6 @@ func is(item *ast.ObjectItem, kind string) bool {
 	return false
 }
 
-// Unquote the given string.
-func unquote(s string) string {
-	s, _ = strconv.Unquote(s)
-	return s
-}
-
 // Comment cleans and returns a comment.
 func comment(l []*ast.Comment) string {
 	var line string
