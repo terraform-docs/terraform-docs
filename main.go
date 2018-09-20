@@ -2,13 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
-	"os"
-	"path/filepath"
 
-	"github.com/hashicorp/hcl"
-	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/segmentio/terraform-docs/doc"
 	"github.com/segmentio/terraform-docs/print"
 	"github.com/tj/docopt"
@@ -53,44 +48,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var names []string
 	paths := args["<path>"].([]string)
-	for _, p := range paths {
-		pi, err := os.Stat(p)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if !pi.IsDir() {
-			names = append(names, p)
-			continue
-		}
-
-		files, err := filepath.Glob(fmt.Sprintf("%s/*.tf", p))
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		names = append(names, files...)
+	doc, err := doc.CreateFromPaths(paths)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	files := make(map[string]*ast.File, len(names))
-
-	for _, name := range names {
-		buf, err := ioutil.ReadFile(name)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		f, err := hcl.ParseBytes(buf)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		files[name] = f
-	}
-
-	doc := doc.Create(files)
 	printRequired := !args["--no-required"].(bool)
 
 	var out string

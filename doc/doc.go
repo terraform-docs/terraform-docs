@@ -1,12 +1,18 @@
 package doc
 
 import (
+	"fmt"
+	"io/ioutil"
+	"log"
 	"path"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
 
+	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
+	"github.com/segmentio/terraform-docs/internal/pkg/fs"
 )
 
 // Input represents a terraform input variable.
@@ -63,6 +69,44 @@ type outputsByName []Output
 func (a outputsByName) Len() int           { return len(a) }
 func (a outputsByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a outputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
+
+// CreateFromPaths creates a *Doc from a list of paths.
+func CreateFromPaths(paths []string) (*Doc, error) {
+	names := make([]string, 0)
+
+	for _, path := range paths {
+		if fs.DirectoryExists(path) {
+			matches, err := filepath.Glob(fmt.Sprintf("%s/*.tf", path))
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			names = append(names, matches...)
+		} else if fs.FileExists(path) {
+			names = append(names, path)
+		}
+	}
+
+	files := make(map[string]*ast.File)
+
+	for _, name := range names {
+		bytes, err := ioutil.ReadFile(name)
+		if err != nil {
+			log.Fatal(err)
+			panic(err)
+		}
+
+		ast, err := hcl.ParseBytes(bytes)
+		if err != nil {
+			log.Fatal(err)
+			panic(err)
+		}
+
+		files[name] = ast
+	}
+
+	return Create(files), nil
+}
 
 // Create creates a new *Doc from the supplied map
 // of filenames and *ast.File.
