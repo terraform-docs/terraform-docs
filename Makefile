@@ -43,3 +43,8 @@ lint:
 .PHONY: deps
 deps:
 	dep ensure
+
+.PHONY: release
+release:
+	git tag -a v$(VERSION) -m v$(VERSION)
+	git push --tags
