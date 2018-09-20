@@ -125,7 +125,7 @@ This module has a variable and an output.  This text here will be output before 
 
 MIT License
 
-Copyright (c) 2017 Segment, Inc
+Copyright (c) 2018 The terraform-docs Authors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
