@@ -1,0 +1,14 @@
+package: github.com/segmentio/terraform-docs
+import:
+- package: github.com/coveo/gotemplate
+  subpackages:
+  - utils
+- package: github.com/fatih/structs
+- package: github.com/hashicorp/hcl
+  subpackages:
+  - hcl/ast
+- package: github.com/hashicorp/terraform
+  subpackages:
+  - terraform
+- package: github.com/tj/docopt
+- package: gopkg.in/yaml.v2
