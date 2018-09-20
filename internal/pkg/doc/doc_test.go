@@ -3,7 +3,7 @@ package doc_test
 import (
 	"testing"
 
-	"github.com/segmentio/terraform-docs/doc"
+	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/segmentio/terraform-docs/doc"
-	"github.com/segmentio/terraform-docs/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/doc"
+	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/tj/docopt"
 )
 
