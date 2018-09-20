@@ -11,7 +11,7 @@ GOBUILD     := go build -ldflags "-X main.version=$(VERSION)"
 
 
 .PHONY: all
-all: deps build
+all: clean deps build
 
 .PHONY: build
 build: deps build-darwin-amd64 build-freebsd-amd64 build-linux-amd64 build-windows-amd64
@@ -27,6 +27,10 @@ build-linux-amd64:
 
 build-windows-amd64:
 	GOOS=windows GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-windows-amd64
+
+.PHONY: clean
+clean:
+	rm -rf ./bin ./vendor
 
 .PHONY: deps
 deps:
