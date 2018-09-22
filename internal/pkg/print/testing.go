@@ -18,5 +18,5 @@ func ReadGoldenFile(name string) (string, error) {
 }
 
 func testDataPath() string {
-	return filepath.Join("..", "print", "testdata")
+	return filepath.Join("testdata")
 }

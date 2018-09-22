@@ -6,6 +6,10 @@ import (
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
+	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/tj/docopt"
 )
 
@@ -37,7 +41,8 @@ const usage = `
     $ terraform-docs md ./my-module ../config.tf
 
   Options:
-    -h, --help     show help information
+	-h, --help     show help information
+	--no-required  omit "Required" column when generating markdown
     --version      print version
 
 `
@@ -49,24 +54,28 @@ func main() {
 	}
 
 	paths := args["<path>"].([]string)
-	doc, err := doc.CreateFromPaths(paths)
+
+	document, err := doc.CreateFromPaths(paths)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	printRequired := !args["--no-required"].(bool)
+	var printSettings settings.Settings
+	if !args["--no-required"].(bool) {
+		printSettings.Add(print.WithRequired)
+	}
 
 	var out string
 
 	switch {
 	case args["markdown"].(bool):
-		out, err = print.Markdown(doc, printRequired)
+		out, err = markdown.Print(document, printSettings)
 	case args["md"].(bool):
-		out, err = print.Markdown(doc, printRequired)
+		out, err = markdown.Print(document, printSettings)
 	case args["json"].(bool):
-		out, err = print.JSON(doc)
+		out, err = json.Print(document, printSettings)
 	default:
-		out, err = print.Pretty(doc)
+		out, err = pretty.Print(document, printSettings)
 	}
 
 	if err != nil {
