@@ -1,12 +1,16 @@
-// It's list number one.
-variable "list-1" {
-  default = ["a", "b", "c"]
-  type    = "list"
+variable "string-2" {
+  description = "It's string number two."
+  type        = "string"
 }
 
-variable "list-2" {
-  description = "It's list number two."
-  type        = "list"
+// It's string number one.
+variable "string-1" {
+  default = "bar"
+}
+
+variable "map-2" {
+  description = "It's map number two."
+  type        = "map"
 }
 
 // It's map number one.
@@ -19,17 +23,13 @@ variable "map-1" {
   type    = "map"
 }
 
-variable "map-2" {
-  description = "It's map number two."
-  type        = "map"
+variable "list-2" {
+  description = "It's list number two."
+  type        = "list"
 }
 
-// It's string number one.
-variable "string-1" {
-  default = "bar"
-}
-
-variable "string-2" {
-  description = "It's string number two."
-  type        = "string"
+// It's list number one.
+variable "list-1" {
+  default = ["a", "b", "c"]
+  type    = "list"
 }

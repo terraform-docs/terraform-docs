@@ -6,7 +6,6 @@ import (
 	"log"
 	"path"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -42,18 +41,6 @@ func (d *Doc) HasInputs() bool {
 func (d *Doc) HasOutputs() bool {
 	return len(d.Outputs) > 0
 }
-
-type inputsByName []Input
-
-func (a inputsByName) Len() int           { return len(a) }
-func (a inputsByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a inputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
-
-type outputsByName []Output
-
-func (a outputsByName) Len() int           { return len(a) }
-func (a outputsByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a outputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
 // CreateFromPaths creates a new document from a list of file or directory paths.
 func CreateFromPaths(paths []string) (*Doc, error) {
@@ -110,8 +97,6 @@ func Create(files map[string]*ast.File) *Doc {
 		}
 	}
 
-	sort.Sort(inputsByName(doc.Inputs))
-	sort.Sort(outputsByName(doc.Outputs))
 	return doc
 }
 
