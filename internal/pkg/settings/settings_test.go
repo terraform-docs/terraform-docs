@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	None settings.Setting = iota
+	_ settings.Setting = iota
 	A
 	B
 	C
