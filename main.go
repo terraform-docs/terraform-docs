@@ -43,6 +43,7 @@ const usage = `
   Options:
 	-h, --help     show help information
 	--no-required  omit "Required" column when generating markdown
+	--no-sort      omit sorted rendering of inputs and ouputs
     --version      print version
 
 `
@@ -63,6 +64,10 @@ func main() {
 	var printSettings settings.Settings
 	if !args["--no-required"].(bool) {
 		printSettings.Add(print.WithRequired)
+	}
+
+	if !args["--no-sort"].(bool) {
+		printSettings.Add(print.WithSorting)
 	}
 
 	var out string

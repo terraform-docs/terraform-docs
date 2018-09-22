@@ -21,16 +21,16 @@ module "foo" {
 
 | Name | Description | Type | Default |
 |------|-------------|:----:|:-----:|
-| string-2 | It's string number two. | string | - |
-| string-1 | It's string number one. | string | `bar` |
-| map-2 | It's map number two. | map | - |
-| map-1 | It's map number one. | map | `<map>` |
-| list-2 | It's list number two. | list | - |
 | list-1 | It's list number one. | list | `<list>` |
+| list-2 | It's list number two. | list | - |
+| map-1 | It's map number one. | map | `<map>` |
+| map-2 | It's map number two. | map | - |
+| string-1 | It's string number one. | string | `bar` |
+| string-2 | It's string number two. | string | - |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| output-2 | It's output number two. |
 | output-1 | It's output number one. |
+| output-2 | It's output number two. |

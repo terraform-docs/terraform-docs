@@ -78,34 +78,10 @@ func TestInputs(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
-			Name:        "list-1",
-			Description: "It's list number one.",
-			Default: &doc.Value{
-				Type:    "list",
-				Literal: "",
-			},
-			Type: "list",
-		},
-		doc.Input{
-			Name:        "list-2",
-			Description: "It's list number two.",
+			Name:        "string-2",
+			Description: "It's string number two.",
 			Default:     nil,
-			Type:        "list",
-		},
-		doc.Input{
-			Name:        "map-1",
-			Description: "It's map number one.",
-			Default: &doc.Value{
-				Type:    "map",
-				Literal: "",
-			},
-			Type: "map",
-		},
-		doc.Input{
-			Name:        "map-2",
-			Description: "It's map number two.",
-			Default:     nil,
-			Type:        "map",
+			Type:        "string",
 		},
 		doc.Input{
 			Name:        "string-1",
@@ -117,10 +93,34 @@ func TestInputs(t *testing.T) {
 			Type: "string",
 		},
 		doc.Input{
-			Name:        "string-2",
-			Description: "It's string number two.",
+			Name:        "map-2",
+			Description: "It's map number two.",
 			Default:     nil,
-			Type:        "string",
+			Type:        "map",
+		},
+		doc.Input{
+			Name:        "map-1",
+			Description: "It's map number one.",
+			Default: &doc.Value{
+				Type:    "map",
+				Literal: "",
+			},
+			Type: "map",
+		},
+		doc.Input{
+			Name:        "list-2",
+			Description: "It's list number two.",
+			Default:     nil,
+			Type:        "list",
+		},
+		doc.Input{
+			Name:        "list-1",
+			Description: "It's list number one.",
+			Default: &doc.Value{
+				Type:    "list",
+				Literal: "",
+			},
+			Type: "list",
 		},
 	}
 
@@ -142,34 +142,10 @@ func TestInputsFromVariablesTf(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
-			Name:        "list-1",
-			Description: "It's list number one.",
-			Default: &doc.Value{
-				Type:    "list",
-				Literal: "",
-			},
-			Type: "list",
-		},
-		doc.Input{
-			Name:        "list-2",
-			Description: "It's list number two.",
+			Name:        "string-2",
+			Description: "It's string number two.",
 			Default:     nil,
-			Type:        "list",
-		},
-		doc.Input{
-			Name:        "map-1",
-			Description: "It's map number one.",
-			Default: &doc.Value{
-				Type:    "map",
-				Literal: "",
-			},
-			Type: "map",
-		},
-		doc.Input{
-			Name:        "map-2",
-			Description: "It's map number two.",
-			Default:     nil,
-			Type:        "map",
+			Type:        "string",
 		},
 		doc.Input{
 			Name:        "string-1",
@@ -181,10 +157,34 @@ func TestInputsFromVariablesTf(t *testing.T) {
 			Type: "string",
 		},
 		doc.Input{
-			Name:        "string-2",
-			Description: "It's string number two.",
+			Name:        "map-2",
+			Description: "It's map number two.",
 			Default:     nil,
-			Type:        "string",
+			Type:        "map",
+		},
+		doc.Input{
+			Name:        "map-1",
+			Description: "It's map number one.",
+			Default: &doc.Value{
+				Type:    "map",
+				Literal: "",
+			},
+			Type: "map",
+		},
+		doc.Input{
+			Name:        "list-2",
+			Description: "It's list number two.",
+			Default:     nil,
+			Type:        "list",
+		},
+		doc.Input{
+			Name:        "list-1",
+			Description: "It's list number one.",
+			Default: &doc.Value{
+				Type:    "list",
+				Literal: "",
+			},
+			Type: "list",
 		},
 	}
 
@@ -196,12 +196,12 @@ func TestOutputs(t *testing.T) {
 
 	expected := []doc.Output{
 		doc.Output{
-			Name:        "output-1",
-			Description: "It's output number one.",
-		},
-		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
+		},
+		doc.Output{
+			Name:        "output-1",
+			Description: "It's output number one.",
 		},
 	}
 
@@ -218,12 +218,12 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 
 	expected := []doc.Output{
 		doc.Output{
-			Name:        "output-1",
-			Description: "It's output number one.",
-		},
-		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
+		},
+		doc.Output{
+			Name:        "output-1",
+			Description: "It's output number one.",
 		},
 	}
 

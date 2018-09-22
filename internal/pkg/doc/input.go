@@ -1,6 +1,8 @@
 package doc
 
-// Input represents a Terraform input variable.
+import "sort"
+
+// Input represents a Terraform input.
 type Input struct {
 	Name        string
 	Description string
@@ -21,4 +23,23 @@ func (i *Input) IsOptional() bool {
 // IsRequired indicates if a Terraform input is required.
 func (i *Input) IsRequired() bool {
 	return i.Default == nil
+}
+
+type inputsSortedByName []Input
+
+func (a inputsSortedByName) Len() int {
+	return len(a)
+}
+
+func (a inputsSortedByName) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func (a inputsSortedByName) Less(i, j int) bool {
+	return a[i].Name < a[j].Name
+}
+
+// SortInputsByName sorts a list of inputs by name.
+func SortInputsByName(inputs []Input) {
+	sort.Sort(inputsSortedByName(inputs))
 }
