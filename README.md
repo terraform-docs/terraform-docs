@@ -48,6 +48,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 
   Options:
     -h, --help     show help information
+    --no-required  omit "Required" column when generating markdown
     --version      print version
 
 ```

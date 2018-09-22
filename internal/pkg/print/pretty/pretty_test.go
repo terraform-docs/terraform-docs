@@ -1,17 +1,19 @@
-package print_test
+package pretty_test
 
 import (
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
+	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPretty(t *testing.T) {
-	doc := doc.TestDoc(t)
+	doc := doc.TestDoc(t, "..")
+	var settings settings.Settings
 
-	actual, err := print.Pretty(doc)
+	actual, err := pretty.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,38 +69,6 @@ func TestPretty(t *testing.T) {
 			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
 			"\n" +
 			"\n"
-
-	assert.Equal(t, expected, actual)
-}
-
-func TestMarkdown(t *testing.T) {
-	doc := doc.TestDoc(t)
-
-	actual, err := print.Markdown(doc, false)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected, err := print.ReadGoldenFile("markdown")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
-}
-
-func TestJSON(t *testing.T) {
-	doc := doc.TestDoc(t)
-
-	actual, err := print.JSON(doc)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected, err := print.ReadGoldenFile("json")
-	if err != nil {
-		t.Fatal(err)
-	}
 
 	assert.Equal(t, expected, actual)
 }

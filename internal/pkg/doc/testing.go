@@ -8,8 +8,8 @@ import (
 )
 
 // TestDoc creates a *Doc from a Terraform module.
-func TestDoc(t testing.T) *Doc {
-	path, err := absPath(testDataPath())
+func TestDoc(t testing.T, path string) *Doc {
+	path, err := absPath(testDataPath(path))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,8 +23,8 @@ func TestDoc(t testing.T) *Doc {
 }
 
 // TestDocFromFile creates a *Doc from a Terraform file.
-func TestDocFromFile(t testing.T, name string) *Doc {
-	path, err := absPath(filepath.Join(testDataPath(), name))
+func TestDocFromFile(t testing.T, path string, name string) *Doc {
+	path, err := absPath(filepath.Join(testDataPath(path), name))
 
 	if err != nil {
 		t.Fatal(err)
@@ -47,6 +47,6 @@ func absPath(relative string) (string, error) {
 	return filepath.Join(pwd, relative), nil
 }
 
-func testDataPath() string {
-	return filepath.Join("..", "doc", "testdata")
+func testDataPath(path string) string {
+	return filepath.Join(path, "..", "doc", "testdata")
 }

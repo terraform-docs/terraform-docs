@@ -23,6 +23,21 @@ type Input struct {
 	Type        string
 }
 
+// HasDescription indicates if a terraform input variable has a description.
+func (i *Input) HasDescription() bool {
+	return i.Description != ""
+}
+
+// IsOptional indicates if a terraform input variable is optional.
+func (i *Input) IsOptional() bool {
+	return !i.IsRequired()
+}
+
+// IsRequired indicates if a terraform input variable is required.
+func (i *Input) IsRequired() bool {
+	return i.Default == nil
+}
+
 // Value returns the default value as a string.
 func (i *Input) Value() string {
 	if i.Default != nil {
@@ -49,6 +64,11 @@ type Value struct {
 type Output struct {
 	Name        string
 	Description string
+}
+
+// HasDescription indicates if a terraform output variable has a description.
+func (o *Output) HasDescription() bool {
+	return o.Description != ""
 }
 
 // Doc represents a terraform module doc.
@@ -128,6 +148,21 @@ func Create(files map[string]*ast.File) *Doc {
 	sort.Sort(inputsByName(doc.Inputs))
 	sort.Sort(outputsByName(doc.Outputs))
 	return doc
+}
+
+// HasComment indicates if the document has a comment.
+func (doc *Doc) HasComment() bool {
+	return len(doc.Comment) > 0
+}
+
+// HasInputs indicates if the document has inputs.
+func (doc *Doc) HasInputs() bool {
+	return len(doc.Inputs) > 0
+}
+
+// HasOutputs indicates if the document has outputs.
+func (doc *Doc) HasOutputs() bool {
+	return len(doc.Outputs) > 0
 }
 
 // Inputs returns all variables from `list`.
