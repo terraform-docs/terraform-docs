@@ -31,18 +31,14 @@ func getInputDefaultValue(input *doc.Input) string {
 	var result = "required"
 
 	if input.Default != nil {
-		var value string
-
 		switch input.Default.Type {
 		case "list":
-			value = "<list>"
+			result = "<list>"
 		case "map":
-			value = "<map>"
+			result = "<map>"
 		case "string":
-			value = input.Default.Literal
+			result = input.Default.Literal
 		}
-
-		result = fmt.Sprintf("%s", value)
 	}
 
 	return result
