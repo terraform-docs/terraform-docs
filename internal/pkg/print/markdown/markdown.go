@@ -30,17 +30,28 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 }
 
 func getInputDefaultValue(input *doc.Input) string {
-	result := "-"
+	var result = "-"
 
-	if !input.IsRequired() {
-		result = fmt.Sprintf("`%s`", input.Value())
+	if input.Default != nil {
+		var value string
+
+		switch input.Default.Type {
+		case "list":
+			value = "<list>"
+		case "map":
+			value = "<map>"
+		case "string":
+			value = input.Default.Literal
+		}
+
+		result = fmt.Sprintf("`%s`", value)
 	}
 
 	return result
 }
 
 func getInputDescription(input *doc.Input) string {
-	result := "-"
+	var result = "-"
 
 	if input.HasDescription() {
 		result = input.Description
@@ -50,7 +61,7 @@ func getInputDescription(input *doc.Input) string {
 }
 
 func getOutputDescription(output *doc.Output) string {
-	result := "-"
+	var result = "-"
 
 	if output.HasDescription() {
 		result = output.Description
