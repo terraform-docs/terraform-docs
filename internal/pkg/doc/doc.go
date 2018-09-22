@@ -15,67 +15,32 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/fs"
 )
 
-// Input represents a terraform input variable.
-type Input struct {
-	Name        string
-	Description string
-	Default     *Value
-	Type        string
+// Doc represents a Terraform module.
+type Doc struct {
+	Comment string
+	Inputs  []Input
+	Outputs []Output
 }
 
-// HasDescription indicates if a terraform input variable has a description.
-func (i *Input) HasDescription() bool {
-	return i.Description != ""
-}
-
-// IsOptional indicates if a terraform input variable is optional.
-func (i *Input) IsOptional() bool {
-	return !i.IsRequired()
-}
-
-// IsRequired indicates if a terraform input variable is required.
-func (i *Input) IsRequired() bool {
-	return i.Default == nil
-}
-
-// Value returns the default value as a string.
-func (i *Input) Value() string {
-	if i.Default != nil {
-		switch i.Default.Type {
-		case "string":
-			return i.Default.Literal
-		case "map":
-			return "<map>"
-		case "list":
-			return "<list>"
-		}
-	}
-
-	return "required"
-}
-
-// Value represents a terraform value.
+// Value represents a Terraform value.
 type Value struct {
 	Type    string
 	Literal string
 }
 
-// Output represents a terraform output.
-type Output struct {
-	Name        string
-	Description string
+// HasComment indicates if the document has a comment.
+func (d *Doc) HasComment() bool {
+	return len(d.Comment) > 0
 }
 
-// HasDescription indicates if a terraform output variable has a description.
-func (o *Output) HasDescription() bool {
-	return o.Description != ""
+// HasInputs indicates if the document has inputs.
+func (d *Doc) HasInputs() bool {
+	return len(d.Inputs) > 0
 }
 
-// Doc represents a terraform module doc.
-type Doc struct {
-	Comment string
-	Inputs  []Input
-	Outputs []Output
+// HasOutputs indicates if the document has outputs.
+func (d *Doc) HasOutputs() bool {
+	return len(d.Outputs) > 0
 }
 
 type inputsByName []Input
@@ -90,7 +55,7 @@ func (a outputsByName) Len() int           { return len(a) }
 func (a outputsByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a outputsByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
-// CreateFromPaths creates a *Doc from a list of paths.
+// CreateFromPaths creates a new document from a list of file or directory paths.
 func CreateFromPaths(paths []string) (*Doc, error) {
 	names := make([]string, 0)
 
@@ -128,137 +93,87 @@ func CreateFromPaths(paths []string) (*Doc, error) {
 	return Create(files), nil
 }
 
-// Create creates a new *Doc from the supplied map
-// of filenames and *ast.File.
+// Create creates a new document from a map of filenames to *ast.Files.
 func Create(files map[string]*ast.File) *Doc {
 	doc := new(Doc)
 
-	for name, f := range files {
-		list := f.Node.(*ast.ObjectList)
-		doc.Inputs = append(doc.Inputs, inputs(list)...)
-		doc.Outputs = append(doc.Outputs, outputs(list)...)
+	for name, file := range files {
+		objects := file.Node.(*ast.ObjectList)
+
+		doc.Inputs = append(doc.Inputs, getInputs(objects)...)
+		doc.Outputs = append(doc.Outputs, getOutputs(objects)...)
 
 		filename := path.Base(name)
-		comments := f.Comments
-
+		comments := file.Comments
 		if filename == "main.tf" && len(comments) > 0 {
 			doc.Comment = header(comments[0])
 		}
 	}
+
 	sort.Sort(inputsByName(doc.Inputs))
 	sort.Sort(outputsByName(doc.Outputs))
 	return doc
 }
 
-// HasComment indicates if the document has a comment.
-func (doc *Doc) HasComment() bool {
-	return len(doc.Comment) > 0
-}
-
-// HasInputs indicates if the document has inputs.
-func (doc *Doc) HasInputs() bool {
-	return len(doc.Inputs) > 0
-}
-
-// HasOutputs indicates if the document has outputs.
-func (doc *Doc) HasOutputs() bool {
-	return len(doc.Outputs) > 0
-}
-
-// Inputs returns all variables from `list`.
-func inputs(list *ast.ObjectList) []Input {
-	var ret []Input
+// getInputs returns a list of inputs from an ast.ObjectList.
+func getInputs(list *ast.ObjectList) []Input {
+	var result []Input
 
 	for _, item := range list.Items {
-		if is(item, "variable") {
-			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
-			if name == "" {
-				name = item.Keys[1].Token.Text
-			}
-			items := item.Val.(*ast.ObjectType).List.Items
-			var desc string
-			switch {
-			case description(items) != "":
-				desc = description(items)
-			case item.LeadComment != nil:
-				desc = comment(item.LeadComment.List)
-			}
-
-			var itemsType = get(items, "type")
-			var itemType string
-
-			if itemsType == nil || itemsType.Literal == "" {
-				itemType = "string"
-			} else {
-				itemType = itemsType.Literal
-			}
-
-			def := get(items, "default")
-			ret = append(ret, Input{
-				Name:        name,
-				Description: desc,
-				Default:     def,
-				Type:        itemType,
+		if isItemOfKindVariable(item) {
+			result = append(result, Input{
+				Name:        getItemName(item),
+				Description: getItemDescription(item),
+				Default:     getItemDefault(item),
+				Type:        getItemType(item),
 			})
 		}
 	}
 
-	return ret
+	return result
 }
 
-// Outputs returns all outputs from `list`.
-func outputs(list *ast.ObjectList) []Output {
-	var ret []Output
+// getOutputs returns a list of outputs from an ast.ObjectList.
+func getOutputs(list *ast.ObjectList) []Output {
+	var result []Output
 
 	for _, item := range list.Items {
-		if is(item, "output") {
-			name, _ := strconv.Unquote(item.Keys[1].Token.Text)
-			if name == "" {
-				name = item.Keys[1].Token.Text
-			}
-			items := item.Val.(*ast.ObjectType).List.Items
-			var desc string
-			switch {
-			case description(items) != "":
-				desc = description(items)
-			case item.LeadComment != nil:
-				desc = comment(item.LeadComment.List)
-			}
-
-			ret = append(ret, Output{
-				Name:        name,
-				Description: strings.TrimSpace(desc),
+		if isItemOfKindOutput(item) {
+			result = append(result, Output{
+				Name:        getItemName(item),
+				Description: getItemDescription(item),
 			})
 		}
 	}
 
-	return ret
+	return result
 }
 
-// Get `key` from the list of object `items`.
-func get(items []*ast.ObjectItem, key string) *Value {
+func getItemByKey(items []*ast.ObjectItem, key string) *Value {
 	for _, item := range items {
-		if is(item, key) {
-			v := new(Value)
+		if isItemOfKind(item, key) {
+			result := new(Value)
 
-			if lit, ok := item.Val.(*ast.LiteralType); ok {
-				if value, ok := lit.Token.Value().(string); ok {
-					v.Literal = value
+			if literal, ok := item.Val.(*ast.LiteralType); ok {
+				result.Type = "string"
+
+				if value, ok := literal.Token.Value().(string); ok {
+					result.Literal = value
 				} else {
-					v.Literal = lit.Token.Text
+					result.Literal = literal.Token.Text
 				}
-				v.Type = "string"
-				return v
+
+				return result
 			}
 
 			if _, ok := item.Val.(*ast.ObjectType); ok {
-				v.Type = "map"
-				return v
+				result.Type = "map"
+				return result
 			}
 
 			if _, ok := item.Val.(*ast.ListType); ok {
-				v.Type = "list"
-				return v
+				result.Type = "list"
+				return result
 			}
 
 			return nil
@@ -268,17 +183,70 @@ func get(items []*ast.ObjectItem, key string) *Value {
 	return nil
 }
 
-// description returns a description from items or an empty string.
-func description(items []*ast.ObjectItem) string {
-	if v := get(items, "description"); v != nil {
-		return v.Literal
-	}
-
-	return ""
+func getItemDefault(item *ast.ObjectItem) *Value {
+	items := item.Val.(*ast.ObjectType).List.Items
+	return getItemByKey(items, "default")
 }
 
-// Is returns true if `item` is of `kind`.
-func is(item *ast.ObjectItem, kind string) bool {
+func getItemDescription(item *ast.ObjectItem) string {
+	var result string
+
+	items := item.Val.(*ast.ObjectType).List.Items
+
+	var description = getItemByKey(items, "description")
+	if description != nil {
+		result = description.Literal
+	}
+
+	if result == "" {
+		result = getItemDescriptionFromComment(item.LeadComment.List)
+	}
+
+	return result
+}
+
+func getItemDescriptionFromComment(comments []*ast.Comment) string {
+	var result string
+
+	for _, comment := range comments {
+		line := strings.TrimSpace(comment.Text)
+		line = strings.TrimPrefix(line, "#")
+		line = strings.TrimPrefix(line, "//")
+		result += strings.TrimSpace(line)
+	}
+
+	return result
+}
+
+func getItemName(item *ast.ObjectItem) string {
+	name, err := strconv.Unquote(item.Keys[1].Token.Text)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if name == "" {
+		name = item.Keys[1].Token.Text
+	}
+
+	return name
+}
+
+func getItemType(item *ast.ObjectItem) string {
+	var result string
+
+	items := item.Val.(*ast.ObjectType).List.Items
+
+	var itemsType = getItemByKey(items, "type")
+	if itemsType == nil || itemsType.Literal == "" {
+		result = "string"
+	} else {
+		result = itemsType.Literal
+	}
+
+	return result
+}
+
+func isItemOfKind(item *ast.ObjectItem, kind string) bool {
 	if len(item.Keys) > 0 {
 		return item.Keys[0].Token.Text == kind
 	}
@@ -286,19 +254,12 @@ func is(item *ast.ObjectItem, kind string) bool {
 	return false
 }
 
-// Comment cleans and returns a comment.
-func comment(l []*ast.Comment) string {
-	var line string
-	var ret string
+func isItemOfKindOutput(item *ast.ObjectItem) bool {
+	return isItemOfKind(item, "output")
+}
 
-	for _, t := range l {
-		line = strings.TrimSpace(t.Text)
-		line = strings.TrimPrefix(line, "#")
-		line = strings.TrimPrefix(line, "//")
-		ret += strings.TrimSpace(line)
-	}
-
-	return ret
+func isItemOfKindVariable(item *ast.ObjectItem) bool {
+	return isItemOfKind(item, "variable")
 }
 
 // Header returns the header comment from the list
