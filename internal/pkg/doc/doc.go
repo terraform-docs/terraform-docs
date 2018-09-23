@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/segmentio/terraform-docs/internal/pkg/fs"
+	hclparser "github.com/segmentio/terraform-docs/internal/pkg/hcl"
 )
 
 // Doc represents a Terraform module.
@@ -23,8 +24,8 @@ type Doc struct {
 
 // Value represents a Terraform value.
 type Value struct {
-	Type    string
-	Literal string
+	Type  string
+	Value interface{}
 }
 
 // HasComment indicates if the document has a comment.
@@ -143,9 +144,9 @@ func getItemByKey(items []*ast.ObjectItem, key string) *Value {
 				result.Type = "string"
 
 				if value, ok := literal.Token.Value().(string); ok {
-					result.Literal = value
+					result.Value = value
 				} else {
-					result.Literal = literal.Token.Text
+					result.Value = literal.Token.Text
 				}
 
 				return result
@@ -153,11 +154,23 @@ func getItemByKey(items []*ast.ObjectItem, key string) *Value {
 
 			if _, ok := item.Val.(*ast.ObjectType); ok {
 				result.Type = "map"
+
+				data, err := hclparser.ParseAstNode(&item.Val, result.Type)
+				if err == nil {
+					result.Value = data
+				}
+
 				return result
 			}
 
 			if _, ok := item.Val.(*ast.ListType); ok {
 				result.Type = "list"
+
+				data, err := hclparser.ParseAstNode(&item.Val, result.Type)
+				if err == nil {
+					result.Value = data
+				}
+
 				return result
 			}
 
@@ -180,11 +193,13 @@ func getItemDescription(item *ast.ObjectItem) string {
 
 	var description = getItemByKey(items, "description")
 	if description != nil {
-		result = description.Literal
+		result = description.Value.(string)
 	}
 
 	if result == "" {
-		result = getItemDescriptionFromComment(item.LeadComment.List)
+		if item.LeadComment != nil {
+			result = getItemDescriptionFromComment(item.LeadComment.List)
+		}
 	}
 
 	return result
@@ -221,11 +236,16 @@ func getItemType(item *ast.ObjectItem) string {
 
 	items := item.Val.(*ast.ObjectType).List.Items
 
-	var itemsType = getItemByKey(items, "type")
-	if itemsType == nil || itemsType.Literal == "" {
-		result = "string"
+	_type := getItemByKey(items, "type")
+	value := getItemByKey(items, "default")
+	if _type == nil || _type.Value == "" {
+		if value == nil {
+			result = "string"
+		} else {
+			result = value.Type
+		}
 	} else {
-		result = itemsType.Literal
+		result = _type.Value.(string)
 	}
 
 	return result

@@ -37,22 +37,11 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	return buffer.String(), nil
 }
 
-func getInputDefaultValue(input *doc.Input) string {
+func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	var result = "-"
 
-	if input.Default != nil {
-		var value string
-
-		switch input.Default.Type {
-		case "list":
-			value = "<list>"
-		case "map":
-			value = "<map>"
-		case "string":
-			value = input.Default.Literal
-		}
-
-		result = fmt.Sprintf("`%s`", value)
+	if input.HasDefault() {
+		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings))
 	}
 
 	return result
@@ -106,7 +95,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 				input.Name,
 				prepareDescriptionForMarkdown(getInputDescription(&input)),
 				input.Type,
-				getInputDefaultValue(&input)))
+				getInputDefaultValue(&input, settings)))
 
 		if settings.Has(print.WithRequired) {
 			buffer.WriteString(fmt.Sprintf(" %v |\n", printIsInputRequired(&input)))
