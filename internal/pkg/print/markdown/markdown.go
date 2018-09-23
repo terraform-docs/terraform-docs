@@ -20,7 +20,11 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 
 	if document.HasInputs() {
 		if settings.Has(print.WithSorting) {
-			doc.SortInputsByName(document.Inputs)
+			if settings.Has(print.WithSortByRequired) {
+				doc.SortInputsByRequired(document.Inputs)
+			} else {
+				doc.SortInputsByName(document.Inputs)
+			}
 		}
 
 		printInputs(&buffer, document.Inputs, settings)

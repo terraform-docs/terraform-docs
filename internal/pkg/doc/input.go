@@ -53,3 +53,32 @@ func (a inputsSortedByName) Less(i, j int) bool {
 func SortInputsByName(inputs []Input) {
 	sort.Sort(inputsSortedByName(inputs))
 }
+
+type inputsSortedByRequired []Input
+
+func (a inputsSortedByRequired) Len() int {
+	return len(a)
+}
+
+func (a inputsSortedByRequired) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func (a inputsSortedByRequired) Less(i, j int) bool {
+	switch {
+	// i required, j not: i gets priority
+	case !a[i].HasDefault() && a[j].HasDefault():
+		return true
+		// j required, i not: i does not get priority
+	case a[i].HasDefault() && !a[j].HasDefault():
+		return false
+	// Otherwise, sort by name
+	default:
+		return a[i].Name < a[j].Name
+	}
+}
+
+// SortInputsByRequired sorts a list of inputs by whether they are required
+func SortInputsByRequired(inputs []Input) {
+	sort.Sort(inputsSortedByRequired(inputs))
+}
