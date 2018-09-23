@@ -1,8 +1,12 @@
+## terraform-docs
 
-  `terraform-docs(1)` &sdot; a quick utility to generate docs from terraform modules.
+A utility to generate documentation from Terraform modules.
 
 <img width="1284" alt="screen shot 2016-06-14 at 5 38 37 pm" src="https://cloud.githubusercontent.com/assets/1661587/16049202/1ad63c16-3257-11e6-9e2c-6bb83e684ba4.png">
 
+## Maintenance
+
+This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer), unaffiliated with Segment, from [GetCloudnative](https://github.com/getcloudnative), is maintaining the project with help from these awesome [contributors](AUTHORS).
 
 ## Features
 
@@ -44,6 +48,9 @@
 
   Options:
     -h, --help     show help information
+    --no-required  omit "Required" column when generating markdown
+    --no-sort      omit sorted rendering of inputs and ouputs
+    --version      print version
 
 ```
 
@@ -120,7 +127,7 @@ This module has a variable and an output.  This text here will be output before 
 
 MIT License
 
-Copyright (c) 2017 Segment, Inc
+Copyright (c) 2018 The terraform-docs Authors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

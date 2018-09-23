@@ -1,0 +1,24 @@
+{
+  "Vendor": true,
+  "Concurrency": 2,
+  "DisableAll": true,
+  "Skip": [
+  ],
+  "Exclude": [
+    "should have comment or be unexported",
+    "should have comment \\(or a comment on this block\\) or be unexported"
+  ],
+  "Deadline": "5m",
+  "Enable": [
+    "vet",
+    "golint",
+    "varcheck",
+    "structcheck",
+    "gosimple",
+    "unused",
+    "errcheck"
+  ],
+  "Linters": {
+    "unused": {"Command": "unused -tags e2e"}
+  }
+}
