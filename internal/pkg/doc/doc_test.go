@@ -87,10 +87,19 @@ func TestInputs(t *testing.T) {
 			Name:        "string-1",
 			Description: "It's string number one.",
 			Default: &doc.Value{
-				Type:    "string",
-				Literal: "bar",
+				Type:  "string",
+				Value: "bar",
 			},
 			Type: "string",
+		},
+		doc.Input{
+			Name:        "map-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "map",
+				Value: map[string]interface{}{},
+			},
+			Type: "map",
 		},
 		doc.Input{
 			Name:        "map-2",
@@ -102,10 +111,23 @@ func TestInputs(t *testing.T) {
 			Name:        "map-1",
 			Description: "It's map number one.",
 			Default: &doc.Value{
-				Type:    "map",
-				Literal: "",
+				Type: "map",
+				Value: map[string]interface{}{
+					"a": float64(1),
+					"b": float64(2),
+					"c": float64(3),
+				},
 			},
 			Type: "map",
+		},
+		doc.Input{
+			Name:        "list-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "list",
+				Value: []interface{}{},
+			},
+			Type: "list",
 		},
 		doc.Input{
 			Name:        "list-2",
@@ -117,8 +139,12 @@ func TestInputs(t *testing.T) {
 			Name:        "list-1",
 			Description: "It's list number one.",
 			Default: &doc.Value{
-				Type:    "list",
-				Literal: "",
+				Type: "list",
+				Value: []interface{}{
+					"a",
+					"b",
+					"c",
+				},
 			},
 			Type: "list",
 		},
@@ -151,10 +177,19 @@ func TestInputsFromVariablesTf(t *testing.T) {
 			Name:        "string-1",
 			Description: "It's string number one.",
 			Default: &doc.Value{
-				Type:    "string",
-				Literal: "bar",
+				Type:  "string",
+				Value: "bar",
 			},
 			Type: "string",
+		},
+		doc.Input{
+			Name:        "map-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "map",
+				Value: map[string]interface{}{},
+			},
+			Type: "map",
 		},
 		doc.Input{
 			Name:        "map-2",
@@ -166,10 +201,23 @@ func TestInputsFromVariablesTf(t *testing.T) {
 			Name:        "map-1",
 			Description: "It's map number one.",
 			Default: &doc.Value{
-				Type:    "map",
-				Literal: "",
+				Type: "map",
+				Value: map[string]interface{}{
+					"a": float64(1),
+					"b": float64(2),
+					"c": float64(3),
+				},
 			},
 			Type: "map",
+		},
+		doc.Input{
+			Name:        "list-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "list",
+				Value: []interface{}{},
+			},
+			Type: "list",
 		},
 		doc.Input{
 			Name:        "list-2",
@@ -181,8 +229,12 @@ func TestInputsFromVariablesTf(t *testing.T) {
 			Name:        "list-1",
 			Description: "It's list number one.",
 			Default: &doc.Value{
-				Type:    "list",
-				Literal: "",
+				Type: "list",
+				Value: []interface{}{
+					"a",
+					"b",
+					"c",
+				},
 			},
 			Type: "list",
 		},

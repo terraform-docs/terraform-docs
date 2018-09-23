@@ -12,9 +12,18 @@
       "Description": "It's string number one.",
       "Default": {
         "Type": "string",
-        "Literal": "bar"
+        "Value": "bar"
       },
       "Type": "string"
+    },
+    {
+      "Name": "map-3",
+      "Description": "",
+      "Default": {
+        "Type": "map",
+        "Value": {}
+      },
+      "Type": "map"
     },
     {
       "Name": "map-2",
@@ -27,9 +36,22 @@
       "Description": "It's map number one.",
       "Default": {
         "Type": "map",
-        "Literal": ""
+        "Value": {
+          "a": 1,
+          "b": 2,
+          "c": 3
+        }
       },
       "Type": "map"
+    },
+    {
+      "Name": "list-3",
+      "Description": "",
+      "Default": {
+        "Type": "list",
+        "Value": []
+      },
+      "Type": "list"
     },
     {
       "Name": "list-2",
@@ -42,7 +64,11 @@
       "Description": "It's list number one.",
       "Default": {
         "Type": "list",
-        "Literal": ""
+        "Value": [
+          "a",
+          "b",
+          "c"
+        ]
       },
       "Type": "list"
     }

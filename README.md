@@ -26,7 +26,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 ```bash
 
   Usage:
-    terraform-docs [json | md | markdown] <path>...
+    terraform-docs [--no-required] [--no-sort] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -47,10 +47,11 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     $ terraform-docs md ./my-module ../config.tf
 
   Options:
-    -h, --help     show help information
-    --no-required  omit "Required" column when generating markdown
-    --no-sort      omit sorted rendering of inputs and ouputs
-    --version      print version
+    -h, --help                       show help information
+    --no-required                    omit "Required" column when generating markdown
+    --no-sort                        omit sorted rendering of inputs and ouputs
+    --with-aggregate-type-defaults   print default values of aggregate types
+    --version                        print version
 
 ```
 

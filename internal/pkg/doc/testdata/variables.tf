@@ -8,6 +8,10 @@ variable "string-1" {
   default = "bar"
 }
 
+variable "map-3" {
+  default = {}
+}
+
 variable "map-2" {
   description = "It's map number two."
   type        = "map"
@@ -21,6 +25,10 @@ variable "map-1" {
     c = 3
   }
   type    = "map"
+}
+
+variable "list-3" {
+  default = []
 }
 
 variable "list-2" {
