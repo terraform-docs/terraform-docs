@@ -72,7 +72,7 @@ func main() {
 		printSettings.Add(print.WithSorting)
 	}
 
-	if !args["--sort-by-required"].(bool) {
+	if args["--sort-by-required"].(bool) {
 		printSettings.Add(print.WithSortByRequired)
 	}
 
