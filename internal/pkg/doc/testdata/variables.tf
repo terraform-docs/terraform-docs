@@ -24,7 +24,8 @@ variable "map-1" {
     b = 2
     c = 3
   }
-  type    = "map"
+
+  type = "map"
 }
 
 variable "list-3" {
@@ -41,3 +42,6 @@ variable "list-1" {
   default = ["a", "b", "c"]
   type    = "list"
 }
+
+// A variable with underscores.
+variable "string_number_3" {}

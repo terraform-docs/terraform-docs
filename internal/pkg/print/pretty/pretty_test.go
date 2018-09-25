@@ -67,6 +67,9 @@ func TestPretty(t *testing.T) {
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.string_number_3" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"\n" +
 			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
@@ -139,6 +142,9 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " ([ \"a\", \"b\", \"c\" ])\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.string_number_3" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"\n" +
 			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
@@ -210,6 +216,9 @@ func TestPrettyWithSorting(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "var.string_number_3" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +

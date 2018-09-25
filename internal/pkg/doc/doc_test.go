@@ -148,6 +148,12 @@ func TestInputs(t *testing.T) {
 			},
 			Type: "list",
 		},
+		doc.Input{
+			Name:        "string_number_3",
+			Description: "A variable with underscores.",
+			Type:        "string",
+			Default:     nil,
+		},
 	}
 
 	assert.Equal(t, expected, actual)
@@ -237,6 +243,12 @@ func TestInputsFromVariablesTf(t *testing.T) {
 				},
 			},
 			Type: "list",
+		},
+		doc.Input{
+			Name:        "string_number_3",
+			Description: "A variable with underscores.",
+			Type:        "string",
+			Default:     nil,
 		},
 	}
 

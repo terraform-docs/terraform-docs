@@ -48,6 +48,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 
   Options:
     -h, --help                       show help information
+    --escape-underscores             escapes underscores in variable names when generating markdown
     --no-required                    omit "Required" column when generating markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
     --with-aggregate-type-defaults   print default values of aggregate types

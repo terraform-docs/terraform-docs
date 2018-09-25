@@ -71,6 +71,12 @@
       "Description": "It's string number two.",
       "Default": null,
       "Type": "string"
+    },
+    {
+      "Name": "string_number_3",
+      "Description": "A variable with underscores.",
+      "Default": null,
+      "Type": "string"
     }
   ],
   "Outputs": [

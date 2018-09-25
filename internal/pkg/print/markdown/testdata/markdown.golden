@@ -29,6 +29,7 @@ module "foo" {
 | list-3 | - | list | `<list>` |
 | list-2 | It's list number two. | list | - |
 | list-1 | It's list number one. | list | `<list>` |
+| string_number_3 | A variable with underscores. | string | - |
 
 ## Outputs
 
