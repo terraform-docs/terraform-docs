@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -91,7 +90,7 @@ func Create(files map[string]*ast.File) *Doc {
 		doc.Inputs = append(doc.Inputs, getInputs(objects)...)
 		doc.Outputs = append(doc.Outputs, getOutputs(objects)...)
 
-		filename := path.Base(name)
+		filename := filepath.Base(name)
 		comments := file.Comments
 		if filename == "main.tf" && len(comments) > 0 {
 			doc.Comment = header(comments[0])
