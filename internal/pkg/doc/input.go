@@ -69,7 +69,7 @@ func (a inputsSortedByRequired) Less(i, j int) bool {
 	// i required, j not: i gets priority
 	case !a[i].HasDefault() && a[j].HasDefault():
 		return true
-		// j required, i not: i does not get priority
+	// j required, i not: i does not get priority
 	case a[i].HasDefault() && !a[j].HasDefault():
 		return false
 	// Otherwise, sort by name

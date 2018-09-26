@@ -152,11 +152,11 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestPrettyWithSorting(t *testing.T) {
+func TestPrettyWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
 	var settings settings.Settings
-	settings.Add(print.WithSorting)
+	settings.Add(print.WithSortByName)
 
 	actual, err := pretty.Print(doc, settings)
 	if err != nil {

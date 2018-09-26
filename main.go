@@ -17,7 +17,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort] [--sort-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort] [--sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -44,7 +44,7 @@ const usage = `
 	-h, --help                       show help information
 	--no-required                    omit "Required" column when generating markdown
 	--no-sort                        omit sorted rendering of inputs and ouputs
-	--sort-by-required               sort the required inputs to the top of the output table
+	--sort-inputs-by-required        sort the required inputs to the top of the output table
 	--with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
@@ -69,11 +69,11 @@ func main() {
 	}
 
 	if !args["--no-sort"].(bool) {
-		printSettings.Add(print.WithSorting)
+		printSettings.Add(print.WithSortByName)
 	}
 
-	if args["--sort-by-required"].(bool) {
-		printSettings.Add(print.WithSortByRequired)
+	if args["--sort-inputs-by-required"].(bool) {
+		printSettings.Add(print.WithSortInputsByRequired)
 	}
 
 	if args["--with-aggregate-type-defaults"].(bool) {
