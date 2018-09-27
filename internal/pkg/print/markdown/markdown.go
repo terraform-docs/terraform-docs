@@ -27,6 +27,9 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasOutputs() {
+		if document.HasInputs() {
+			buffer.WriteString("\n")
+		}
 		if settings.Has(print.WithSorting) {
 			doc.SortOutputsByName(document.Outputs)
 		}
@@ -72,7 +75,7 @@ func printComment(buffer *bytes.Buffer, comment string, settings settings.Settin
 }
 
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
-	buffer.WriteString("\n## Inputs\n\n")
+	buffer.WriteString("## Inputs\n\n")
 	buffer.WriteString("| Name | Description | Type | Default |")
 
 	if settings.Has(print.WithRequired) {
@@ -114,7 +117,7 @@ func printIsInputRequired(input *doc.Input) string {
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
-	buffer.WriteString("\n## Outputs\n\n")
+	buffer.WriteString("## Outputs\n\n")
 	buffer.WriteString("| Name | Description |\n")
 	buffer.WriteString("|------|-------------|\n")
 
