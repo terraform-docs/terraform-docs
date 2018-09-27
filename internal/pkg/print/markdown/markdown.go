@@ -27,11 +27,12 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasOutputs() {
-		if document.HasInputs() {
-			buffer.WriteString("\n")
-		}
 		if settings.Has(print.WithSorting) {
 			doc.SortOutputsByName(document.Outputs)
+		}
+
+		if document.HasInputs() {
+			buffer.WriteString("\n")
 		}
 
 		printOutputs(&buffer, document.Outputs, settings)
