@@ -5,7 +5,6 @@
  *        source = "github.com/foo/baz"
  *        subnet_ids = "${join(",", subnet.*.id)}"
  *      }
- *
  */
 
 variable "subnet_ids" {
