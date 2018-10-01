@@ -1,7 +1,7 @@
 class TerraformDocs < Formula
     desc "Tool to generate documentation from Terraform modules"
     homepage "https://github.com/segmentio/terraform-docs"
-    url "https://github.com/segmentio/terraform-docs", :tag => "v0.4.0"
+    url "https://github.com/segmentio/terraform-docs/archive/v0.4.0.tar.gz"
     sha256 "dc52e1701e2858ed6dd19bd7ef308241c0bb3dd3060b7da056b9e2c64883f96f"
   
     depends_on "go" => :build
