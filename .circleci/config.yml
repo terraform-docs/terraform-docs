@@ -1,0 +1,83 @@
+defaults: &defaults
+  docker:
+  - image: golang:1.10.3
+  working_directory: /go/src/github.com/segmentio/terraform-docs
+
+version: 2
+jobs:
+  checkout_code:
+    <<: *defaults
+    steps:
+    - checkout
+    - save_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+        paths:
+        - /go/src/github.com/segmentio/terraform-docs
+
+  check-dependencies:
+    <<: *defaults
+    steps:
+    - restore_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+    - run: export DEP_RELEASE_TAG=v0.5.0; curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    - run: dep status
+
+  lint:
+    <<: *defaults
+    docker:
+    - image: quay.io/kubermatic/gometalinter:latest
+    steps:
+    - restore_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+    - run: make lint
+
+  test:
+    <<: *defaults
+    steps:
+    - restore_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+    - run: make test
+
+  build:
+    <<: *defaults
+    steps:
+    - restore_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+    - run: make build
+    - save_cache:
+        key: terraform-docs-{{ .Revision }}
+        paths:
+        - /go/src/github.com/segmentio/terraform-docs
+
+workflows:
+  version: 2
+  build:
+    jobs:
+    - checkout_code:
+        filters:
+          tags:
+            only: /v.*/
+    - check-dependencies:
+        requires:
+        - checkout_code
+        filters:
+          tags:
+            only: /v.*/
+    - lint:
+        requires:
+        - checkout_code
+        filters:
+          tags:
+            only: /v.*/
+    - test:
+        requires:
+        - checkout_code
+        filters:
+          tags:
+            only: /v.*/
+    - build:
+        requires:
+        - checkout_code
+        filters:
+          tags:
+            only: /v.*/

@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
-	"os"
-	"path/filepath"
 
-	"github.com/getcloudnative/terraform-docs/doc"
-	"github.com/getcloudnative/terraform-docs/print"
-	"github.com/hashicorp/hcl"
-	"github.com/hashicorp/hcl/hcl/ast"
+	"github.com/segmentio/terraform-docs/internal/pkg/doc"
+	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
+	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/tj/docopt"
 )
 
@@ -18,7 +17,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [json | md | markdown] <path>...
+    terraform-docs [--no-required] [--no-sort] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -42,7 +41,11 @@ const usage = `
     $ terraform-docs md ./my-module ../config.tf
 
   Options:
-    -h, --help     show help information
+	-h, --help                       show help information
+	--no-required                    omit "Required" column when generating markdown
+	--no-sort                        omit sorted rendering of inputs and ouputs
+	--with-aggregate-type-defaults   print default values of aggregate types
+    --version                        print version
 
 `
 
@@ -52,57 +55,37 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var names []string
 	paths := args["<path>"].([]string)
-	for _, p := range paths {
-		pi, err := os.Stat(p)
-		if err != nil {
-			log.Fatal(err)
-		}
 
-		if !pi.IsDir() {
-			names = append(names, p)
-			continue
-		}
-
-		files, err := filepath.Glob(fmt.Sprintf("%s/*.tf", p))
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		names = append(names, files...)
+	document, err := doc.CreateFromPaths(paths)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	files := make(map[string]*ast.File, len(names))
-
-	for _, name := range names {
-		buf, err := ioutil.ReadFile(name)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		f, err := hcl.ParseBytes(buf)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		files[name] = f
+	var printSettings settings.Settings
+	if !args["--no-required"].(bool) {
+		printSettings.Add(print.WithRequired)
 	}
 
-	doc := doc.Create(files)
-	printRequired := !args["--no-required"].(bool)
+	if !args["--no-sort"].(bool) {
+		printSettings.Add(print.WithSorting)
+	}
+
+	if args["--with-aggregate-type-defaults"].(bool) {
+		printSettings.Add(print.WithAggregateTypeDefaults)
+	}
 
 	var out string
 
 	switch {
 	case args["markdown"].(bool):
-		out, err = print.Markdown(doc, printRequired)
+		out, err = markdown.Print(document, printSettings)
 	case args["md"].(bool):
-		out, err = print.Markdown(doc, printRequired)
+		out, err = markdown.Print(document, printSettings)
 	case args["json"].(bool):
-		out, err = print.JSON(doc)
+		out, err = json.Print(document, printSettings)
 	default:
-		out, err = print.Pretty(doc)
+		out, err = pretty.Print(document, printSettings)
 	}
 
 	if err != nil {
