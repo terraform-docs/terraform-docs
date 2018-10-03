@@ -31,7 +31,7 @@ build-linux-amd64:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-linux-amd64
 
 build-windows-amd64:
-	GOOS=windows GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-windows-amd64
+	GOOS=windows GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-windows-amd64.exe
 
 .PHONY: clean
 clean:
