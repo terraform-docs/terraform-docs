@@ -93,6 +93,15 @@ func TestInputs(t *testing.T) {
 			Type: "string",
 		},
 		doc.Input{
+			Name:        "input-unquoted",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "string",
+				Value: "baz",
+			},
+			Type: "string",
+		},
+		doc.Input{
 			Name:        "map-3",
 			Description: "",
 			Default: &doc.Value{
@@ -183,6 +192,15 @@ func TestInputsFromVariablesTf(t *testing.T) {
 			Type: "string",
 		},
 		doc.Input{
+			Name:        "input-unquoted",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "string",
+				Value: "baz",
+			},
+			Type: "string",
+		},
+		doc.Input{
 			Name:        "map-3",
 			Description: "",
 			Default: &doc.Value{
@@ -255,6 +273,10 @@ func TestOutputs(t *testing.T) {
 			Name:        "output-1",
 			Description: "It's output number one.",
 		},
+		doc.Output{
+			Name:        "output-unquoted",
+			Description: "It's unquoted output.",
+		},
 	}
 
 	assert.Equal(t, expected, actual)
@@ -276,6 +298,10 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 		doc.Output{
 			Name:        "output-1",
 			Description: "It's output number one.",
+		},
+		doc.Output{
+			Name:        "output-unquoted",
+			Description: "It's unquoted output.",
 		},
 	}
 

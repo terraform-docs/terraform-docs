@@ -8,6 +8,10 @@ variable "string-1" {
   default = "bar"
 }
 
+variable input-unquoted {
+  default = "baz"
+}
+
 variable "map-3" {
   default = {}
 }

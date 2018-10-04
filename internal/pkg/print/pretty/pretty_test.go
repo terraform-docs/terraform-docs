@@ -49,6 +49,9 @@ func TestPretty(t *testing.T) {
 			"  " + sgr_color_1 + "var.string-1" + sgr_reset + " (bar)\n" +
 			"  " + sgr_color_2 + "It's string number one." + sgr_reset + "\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.input-unquoted" + sgr_reset + " (baz)\n" +
+			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
+			"\n" +
 			"  " + sgr_color_1 + "var.map-3" + sgr_reset + " (<map>)\n" +
 			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
 			"\n" +
@@ -74,6 +77,9 @@ func TestPretty(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "output.output-unquoted" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
 			"\n" +
 			"\n"
 
@@ -121,6 +127,9 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"  " + sgr_color_1 + "var.string-1" + sgr_reset + " (bar)\n" +
 			"  " + sgr_color_2 + "It's string number one." + sgr_reset + "\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.input-unquoted" + sgr_reset + " (baz)\n" +
+			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
+			"\n" +
 			"  " + sgr_color_1 + "var.map-3" + sgr_reset + " ({})\n" +
 			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
 			"\n" +
@@ -146,6 +155,9 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "output.output-unquoted" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
 			"\n" +
 			"\n"
 
@@ -187,6 +199,9 @@ func TestPrettyWithSorting(t *testing.T) {
 			"\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.input-unquoted" + sgr_reset + " (baz)\n" +
+			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
+			"\n" +
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
@@ -218,6 +233,9 @@ func TestPrettyWithSorting(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "output.output-unquoted" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
 			"\n" +
 			"\n"
 

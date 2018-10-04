@@ -7,3 +7,8 @@ output "output-2" {
 output "output-1" {
   value = "1"
 }
+
+output output-unquoted {
+  description = "It's unquoted output."
+  value       = 3
+}

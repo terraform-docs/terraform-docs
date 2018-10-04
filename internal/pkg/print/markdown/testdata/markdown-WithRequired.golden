@@ -23,6 +23,7 @@ module "foo" {
 |------|-------------|:----:|:-----:|:-----:|
 | string-2 | It's string number two. | string | - | yes |
 | string-1 | It's string number one. | string | `bar` | no |
+| input-unquoted | - | string | `baz` | no |
 | map-3 | - | map | `<map>` | no |
 | map-2 | It's map number two. | map | - | yes |
 | map-1 | It's map number one. | map | `<map>` | no |
@@ -36,3 +37,4 @@ module "foo" {
 |------|-------------|
 | output-2 | It's output number two. |
 | output-1 | It's output number one. |
+| output-unquoted | It's unquoted output. |

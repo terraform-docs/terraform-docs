@@ -17,6 +17,15 @@
       "Type": "string"
     },
     {
+      "Name": "input-unquoted",
+      "Description": "",
+      "Default": {
+        "Type": "string",
+        "Value": "baz"
+      },
+      "Type": "string"
+    },
+    {
       "Name": "map-3",
       "Description": "",
       "Default": {
@@ -81,6 +90,10 @@
     {
       "Name": "output-1",
       "Description": "It's output number one."
+    },
+    {
+      "Name": "output-unquoted",
+      "Description": "It's unquoted output."
     }
   ]
 }
