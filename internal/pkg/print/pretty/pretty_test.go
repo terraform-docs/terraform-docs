@@ -42,7 +42,6 @@ func TestPretty(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"\n" +
 			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
 			"\n" +
@@ -118,7 +117,6 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"    Date-Created = \"20180101\"\n" +
 			"  }\n" +
 			"}\n" +
-			"\n" +
 			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
