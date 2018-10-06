@@ -15,8 +15,6 @@ module "foo" {
   }
 }
 
-
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |

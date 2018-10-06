@@ -26,7 +26,6 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
-
 `
 
 	assert.Equal(t, expected, actual)
@@ -51,7 +50,6 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
-
 `
 
 	assert.Equal(t, expected, actual)

@@ -198,7 +198,6 @@ func TestPrettyWithSorting(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"\n" +
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
