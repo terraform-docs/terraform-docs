@@ -1,3 +1,5 @@
+variable unquoted {}
+
 variable "string-2" {
   description = "It's string number two."
   type        = "string"
@@ -6,10 +8,6 @@ variable "string-2" {
 // It's string number one.
 variable "string-1" {
   default = "bar"
-}
-
-variable input-unquoted {
-  default = "baz"
 }
 
 variable "map-3" {
