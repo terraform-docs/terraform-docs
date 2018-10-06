@@ -78,6 +78,12 @@ func TestInputs(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
 			Default:     nil,
@@ -89,15 +95,6 @@ func TestInputs(t *testing.T) {
 			Default: &doc.Value{
 				Type:  "string",
 				Value: "bar",
-			},
-			Type: "string",
-		},
-		doc.Input{
-			Name:        "input-unquoted",
-			Description: "",
-			Default: &doc.Value{
-				Type:  "string",
-				Value: "baz",
 			},
 			Type: "string",
 		},
@@ -177,6 +174,12 @@ func TestInputsFromVariablesTf(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
 			Default:     nil,
@@ -188,15 +191,6 @@ func TestInputsFromVariablesTf(t *testing.T) {
 			Default: &doc.Value{
 				Type:  "string",
 				Value: "bar",
-			},
-			Type: "string",
-		},
-		doc.Input{
-			Name:        "input-unquoted",
-			Description: "",
-			Default: &doc.Value{
-				Type:  "string",
-				Value: "baz",
 			},
 			Type: "string",
 		},
@@ -266,16 +260,16 @@ func TestOutputs(t *testing.T) {
 
 	expected := []doc.Output{
 		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
+		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
 		},
 		doc.Output{
 			Name:        "output-1",
 			Description: "It's output number one.",
-		},
-		doc.Output{
-			Name:        "output-unquoted",
-			Description: "It's unquoted output.",
 		},
 	}
 
@@ -292,16 +286,16 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 
 	expected := []doc.Output{
 		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
+		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
 		},
 		doc.Output{
 			Name:        "output-1",
 			Description: "It's output number one.",
-		},
-		doc.Output{
-			Name:        "output-unquoted",
-			Description: "It's unquoted output.",
 		},
 	}
 
