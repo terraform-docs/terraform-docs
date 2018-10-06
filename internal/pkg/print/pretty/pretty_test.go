@@ -42,7 +42,6 @@ func TestPretty(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"\n" +
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
 			"\n" +
@@ -114,7 +113,6 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"\n" +
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
 			"\n" +
@@ -184,7 +182,6 @@ func TestPrettyWithSorting(t *testing.T) {
 			"    Date-Created = \"20180101\"\n" +
 			"  }\n" +
 			"}\n" +
-			"\n" +
 			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
