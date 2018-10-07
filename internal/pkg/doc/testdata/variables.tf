@@ -1,3 +1,5 @@
+variable unquoted {}
+
 variable "string-2" {
   description = "It's string number two."
   type        = "string"

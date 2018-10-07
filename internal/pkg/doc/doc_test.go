@@ -76,6 +76,12 @@ func TestInputs(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
 			Default:     nil,
@@ -166,6 +172,12 @@ func TestInputsFromVariablesTf(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
 			Default:     nil,
@@ -246,6 +258,10 @@ func TestOutputs(t *testing.T) {
 
 	expected := []doc.Output{
 		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
+		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
 		},
@@ -267,6 +283,10 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 	actual := doc.TestDocFromFile(t, ".", "outputs.tf").Outputs
 
 	expected := []doc.Output{
+		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
 		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",

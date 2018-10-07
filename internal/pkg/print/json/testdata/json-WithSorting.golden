@@ -71,6 +71,12 @@
       "Description": "It's string number two.",
       "Default": null,
       "Type": "string"
+    },
+    {
+      "Name": "unquoted",
+      "Description": "",
+      "Default": null,
+      "Type": "string"
     }
   ],
   "Outputs": [
@@ -81,6 +87,10 @@
     {
       "Name": "output-2",
       "Description": "It's output number two."
+    },
+    {
+      "Name": "unquoted",
+      "Description": "It's unquoted output."
     }
   ]
 }
