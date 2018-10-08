@@ -42,6 +42,8 @@ func TestPretty(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
 			"\n" +
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
@@ -68,6 +70,9 @@ func TestPretty(t *testing.T) {
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
+			"\n" +
+			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
@@ -114,6 +119,8 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
 			"\n" +
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
@@ -140,6 +147,9 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
+			"\n" +
+			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
@@ -186,7 +196,6 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"\n" +
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
@@ -211,6 +220,9 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
+			"\n" +
 			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
@@ -218,6 +230,9 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
 			"\n" +
 			"\n"
 

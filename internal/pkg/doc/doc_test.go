@@ -26,7 +26,6 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
-
 `
 
 	assert.Equal(t, expected, actual)
@@ -51,7 +50,6 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
-
 `
 
 	assert.Equal(t, expected, actual)
@@ -77,6 +75,12 @@ func TestInputs(t *testing.T) {
 	actual := doc.TestDoc(t, ".").Inputs
 
 	expected := []doc.Input{
+		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
 		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
@@ -167,6 +171,12 @@ func TestInputsFromVariablesTf(t *testing.T) {
 	actual := doc.TestDocFromFile(t, ".", "variables.tf").Inputs
 
 	expected := []doc.Input{
+		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
 		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
@@ -412,6 +422,10 @@ func TestOutputs(t *testing.T) {
 
 	expected := []doc.Output{
 		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
+		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
 		},
@@ -433,6 +447,10 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 	actual := doc.TestDocFromFile(t, ".", "outputs.tf").Outputs
 
 	expected := []doc.Output{
+		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
 		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
