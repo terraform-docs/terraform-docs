@@ -330,6 +330,12 @@ func TestInputsSortedByName(t *testing.T) {
 			Default:     nil,
 			Type:        "string",
 		},
+		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
 	}
 
 	assert.Equal(t, expected, actual)
@@ -356,6 +362,12 @@ func TestInputsSortedByRequired(t *testing.T) {
 		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
+			Name:        "unquoted",
+			Description: "",
 			Default:     nil,
 			Type:        "string",
 		},
