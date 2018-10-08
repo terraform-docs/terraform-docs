@@ -22,16 +22,16 @@ authors:
 build: authors build-darwin-amd64 build-freebsd-amd64 build-linux-amd64 build-windows-amd64
 
 build-darwin-amd64:
-	GOOS=darwin GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-darwin-amd64
+	GOOS=darwin GOARCH=amd64 $(GOBUILD) -o bin/darwin-amd64/$(NAME)
 
 build-freebsd-amd64:
-	GOOS=freebsd GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-freebsd-amd64
+	GOOS=freebsd GOARCH=amd64 $(GOBUILD) -o bin/freebsd-amd64/$(NAME)
 
 build-linux-amd64:
-	GOOS=linux GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-linux-amd64
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -o bin/linux-amd64/$(NAME)
 
 build-windows-amd64:
-	GOOS=windows GOARCH=amd64 $(GOBUILD) -o bin/$(NAME)-v$(VERSION)-windows-amd64.exe
+	GOOS=windows GOARCH=amd64 $(GOBUILD) -o bin/windows-amd64/$(NAME).exe
 
 .PHONY: clean
 clean:
