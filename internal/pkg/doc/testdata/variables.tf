@@ -26,7 +26,8 @@ variable "map-1" {
     b = 2
     c = 3
   }
-  type    = "map"
+
+  type = "map"
 }
 
 variable "list-3" {

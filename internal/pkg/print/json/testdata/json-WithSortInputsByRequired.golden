@@ -1,0 +1,96 @@
+{
+  "Comment": "Usage:\n\nmodule \"foo\" {\n  source = \"github.com/foo/bar\"\n\n  id   = \"1234567890\"\n  name = \"baz\"\n\n  zones = [\"us-east-1\", \"us-west-1\"]\n\n  tags = {\n    Name         = \"baz\"\n    Created-By   = \"first.last@email.com\"\n    Date-Created = \"20180101\"\n  }\n}\n",
+  "Inputs": [
+    {
+      "Name": "list-2",
+      "Description": "It's list number two.",
+      "Default": null,
+      "Type": "list"
+    },
+    {
+      "Name": "map-2",
+      "Description": "It's map number two.",
+      "Default": null,
+      "Type": "map"
+    },
+    {
+      "Name": "string-2",
+      "Description": "It's string number two.",
+      "Default": null,
+      "Type": "string"
+    },
+    {
+      "Name": "unquoted",
+      "Description": "",
+      "Default": null,
+      "Type": "string"
+    },
+    {
+      "Name": "list-1",
+      "Description": "It's list number one.",
+      "Default": {
+        "Type": "list",
+        "Value": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "Type": "list"
+    },
+    {
+      "Name": "list-3",
+      "Description": "",
+      "Default": {
+        "Type": "list",
+        "Value": []
+      },
+      "Type": "list"
+    },
+    {
+      "Name": "map-1",
+      "Description": "It's map number one.",
+      "Default": {
+        "Type": "map",
+        "Value": {
+          "a": 1,
+          "b": 2,
+          "c": 3
+        }
+      },
+      "Type": "map"
+    },
+    {
+      "Name": "map-3",
+      "Description": "",
+      "Default": {
+        "Type": "map",
+        "Value": {}
+      },
+      "Type": "map"
+    },
+    {
+      "Name": "string-1",
+      "Description": "It's string number one.",
+      "Default": {
+        "Type": "string",
+        "Value": "bar"
+      },
+      "Type": "string"
+    }
+  ],
+  "Outputs": [
+    {
+      "Name": "output-1",
+      "Description": "It's output number one."
+    },
+    {
+      "Name": "output-2",
+      "Description": "It's output number two."
+    },
+    {
+      "Name": "unquoted",
+      "Description": "It's unquoted output."
+    }
+  ]
+}

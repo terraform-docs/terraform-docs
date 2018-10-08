@@ -44,7 +44,7 @@ const usage = `
 	-h, --help                       show help information
 	--no-required                    omit "Required" column when generating markdown
 	--no-sort                        omit sorted rendering of inputs and ouputs
-	--sort-inputs-by-required        sort the required inputs to the top of the output table
+	--sort-inputs-by-required        WithSortInputsByRequired sorts inputs by name and prints required inputs first
 	--with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 

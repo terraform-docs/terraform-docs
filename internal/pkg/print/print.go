@@ -15,7 +15,7 @@ const (
 	WithAggregateTypeDefaults
 	// WithRequired prints if inputs are required
 	WithRequired
-	// WithSortInputsByRequired prints inputs with required fields first and then by name
+	// WithSortInputsByRequired sorts inputs by name and prints required inputs first
 	WithSortInputsByRequired
 	// WithSortByName prints sorted inputs and outputs
 	WithSortByName
