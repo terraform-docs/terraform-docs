@@ -19,15 +19,19 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasInputs() {
-		if settings.Has(print.WithSorting) {
-			doc.SortInputsByName(document.Inputs)
+		if settings.Has(print.WithSortByName) {
+			if settings.Has(print.WithSortInputsByRequired) {
+				doc.SortInputsByRequired(document.Inputs)
+			} else {
+				doc.SortInputsByName(document.Inputs)
+			}
 		}
 
 		printInputs(&buffer, document.Inputs, settings)
 	}
 
 	if document.HasOutputs() {
-		if settings.Has(print.WithSorting) {
+		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)
 		}
 

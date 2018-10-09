@@ -1,0 +1,38 @@
+Usage:
+
+module "foo" {
+  source = "github.com/foo/bar"
+
+  id   = "1234567890"
+  name = "baz"
+
+  zones = ["us-east-1", "us-west-1"]
+
+  tags = {
+    Name         = "baz"
+    Created-By   = "first.last@email.com"
+    Date-Created = "20180101"
+  }
+}
+
+## Inputs
+
+| Name | Description | Type | Default |
+|------|-------------|:----:|:-----:|
+| list-2 | It's list number two. | list | - |
+| map-2 | It's map number two. | map | - |
+| string-2 | It's string number two. | string | - |
+| unquoted | - | string | - |
+| list-1 | It's list number one. | list | `<list>` |
+| list-3 | - | list | `<list>` |
+| map-1 | It's map number one. | map | `<map>` |
+| map-3 | - | map | `<map>` |
+| string-1 | It's string number one. | string | `bar` |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| output-1 | It's output number one. |
+| output-2 | It's output number two. |
+| unquoted | It's unquoted output. |
