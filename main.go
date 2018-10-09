@@ -17,7 +17,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort] [--sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -41,11 +41,11 @@ const usage = `
     $ terraform-docs md ./my-module ../config.tf
 
   Options:
-	-h, --help                       show help information
-	--no-required                    omit "Required" column when generating markdown
-	--no-sort                        omit sorted rendering of inputs and ouputs
-	--sort-inputs-by-required        WithSortInputsByRequired sorts inputs by name and prints required inputs first
-	--with-aggregate-type-defaults   print default values of aggregate types
+    -h, --help                       show help information
+    --no-required                    omit "Required" column when generating markdown
+    --no-sort                        omit sorted rendering of inputs and ouputs
+    --sort-inputs-by-required        sort inputs by name and prints required inputs first
+    --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
 `
