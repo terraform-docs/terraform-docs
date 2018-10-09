@@ -343,6 +343,12 @@ func TestInputsSortedByName(t *testing.T) {
 			Type:        "string",
 		},
 		doc.Input{
+			Name:        "string_number_3",
+			Description: "A variable with underscores.",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
 			Name:        "unquoted",
 			Description: "",
 			Default:     nil,
@@ -374,6 +380,12 @@ func TestInputsSortedByRequired(t *testing.T) {
 		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
+			Name:        "string_number_3",
+			Description: "A variable with underscores.",
 			Default:     nil,
 			Type:        "string",
 		},

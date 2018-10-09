@@ -20,6 +20,12 @@
       "Type": "string"
     },
     {
+      "Name": "string_number_3",
+      "Description": "A variable with underscores.",
+      "Default": null,
+      "Type": "string"
+    },
+    {
       "Name": "unquoted",
       "Description": "",
       "Default": null,
