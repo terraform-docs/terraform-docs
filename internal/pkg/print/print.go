@@ -17,8 +17,10 @@ const (
 	WithAggregateTypeDefaults
 	// WithRequired prints if inputs are required
 	WithRequired
-	// WithSorting prints sorted inputs and outputs
-	WithSorting
+	// WithSortByName prints sorted inputs and outputs
+	WithSortByName
+	// WithSortInputsByRequired sorts inputs by name and prints required inputs first
+	WithSortInputsByRequired
 )
 
 // GetPrintableValue returns a printable representation of a Terraform value.

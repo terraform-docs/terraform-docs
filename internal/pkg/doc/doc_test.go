@@ -26,7 +26,6 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
-
 `
 
 	assert.Equal(t, expected, actual)
@@ -51,7 +50,6 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
-
 `
 
 	assert.Equal(t, expected, actual)
@@ -77,6 +75,12 @@ func TestInputs(t *testing.T) {
 	actual := doc.TestDoc(t, ".").Inputs
 
 	expected := []doc.Input{
+		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
 		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
@@ -174,6 +178,12 @@ func TestInputsFromVariablesTf(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
 			Default:     nil,
@@ -255,10 +265,190 @@ func TestInputsFromVariablesTf(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestInputsSortedByName(t *testing.T) {
+	actual := doc.TestDoc(t, ".").Inputs
+
+	doc.SortInputsByName(actual)
+
+	expected := []doc.Input{
+		doc.Input{
+			Name:        "list-1",
+			Description: "It's list number one.",
+			Default: &doc.Value{
+				Type: "list",
+				Value: []interface{}{
+					"a",
+					"b",
+					"c",
+				},
+			},
+			Type: "list",
+		},
+		doc.Input{
+			Name:        "list-2",
+			Description: "It's list number two.",
+			Default:     nil,
+			Type:        "list",
+		},
+		doc.Input{
+			Name:        "list-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "list",
+				Value: []interface{}{},
+			},
+			Type: "list",
+		},
+		doc.Input{
+			Name:        "map-1",
+			Description: "It's map number one.",
+			Default: &doc.Value{
+				Type: "map",
+				Value: map[string]interface{}{
+					"a": float64(1),
+					"b": float64(2),
+					"c": float64(3),
+				},
+			},
+			Type: "map",
+		},
+		doc.Input{
+			Name:        "map-2",
+			Description: "It's map number two.",
+			Default:     nil,
+			Type:        "map",
+		},
+		doc.Input{
+			Name:        "map-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "map",
+				Value: map[string]interface{}{},
+			},
+			Type: "map",
+		},
+		doc.Input{
+			Name:        "string-1",
+			Description: "It's string number one.",
+			Default: &doc.Value{
+				Type:  "string",
+				Value: "bar",
+			},
+			Type: "string",
+		},
+		doc.Input{
+			Name:        "string-2",
+			Description: "It's string number two.",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestInputsSortedByRequired(t *testing.T) {
+	actual := doc.TestDoc(t, ".").Inputs
+
+	doc.SortInputsByRequired(actual)
+
+	expected := []doc.Input{
+		doc.Input{
+			Name:        "list-2",
+			Description: "It's list number two.",
+			Default:     nil,
+			Type:        "list",
+		},
+		doc.Input{
+			Name:        "map-2",
+			Description: "It's map number two.",
+			Default:     nil,
+			Type:        "map",
+		},
+		doc.Input{
+			Name:        "string-2",
+			Description: "It's string number two.",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
+			Name:        "unquoted",
+			Description: "",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
+			Name:        "list-1",
+			Description: "It's list number one.",
+			Default: &doc.Value{
+				Type: "list",
+				Value: []interface{}{
+					"a",
+					"b",
+					"c",
+				},
+			},
+			Type: "list",
+		},
+		doc.Input{
+			Name:        "list-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "list",
+				Value: []interface{}{},
+			},
+			Type: "list",
+		},
+		doc.Input{
+			Name:        "map-1",
+			Description: "It's map number one.",
+			Default: &doc.Value{
+				Type: "map",
+				Value: map[string]interface{}{
+					"a": float64(1),
+					"b": float64(2),
+					"c": float64(3),
+				},
+			},
+			Type: "map",
+		},
+		doc.Input{
+			Name:        "map-3",
+			Description: "",
+			Default: &doc.Value{
+				Type:  "map",
+				Value: map[string]interface{}{},
+			},
+			Type: "map",
+		},
+		doc.Input{
+			Name:        "string-1",
+			Description: "It's string number one.",
+			Default: &doc.Value{
+				Type:  "string",
+				Value: "bar",
+			},
+			Type: "string",
+		},
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
 func TestOutputs(t *testing.T) {
 	actual := doc.TestDoc(t, ".").Outputs
 
 	expected := []doc.Output{
+		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
 		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",
@@ -281,6 +471,10 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 	actual := doc.TestDocFromFile(t, ".", "outputs.tf").Outputs
 
 	expected := []doc.Output{
+		doc.Output{
+			Name:        "unquoted",
+			Description: "It's unquoted output.",
+		},
 		doc.Output{
 			Name:        "output-2",
 			Description: "It's output number two.",

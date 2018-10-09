@@ -15,12 +15,11 @@ module "foo" {
   }
 }
 
-
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| unquoted | - | string | - | yes |
 | string-2 | It's string number two. | string | - | yes |
 | string-1 | It's string number one. | string | `bar` | no |
 | map-3 | - | map | `<map>` | no |
@@ -35,5 +34,6 @@ module "foo" {
 
 | Name | Description |
 |------|-------------|
+| unquoted | It's unquoted output. |
 | output-2 | It's output number two. |
 | output-1 | It's output number one. |
