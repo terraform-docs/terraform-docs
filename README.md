@@ -26,7 +26,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 ```bash
 
   Usage:
-    terraform-docs [--no-required] [--no-sort] [--sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -50,7 +50,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     -h, --help                       show help information
     --no-required                    omit "Required" column when generating markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
-    --sort-inputs-by-required        WithSortInputsByRequired sorts inputs by name and prints required inputs first
+    --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
