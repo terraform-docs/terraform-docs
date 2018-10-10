@@ -11,7 +11,7 @@ import (
 )
 
 func TestPretty(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 	var settings settings.Settings
 
 	actual, err := pretty.Print(doc, settings)
@@ -86,7 +86,7 @@ func TestPretty(t *testing.T) {
 }
 
 func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithAggregateTypeDefaults)
@@ -163,7 +163,7 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 }
 
 func TestPrettyWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)
@@ -240,7 +240,7 @@ func TestPrettyWithSortByName(t *testing.T) {
 }
 
 func TestPrettyWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)

@@ -11,7 +11,7 @@ import (
 )
 
 func TestPrint(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 	var settings settings.Settings
 
 	actual, err := markdown.Print(doc, settings)
@@ -28,7 +28,7 @@ func TestPrint(t *testing.T) {
 }
 
 func TestWithAggregateTypeDefaults(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithAggregateTypeDefaults)
@@ -47,7 +47,7 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 }
 
 func TestPrintWithRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithRequired)
@@ -66,7 +66,7 @@ func TestPrintWithRequired(t *testing.T) {
 }
 
 func TestPrintWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)
@@ -85,7 +85,7 @@ func TestPrintWithSortByName(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)

@@ -17,7 +17,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [--with-module-comments-from=FILENAME] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -40,13 +40,17 @@ const usage = `
     # Generate markdown tables of inputs and outputs for the given module and ../config.tf
     $ terraform-docs md ./my-module ../config.tf
 
+    # View inputs, outputs and get the comments from variables.tf
+    $ terraform-docs --with-module-comments-from variables.tf ./my-module
+
   Options:
-    -h, --help                       show help information
-    --no-required                    omit "Required" column when generating markdown
-    --no-sort                        omit sorted rendering of inputs and ouputs
-    --sort-inputs-by-required        sort inputs by name and prints required inputs first
-    --with-aggregate-type-defaults   print default values of aggregate types
-    --version                        print version
+    -h, --help                             show help information
+    --no-required                          omit "Required" column when generating markdown
+    --no-sort                              omit sorted rendering of inputs and ouputs
+    --sort-inputs-by-required              sort inputs by name and prints required inputs first
+    --with-aggregate-type-defaults         print default values of aggregate types
+    --with-module-comments-from=FILENAME   module file to fetch the comments from [default: main.tf]
+    --version                              print version
 
 `
 
@@ -58,7 +62,7 @@ func main() {
 
 	paths := args["<path>"].([]string)
 
-	document, err := doc.CreateFromPaths(paths)
+	document, err := doc.CreateFromPaths(paths, args["--with-module-comments-from"].(string))
 	if err != nil {
 		log.Fatal(err)
 	}

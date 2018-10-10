@@ -1,3 +1,9 @@
+/**
+ * Usage:
+ *
+ * I get my comments from variables.tf
+ */
+
 variable unquoted {}
 
 variable "string-2" {

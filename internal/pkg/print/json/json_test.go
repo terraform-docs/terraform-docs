@@ -11,7 +11,7 @@ import (
 )
 
 func TestPrint(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 
@@ -29,7 +29,7 @@ func TestPrint(t *testing.T) {
 }
 
 func TestPrintWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)
@@ -48,7 +48,7 @@ func TestPrintWithSortByName(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "..", "main.tf")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)

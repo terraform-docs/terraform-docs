@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -43,7 +44,7 @@ func (d *Doc) HasOutputs() bool {
 }
 
 // CreateFromPaths creates a new document from a list of file or directory paths.
-func CreateFromPaths(paths []string) (*Doc, error) {
+func CreateFromPaths(paths []string, commentsFrom string) (*Doc, error) {
 	names := make([]string, 0)
 
 	for _, path := range paths {
@@ -77,11 +78,16 @@ func CreateFromPaths(paths []string) (*Doc, error) {
 		files[name] = ast
 	}
 
-	return Create(files), nil
+	re := regexp.MustCompile("^.*.tf$")
+	if !re.MatchString(commentsFrom) {
+		panic(fmt.Errorf("Invalid string format for '--with-module-comments-from' flag, should be matching '^.*.tf$', got '%v'", commentsFrom))
+	}
+
+	return Create(files, commentsFrom), nil
 }
 
 // Create creates a new document from a map of filenames to *ast.Files.
-func Create(files map[string]*ast.File) *Doc {
+func Create(files map[string]*ast.File, commentsFrom string) *Doc {
 	doc := new(Doc)
 
 	for name, file := range files {
@@ -92,7 +98,7 @@ func Create(files map[string]*ast.File) *Doc {
 
 		filename := filepath.Base(name)
 		comments := file.Comments
-		if filename == "main.tf" && len(comments) > 0 {
+		if filename == commentsFrom && len(comments) > 0 {
 			doc.Comment = header(comments[0])
 		}
 	}

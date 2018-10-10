@@ -8,7 +8,7 @@ import (
 )
 
 func TestComment(t *testing.T) {
-	actual := doc.TestDoc(t, ".").Comment
+	actual := doc.TestDoc(t, ".", "main.tf").Comment
 
 	expected := `Usage:
 
@@ -32,7 +32,7 @@ module "foo" {
 }
 
 func TestCommentFromMainTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "main.tf").Comment
+	actual := doc.TestDocFromFile(t, ".", "main.tf", "main.tf").Comment
 
 	expected := `Usage:
 
@@ -53,26 +53,46 @@ module "foo" {
 `
 
 	assert.Equal(t, expected, actual)
+
+	actual = doc.TestDocFromFile(t, ".", "main.tf", "variables.tf").Comment
+
+	expected = ""
+
+	assert.Equal(t, expected, actual)
 }
 
 func TestCommentFromOutputsTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "outputs.tf").Comment
+	actual := doc.TestDocFromFile(t, ".", "outputs.tf", "main.tf").Comment
 
 	expected := ""
+
+	assert.Equal(t, expected, actual)
+
+	actual = doc.TestDocFromFile(t, ".", "outputs.tf", "variables.tf").Comment
+
+	expected = ""
 
 	assert.Equal(t, expected, actual)
 }
 
 func TestCommentFromVariablesTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "variables.tf").Comment
+	actual := doc.TestDocFromFile(t, ".", "variables.tf", "main.tf").Comment
 
 	expected := ""
+
+	assert.Equal(t, expected, actual)
+
+	actual = doc.TestDocFromFile(t, ".", "variables.tf", "variables.tf").Comment
+	expected = `Usage:
+
+I get my comments from variables.tf
+`
 
 	assert.Equal(t, expected, actual)
 }
 
 func TestInputs(t *testing.T) {
-	actual := doc.TestDoc(t, ".").Inputs
+	actual := doc.TestDoc(t, ".", "main.tf").Inputs
 
 	expected := []doc.Input{
 		doc.Input{
@@ -158,17 +178,17 @@ func TestInputs(t *testing.T) {
 }
 
 func TestInputsFromMainTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "main.tf").Inputs
+	actual := doc.TestDocFromFile(t, ".", "main.tf", "main.tf").Inputs
 	assert.Equal(t, 0, len(actual))
 }
 
 func TestInputsFromOutputsTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "outputs.tf").Inputs
+	actual := doc.TestDocFromFile(t, ".", "outputs.tf", "main.tf").Inputs
 	assert.Equal(t, 0, len(actual))
 }
 
 func TestInputsFromVariablesTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "variables.tf").Inputs
+	actual := doc.TestDocFromFile(t, ".", "variables.tf", "main.tf").Inputs
 
 	expected := []doc.Input{
 		doc.Input{
@@ -254,7 +274,7 @@ func TestInputsFromVariablesTf(t *testing.T) {
 }
 
 func TestInputsSortedByName(t *testing.T) {
-	actual := doc.TestDoc(t, ".").Inputs
+	actual := doc.TestDoc(t, ".", "main.tf").Inputs
 
 	doc.SortInputsByName(actual)
 
@@ -342,7 +362,7 @@ func TestInputsSortedByName(t *testing.T) {
 }
 
 func TestInputsSortedByRequired(t *testing.T) {
-	actual := doc.TestDoc(t, ".").Inputs
+	actual := doc.TestDoc(t, ".", "main.tf").Inputs
 
 	doc.SortInputsByRequired(actual)
 
@@ -430,7 +450,7 @@ func TestInputsSortedByRequired(t *testing.T) {
 }
 
 func TestOutputs(t *testing.T) {
-	actual := doc.TestDoc(t, ".").Outputs
+	actual := doc.TestDoc(t, ".", "main.tf").Outputs
 
 	expected := []doc.Output{
 		doc.Output{
@@ -451,12 +471,12 @@ func TestOutputs(t *testing.T) {
 }
 
 func TestOutputsFromMainTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "main.tf").Outputs
+	actual := doc.TestDocFromFile(t, ".", "main.tf", "main.tf").Outputs
 	assert.Equal(t, 0, len(actual))
 }
 
 func TestOutputsFromOutputsTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "outputs.tf").Outputs
+	actual := doc.TestDocFromFile(t, ".", "outputs.tf", "main.tf").Outputs
 
 	expected := []doc.Output{
 		doc.Output{
@@ -477,6 +497,6 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 }
 
 func TestOutputsFromVariablesTf(t *testing.T) {
-	actual := doc.TestDocFromFile(t, ".", "variables.tf").Outputs
+	actual := doc.TestDocFromFile(t, ".", "variables.tf", "main.tf").Outputs
 	assert.Equal(t, 0, len(actual))
 }
