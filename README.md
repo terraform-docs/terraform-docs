@@ -1,5 +1,7 @@
 ## terraform-docs
 
+[![CircleCI](https://circleci.com/gh/segmentio/terraform-docs.svg?style=svg)](https://circleci.com/gh/segmentio/terraform-docs)
+
 A utility to generate documentation from Terraform modules.
 
 <img width="1284" alt="screen shot 2016-06-14 at 5 38 37 pm" src="https://cloud.githubusercontent.com/assets/1661587/16049202/1ad63c16-3257-11e6-9e2c-6bb83e684ba4.png">
@@ -26,7 +28,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 ```bash
 
   Usage:
-    terraform-docs [--no-required] [--no-sort] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -50,6 +52,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     -h, --help                       show help information
     --no-required                    omit "Required" column when generating markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
+    --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 

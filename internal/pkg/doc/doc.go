@@ -220,10 +220,6 @@ func getItemDescriptionFromComment(comments []*ast.Comment) string {
 func getItemName(item *ast.ObjectItem) string {
 	name, err := strconv.Unquote(item.Keys[1].Token.Text)
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	if name == "" {
 		name = item.Keys[1].Token.Text
 	}
 

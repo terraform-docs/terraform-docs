@@ -1,3 +1,5 @@
+variable unquoted {}
+
 variable "string-2" {
   description = "It's string number two."
   type        = "string"
@@ -24,7 +26,8 @@ variable "map-1" {
     b = 2
     c = 3
   }
-  type    = "map"
+
+  type = "map"
 }
 
 variable "list-3" {

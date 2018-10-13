@@ -19,14 +19,15 @@ module "foo" {
 
 | Name | Description | Type | Default |
 |------|-------------|:----:|:-----:|
-| list-1 | It's list number one. | list | `<list>` |
 | list-2 | It's list number two. | list | - |
+| map-2 | It's map number two. | map | - |
+| string-2 | It's string number two. | string | - |
+| unquoted | - | string | - |
+| list-1 | It's list number one. | list | `<list>` |
 | list-3 | - | list | `<list>` |
 | map-1 | It's map number one. | map | `<map>` |
-| map-2 | It's map number two. | map | - |
 | map-3 | - | map | `<map>` |
 | string-1 | It's string number one. | string | `bar` |
-| string-2 | It's string number two. | string | - |
 
 ## Outputs
 
@@ -34,3 +35,4 @@ module "foo" {
 |------|-------------|
 | output-1 | It's output number one. |
 | output-2 | It's output number two. |
+| unquoted | It's unquoted output. |
