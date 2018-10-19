@@ -1,4 +1,4 @@
-package markdown
+package table
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-// Print prints a document as markdown.
+// Print prints a document as markdown table.
 func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
