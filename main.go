@@ -43,6 +43,7 @@ const usage = `
   Options:
     -h, --help                       show help information
     --no-required                    omit "Required" column when generating markdown
+    --with-backticks                 print variable and output names with backticks when generating markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
@@ -66,6 +67,10 @@ func main() {
 	var printSettings settings.Settings
 	if !args["--no-required"].(bool) {
 		printSettings.Add(print.WithRequired)
+	}
+
+	if args["--with-backticks"].(bool) {
+		printSettings.Add(print.WithBackticks)
 	}
 
 	if !args["--no-sort"].(bool) {

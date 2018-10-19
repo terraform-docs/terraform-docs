@@ -27,6 +27,25 @@ func TestPrint(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestWithBackticks(t *testing.T) {
+	doc := doc.TestDoc(t, "..")
+
+	var settings settings.Settings
+	settings.Add(print.WithBackticks)
+
+	actual, err := markdown.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("markdown-WithBackticks")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
 func TestWithAggregateTypeDefaults(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 

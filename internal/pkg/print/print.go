@@ -19,6 +19,8 @@ const (
 	WithSortByName
 	// WithSortInputsByRequired sorts inputs by name and prints required inputs first
 	WithSortInputsByRequired
+	// WithBackticks prints variable and output name with backticks in Markdown
+	WithBackticks
 )
 
 // GetPrintableValue returns a printable representation of a Terraform value.
