@@ -48,7 +48,6 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 
   Options:
     -h, --help                       show help information
-    --escape-underscores             escapes underscores in variable names when generating markdown
     --no-required                    omit "Required" column when generating markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
@@ -105,7 +104,7 @@ $ terraform-docs json _example
 }
 ```
 
-To output markdown docs:
+To output markdown docs (_Note: underscores are escaped in markdown output_):
 
 ```bash
 $ terraform-docs md _example
@@ -116,13 +115,13 @@ This module has a variable and an output.  This text here will be output before 
 
 | Name | Description | Default | Required |
 |------|-------------|:-----:|:-----:|
-| subnet_ids | a comma-separated list of subnet IDs | - | yes |
+| subnet\_ids | a comma-separated list of subnet IDs | - | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| vpc_id | The VPC ID. |
+| vpc\_id | The VPC ID. |
 
 ```
 

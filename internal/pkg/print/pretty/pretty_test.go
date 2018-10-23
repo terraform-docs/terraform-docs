@@ -69,7 +69,7 @@ func TestPretty(t *testing.T) {
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string_number_3" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
@@ -149,7 +149,7 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " ([ \"a\", \"b\", \"c\" ])\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string_number_3" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
@@ -202,6 +202,9 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"\n" +
 			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
 			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
 			"\n" +
@@ -225,9 +228,6 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
-			"\n" +
-			"  " + sgr_color_1 + "var.string_number_3" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
 			"\n" +
 			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +
@@ -283,6 +283,9 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
+			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"\n" +
 			"  " + sgr_color_1 + "var.list-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's list number two." + sgr_reset + "\n" +
 			"\n" +
@@ -291,9 +294,6 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
-			"\n" +
-			"  " + sgr_color_1 + "var.string_number_3" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
 			"\n" +
 			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "-" + sgr_reset + "\n" +

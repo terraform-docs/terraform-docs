@@ -153,7 +153,7 @@ func TestInputs(t *testing.T) {
 			Type: "list",
 		},
 		doc.Input{
-			Name:        "string_number_3",
+			Name:        "input_with_underscores",
 			Description: "A variable with underscores.",
 			Type:        "string",
 			Default:     nil,
@@ -255,7 +255,7 @@ func TestInputsFromVariablesTf(t *testing.T) {
 			Type: "list",
 		},
 		doc.Input{
-			Name:        "string_number_3",
+			Name:        "input_with_underscores",
 			Description: "A variable with underscores.",
 			Type:        "string",
 			Default:     nil,
@@ -271,6 +271,12 @@ func TestInputsSortedByName(t *testing.T) {
 	doc.SortInputsByName(actual)
 
 	expected := []doc.Input{
+		doc.Input{
+			Name:        "input_with_underscores",
+			Description: "A variable with underscores.",
+			Default:     nil,
+			Type:        "string",
+		},
 		doc.Input{
 			Name:        "list-1",
 			Description: "It's list number one.",
@@ -343,12 +349,6 @@ func TestInputsSortedByName(t *testing.T) {
 			Type:        "string",
 		},
 		doc.Input{
-			Name:        "string_number_3",
-			Description: "A variable with underscores.",
-			Default:     nil,
-			Type:        "string",
-		},
-		doc.Input{
 			Name:        "unquoted",
 			Description: "",
 			Default:     nil,
@@ -366,6 +366,12 @@ func TestInputsSortedByRequired(t *testing.T) {
 
 	expected := []doc.Input{
 		doc.Input{
+			Name:        "input_with_underscores",
+			Description: "A variable with underscores.",
+			Default:     nil,
+			Type:        "string",
+		},
+		doc.Input{
 			Name:        "list-2",
 			Description: "It's list number two.",
 			Default:     nil,
@@ -380,12 +386,6 @@ func TestInputsSortedByRequired(t *testing.T) {
 		doc.Input{
 			Name:        "string-2",
 			Description: "It's string number two.",
-			Default:     nil,
-			Type:        "string",
-		},
-		doc.Input{
-			Name:        "string_number_3",
-			Description: "A variable with underscores.",
 			Default:     nil,
 			Type:        "string",
 		},

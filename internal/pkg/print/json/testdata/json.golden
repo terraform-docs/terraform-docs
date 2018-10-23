@@ -79,7 +79,7 @@
       "Type": "list"
     },
     {
-      "Name": "string_number_3",
+      "Name": "input_with_underscores",
       "Description": "A variable with underscores.",
       "Default": null,
       "Type": "string"

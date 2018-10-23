@@ -100,7 +100,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 	for _, input := range inputs {
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s | %s | %s |",
-				escapeUnderscoresIfSet(settings, input.Name),
+				strings.Replace(input.Name, "_", "\\_", -1),
 				prepareDescriptionForMarkdown(getInputDescription(&input)),
 				input.Type,
 				getInputDefaultValue(&input, settings)))
@@ -129,7 +129,7 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 	for _, output := range outputs {
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s |\n",
-				escapeUnderscoresIfSet(settings, output.Name),
+				strings.Replace(output.Name, "_", "\\_", -1),
 				prepareDescriptionForMarkdown(getOutputDescription(&output))))
 	}
 }
@@ -144,12 +144,4 @@ func prepareDescriptionForMarkdown(s string) string {
 
 	// Convert single newline to space.
 	return strings.Replace(s, "\n", " ", -1)
-}
-
-func escapeUnderscoresIfSet(settings settings.Settings, s string) string {
-	if !settings.Has(print.EscapeUnderscores) {
-		return s
-	}
-
-	return strings.Replace(s, "_", "\\_", -1)
 }

@@ -46,4 +46,4 @@ variable "list-1" {
 }
 
 // A variable with underscores.
-variable "string_number_3" {}
+variable "input_with_underscores" {}

@@ -103,22 +103,3 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 
 	assert.Equal(t, expected, actual)
 }
-
-func TestPrintWithEscapedUnderscores(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
-
-	var settings settings.Settings
-	settings.Add(print.EscapeUnderscores)
-
-	actual, err := markdown.Print(doc, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected, err := print.ReadGoldenFile("markdown-WithEscapedUnderscores")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
-}
