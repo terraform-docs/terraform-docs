@@ -11,8 +11,6 @@ import (
 
 const (
 	_ settings.Setting = iota
-	// EscapeUnderscores escapes underscores in varables when printing markdown
-	EscapeUnderscores
 	// WithAggregateTypeDefaults prints defaults of aggregate type inputs
 	WithAggregateTypeDefaults
 	// WithRequired prints if inputs are required

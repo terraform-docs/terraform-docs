@@ -42,7 +42,6 @@ const usage = `
 
   Options:
     -h, --help                       show help information
-    --escape-underscores             escapes underscores in variable names when generating markdown
     --no-required                    omit "Required" column when generating markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
@@ -65,10 +64,6 @@ func main() {
 	}
 
 	var printSettings settings.Settings
-	if !args["--escape-underscores"].(bool) {
-		printSettings.Add(print.EscapeUnderscores)
-	}
-
 	if !args["--no-required"].(bool) {
 		printSettings.Add(print.WithRequired)
 	}
