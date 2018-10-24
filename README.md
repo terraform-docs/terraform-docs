@@ -106,7 +106,7 @@ $ terraform-docs json _example
 }
 ```
 
-To output markdown docs:
+To output markdown docs (_Note: underscores are escaped in markdown output_):
 
 ```bash
 $ terraform-docs md _example
@@ -117,13 +117,13 @@ This module has a variable and an output.  This text here will be output before 
 
 | Name | Description | Default | Required |
 |------|-------------|:-----:|:-----:|
-| subnet_ids | a comma-separated list of subnet IDs | - | yes |
+| subnet\_ids | a comma-separated list of subnet IDs | - | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| vpc_id | The VPC ID. |
+| vpc\_id | The VPC ID. |
 
 ```
 
