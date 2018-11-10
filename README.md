@@ -54,6 +54,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
+    --follow-modules                 follow modules in stacks
     --version                        print version
 
 ```
@@ -126,6 +127,13 @@ This module has a variable and an output.  This text here will be output before 
 | vpc\_id | The VPC ID. |
 
 ```
+
+## About the --follow-modules option
+This option allows to document a stack of terraform infrastructure and includes the used modules.
+The option follows the 1st level of modules only.
+
+The option is silently dropped when using `JSON` output as the JSON document can not
+trivially be rewritten to include the modules documentation.
 
 ## License
 
