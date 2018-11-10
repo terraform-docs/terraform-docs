@@ -19,6 +19,7 @@ type Doc struct {
 	Comment string
 	Inputs  []Input
 	Outputs []Output
+	Modules []Module
 }
 
 // Value represents a Terraform value.
@@ -40,6 +41,11 @@ func (d *Doc) HasInputs() bool {
 // HasOutputs indicates if the document has outputs.
 func (d *Doc) HasOutputs() bool {
 	return len(d.Outputs) > 0
+}
+
+// HasModules indicates if the document has modules.
+func (d *Doc) HasModules() bool {
+	return len(d.Modules) > 0
 }
 
 // CreateFromPaths creates a new document from a list of file or directory paths.
@@ -89,6 +95,7 @@ func Create(files map[string]*ast.File) *Doc {
 
 		doc.Inputs = append(doc.Inputs, getInputs(objects)...)
 		doc.Outputs = append(doc.Outputs, getOutputs(objects)...)
+		doc.Modules = append(doc.Modules, getModules(objects)...)
 
 		filename := filepath.Base(name)
 		comments := file.Comments
@@ -127,6 +134,22 @@ func getOutputs(list *ast.ObjectList) []Output {
 			result = append(result, Output{
 				Name:        getItemName(item),
 				Description: getItemDescription(item),
+			})
+		}
+	}
+
+	return result
+}
+
+// getModules returns a list of modules from an ast.ObjectList.
+func getModules(list *ast.ObjectList) []Module {
+	var result []Module
+
+	for _, item := range list.Items {
+		if isItemOfKindModule(item) {
+			result = append(result, Module{
+				Name:   getItemName(item),
+				Source: getItemSource(item),
 			})
 		}
 	}
@@ -183,6 +206,11 @@ func getItemByKey(items []*ast.ObjectItem, key string) *Value {
 func getItemDefault(item *ast.ObjectItem) *Value {
 	items := item.Val.(*ast.ObjectType).List.Items
 	return getItemByKey(items, "default")
+}
+
+func getItemSource(item *ast.ObjectItem) string {
+	items := item.Val.(*ast.ObjectType).List.Items
+	return getItemByKey(items, "source").Value.(string)
 }
 
 func getItemDescription(item *ast.ObjectItem) string {
@@ -260,6 +288,10 @@ func isItemOfKindOutput(item *ast.ObjectItem) bool {
 
 func isItemOfKindVariable(item *ast.ObjectItem) bool {
 	return isItemOfKind(item, "variable")
+}
+
+func isItemOfKindModule(item *ast.ObjectItem) bool {
+	return isItemOfKind(item, "module")
 }
 
 // Header returns the header comment from the list

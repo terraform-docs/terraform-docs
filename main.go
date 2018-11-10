@@ -17,7 +17,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [--follow-modules] [json | markdown | md] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -46,6 +46,7 @@ const usage = `
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
+    --follow-modules                 follow modules in stacks
     --version                        print version
 
 `
@@ -98,4 +99,36 @@ func main() {
 	}
 
 	fmt.Println(out)
+
+	// done with the standard stuff, modules follow
+	// would be good to have main() as function to call it recursive
+	if args["--follow-modules"].(bool) && document.HasModules() {
+
+		for _, module := range document.Modules {
+			paths := []string{module.Source}
+			document, err := doc.CreateFromPaths(paths)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			switch {
+			case args["markdown"].(bool):
+				out, err = markdown.Print(document, printSettings)
+			case args["md"].(bool):
+				out, err = markdown.Print(document, printSettings)
+			case args["json"].(bool):
+				out, err = json.Print(document, printSettings)
+			default:
+				out, err = pretty.Print(document, printSettings)
+			}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println("----\n# Module:", module.Name)
+			fmt.Println(out)
+		}
+	}
+
 }

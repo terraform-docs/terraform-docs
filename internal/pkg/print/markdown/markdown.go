@@ -42,6 +42,13 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printOutputs(&buffer, document.Outputs, settings)
 	}
 
+	if document.HasModules() {
+		if document.HasOutputs() {
+			buffer.WriteString("\n")
+		}
+		printModules(&buffer, document.Modules, settings)
+	}
+
 	return buffer.String(), nil
 }
 
@@ -131,6 +138,19 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 			fmt.Sprintf("| %s | %s |\n",
 				strings.Replace(output.Name, "_", "\\_", -1),
 				prepareDescriptionForMarkdown(getOutputDescription(&output))))
+	}
+}
+
+func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
+	buffer.WriteString("## Modules\n\n")
+	buffer.WriteString("| Name | Source |\n")
+	buffer.WriteString("|------|-------------|\n")
+
+	for _, module := range modules {
+		buffer.WriteString(
+			fmt.Sprintf("| %s | %s |\n",
+				strings.Replace(module.Name, "_", "\\_", -1),
+				strings.Replace(module.Source, "_", "\\_", -1)))
 	}
 }
 
