@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
@@ -81,54 +82,65 @@ func main() {
 		printSettings.Add(print.WithAggregateTypeDefaults)
 	}
 
-	var out string
+	// construct the final output from multiple sources
+	var out strings.Builder
+	// most functions have double output (string, err)
+	// which can not be used as input directly
+	var tempstring string
 
-	switch {
-	case args["markdown"].(bool):
-		out, err = markdown.Print(document, printSettings)
-	case args["md"].(bool):
-		out, err = markdown.Print(document, printSettings)
-	case args["json"].(bool):
-		out, err = json.Print(document, printSettings)
-	default:
-		out, err = pretty.Print(document, printSettings)
-	}
+	// get the main output (formatted)
+	tempstring, err = doPrint(args, document, printSettings)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(out)
+	// add the formatted document to the output string
+	out.WriteString(tempstring)
 
 	// done with the standard stuff, modules follow
-	// would be good to have main() as function to call it recursive
-	if args["--follow-modules"].(bool) && document.HasModules() {
+	// no chance to use JSON as the logic of the program had to be changed
+	if args["--follow-modules"].(bool) && !args["json"].(bool) && document.HasModules() {
 
 		for _, module := range document.Modules {
 			paths := []string{module.Source}
+
 			document, err := doc.CreateFromPaths(paths)
 			if err != nil {
 				log.Fatal(err)
 			}
 
+			tempstring, err = doPrint(args, document, printSettings)
+
+			// print the Module name as header
 			switch {
 			case args["markdown"].(bool):
-				out, err = markdown.Print(document, printSettings)
+				out.WriteString(fmt.Sprintf("\n----\n# Module: %s\n\n", module.Name))
 			case args["md"].(bool):
-				out, err = markdown.Print(document, printSettings)
-			case args["json"].(bool):
-				out, err = json.Print(document, printSettings)
+				out.WriteString(fmt.Sprintf("\n----\n# Module: %s\n\n", module.Name))
 			default:
-				out, err = pretty.Print(document, printSettings)
+				format := "\n\033[4m\033[1mModule:\033[21m %s\033[0m\n\n"
+				out.WriteString(fmt.Sprintf(format, module.Name))
 			}
 
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fmt.Println("----\n# Module:", module.Name)
-			fmt.Println(out)
+			out.WriteString(tempstring)
 		}
 	}
 
+	// finally print the result
+	fmt.Println(out.String())
+
+}
+
+// helper function to save code on switch()
+func doPrint(args map[string]interface{}, document *doc.Doc, printSettings settings.Settings) (string, error) {
+	switch {
+	case args["markdown"].(bool):
+		return markdown.Print(document, printSettings)
+	case args["md"].(bool):
+		return markdown.Print(document, printSettings)
+	case args["json"].(bool):
+		return json.Print(document, printSettings)
+	default:
+		return pretty.Print(document, printSettings)
+	}
 }
