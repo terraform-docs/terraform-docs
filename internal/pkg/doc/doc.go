@@ -95,7 +95,16 @@ func Create(files map[string]*ast.File) *Doc {
 
 		doc.Inputs = append(doc.Inputs, getInputs(objects)...)
 		doc.Outputs = append(doc.Outputs, getOutputs(objects)...)
-		doc.Modules = append(doc.Modules, getModules(objects)...)
+
+		// We need the absolute path of the object we are working on to set the source of the module correctly
+		// Sadly it will be an absolute path but either that or force users to call terrafom-docs
+		// in the dir where the module's source is set as it will be (most likely) relative
+		// eg. `source = "../../modules/bar"`
+		basepath, err := filepath.Abs(filepath.Dir(name))
+		if err != nil {
+			log.Fatal(err)
+		}
+		doc.Modules = append(doc.Modules, getModules(objects, basepath)...)
 
 		filename := filepath.Base(name)
 		comments := file.Comments
@@ -142,14 +151,14 @@ func getOutputs(list *ast.ObjectList) []Output {
 }
 
 // getModules returns a list of modules from an ast.ObjectList.
-func getModules(list *ast.ObjectList) []Module {
+func getModules(list *ast.ObjectList, basepath string) []Module {
 	var result []Module
 
 	for _, item := range list.Items {
 		if isItemOfKindModule(item) {
 			result = append(result, Module{
 				Name:   getItemName(item),
-				Source: getItemSource(item),
+				Source: filepath.Join(basepath, getItemSource(item)),
 			})
 		}
 	}
