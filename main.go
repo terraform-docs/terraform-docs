@@ -47,7 +47,7 @@ const usage = `
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
-    --follow-modules                 follow modules in stacks
+    --follow-modules                 follow modules in stacks (ignored when selected output is JSON)
     --version                        print version
 
 `
