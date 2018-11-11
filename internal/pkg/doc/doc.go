@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -156,9 +157,16 @@ func getModules(list *ast.ObjectList, basepath string) []Module {
 
 	for _, item := range list.Items {
 		if isItemOfKindModule(item) {
+
+			modulepath := filepath.Join(basepath, getItemSource(item))
+			if _, err := os.Stat(modulepath); os.IsNotExist(err) {
+				// the path does not exists, so the module will be either
+				// git based or registry based and can not be loaded
+				modulepath = getItemSource(item)
+			}
 			result = append(result, Module{
 				Name:   getItemName(item),
-				Source: filepath.Join(basepath, getItemSource(item)),
+				Source: modulepath,
 			})
 		}
 	}
