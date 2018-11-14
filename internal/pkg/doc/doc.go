@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -97,10 +96,7 @@ func Create(files map[string]*ast.File) *Doc {
 		doc.Inputs = append(doc.Inputs, getInputs(objects)...)
 		doc.Outputs = append(doc.Outputs, getOutputs(objects)...)
 
-		// We need the absolute path of the object we are working on to set the source of the module correctly
-		// Sadly it will be an absolute path but either that or force users to call terrafom-docs
-		// in the dir where the module's source is set as it will be (most likely) relative
-		// eg. `source = "../../modules/bar"`
+		// We need the absolute basepath of the object we are working on to set the source of the module correctly
 		basepath, err := filepath.Abs(filepath.Dir(name))
 		if err != nil {
 			log.Fatal(err)
@@ -157,16 +153,10 @@ func getModules(list *ast.ObjectList, basepath string) []Module {
 
 	for _, item := range list.Items {
 		if isItemOfKindModule(item) {
-
-			modulepath := filepath.Join(basepath, getItemSource(item))
-			if _, err := os.Stat(modulepath); os.IsNotExist(err) {
-				// the path does not exists, so the module will be either
-				// git based or registry based and can not be loaded
-				modulepath = getItemSource(item)
-			}
 			result = append(result, Module{
-				Name:   getItemName(item),
-				Source: modulepath,
+				Name:     getItemName(item),
+				Source:   getItemSource(item),
+				basepath: basepath,
 			})
 		}
 	}

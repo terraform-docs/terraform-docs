@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
@@ -103,8 +105,17 @@ func main() {
 
 		for _, module := range document.Modules {
 			paths := []string{module.Source}
+			isExternal := false
 
-			document, err := doc.CreateFromPaths(paths)
+			modulepath := filepath.Join(module.GetBasepath(), paths[0])
+			if _, err := os.Stat(modulepath); os.IsNotExist(err) {
+				// the path does not exists, so the module will be either
+				// git based or registry based and can not be loaded
+				modulepath = paths[0]
+				isExternal = true
+			}
+
+			document, err := doc.CreateFromPaths([]string{modulepath})
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -114,12 +125,19 @@ func main() {
 			// print the Module name as header
 			switch {
 			case args["markdown"].(bool):
-				out.WriteString(fmt.Sprintf("\n----\n# Module: %s\n\n", module.Name))
+				fallthrough
 			case args["md"].(bool):
 				out.WriteString(fmt.Sprintf("\n----\n# Module: %s\n\n", module.Name))
+				if isExternal {
+					out.WriteString(fmt.Sprintf("external module\n"))
+				}
 			default:
-				format := "\n\033[4m\033[1mModule:\033[21m %s\033[0m\n\n"
+				format := "\n\033[4m\033[1mModule:\033[21m %s\033[0m\n"
 				out.WriteString(fmt.Sprintf(format, module.Name))
+				if isExternal {
+					format := "external module (%s)\n"
+					out.WriteString(fmt.Sprintf(format, module.Source))
+				}
 			}
 
 			out.WriteString(tempstring)
@@ -135,7 +153,7 @@ func main() {
 func doPrint(args map[string]interface{}, document *doc.Doc, printSettings settings.Settings) (string, error) {
 	switch {
 	case args["markdown"].(bool):
-		return markdown.Print(document, printSettings)
+		fallthrough
 	case args["md"].(bool):
 		return markdown.Print(document, printSettings)
 	case args["json"].(bool):

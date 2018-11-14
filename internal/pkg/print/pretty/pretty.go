@@ -37,6 +37,10 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printOutputs(&buffer, document.Outputs, settings)
 	}
 
+	if document.HasModules() {
+		printModules(&buffer, document.Modules, settings)
+	}
+
 	return buffer.String(), nil
 }
 
@@ -101,6 +105,22 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 				format,
 				output.Name,
 				getOutputDescription(&output)))
+	}
+
+	buffer.WriteString("\n")
+}
+
+func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
+	buffer.WriteString("\n")
+
+	for _, module := range modules {
+		format := "  \033[36mmodule.%s\033[0m\n  \033[90m%s\033[0m\n\n"
+
+		buffer.WriteString(
+			fmt.Sprintf(
+				format,
+				module.Name,
+				module.Source))
 	}
 
 	buffer.WriteString("\n")
