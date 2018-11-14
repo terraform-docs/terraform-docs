@@ -98,5 +98,6 @@
       "Name": "output-1",
       "Description": "It's output number one."
     }
-  ]
+  ],
+  "Modules": null
 }

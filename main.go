@@ -43,13 +43,16 @@ const usage = `
     # Generate markdown tables of inputs and outputs for the given module and ../config.tf
     $ terraform-docs md ./my-module ../config.tf
 
+    # Generate markdown tables of inputs, outputs and used local modules
+    $ terraform-docs --follow-modules md ./my-stack
+
   Options:
     -h, --help                       show help information
     --no-required                    omit "Required" column when generating markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
-    --follow-modules                 follow modules in stacks (ignored when selected output is JSON)
+    --follow-modules                 follow local modules in stacks (ignored when selected output is JSON)
     --version                        print version
 
 `
