@@ -18,7 +18,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [--markdown-table | --markdown-content] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [table | document] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -36,10 +36,10 @@ const usage = `
     $ terraform-docs md ./my-module
 
     # Generate markdown tables of inputs and outputs
-    $ terraform-docs --markdown-table md ./my-module
+    $ terraform-docs md table ./my-module
 
-    # Generate markdown content of inputs and outputs
-    $ terraform-docs --markdown-content md ./my-module
+    # Generate markdown document of inputs and outputs
+    $ terraform-docs md document ./my-module
 
     # Generate markdown tables of inputs and outputs, but don't print "Required" column
     $ terraform-docs --no-required md ./my-module
@@ -56,8 +56,8 @@ const usage = `
     --version                        print version
 
   Types of markdown (optional):      table will be used if not specified
-    --markdown-table                 generate markdown table of document
-    --markdown-content               generate markdown content of document
+    table                            generate markdown table of document
+    document                         generate markdown document of document
 
 `
 
@@ -95,7 +95,7 @@ func main() {
 
 	switch {
 	case args["markdown"].(bool), args["md"].(bool):
-		if args["--markdown-content"].(bool) {
+		if args["document"].(bool) {
 			out, err = content.Print(document, printSettings)
 		} else {
 			out, err = table.Print(document, printSettings)

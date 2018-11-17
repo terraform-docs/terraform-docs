@@ -28,7 +28,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 ```bash
 
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [--markdown-table | --markdown-content] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [table | document] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -46,10 +46,10 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     $ terraform-docs md ./my-module
 
     # Generate markdown tables of inputs and outputs
-    $ terraform-docs --markdown-table md ./my-module
+    $ terraform-docs md table ./my-module
 
-    # Generate markdown content of inputs and outputs
-    $ terraform-docs --markdown-content md ./my-module
+    # Generate markdown document of inputs and outputs
+    $ terraform-docs md document ./my-module
 
     # Generate markdown tables of inputs and outputs for the given module and ../config.tf
     $ terraform-docs md ./my-module ../config.tf
@@ -63,8 +63,8 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     --version                        print version
 
   Types of markdown (optional):      table will be used if not specified
-    --markdown-table                 generate markdown table of document
-    --markdown-content               generate markdown content of document
+    table                            generate markdown table of document
+    document                         generate markdown document of document
 ```
 
 ## Example
@@ -115,10 +115,10 @@ $ terraform-docs json _example
 }
 ```
 
-To output markdown docs as table (_Note: underscores are escaped in markdown output_):
+To output markdown table (_Note: underscores are escaped in markdown output_):
 
 ```bash
-$ terraform-docs md --markdown-table _example
+$ terraform-docs md table _example
 This module has a variable and an output.  This text here will be output before any inputs or outputs!
 
 
@@ -136,10 +136,10 @@ This module has a variable and an output.  This text here will be output before 
 
 ```
 
-To output markdown docs as content (_Note: underscores are escaped in markdown output_):
+To output markdown document (_Note: underscores are escaped in markdown output_):
 
 ```bash
-$ terraform-docs md --markdown-content _example
+$ terraform-docs md document _example
 This module has a variable and an output.  This text here will be output before any inputs or outputs!
 
 
