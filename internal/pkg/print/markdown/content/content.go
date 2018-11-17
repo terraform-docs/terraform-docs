@@ -45,6 +45,36 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	return buffer.String(), nil
 }
 
+func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
+	var result = "-"
+
+	if input.HasDefault() {
+		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings))
+	}
+
+	return result
+}
+
+func getInputDescription(input *doc.Input) string {
+	var result = "-"
+
+	if input.HasDescription() {
+		result = input.Description
+	}
+
+	return result
+}
+
+func getOutputDescription(output *doc.Output) string {
+	var result = "-"
+
+	if output.HasDescription() {
+		result = output.Description
+	}
+
+	return result
+}
+
 func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
 	buffer.WriteString(fmt.Sprintf("%s\n", comment))
 }
@@ -99,36 +129,6 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 		buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(output.Name, "_", "\\_", -1)))
 		buffer.WriteString(fmt.Sprintf("Description: %s\n", prepareDescriptionForMarkdown(getOutputDescription(&output))))
 	}
-}
-
-func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
-	var result = "-"
-
-	if input.HasDefault() {
-		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings))
-	}
-
-	return result
-}
-
-func getInputDescription(input *doc.Input) string {
-	var result = "-"
-
-	if input.HasDescription() {
-		result = input.Description
-	}
-
-	return result
-}
-
-func getOutputDescription(output *doc.Output) string {
-	var result = "-"
-
-	if output.HasDescription() {
-		result = output.Description
-	}
-
-	return result
 }
 
 func prepareDescriptionForMarkdown(s string) string {
