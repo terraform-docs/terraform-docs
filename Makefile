@@ -16,7 +16,7 @@ all: clean deps lint test build
 
 .PHONY: authors
 authors:
-	git log --all --format='%aN <%cE>' | sort -u | egrep -v noreply > AUTHORS
+	git log --all --format='%aN <%aE>' | sort -u | egrep -v noreply > AUTHORS
 
 .PHONY: build
 build: authors build-darwin-amd64 build-freebsd-amd64 build-linux-amd64 build-windows-amd64
