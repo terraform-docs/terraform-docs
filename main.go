@@ -7,8 +7,8 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/content"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
+	markdown_content "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/content"
+	markdown_table "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/tj/docopt"
@@ -96,9 +96,9 @@ func main() {
 	switch {
 	case args["markdown"].(bool), args["md"].(bool):
 		if args["document"].(bool) {
-			out, err = content.Print(document, printSettings)
+			out, err = markdown_content.Print(document, printSettings)
 		} else {
-			out, err = table.Print(document, printSettings)
+			out, err = markdown_table.Print(document, printSettings)
 		}
 	case args["json"].(bool):
 		out, err = json.Print(document, printSettings)
