@@ -86,7 +86,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 		for _, input := range inputs {
 			if input.IsRequired() {
-				printInputMarkdown(buffer, input, settings, false)
+				printInputMarkdown(buffer, input, settings)
 			}
 		}
 
@@ -96,7 +96,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 		for _, input := range inputs {
 			if !input.IsRequired() {
-				printInputMarkdown(buffer, input, settings, true)
+				printInputMarkdown(buffer, input, settings)
 			}
 		}
 	} else {
@@ -104,18 +104,18 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 		buffer.WriteString("These variables are defined:\n")
 
 		for _, input := range inputs {
-			printInputMarkdown(buffer, input, settings, true)
+			printInputMarkdown(buffer, input, settings)
 		}
 	}
 }
 
-func printInputMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings.Settings, showDefault bool) {
+func printInputMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
 	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", prepareDescriptionForMarkdown(getInputDescription(&input))))
 	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
 
-	if showDefault {
+	if !settings.Has(print.WithRequired) || !input.IsRequired() {
 		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
 	}
 }
