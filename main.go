@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/docopt/docopt.go"
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
-	"github.com/tj/docopt"
 )
 
 var version = "dev"

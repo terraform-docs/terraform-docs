@@ -34,8 +34,8 @@
   version = "1.2.2"
 
 [[constraint]]
-  name = "github.com/tj/docopt"
-  version = "1.0.0"
+  name = "github.com/docopt/docopt.go"
+  revision = "ee0de3bc6815ee19d4a46c7eb90f829db0e014b1"
 
 [prune]
   go-tests = true
