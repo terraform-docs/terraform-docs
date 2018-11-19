@@ -44,3 +44,6 @@ variable "list-1" {
   default = ["a", "b", "c"]
   type    = "list"
 }
+
+// A variable with underscores.
+variable "input_with_underscores" {}

@@ -5,7 +5,9 @@ Thank you for your interest in this project!
 We use *GitHub Issues* for trackings issues and features. You can make a contribution by:
 
 1. Reporting an issue or making a feature request [here](https://github.com/segmentio/terraform-docs/issues).
-2. Fixing an issue or adding a feature yourself and contributing your code to this project (see below). 
+2. Contributing code to this project by fixing an issue or adding a new feature (see below).
+
+Before contributing a new feature, please discuss its suitability with the project maintainers in an issue first. Thanks!
 
 ## Contribution Process
 

@@ -77,6 +77,12 @@
         ]
       },
       "Type": "list"
+    },
+    {
+      "Name": "input_with_underscores",
+      "Description": "A variable with underscores.",
+      "Default": null,
+      "Type": "string"
     }
   ],
   "Outputs": [
