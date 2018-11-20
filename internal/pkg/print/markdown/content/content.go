@@ -46,10 +46,14 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
-	var result = "-"
+	var result = " -"
 
 	if input.HasDefault() {
-		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings))
+		if settings.Has(print.WithAggregateTypeDefaults) && (input.Type == "list" || input.Type == "map") {
+			result = fmt.Sprintf("\n\n```\n%s\n```", print.GetPrintableValue(input.Default, settings, true))
+		} else {
+			result = fmt.Sprintf(" `%s`", print.GetPrintableValue(input.Default, settings, false))
+		}
 	}
 
 	return result
@@ -116,7 +120,7 @@ func printInputMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings
 	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
 
 	if !settings.Has(print.WithRequired) || !input.IsRequired() {
-		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
+		buffer.WriteString(fmt.Sprintf("\nDefault:%s\n", getInputDefaultValue(&input, settings)))
 	}
 }
 

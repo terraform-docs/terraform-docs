@@ -22,8 +22,15 @@ const (
 )
 
 // GetPrintableValue returns a printable representation of a Terraform value.
-func GetPrintableValue(value *doc.Value, settings settings.Settings) string {
+func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool) string {
 	var result string
+	var indent string
+
+	if pretty {
+		indent = "  "
+	} else {
+		indent = ""
+	}
 
 	if value == nil {
 		return ""
@@ -34,13 +41,19 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings) string {
 		if settings.Has(WithAggregateTypeDefaults) {
 			if value.Value != nil {
 				// Convert the Go array into a JSON array
-				json, err := json.MarshalIndent(value.Value, "", "")
+				json, err := json.MarshalIndent(value.Value, "", indent)
 				if err != nil {
 					log.Fatal(err)
 				}
 
 				// Convert the JSON array into a string
-				result = strings.Replace(string(json), "\n", " ", -1)
+				if pretty {
+					// Prettify
+					result = string(json)
+				} else {
+					// Uglify
+					result = strings.Replace(string(json), "\n", " ", -1)
+				}
 			} else {
 				result = "[]"
 			}
@@ -51,13 +64,19 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings) string {
 		if settings.Has(WithAggregateTypeDefaults) {
 			if value.Value != nil {
 				// Convert the Go map into a JSON map
-				json, err := json.MarshalIndent(value.Value, "", "")
+				json, err := json.MarshalIndent(value.Value, "", indent)
 				if err != nil {
 					log.Fatal(err)
 				}
 
 				// Convert the JSON map into a string
-				result = strings.Replace(string(json), "\n", " ", -1)
+				if pretty {
+					// Prettify
+					result = string(json)
+				} else {
+					// Uglify
+					result = strings.Replace(string(json), "\n", " ", -1)
+				}
 			} else {
 				result = "{}"
 			}

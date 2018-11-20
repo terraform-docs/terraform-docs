@@ -49,7 +49,11 @@ Description: -
 
 Type: `map`
 
-Default: `{}`
+Default:
+
+```
+{}
+```
 
 ### map-2
 
@@ -65,7 +69,15 @@ Description: It's map number one.
 
 Type: `map`
 
-Default: `{ "a": 1, "b": 2, "c": 3 }`
+Default:
+
+```
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+```
 
 ### list-3
 
@@ -73,7 +85,11 @@ Description: -
 
 Type: `list`
 
-Default: `[]`
+Default:
+
+```
+[]
+```
 
 ### list-2
 
@@ -89,7 +105,15 @@ Description: It's list number one.
 
 Type: `list`
 
-Default: `[ "a", "b", "c" ]`
+Default:
+
+```
+[
+  "a",
+  "b",
+  "c"
+]
+```
 
 ### input\_with\_underscores
 

@@ -49,7 +49,7 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	var result = "-"
 
 	if input.HasDefault() {
-		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings))
+		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))
 	}
 
 	return result

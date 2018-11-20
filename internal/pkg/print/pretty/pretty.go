@@ -44,7 +44,7 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	var result = "required"
 
 	if input.HasDefault() {
-		result = print.GetPrintableValue(input.Default, settings)
+		result = print.GetPrintableValue(input.Default, settings, false)
 	}
 
 	return result
