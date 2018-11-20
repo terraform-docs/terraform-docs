@@ -16,6 +16,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
   - Generate docs for inputs and outputs
   - Generate JSON docs (for customizing presentation)
   - Generate markdown tables of inputs and outputs
+  - Generate markdown document of inputs and outputs
 
 ## Installation
 
@@ -63,8 +64,8 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     --version                        print version
 
   Types of markdown (optional):      table will be used if not specified
-    table                            generate markdown table of document
-    document                         generate markdown document of document
+    table                            generate markdown table of inputs and outputs
+    document                         generate markdown document of inputs and outputs
 ```
 
 ## Example

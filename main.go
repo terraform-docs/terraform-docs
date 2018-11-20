@@ -56,8 +56,8 @@ const usage = `
     --version                        print version
 
   Types of markdown (optional):      table will be used if not specified
-    table                            generate markdown table of document
-    document                         generate markdown document of document
+    table                            generate markdown table of inputs and outputs
+    document                         generate markdown document of inputs and outputs
 
 `
 
