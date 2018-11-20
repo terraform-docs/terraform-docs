@@ -1,11 +1,11 @@
-package content_test
+package document_test
 
 import (
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/content"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
@@ -14,12 +14,12 @@ func TestPrint(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 	var settings settings.Settings
 
-	actual, err := content.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("content")
+	expected, err := print.ReadGoldenFile("document")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,12 +33,12 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 	var settings settings.Settings
 	settings.Add(print.WithAggregateTypeDefaults)
 
-	actual, err := content.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("content-WithAggregateTypeDefaults")
+	expected, err := print.ReadGoldenFile("document-WithAggregateTypeDefaults")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,12 +52,12 @@ func TestPrintWithRequired(t *testing.T) {
 	var settings settings.Settings
 	settings.Add(print.WithRequired)
 
-	actual, err := content.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("content-WithRequired")
+	expected, err := print.ReadGoldenFile("document-WithRequired")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -71,12 +71,12 @@ func TestPrintWithSortByName(t *testing.T) {
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)
 
-	actual, err := content.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("content-WithSortByName")
+	expected, err := print.ReadGoldenFile("document-WithSortByName")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -91,12 +91,12 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 	settings.Add(print.WithSortByName)
 	settings.Add(print.WithSortInputsByRequired)
 
-	actual, err := content.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("content-WithSortInputsByRequired")
+	expected, err := print.ReadGoldenFile("document-WithSortInputsByRequired")
 	if err != nil {
 		t.Fatal(err)
 	}
