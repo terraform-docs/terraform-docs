@@ -63,7 +63,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
-  Types of markdown (optional):
+  Types of markdown:
     document                         generate markdown document of inputs and outputs
     table                            generate markdown tables of inputs and outputs (default)
 ```
