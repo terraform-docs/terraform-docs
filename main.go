@@ -18,7 +18,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [table | document] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -55,9 +55,9 @@ const usage = `
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
-  Types of markdown (optional):      table will be used if not specified
-    table                            generate markdown table of inputs and outputs
+  Types of markdown (optional):
     document                         generate markdown document of inputs and outputs
+    table                            generate markdown tables of inputs and outputs (default)
 
 `
 

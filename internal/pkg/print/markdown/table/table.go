@@ -10,7 +10,7 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-// Print prints a document as markdown table.
+// Print prints a document as markdown tables.
 func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 

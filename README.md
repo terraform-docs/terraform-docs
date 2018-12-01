@@ -29,7 +29,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 ```bash
 
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [table | document] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -63,9 +63,9 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
-  Types of markdown (optional):      table will be used if not specified
-    table                            generate markdown table of inputs and outputs
+  Types of markdown (optional):
     document                         generate markdown document of inputs and outputs
+    table                            generate markdown tables of inputs and outputs (default)
 ```
 
 ## Example
@@ -116,7 +116,7 @@ $ terraform-docs json _example
 }
 ```
 
-To output markdown table (_Note: underscores are escaped in markdown output_):
+To output markdown tables (_Note: underscores are escaped in markdown output_):
 
 ```bash
 $ terraform-docs md table _example
