@@ -91,7 +91,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 		for _, input := range inputs {
 			if input.IsRequired() {
-				printMarkdown(buffer, input, settings)
+				printInput(buffer, input, settings)
 			}
 		}
 
@@ -101,7 +101,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 		for _, input := range inputs {
 			if !input.IsRequired() {
-				printMarkdown(buffer, input, settings)
+				printInput(buffer, input, settings)
 			}
 		}
 	} else {
@@ -109,12 +109,12 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 		buffer.WriteString("The following input variables are supported:\n")
 
 		for _, input := range inputs {
-			printMarkdown(buffer, input, settings)
+			printInput(buffer, input, settings)
 		}
 	}
 }
 
-func printMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
+func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
 	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", prepareDescriptionForMarkdown(getInputDescription(&input))))
