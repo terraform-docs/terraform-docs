@@ -7,6 +7,7 @@ import (
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
@@ -42,7 +43,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printOutputs(&buffer, document.Outputs, settings)
 	}
 
-	return buffer.String(), nil
+	return markdown.Sanitize(buffer.String()), nil
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
@@ -101,7 +102,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s | %s | %s |",
 				strings.Replace(input.Name, "_", "\\_", -1),
-				prepareDescriptionForMarkdown(getInputDescription(&input)),
+				markdown.ConvertMultiLineText(getInputDescription(&input)),
 				input.Type,
 				getInputDefaultValue(&input, settings)))
 
@@ -130,18 +131,6 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s |\n",
 				strings.Replace(output.Name, "_", "\\_", -1),
-				prepareDescriptionForMarkdown(getOutputDescription(&output))))
+				markdown.ConvertMultiLineText(getOutputDescription(&output))))
 	}
-}
-
-func prepareDescriptionForMarkdown(s string) string {
-	// Convert double newlines to <br><br>.
-	s = strings.Replace(
-		strings.TrimSpace(s),
-		"\n\n",
-		"<br><br>",
-		-1)
-
-	// Convert single newline to space.
-	return strings.Replace(s, "\n", " ", -1)
 }
