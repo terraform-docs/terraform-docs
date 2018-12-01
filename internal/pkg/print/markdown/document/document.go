@@ -89,7 +89,8 @@ func printFencedCodeBlock(code string) string {
 	buffer.WriteString("\n\n")
 	buffer.WriteString("```json\n")
 	buffer.WriteString(code)
-	buffer.WriteString("\n```")
+	buffer.WriteString("\n")
+	buffer.WriteString("```")
 	return buffer.String()
 }
 
