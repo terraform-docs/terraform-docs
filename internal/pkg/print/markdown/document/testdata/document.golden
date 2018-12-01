@@ -17,7 +17,7 @@ module "foo" {
 
 ## Inputs
 
-These variables are defined:
+The following input variables are supported:
 
 ### unquoted
 
@@ -101,7 +101,7 @@ Default: -
 
 ## Outputs
 
-The config outputs these values:
+The following outputs are exported:
 
 ### unquoted
 

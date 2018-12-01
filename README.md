@@ -146,7 +146,7 @@ This module has a variable and an output.  This text here will be output before 
 
 ## Required Inputs
 
-These variables must be set:
+The following input variables are required:
 
 ### subnet\_ids
 
@@ -156,7 +156,7 @@ Type: `string`
 
 ## Outputs
 
-The config outputs these values:
+The following outputs are exported:
 
 ### vpc\_id
 

@@ -86,7 +86,7 @@ func printComment(buffer *bytes.Buffer, comment string, settings settings.Settin
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
 	if settings.Has(print.WithRequired) {
 		buffer.WriteString("## Required Inputs\n\n")
-		buffer.WriteString("These variables must be set:\n")
+		buffer.WriteString("The following input variables are required:\n")
 
 		for _, input := range inputs {
 			if input.IsRequired() {
@@ -96,7 +96,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 		buffer.WriteString("\n")
 		buffer.WriteString("## Optional Inputs\n\n")
-		buffer.WriteString("These variables are optional with default values:\n")
+		buffer.WriteString("The following input variables are optional (have default values):\n")
 
 		for _, input := range inputs {
 			if !input.IsRequired() {
@@ -105,7 +105,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 		}
 	} else {
 		buffer.WriteString("## Inputs\n\n")
-		buffer.WriteString("These variables are defined:\n")
+		buffer.WriteString("The following input variables are supported:\n")
 
 		for _, input := range inputs {
 			printInputMarkdown(buffer, input, settings)
@@ -126,7 +126,7 @@ func printInputMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings
 
 func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
 	buffer.WriteString("## Outputs\n\n")
-	buffer.WriteString("The config outputs these values:\n")
+	buffer.WriteString("The following outputs are exported:\n")
 
 	for _, output := range outputs {
 		buffer.WriteString("\n")
