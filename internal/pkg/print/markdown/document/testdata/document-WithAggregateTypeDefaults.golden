@@ -49,7 +49,7 @@ Description: -
 
 Type: `map`
 
-Default:
+Default: 
 
 ```
 {}
@@ -69,7 +69,7 @@ Description: It's map number one.
 
 Type: `map`
 
-Default:
+Default: 
 
 ```
 {
@@ -85,7 +85,7 @@ Description: -
 
 Type: `list`
 
-Default:
+Default: 
 
 ```
 []
@@ -105,7 +105,7 @@ Description: It's list number one.
 
 Type: `list`
 
-Default:
+Default: 
 
 ```
 [

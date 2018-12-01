@@ -46,13 +46,14 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
-	var result = " -"
+	var result = "-"
 
 	if input.HasDefault() {
-		if settings.Has(print.WithAggregateTypeDefaults) && (input.Type == "list" || input.Type == "map") {
-			result = fmt.Sprintf("\n\n```\n%s\n```", print.GetPrintableValue(input.Default, settings, true))
+		if settings.Has(print.WithAggregateTypeDefaults) && input.IsAggregateType() {
+			result = fmt.Sprintf("\n\n")
+			result += fmt.Sprintf("```\n%s\n```", print.GetPrintableValue(input.Default, settings, true))
 		} else {
-			result = fmt.Sprintf(" `%s`", print.GetPrintableValue(input.Default, settings, false))
+			result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))
 		}
 	}
 
@@ -90,7 +91,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 		for _, input := range inputs {
 			if input.IsRequired() {
-				printInputMarkdown(buffer, input, settings)
+				printMarkdown(buffer, input, settings)
 			}
 		}
 
@@ -100,7 +101,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 		for _, input := range inputs {
 			if !input.IsRequired() {
-				printInputMarkdown(buffer, input, settings)
+				printMarkdown(buffer, input, settings)
 			}
 		}
 	} else {
@@ -108,19 +109,20 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 		buffer.WriteString("The following input variables are supported:\n")
 
 		for _, input := range inputs {
-			printInputMarkdown(buffer, input, settings)
+			printMarkdown(buffer, input, settings)
 		}
 	}
 }
 
-func printInputMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
+func printMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
 	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", prepareDescriptionForMarkdown(getInputDescription(&input))))
 	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
 
-	if !settings.Has(print.WithRequired) || !input.IsRequired() {
-		buffer.WriteString(fmt.Sprintf("\nDefault:%s\n", getInputDefaultValue(&input, settings)))
+	// Don't print defaults for required inputs when we're already explicit about it being required
+	if !(settings.Has(print.WithRequired) && input.IsRequired()) {
+		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
 	}
 }
 
