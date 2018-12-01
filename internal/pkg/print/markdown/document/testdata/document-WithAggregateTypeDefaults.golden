@@ -51,7 +51,7 @@ Type: `map`
 
 Default: 
 
-```
+```json
 {}
 ```
 
@@ -71,7 +71,7 @@ Type: `map`
 
 Default: 
 
-```
+```json
 {
   "a": 1,
   "b": 2,
@@ -87,7 +87,7 @@ Type: `list`
 
 Default: 
 
-```
+```json
 []
 ```
 
@@ -107,7 +107,7 @@ Type: `list`
 
 Default: 
 
-```
+```json
 [
   "a",
   "b",

@@ -86,7 +86,7 @@ func printComment(buffer *bytes.Buffer, comment string, settings settings.Settin
 func printFencedCodeBlock(code string) string {
 	var buffer bytes.Buffer
 	buffer.WriteString("\n\n")
-	buffer.WriteString("```\n")
+	buffer.WriteString("```json\n")
 	buffer.WriteString(code)
 	buffer.WriteString("\n```")
 	return buffer.String()
