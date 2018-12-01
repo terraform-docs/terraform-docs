@@ -50,8 +50,7 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 
 	if input.HasDefault() {
 		if settings.Has(print.WithAggregateTypeDefaults) && input.IsAggregateType() {
-			result = fmt.Sprintf("\n\n")
-			result += fmt.Sprintf("```\n%s\n```", print.GetPrintableValue(input.Default, settings, true))
+			result = printFencedCodeBlock(print.GetPrintableValue(input.Default, settings, true))
 		} else {
 			result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))
 		}
@@ -84,6 +83,27 @@ func printComment(buffer *bytes.Buffer, comment string, settings settings.Settin
 	buffer.WriteString(fmt.Sprintf("%s\n", comment))
 }
 
+func printFencedCodeBlock(code string) string {
+	var buffer bytes.Buffer
+	buffer.WriteString("\n\n")
+	buffer.WriteString("```\n")
+	buffer.WriteString(code)
+	buffer.WriteString("\n```")
+	return buffer.String()
+}
+
+func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
+	buffer.WriteString("\n")
+	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", prepareDescriptionForMarkdown(getInputDescription(&input))))
+	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
+
+	// Don't print defaults for required inputs when we're already explicit about it being required
+	if !(settings.Has(print.WithRequired) && input.IsRequired()) {
+		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
+	}
+}
+
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
 	if settings.Has(print.WithRequired) {
 		buffer.WriteString("## Required Inputs\n\n")
@@ -111,18 +131,6 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 		for _, input := range inputs {
 			printInput(buffer, input, settings)
 		}
-	}
-}
-
-func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
-	buffer.WriteString("\n")
-	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", prepareDescriptionForMarkdown(getInputDescription(&input))))
-	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
-
-	// Don't print defaults for required inputs when we're already explicit about it being required
-	if !(settings.Has(print.WithRequired) && input.IsRequired()) {
-		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
 	}
 }
 
