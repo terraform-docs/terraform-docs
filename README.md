@@ -4,7 +4,14 @@
 
 > **A utility to generate documentation from Terraform modules in various output formats.**
 
-<img src="https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png">
+![terraform-docs-teaser](https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png)
+
+## Table of contents
+
+- [Maintenance](#maintenance)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+- [License](#license)
 
 ## Maintenance
 
@@ -15,13 +22,13 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 The latest version can be installed using `go get`:
 
 ``` bash
-$ go get github.com/segmentio/terraform-docs
+go get github.com/segmentio/terraform-docs
 ```
 
 If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
 
 ``` bash
-$ brew install terraform-docs
+brew install terraform-docs
 ```
 
 For other platforms, please have a look at our [binary releases](https://github.com/segmentio/terraform-docs/releases).
@@ -31,25 +38,25 @@ For other platforms, please have a look at our [binary releases](https://github.
 Show help information:
 
 ``` bash
-$ terraform-docs --help
+terraform-docs --help
 ```
 
 Generate JSON from the Terraform configuration in folder `./examples`:
 
 ```bash
-$ terraform-docs json ./examples
+terraform-docs json ./examples
 ```
 
 Generate Markdown tables from the Terraform configuration in folder `./examples`:
 
 ```bash
-$ terraform-docs markdown table ./examples
+terraform-docs markdown table ./examples
 ```
 
 Generate a Markdown document from the Terraform configuration in folder `./examples`:
 
 ```bash
-$ terraform-docs markdown document ./examples
+terraform-docs markdown document ./examples
 ```
 
 ## License
