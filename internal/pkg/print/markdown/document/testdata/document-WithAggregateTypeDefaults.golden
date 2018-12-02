@@ -17,7 +17,7 @@ module "foo" {
 
 ## Inputs
 
-These variables are defined:
+The following input variables are supported:
 
 ### unquoted
 
@@ -51,7 +51,7 @@ Type: `map`
 
 Default:
 
-```
+```json
 {}
 ```
 
@@ -71,7 +71,7 @@ Type: `map`
 
 Default:
 
-```
+```json
 {
   "a": 1,
   "b": 2,
@@ -87,7 +87,7 @@ Type: `list`
 
 Default:
 
-```
+```json
 []
 ```
 
@@ -107,7 +107,7 @@ Type: `list`
 
 Default:
 
-```
+```json
 [
   "a",
   "b",
@@ -125,7 +125,7 @@ Default: -
 
 ## Outputs
 
-The config outputs these values:
+The following outputs are exported:
 
 ### unquoted
 

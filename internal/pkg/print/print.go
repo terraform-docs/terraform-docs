@@ -24,13 +24,6 @@ const (
 // GetPrintableValue returns a printable representation of a Terraform value.
 func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool) string {
 	var result string
-	var indent string
-
-	if pretty {
-		indent = "  "
-	} else {
-		indent = ""
-	}
 
 	if value == nil {
 		return ""
@@ -40,20 +33,7 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool
 	case "list":
 		if settings.Has(WithAggregateTypeDefaults) {
 			if value.Value != nil {
-				// Convert the Go array into a JSON array
-				json, err := json.MarshalIndent(value.Value, "", indent)
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				// Convert the JSON array into a string
-				if pretty {
-					// Prettify
-					result = string(json)
-				} else {
-					// Uglify
-					result = strings.Replace(string(json), "\n", " ", -1)
-				}
+				result = getFormattedJSONString(value.Value, pretty)
 			} else {
 				result = "[]"
 			}
@@ -63,20 +43,7 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool
 	case "map":
 		if settings.Has(WithAggregateTypeDefaults) {
 			if value.Value != nil {
-				// Convert the Go map into a JSON map
-				json, err := json.MarshalIndent(value.Value, "", indent)
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				// Convert the JSON map into a string
-				if pretty {
-					// Prettify
-					result = string(json)
-				} else {
-					// Uglify
-					result = strings.Replace(string(json), "\n", " ", -1)
-				}
+				result = getFormattedJSONString(value.Value, pretty)
 			} else {
 				result = "{}"
 			}
@@ -88,4 +55,30 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool
 	}
 
 	return result
+}
+
+func getFormattedJSONString(value interface{}, pretty bool) string {
+	if pretty {
+		return getMultiLineJSONString(value)
+	} else {
+		return getSingleLineJSONString(value)
+	}
+}
+
+func getMultiLineJSONString(value interface{}) string {
+	buffer, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return string(buffer)
+}
+
+func getSingleLineJSONString(value interface{}) string {
+	buffer, err := json.MarshalIndent(value, "", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return strings.Replace(string(buffer), "\n", " ", -1)
 }

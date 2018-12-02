@@ -7,6 +7,7 @@ import (
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
@@ -42,17 +43,17 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printOutputs(&buffer, document.Outputs, settings)
 	}
 
-	return buffer.String(), nil
+	return markdown.Sanitize(buffer.String()), nil
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
-	var result = " -"
+	var result = "-"
 
 	if input.HasDefault() {
-		if settings.Has(print.WithAggregateTypeDefaults) && (input.Type == "list" || input.Type == "map") {
-			result = fmt.Sprintf("\n\n```\n%s\n```", print.GetPrintableValue(input.Default, settings, true))
+		if settings.Has(print.WithAggregateTypeDefaults) && input.IsAggregateType() {
+			result = printFencedCodeBlock(print.GetPrintableValue(input.Default, settings, true))
 		} else {
-			result = fmt.Sprintf(" `%s`", print.GetPrintableValue(input.Default, settings, false))
+			result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))
 		}
 	}
 
@@ -83,66 +84,65 @@ func printComment(buffer *bytes.Buffer, comment string, settings settings.Settin
 	buffer.WriteString(fmt.Sprintf("%s\n", comment))
 }
 
+func printFencedCodeBlock(code string) string {
+	var buffer bytes.Buffer
+	buffer.WriteString("\n\n")
+	buffer.WriteString("```json\n")
+	buffer.WriteString(code)
+	buffer.WriteString("\n")
+	buffer.WriteString("```")
+	return buffer.String()
+}
+
+func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
+	buffer.WriteString("\n")
+	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.ConvertMultiLineText(getInputDescription(&input))))
+	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
+
+	// Don't print defaults for required inputs when we're already explicit about it being required
+	if !(settings.Has(print.WithRequired) && input.IsRequired()) {
+		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
+	}
+}
+
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
 	if settings.Has(print.WithRequired) {
 		buffer.WriteString("## Required Inputs\n\n")
-		buffer.WriteString("These variables must be set:\n")
+		buffer.WriteString("The following input variables are required:\n")
 
 		for _, input := range inputs {
 			if input.IsRequired() {
-				printInputMarkdown(buffer, input, settings)
+				printInput(buffer, input, settings)
 			}
 		}
 
 		buffer.WriteString("\n")
 		buffer.WriteString("## Optional Inputs\n\n")
-		buffer.WriteString("These variables are optional with default values:\n")
+		buffer.WriteString("The following input variables are optional (have default values):\n")
 
 		for _, input := range inputs {
 			if !input.IsRequired() {
-				printInputMarkdown(buffer, input, settings)
+				printInput(buffer, input, settings)
 			}
 		}
 	} else {
 		buffer.WriteString("## Inputs\n\n")
-		buffer.WriteString("These variables are defined:\n")
+		buffer.WriteString("The following input variables are supported:\n")
 
 		for _, input := range inputs {
-			printInputMarkdown(buffer, input, settings)
+			printInput(buffer, input, settings)
 		}
-	}
-}
-
-func printInputMarkdown(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
-	buffer.WriteString("\n")
-	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", prepareDescriptionForMarkdown(getInputDescription(&input))))
-	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
-
-	if !settings.Has(print.WithRequired) || !input.IsRequired() {
-		buffer.WriteString(fmt.Sprintf("\nDefault:%s\n", getInputDefaultValue(&input, settings)))
 	}
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
 	buffer.WriteString("## Outputs\n\n")
-	buffer.WriteString("The config outputs these values:\n")
+	buffer.WriteString("The following outputs are exported:\n")
 
 	for _, output := range outputs {
 		buffer.WriteString("\n")
 		buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(output.Name, "_", "\\_", -1)))
-		buffer.WriteString(fmt.Sprintf("Description: %s\n", prepareDescriptionForMarkdown(getOutputDescription(&output))))
+		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.ConvertMultiLineText(getOutputDescription(&output))))
 	}
-}
-
-func prepareDescriptionForMarkdown(s string) string {
-	// Convert double newlines to <br><br>.
-	s = strings.Replace(
-		strings.TrimSpace(s),
-		"\n\n",
-		"<br><br>",
-		-1)
-
-	// Convert single newline to space.
-	return strings.Replace(s, "\n", " ", -1)
 }

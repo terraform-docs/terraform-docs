@@ -17,7 +17,7 @@ module "foo" {
 
 ## Required Inputs
 
-These variables must be set:
+The following input variables are required:
 
 ### unquoted
 
@@ -51,7 +51,7 @@ Type: `string`
 
 ## Optional Inputs
 
-These variables are optional with default values:
+The following input variables are optional (have default values):
 
 ### string-1
 
@@ -95,7 +95,7 @@ Default: `<list>`
 
 ## Outputs
 
-The config outputs these values:
+The following outputs are exported:
 
 ### unquoted
 
