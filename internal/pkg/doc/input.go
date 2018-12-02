@@ -25,6 +25,11 @@ func (i *Input) HasDescription() bool {
 	return i.Description != ""
 }
 
+// IsAggregateType indicates if a Terraform input is an aggregate type.
+func (i *Input) IsAggregateType() bool {
+	return i.Type == "list" || i.Type == "map"
+}
+
 // IsOptional indicates if a Terraform input is optional.
 func (i *Input) IsOptional() bool {
 	return i.HasDefault()

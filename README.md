@@ -16,6 +16,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
   - Generate docs for inputs and outputs
   - Generate JSON docs (for customizing presentation)
   - Generate markdown tables of inputs and outputs
+  - Generate markdown document of inputs and outputs
 
 ## Installation
 
@@ -28,7 +29,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 ```bash
 
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -45,6 +46,12 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     # Generate markdown tables of inputs and outputs
     $ terraform-docs md ./my-module
 
+    # Generate markdown tables of inputs and outputs
+    $ terraform-docs md table ./my-module
+
+    # Generate markdown document of inputs and outputs
+    $ terraform-docs md document ./my-module
+
     # Generate markdown tables of inputs and outputs for the given module and ../config.tf
     $ terraform-docs md ./my-module ../config.tf
 
@@ -56,6 +63,9 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
+  Types of markdown:
+    document                         generate markdown document of inputs and outputs
+    table                            generate markdown tables of inputs and outputs (default)
 ```
 
 ## Example
@@ -106,24 +116,51 @@ $ terraform-docs json _example
 }
 ```
 
-To output markdown docs (_Note: underscores are escaped in markdown output_):
+To output markdown tables (_Note: underscores are escaped in markdown output_):
 
 ```bash
-$ terraform-docs md _example
+$ terraform-docs md table _example
 This module has a variable and an output.  This text here will be output before any inputs or outputs!
 
 
 ## Inputs
 
-| Name | Description | Default | Required |
-|------|-------------|:-----:|:-----:|
-| subnet\_ids | a comma-separated list of subnet IDs | - | yes |
+| Name | Description | Type |Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| subnet\_ids | a comma-separated list of subnet IDs | string | - | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | vpc\_id | The VPC ID. |
+
+```
+
+To output markdown document (_Note: underscores are escaped in markdown output_):
+
+```bash
+$ terraform-docs md document _example
+This module has a variable and an output.  This text here will be output before any inputs or outputs!
+
+
+## Required Inputs
+
+The following input variables are required:
+
+### subnet\_ids
+
+Description: a comma-separated list of subnet IDs
+
+Type: `string`
+
+## Outputs
+
+The following outputs are exported:
+
+### vpc\_id
+
+Description: The VPC ID.
 
 ```
 

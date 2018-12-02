@@ -8,7 +8,8 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
+	markdown_document "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
+	markdown_table "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
@@ -17,7 +18,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -34,6 +35,12 @@ const usage = `
     # Generate markdown tables of inputs and outputs
     $ terraform-docs md ./my-module
 
+    # Generate markdown tables of inputs and outputs
+    $ terraform-docs md table ./my-module
+
+    # Generate markdown document of inputs and outputs
+    $ terraform-docs md document ./my-module
+
     # Generate markdown tables of inputs and outputs, but don't print "Required" column
     $ terraform-docs --no-required md ./my-module
 
@@ -47,6 +54,10 @@ const usage = `
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
+
+  Types of markdown:
+    document                         generate markdown document of inputs and outputs
+    table                            generate markdown tables of inputs and outputs (default)
 
 `
 
@@ -83,10 +94,12 @@ func main() {
 	var out string
 
 	switch {
-	case args["markdown"].(bool):
-		out, err = markdown.Print(document, printSettings)
-	case args["md"].(bool):
-		out, err = markdown.Print(document, printSettings)
+	case args["markdown"].(bool), args["md"].(bool):
+		if args["document"].(bool) {
+			out, err = markdown_document.Print(document, printSettings)
+		} else {
+			out, err = markdown_table.Print(document, printSettings)
+		}
 	case args["json"].(bool):
 		out, err = json.Print(document, printSettings)
 	default:
