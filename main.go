@@ -32,32 +32,32 @@ const usage = `
     # Generate a JSON of inputs and outputs
     $ terraform-docs json ./my-module
 
-    # Generate markdown tables of inputs and outputs
+    # Generate Markdown tables of inputs and outputs
     $ terraform-docs md ./my-module
 
-    # Generate markdown tables of inputs and outputs
+    # Generate Markdown tables of inputs and outputs
     $ terraform-docs md table ./my-module
 
-    # Generate markdown document of inputs and outputs
+    # Generate Markdown document of inputs and outputs
     $ terraform-docs md document ./my-module
 
-    # Generate markdown tables of inputs and outputs, but don't print "Required" column
+    # Generate Markdown tables of inputs and outputs, but don't print "Required" column
     $ terraform-docs --no-required md ./my-module
 
-    # Generate markdown tables of inputs and outputs for the given module and ../config.tf
+    # Generate Markdown tables of inputs and outputs for the given module and ../config.tf
     $ terraform-docs md ./my-module ../config.tf
 
   Options:
     -h, --help                       show help information
-    --no-required                    omit "Required" column when generating markdown
+    --no-required                    omit "Required" column when generating Markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
 
-  Types of markdown:
-    document                         generate markdown document of inputs and outputs
-    table                            generate markdown tables of inputs and outputs (default)
+  Types of Markdown:
+    document                         generate Markdown document of inputs and outputs
+    table                            generate Markdown tables of inputs and outputs (default)
 
 `
 

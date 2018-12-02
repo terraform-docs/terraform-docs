@@ -11,7 +11,7 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-// Print prints a document as markdown document.
+// Print prints a document as Markdown document.
 func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
