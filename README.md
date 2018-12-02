@@ -6,6 +6,13 @@
 
 ![terraform-docs-teaser](https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png)
 
+## Table of contents
+
+- [Maintenance](#maintenance)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+- [License](#license)
+
 ## Maintenance
 
 This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer), unaffiliated with Segment, from [GetCloudnative](https://github.com/getcloudnative), is maintaining the project with help from these awesome [contributors](AUTHORS).
