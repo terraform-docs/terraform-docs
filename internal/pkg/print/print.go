@@ -60,9 +60,9 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool
 func getFormattedJSONString(value interface{}, pretty bool) string {
 	if pretty {
 		return getMultiLineJSONString(value)
-	} else {
-		return getSingleLineJSONString(value)
 	}
+
+	return getSingleLineJSONString(value)
 }
 
 func getMultiLineJSONString(value interface{}) string {
