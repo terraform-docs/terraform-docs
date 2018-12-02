@@ -1,167 +1,55 @@
-## terraform-docs
+# terraform-docs
 
-[![CircleCI](https://circleci.com/gh/segmentio/terraform-docs.svg?style=svg)](https://circleci.com/gh/segmentio/terraform-docs)
+[![CircleCI](https://circleci.com/gh/segmentio/terraform-docs.svg?style=svg)](https://circleci.com/gh/segmentio/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/terraform-docs)](https://goreportcard.com/report/github.com/segmentio/terraform-docs)
 
-A utility to generate documentation from Terraform modules.
+> **A utility to generate documentation from Terraform modules in various output formats.**
 
-<img width="1284" alt="screen shot 2016-06-14 at 5 38 37 pm" src="https://cloud.githubusercontent.com/assets/1661587/16049202/1ad63c16-3257-11e6-9e2c-6bb83e684ba4.png">
+<img src="https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png">
 
 ## Maintenance
 
 This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer), unaffiliated with Segment, from [GetCloudnative](https://github.com/getcloudnative), is maintaining the project with help from these awesome [contributors](AUTHORS).
 
-## Features
-
-  - View docs for inputs and outputs
-  - Generate docs for inputs and outputs
-  - Generate JSON docs (for customizing presentation)
-  - Generate Markdown document of inputs and outputs
-  - Generate Markdown tables of inputs and outputs
-
 ## Installation
 
-  - `go get github.com/segmentio/terraform-docs`
-  - [Binaries](https://github.com/segmentio/terraform-docs/releases)
-  - `brew install terraform-docs` (on macOS)
+The latest version can be installed using `go get`:
 
-## Usage
-
-```bash
-
-  Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
-    terraform-docs -h | --help
-
-  Examples:
-
-    # View inputs and outputs
-    $ terraform-docs ./my-module
-
-    # View inputs and outputs for variables.tf and outputs.tf only
-    $ terraform-docs variables.tf outputs.tf
-
-    # Generate a JSON of inputs and outputs
-    $ terraform-docs json ./my-module
-
-    # Generate Markdown tables of inputs and outputs
-    $ terraform-docs md ./my-module
-
-    # Generate Markdown tables of inputs and outputs
-    $ terraform-docs md table ./my-module
-
-    # Generate Markdown document of inputs and outputs
-    $ terraform-docs md document ./my-module
-
-    # Generate Markdown tables of inputs and outputs for the given module and ../config.tf
-    $ terraform-docs md ./my-module ../config.tf
-
-  Options:
-    -h, --help                       show help information
-    --no-required                    omit "Required" column when generating Markdown
-    --no-sort                        omit sorted rendering of inputs and ouputs
-    --sort-inputs-by-required        sort inputs by name and prints required inputs first
-    --with-aggregate-type-defaults   print default values of aggregate types
-    --version                        print version
-
-  Types of Markdown:
-    document                         generate Markdown document of inputs and outputs
-    table                            generate Markdown tables of inputs and outputs (default)
+``` bash
+$ go get github.com/segmentio/terraform-docs
 ```
 
-## Example
+If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
 
-Given a simple module at `./_example`:
-
-```tf
-/**
- * This module has a variable and an output.  This text here will be output before any inputs or outputs!
- */
-
-variable "subnet_ids" {
-  description = "a comma-separated list of subnet IDs"
-}
-
-// The VPC ID.
-output "vpc_id" {
-  value = "vpc-5c1f55fd"
-}
-
+``` bash
+$ brew install terraform-docs
 ```
 
-To view docs:
+For other platforms, please have a look at our [binary releases](https://github.com/segmentio/terraform-docs/releases).
 
-```bash
-$ terraform-docs _example
+## Getting Started
+
+Show help information:
+
+``` bash
+$ terraform-docs --help
 ```
 
-To output JSON docs:
+Generate JSON from the Terraform configuration in folder `./examples`:
 
 ```bash
-$ terraform-docs json _example
-{
-  "Comment": "This module has a variable and an output.  This text here will be output before any inputs or outputs!\n",
-  "Inputs": [
-    {
-      "Name": "subnet_ids",
-      "Description": "a comma-separated list of subnet IDs",
-      "Default": ""
-    }
-  ],
-  "Outputs": [
-    {
-      "Name": "vpc_id",
-      "Description": "The VPC ID.\n"
-    }
-  ]
-}
+$ terraform-docs json ./examples
 ```
 
-To output markdown tables (_Note: underscores are escaped in markdown output_):
+Generate Markdown tables from the Terraform configuration in folder `./examples`:
 
 ```bash
-$ terraform-docs md table _example
-This module has a variable and an output.  This text here will be output before any inputs or outputs!
-
-
-## Inputs
-
-| Name | Description | Type |Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| subnet\_ids | a comma-separated list of subnet IDs | string | - | yes |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| vpc\_id | The VPC ID. |
-
+$ terraform-docs markdown table ./examples
 ```
 
-To output markdown document (_Note: underscores are escaped in markdown output_):
+Generate a Markdown document from the Terraform configuration in folder `./examples`:
 
 ```bash
-$ terraform-docs md document _example
-This module has a variable and an output.  This text here will be output before any inputs or outputs!
-
-
-## Required Inputs
-
-The following input variables are required:
-
-### subnet\_ids
-
-Description: a comma-separated list of subnet IDs
-
-Type: `string`
-
-## Outputs
-
-The following outputs are exported:
-
-### vpc\_id
-
-Description: The VPC ID.
-
+$ terraform-docs markdown document ./examples
 ```
 
 ## License
