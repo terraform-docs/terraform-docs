@@ -4,7 +4,7 @@
 
 > **A utility to generate documentation from Terraform modules in various output formats.**
 
-<img src="https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png">
+![terraform-docs-teaser](https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png)
 
 ## Maintenance
 
