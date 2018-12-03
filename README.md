@@ -6,7 +6,7 @@
 
 ![terraform-docs-teaser](https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png)
 
-## Table of contents
+## Table of Contents
 
 - [Maintenance](#maintenance)
 - [Installation](#installation)
