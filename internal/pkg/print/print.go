@@ -22,7 +22,7 @@ const (
 )
 
 // GetPrintableValue returns a printable representation of a Terraform value.
-func GetPrintableValue(value *doc.Value, settings settings.Settings) string {
+func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool) string {
 	var result string
 
 	if value == nil {
@@ -33,14 +33,7 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings) string {
 	case "list":
 		if settings.Has(WithAggregateTypeDefaults) {
 			if value.Value != nil {
-				// Convert the Go array into a JSON array
-				json, err := json.MarshalIndent(value.Value, "", "")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				// Convert the JSON array into a string
-				result = strings.Replace(string(json), "\n", " ", -1)
+				result = getFormattedJSONString(value.Value, pretty)
 			} else {
 				result = "[]"
 			}
@@ -50,14 +43,7 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings) string {
 	case "map":
 		if settings.Has(WithAggregateTypeDefaults) {
 			if value.Value != nil {
-				// Convert the Go map into a JSON map
-				json, err := json.MarshalIndent(value.Value, "", "")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				// Convert the JSON map into a string
-				result = strings.Replace(string(json), "\n", " ", -1)
+				result = getFormattedJSONString(value.Value, pretty)
 			} else {
 				result = "{}"
 			}
@@ -69,4 +55,30 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings) string {
 	}
 
 	return result
+}
+
+func getFormattedJSONString(value interface{}, pretty bool) string {
+	if pretty {
+		return getMultiLineJSONString(value)
+	}
+
+	return getSingleLineJSONString(value)
+}
+
+func getMultiLineJSONString(value interface{}) string {
+	buffer, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return string(buffer)
+}
+
+func getSingleLineJSONString(value interface{}) string {
+	buffer, err := json.MarshalIndent(value, "", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return strings.Replace(string(buffer), "\n", " ", -1)
 }

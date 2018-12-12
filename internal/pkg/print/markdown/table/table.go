@@ -1,15 +1,17 @@
-package pretty
+package table
 
 import (
 	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-// Print prints a pretty document.
+// Print prints a document as Markdown tables.
 func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
@@ -34,17 +36,21 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 			doc.SortOutputsByName(document.Outputs)
 		}
 
+		if document.HasInputs() {
+			buffer.WriteString("\n")
+		}
+
 		printOutputs(&buffer, document.Outputs, settings)
 	}
 
-	return buffer.String(), nil
+	return markdown.Sanitize(buffer.String()), nil
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
-	var result = "required"
+	var result = "-"
 
 	if input.HasDefault() {
-		result = print.GetPrintableValue(input.Default, settings, false)
+		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))
 	}
 
 	return result
@@ -71,37 +77,60 @@ func getOutputDescription(output *doc.Output) string {
 }
 
 func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
-	buffer.WriteString(fmt.Sprintf("\n%s\n", comment))
+	buffer.WriteString(fmt.Sprintf("%s\n", comment))
 }
 
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
-	buffer.WriteString("\n")
+	buffer.WriteString("## Inputs\n\n")
+	buffer.WriteString("| Name | Description | Type | Default |")
 
-	for _, input := range inputs {
-		format := "  \033[36mvar.%s\033[0m (%s)\n  \033[90m%s\033[0m\n\n"
-		buffer.WriteString(
-			fmt.Sprintf(
-				format,
-				input.Name,
-				getInputDefaultValue(&input, settings),
-				getInputDescription(&input)))
+	if settings.Has(print.WithRequired) {
+		buffer.WriteString(" Required |\n")
+	} else {
+		buffer.WriteString("\n")
 	}
 
-	buffer.WriteString("\n")
+	buffer.WriteString("|------|-------------|:----:|:-----:|")
+
+	if settings.Has(print.WithRequired) {
+		buffer.WriteString(":-----:|\n")
+	} else {
+		buffer.WriteString("\n")
+	}
+
+	for _, input := range inputs {
+		buffer.WriteString(
+			fmt.Sprintf("| %s | %s | %s | %s |",
+				strings.Replace(input.Name, "_", "\\_", -1),
+				markdown.ConvertMultiLineText(getInputDescription(&input)),
+				input.Type,
+				getInputDefaultValue(&input, settings)))
+
+		if settings.Has(print.WithRequired) {
+			buffer.WriteString(fmt.Sprintf(" %v |\n", printIsInputRequired(&input)))
+		} else {
+			buffer.WriteString("\n")
+		}
+	}
+}
+
+func printIsInputRequired(input *doc.Input) string {
+	if input.IsRequired() {
+		return "yes"
+	}
+
+	return "no"
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
-	buffer.WriteString("\n")
+	buffer.WriteString("## Outputs\n\n")
+	buffer.WriteString("| Name | Description |\n")
+	buffer.WriteString("|------|-------------|\n")
 
 	for _, output := range outputs {
-		format := "  \033[36moutput.%s\033[0m\n  \033[90m%s\033[0m\n\n"
-
 		buffer.WriteString(
-			fmt.Sprintf(
-				format,
-				output.Name,
-				getOutputDescription(&output)))
+			fmt.Sprintf("| %s | %s |\n",
+				strings.Replace(output.Name, "_", "\\_", -1),
+				markdown.ConvertMultiLineText(getOutputDescription(&output))))
 	}
-
-	buffer.WriteString("\n")
 }

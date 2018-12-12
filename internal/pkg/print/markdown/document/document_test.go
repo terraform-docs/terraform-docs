@@ -1,25 +1,25 @@
-package markdown_test
+package document_test
 
 import (
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPrint(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "../..")
 	var settings settings.Settings
 
-	actual, err := markdown.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("markdown")
+	expected, err := print.ReadGoldenFile("document")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,17 +28,17 @@ func TestPrint(t *testing.T) {
 }
 
 func TestWithAggregateTypeDefaults(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "../..")
 
 	var settings settings.Settings
 	settings.Add(print.WithAggregateTypeDefaults)
 
-	actual, err := markdown.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("markdown-WithAggregateTypeDefaults")
+	expected, err := print.ReadGoldenFile("document-WithAggregateTypeDefaults")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,17 +47,17 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 }
 
 func TestPrintWithRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "../..")
 
 	var settings settings.Settings
 	settings.Add(print.WithRequired)
 
-	actual, err := markdown.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("markdown-WithRequired")
+	expected, err := print.ReadGoldenFile("document-WithRequired")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,17 +66,17 @@ func TestPrintWithRequired(t *testing.T) {
 }
 
 func TestPrintWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "../..")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)
 
-	actual, err := markdown.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("markdown-WithSortByName")
+	expected, err := print.ReadGoldenFile("document-WithSortByName")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,18 +85,18 @@ func TestPrintWithSortByName(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	doc := doc.TestDoc(t, "../..")
 
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)
 	settings.Add(print.WithSortInputsByRequired)
 
-	actual, err := markdown.Print(doc, settings)
+	actual, err := document.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("markdown-WithSortInputsByRequired")
+	expected, err := print.ReadGoldenFile("document-WithSortInputsByRequired")
 	if err != nil {
 		t.Fatal(err)
 	}

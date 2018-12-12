@@ -28,6 +28,7 @@ module "foo" {
 | list-3 | - | list | `<list>` | no |
 | list-2 | It's list number two. | list | - | yes |
 | list-1 | It's list number one. | list | `<list>` | no |
+| input\_with\_underscores | A variable with underscores. | string | - | yes |
 
 ## Outputs
 

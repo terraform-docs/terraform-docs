@@ -18,6 +18,13 @@
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:289fa52f4d9e9c817a003324bc14e9339b996dbe02b9f6cfc57a9383e5365287"
+  name = "github.com/docopt/docopt.go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ee0de3bc6815ee19d4a46c7eb90f829db0e014b1"
+
+[[projects]]
   digest = "1:c0d19ab64b32ce9fe5cf4ddceba78d5bc9807f0016db6b1183599da3dcc24d10"
   name = "github.com/hashicorp/hcl"
   packages = [
@@ -60,25 +67,17 @@
   revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
   version = "v1.2.2"
 
-[[projects]]
-  digest = "1:5198ae017f3c145a90a2d11cd3ea079c83e1c37cc68af44c8fa5bee201f51ab4"
-  name = "github.com/tj/docopt"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "c8470e45692f168e8b380c5d625327e756d7d0a9"
-  version = "v1.0.0"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/buger/jsonparser",
+    "github.com/docopt/docopt.go",
     "github.com/hashicorp/hcl",
     "github.com/hashicorp/hcl/hcl/ast",
     "github.com/hashicorp/hcl/hcl/printer",
     "github.com/mitchellh/go-testing-interface",
     "github.com/stretchr/testify/assert",
-    "github.com/tj/docopt",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -48,5 +48,5 @@ func absPath(relative string) (string, error) {
 }
 
 func testDataPath(path string) string {
-	return filepath.Join(path, "..", "doc", "testdata")
+	return filepath.Join(path, "..", "..", "..", "examples")
 }

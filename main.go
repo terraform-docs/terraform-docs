@@ -4,20 +4,21 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/docopt/docopt.go"
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
+	markdown_document "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
+	markdown_table "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
-	"github.com/tj/docopt"
 )
 
 var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -31,22 +32,32 @@ const usage = `
     # Generate a JSON of inputs and outputs
     $ terraform-docs json ./my-module
 
-    # Generate markdown tables of inputs and outputs
+    # Generate Markdown tables of inputs and outputs
     $ terraform-docs md ./my-module
 
-    # Generate markdown tables of inputs and outputs, but don't print "Required" column
+    # Generate Markdown tables of inputs and outputs
+    $ terraform-docs md table ./my-module
+
+    # Generate Markdown document of inputs and outputs
+    $ terraform-docs md document ./my-module
+
+    # Generate Markdown tables of inputs and outputs, but don't print "Required" column
     $ terraform-docs --no-required md ./my-module
 
-    # Generate markdown tables of inputs and outputs for the given module and ../config.tf
+    # Generate Markdown tables of inputs and outputs for the given module and ../config.tf
     $ terraform-docs md ./my-module ../config.tf
 
   Options:
     -h, --help                       show help information
-    --no-required                    omit "Required" column when generating markdown
+    --no-required                    omit "Required" column when generating Markdown
     --no-sort                        omit sorted rendering of inputs and ouputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
+
+  Types of Markdown:
+    document                         generate Markdown document of inputs and outputs
+    table                            generate Markdown tables of inputs and outputs (default)
 
 `
 
@@ -83,10 +94,12 @@ func main() {
 	var out string
 
 	switch {
-	case args["markdown"].(bool):
-		out, err = markdown.Print(document, printSettings)
-	case args["md"].(bool):
-		out, err = markdown.Print(document, printSettings)
+	case args["markdown"].(bool), args["md"].(bool):
+		if args["document"].(bool) {
+			out, err = markdown_document.Print(document, printSettings)
+		} else {
+			out, err = markdown_table.Print(document, printSettings)
+		}
 	case args["json"].(bool):
 		out, err = json.Print(document, printSettings)
 	default:
