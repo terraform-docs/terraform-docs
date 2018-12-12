@@ -50,26 +50,6 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	return result
 }
 
-func getInputDescription(input *doc.Input) string {
-	var result = "-"
-
-	if input.HasDescription() {
-		result = input.Description
-	}
-
-	return result
-}
-
-func getOutputDescription(output *doc.Output) string {
-	var result = "-"
-
-	if output.HasDescription() {
-		result = output.Description
-	}
-
-	return result
-}
-
 func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
 	buffer.WriteString(fmt.Sprintf("\n%s\n", comment))
 }
@@ -84,7 +64,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 				format,
 				input.Name,
 				getInputDefaultValue(&input, settings),
-				getInputDescription(&input)))
+				input.Description))
 	}
 
 	buffer.WriteString("\n")
@@ -100,7 +80,7 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 			fmt.Sprintf(
 				format,
 				output.Name,
-				getOutputDescription(&output)))
+				output.Description))
 	}
 
 	buffer.WriteString("\n")

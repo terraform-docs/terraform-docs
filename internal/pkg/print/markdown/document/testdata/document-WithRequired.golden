@@ -21,7 +21,7 @@ The following input variables are required:
 
 ### unquoted
 
-Description: -
+Description:
 
 Type: `string`
 
@@ -63,7 +63,7 @@ Default: `bar`
 
 ### map-3
 
-Description: -
+Description:
 
 Type: `map`
 
@@ -79,7 +79,7 @@ Default: `<map>`
 
 ### list-3
 
-Description: -
+Description:
 
 Type: `list`
 
