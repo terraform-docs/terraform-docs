@@ -25,7 +25,7 @@ Description: A variable with underscores.
 
 Type: `string`
 
-Default: -
+Default: n/a
 
 ### list-1
 
@@ -41,7 +41,7 @@ Description: It's list number two.
 
 Type: `list`
 
-Default: -
+Default: n/a
 
 ### list-3
 
@@ -65,7 +65,7 @@ Description: It's map number two.
 
 Type: `map`
 
-Default: -
+Default: n/a
 
 ### map-3
 
@@ -89,7 +89,7 @@ Description: It's string number two.
 
 Type: `string`
 
-Default: -
+Default: n/a
 
 ### unquoted
 
@@ -97,7 +97,7 @@ Description:
 
 Type: `string`
 
-Default: -
+Default: n/a
 
 ## Outputs
 
