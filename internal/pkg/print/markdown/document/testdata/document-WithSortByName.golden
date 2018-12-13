@@ -81,7 +81,7 @@ Description: It's string number one.
 
 Type: `string`
 
-Default: `bar`
+Default: `"bar"`
 
 ### string-2
 
@@ -90,6 +90,14 @@ Description: It's string number two.
 Type: `string`
 
 Default: n/a
+
+### string-3
+
+Description:
+
+Type: `string`
+
+Default: `""`
 
 ### unquoted
 

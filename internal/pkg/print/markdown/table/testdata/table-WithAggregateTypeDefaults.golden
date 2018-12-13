@@ -20,8 +20,9 @@ module "foo" {
 | Name | Description | Type | Default |
 |------|-------------|:----:|:-----:|
 | unquoted |  | string | n/a |
+| string-3 |  | string | `""` |
 | string-2 | It's string number two. | string | n/a |
-| string-1 | It's string number one. | string | `bar` |
+| string-1 | It's string number one. | string | `"bar"` |
 | map-3 |  | map | `{}` |
 | map-2 | It's map number two. | map | n/a |
 | map-1 | It's map number one. | map | `{ "a": 1, "b": 2, "c": 3 }` |

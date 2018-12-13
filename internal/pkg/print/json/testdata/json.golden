@@ -8,6 +8,15 @@
       "Type": "string"
     },
     {
+      "Name": "string-3",
+      "Description": "",
+      "Default": {
+        "Type": "string",
+        "Value": ""
+      },
+      "Type": "string"
+    },
+    {
       "Name": "string-2",
       "Description": "It's string number two.",
       "Default": null,

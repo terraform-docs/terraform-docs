@@ -97,7 +97,15 @@ Description: It's string number one.
 
 Type: `string`
 
-Default: `bar`
+Default: `"bar"`
+
+### string-3
+
+Description:
+
+Type: `string`
+
+Default: `""`
 
 ## Outputs
 

@@ -1,5 +1,9 @@
 variable unquoted {}
 
+variable "string-3" {
+  default = ""
+}
+
 variable "string-2" {
   description = "It's string number two."
   type        = "string"

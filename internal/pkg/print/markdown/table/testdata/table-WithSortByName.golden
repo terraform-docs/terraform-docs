@@ -26,8 +26,9 @@ module "foo" {
 | map-1 | It's map number one. | map | `<map>` |
 | map-2 | It's map number two. | map | n/a |
 | map-3 |  | map | `<map>` |
-| string-1 | It's string number one. | string | `bar` |
+| string-1 | It's string number one. | string | `"bar"` |
 | string-2 | It's string number two. | string | n/a |
+| string-3 |  | string | `""` |
 | unquoted |  | string | n/a |
 
 ## Outputs

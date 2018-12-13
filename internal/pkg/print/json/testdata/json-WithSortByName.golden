@@ -79,6 +79,15 @@
       "Type": "string"
     },
     {
+      "Name": "string-3",
+      "Description": "",
+      "Default": {
+        "Type": "string",
+        "Value": ""
+      },
+      "Type": "string"
+    },
+    {
       "Name": "unquoted",
       "Description": "",
       "Default": null,

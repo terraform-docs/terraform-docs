@@ -27,6 +27,14 @@ Type: `string`
 
 Default: n/a
 
+### string-3
+
+Description:
+
+Type: `string`
+
+Default: `""`
+
 ### string-2
 
 Description: It's string number two.
@@ -41,7 +49,7 @@ Description: It's string number one.
 
 Type: `string`
 
-Default: `bar`
+Default: `"bar"`
 
 ### map-3
 

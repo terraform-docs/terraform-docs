@@ -28,7 +28,8 @@ module "foo" {
 | list-3 |  | list | `<list>` |
 | map-1 | It's map number one. | map | `<map>` |
 | map-3 |  | map | `<map>` |
-| string-1 | It's string number one. | string | `bar` |
+| string-1 | It's string number one. | string | `"bar"` |
+| string-3 |  | string | `""` |
 
 ## Outputs
 
