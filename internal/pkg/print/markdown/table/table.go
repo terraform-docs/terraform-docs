@@ -47,7 +47,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
-	var result = "-"
+	var result = "n/a"
 
 	if input.HasDefault() {
 		result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))

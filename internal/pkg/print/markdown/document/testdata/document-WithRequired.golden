@@ -53,13 +53,21 @@ Type: `string`
 
 The following input variables are optional (have default values):
 
+### string-3
+
+Description:
+
+Type: `string`
+
+Default: `""`
+
 ### string-1
 
 Description: It's string number one.
 
 Type: `string`
 
-Default: `bar`
+Default: `"bar"`
 
 ### map-3
 
