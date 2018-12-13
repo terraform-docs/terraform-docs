@@ -19,16 +19,17 @@ module "foo" {
 
 | Name | Description | Type | Default |
 |------|-------------|:----:|:-----:|
-| unquoted |  | string | - |
-| string-2 | It's string number two. | string | - |
-| string-1 | It's string number one. | string | `bar` |
+| unquoted |  | string | n/a |
+| string-3 |  | string | `""` |
+| string-2 | It's string number two. | string | n/a |
+| string-1 | It's string number one. | string | `"bar"` |
 | map-3 |  | map | `{}` |
-| map-2 | It's map number two. | map | - |
+| map-2 | It's map number two. | map | n/a |
 | map-1 | It's map number one. | map | `{ "a": 1, "b": 2, "c": 3 }` |
 | list-3 |  | list | `[]` |
-| list-2 | It's list number two. | list | - |
+| list-2 | It's list number two. | list | n/a |
 | list-1 | It's list number one. | list | `[ "a", "b", "c" ]` |
-| input\_with\_underscores | A variable with underscores. | string | - |
+| input\_with\_underscores | A variable with underscores. | string | n/a |
 
 ## Outputs
 

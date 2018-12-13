@@ -29,29 +29,22 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool
 		return ""
 	}
 
-	switch value.Type {
-	case "list":
+	if value.IsAggregateType() {
 		if settings.Has(WithAggregateTypeDefaults) {
-			if value.Value != nil {
-				result = getFormattedJSONString(value.Value, pretty)
+			if value.Value == nil {
+				if value.Type == "list" {
+					result = "[]"
+				} else if value.Type == "map" {
+					result = "{}"
+				}
 			} else {
-				result = "[]"
+				result = getFormattedJSONString(value.Value, pretty)
 			}
 		} else {
-			result = "<list>"
+			result = "<" + value.Type + ">"
 		}
-	case "map":
-		if settings.Has(WithAggregateTypeDefaults) {
-			if value.Value != nil {
-				result = getFormattedJSONString(value.Value, pretty)
-			} else {
-				result = "{}"
-			}
-		} else {
-			result = "<map>"
-		}
-	case "string":
-		result = value.Value.(string)
+	} else {
+		result = getFormattedJSONString(value.Value, pretty)
 	}
 
 	return result
