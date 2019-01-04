@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-  - image: golang:1.10.3
+  - image: golang:1.11.4
   working_directory: /go/src/github.com/segmentio/terraform-docs
 
 version: 2
@@ -19,8 +19,7 @@ jobs:
     steps:
     - restore_cache:
         key: repo-{{ .Environment.CIRCLE_SHA1 }}
-    - run: export DEP_RELEASE_TAG=v0.5.0; curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    - run: dep status
+    - run: GO111MODULE=on go mod verify
 
   lint:
     <<: *defaults
