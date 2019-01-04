@@ -4,6 +4,7 @@ Put an `x` into the box(es) that apply:
 
 - [ ] This pull request fixes a bug.
 - [ ] This pull request adds a feature.
+- [ ] This pull request enhances existing functionality.
 - [ ] This pull request introduces breaking change.
 
 For more information, see the [Contributing Guide](https://github.com/segmentio/terraform-docs/tree/master/CONTRIBUTING.md).
