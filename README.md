@@ -11,6 +11,7 @@
 - [Maintenance](#maintenance)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
+- [Development Requirements](#dev-requirements)
 - [License](#license)
 
 ## Maintenance
