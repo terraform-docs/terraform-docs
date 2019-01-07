@@ -59,6 +59,10 @@ Generate a Markdown document from the Terraform configuration in folder `./examp
 terraform-docs markdown document ./examples
 ```
 
+## Development Requirements
+
+- **Go** 1.11+
+
 ## License
 
 MIT License
