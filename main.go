@@ -50,7 +50,7 @@ const usage = `
   Options:
     -h, --help                       show help information
     --no-required                    omit "Required" column when generating Markdown
-    --no-sort                        omit sorted rendering of inputs and ouputs
+    --no-sort                        omit sorted rendering of inputs and outputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
     --version                        print version
