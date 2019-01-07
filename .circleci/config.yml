@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-  - image: golang:1.11.4
+  - image: golang:1.11
   working_directory: /go/src/github.com/segmentio/terraform-docs
 
 version: 2
