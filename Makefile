@@ -39,7 +39,7 @@ clean:
 
 .PHONY: lint
 lint:
-	gometalinter --config gometalinter.json ./...
+	golangci-lint run ./...
 
 .PHONY: deps
 deps:
