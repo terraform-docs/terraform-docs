@@ -39,11 +39,11 @@ clean:
 
 .PHONY: lint
 lint:
-	gometalinter --config gometalinter.json ./...
+	golangci-lint run ./...
 
 .PHONY: deps
 deps:
-	dep ensure
+	GO111MODULE=on go mod vendor
 
 .PHONY: release
 release:

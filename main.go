@@ -62,7 +62,13 @@ const usage = `
 `
 
 func main() {
-	args, err := docopt.Parse(usage, nil, true, version, true)
+	parser := &docopt.Parser{
+		HelpHandler: docopt.PrintHelpAndExit,
+		OptionsFirst: true,
+		SkipHelpFlags: false,
+	}
+
+	args, err := parser.ParseArgs(usage, nil, version)
 	if err != nil {
 		log.Fatal(err)
 	}
