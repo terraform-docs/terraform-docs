@@ -1,6 +1,10 @@
+# CHANGELOG
+
 <a name="unreleased"></a>
 ## [Unreleased]
 
+- Complete development requirements documentation.
+- Configure git-chglog to not show git merge commit messages.
 - Add Changelog generation via git-chglog. ([#104](https://github.com/segmentio/terraform-docs/issues/104))
 - Remove occurrence of gometalinter from CircleCI config.
 - Replace dep with Go Modules ([#100](https://github.com/segmentio/terraform-docs/issues/100))
