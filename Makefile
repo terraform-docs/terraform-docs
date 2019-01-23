@@ -37,13 +37,17 @@ build-windows-amd64:
 clean:
 	rm -rf ./bin
 
-.PHONY: lint
-lint:
-	golangci-lint run ./...
+.PHONY: changelog
+changelog:
+	git-chglog -o CHANGELOG.md
 
 .PHONY: deps
 deps:
 	GO111MODULE=on go mod vendor
+
+.PHONY: lint
+lint:
+	golangci-lint run ./...
 
 .PHONY: release
 release:
