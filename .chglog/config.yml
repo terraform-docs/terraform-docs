@@ -1,0 +1,10 @@
+style: github
+template: CHANGELOG.tpl.md
+info:
+  title: CHANGELOG
+  repository_url: https://github.com/segmentio/terraform-docs
+options:
+  header:
+    pattern: "^(.*)$"
+    pattern_maps:
+      - Subject
