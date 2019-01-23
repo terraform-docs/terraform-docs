@@ -62,7 +62,9 @@ terraform-docs markdown document ./examples
 
 ## Development Requirements
 
-- **Go** 1.11+
+- Go 1.11+
+- [git-chlog](https://github.com/git-chglog/git-chglog)
+- [golangci-lint](https://github.com/golangci/golangci-lint)
 
 ## License
 
