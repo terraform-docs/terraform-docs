@@ -23,8 +23,6 @@ jobs:
 
   lint:
     <<: *defaults
-    docker:
-    - image: quay.io/kubermatic/gometalinter:latest
     steps:
     - restore_cache:
         key: repo-{{ .Environment.CIRCLE_SHA1 }}
