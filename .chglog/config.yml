@@ -8,3 +8,6 @@ options:
     pattern: "^(.*)$"
     pattern_maps:
       - Subject
+  notes:
+    keywords:
+      - BREAKING CHANGE

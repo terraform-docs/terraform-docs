@@ -1,30 +1,13 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
-- Merge remote-tracking branch 'upstream/master'
+- Add Changelog generation via git-chglog. ([#104](https://github.com/segmentio/terraform-docs/issues/104))
 - Remove occurrence of gometalinter from CircleCI config.
 - Replace dep with Go Modules ([#100](https://github.com/segmentio/terraform-docs/issues/100))
 - Replace gometalinter with golangci-lint. ([#103](https://github.com/segmentio/terraform-docs/issues/103))
-- Merge remote-tracking branch 'upstream/master'
 - Add 'enhancement' section to pull request template ([#101](https://github.com/segmentio/terraform-docs/issues/101))
 - Fix typo in options documentation ([#98](https://github.com/segmentio/terraform-docs/issues/98))
 - Bump Homebrew formula to 0.6.0.
-- Merge remote-tracking branch 'upstream/master'
-- Merge remote-tracking branch 'upstream/master'
-- Merge remote-tracking branch 'upstream/master'
-- Merge remote-tracking branch 'upstream/master'
-- Merge remote-tracking branch 'upstream/master'
-- Merge remote-tracking branch 'upstream/master'
-- Merge with segmentio/terraform-docs.
-- Merge pull request [#4](https://github.com/segmentio/terraform-docs/issues/4) from faulkner/type-inference
-- Add support for type inference
-- Merge pull request [#3](https://github.com/segmentio/terraform-docs/issues/3) from getcloudnative/extract-default-values
-- Fix printing of '-' for required variables.
-- Merge pull request [#2](https://github.com/segmentio/terraform-docs/issues/2) from getcloudnative/extract-default-values
-- Literal types remain unquoted in pretty presentation. Simplify code.
-- Rewrite go imports to point to getcloudnative/terraform-docs.
-- Merge pull request [#1](https://github.com/segmentio/terraform-docs/issues/1) from getcloudnative/extract-default-values
-- Add support for default values for variable types list and map. Default values are presented as JSON.
 
 
 <a name="v0.6.0"></a>
