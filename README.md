@@ -11,6 +11,7 @@
 - [Maintenance](#maintenance)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
+- [Development Requirements](#development-requirements)
 - [License](#license)
 
 ## Maintenance
@@ -58,6 +59,10 @@ Generate a Markdown document from the Terraform configuration in folder `./examp
 ```bash
 terraform-docs markdown document ./examples
 ```
+
+## Development Requirements
+
+- **Go** 1.11+
 
 ## License
 
