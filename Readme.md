@@ -44,15 +44,16 @@ Examples:
   $ terraform-docs md ./my-module ../config.tf
 
 Options:
-  -i, --inputs             Render only inputs
-  -o, --outputs            Render only outputs
-  -d, --detailed           Render detailed value for <list> and <map>
-  -c, --color              Force rendering of color even if the output is redirected or piped
-  -C, --no-color           Do not use color to render the result
-  -R, --no-required        Do not output "Required" column
-  -O, --out-values=<file>  File used to get output values (result of 'terraform output -json' or 'terraform plan -out file')
-  -v, --var-file=<file>... Files used to assign values to terraform variables (HCL format)
-  -h, --help               Show help information
+  -i,  --inputs             Render only inputs
+  -o,  --outputs            Render only outputs
+  -t,  --terraform-output	  Render outputs in terraform output format
+  -d,  --detailed           Render detailed value for <list> and <map>
+  -c,  --color              Force rendering of color even if the output is redirected or piped
+  -C,  --no-color           Do not use color to render the result
+  -R,  --no-required        Do not output "Required" column
+  -O,  --out-values=<file>  File used to get output values (result of 'terraform output -json' or 'terraform plan -out file')
+  -v,  --var-file=<file>... Files used to assign values to terraform variables (HCL format)
+  -h,  --help               Show help information
 ```
 
 ## Example
