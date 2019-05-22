@@ -107,5 +107,27 @@
       "Name": "unquoted",
       "Description": "It's unquoted output."
     }
+  ],
+  "Modules": [
+    {
+      "Name": "module-with-both-descriptions",
+      "Description": "Direct description",
+      "Source": "../path/to/module/4"
+    },
+    {
+      "Name": "module-with-description",
+      "Description": "Direct description",
+      "Source": "../path/to/module/2"
+    },
+    {
+      "Name": "module-with-description-in-comment",
+      "Description": "Description in comment",
+      "Source": "../path/to/module/3"
+    },
+    {
+      "Name": "module-without-description",
+      "Description": "",
+      "Source": "../path/to/module/1"
+    }
   ]
 }

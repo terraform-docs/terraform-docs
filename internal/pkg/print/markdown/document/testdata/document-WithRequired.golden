@@ -101,6 +101,14 @@ Type: `list`
 
 Default: `<list>`
 
+## Modules
+
+The following modules are referenced:
+ - [module-without-description](../path/to/module/1/readme.md)
+ - [module-with-description](../path/to/module/2/readme.md) (*Direct description*)
+ - [module-with-description-in-comment](../path/to/module/3/readme.md) (*Description in comment*)
+ - [module-with-both-descriptions](../path/to/module/4/readme.md) (*Direct description*)
+
 ## Outputs
 
 The following outputs are exported:

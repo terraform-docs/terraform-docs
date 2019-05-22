@@ -31,6 +31,15 @@ module "foo" {
 | list-1 | It's list number one. | list | `<list>` | no |
 | input\_with\_underscores | A variable with underscores. | string | n/a | yes |
 
+## Modules
+
+| Name | Source | Description |
+|------|--------|-------------|
+| module-without-description | [../path/to/module/1](../path/to/module/1/readme.md) |  |
+| module-with-description | [../path/to/module/2](../path/to/module/2/readme.md) | Direct description |
+| module-with-description-in-comment | [../path/to/module/3](../path/to/module/3/readme.md) | Description in comment |
+| module-with-both-descriptions | [../path/to/module/4](../path/to/module/4/readme.md) | Direct description |
+
 ## Outputs
 
 | Name | Description |

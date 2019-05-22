@@ -108,6 +108,6 @@ func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.
 				description,
 				module.Source,
 			))
-		buffer.WriteString("\n")
 	}
+	buffer.WriteString("\n")
 }

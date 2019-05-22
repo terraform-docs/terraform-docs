@@ -76,6 +76,19 @@ func TestPretty(t *testing.T) {
 			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "module.module-without-description" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "../path/to/module/1" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/2" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description-in-comment" + sgr_reset + " (Description in comment)\n" +
+			"  " + sgr_color_2 + "../path/to/module/3" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-both-descriptions" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/4" + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
@@ -157,6 +170,19 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
 			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-without-description" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "../path/to/module/1" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/2" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description-in-comment" + sgr_reset + " (Description in comment)\n" +
+			"  " + sgr_color_2 + "../path/to/module/3" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-both-descriptions" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/4" + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +
@@ -242,6 +268,19 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "module.module-with-both-descriptions" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/4" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/2" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description-in-comment" + sgr_reset + " (Description in comment)\n" +
+			"  " + sgr_color_2 + "../path/to/module/3" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-without-description" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "../path/to/module/1" + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
@@ -324,6 +363,19 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "var.string-3" + sgr_reset + " (\"\")\n" +
 			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-both-descriptions" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/4" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description" + sgr_reset + " (Direct description)\n" +
+			"  " + sgr_color_2 + "../path/to/module/2" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-with-description-in-comment" + sgr_reset + " (Description in comment)\n" +
+			"  " + sgr_color_2 + "../path/to/module/3" + sgr_reset + "\n" +
+			"\n" +
+			"  " + sgr_color_1 + "module.module-without-description" + sgr_reset + "\n" +
+			"  " + sgr_color_2 + "../path/to/module/1" + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +

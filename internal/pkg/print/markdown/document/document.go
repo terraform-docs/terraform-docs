@@ -36,6 +36,10 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 			doc.SortModulesByName(document.Modules)
 		}
 
+		if document.HasInputs() {
+			buffer.WriteString("\n")
+		}
+
 		printModules(&buffer, document.Modules, settings)
 	}
 
@@ -44,7 +48,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 			doc.SortOutputsByName(document.Outputs)
 		}
 
-		if document.HasInputs() {
+		if document.HasModules() || document.HasInputs() {
 			buffer.WriteString("\n")
 		}
 
