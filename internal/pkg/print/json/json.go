@@ -25,6 +25,12 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		}
 	}
 
+	if document.HasModules() {
+		if settings.Has(print.WithSortByName) {
+			doc.SortModulesByName(document.Modules)
+		}
+	}
+
 	if document.HasOutputs() {
 		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)
