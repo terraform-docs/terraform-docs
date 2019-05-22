@@ -125,6 +125,29 @@ var outputUnquoted = doc.Output{
 	Description: "It's unquoted output.",
 }
 
+var moduleWithoutDescription = doc.Module{
+	Name:   "module-without-description",
+	Source: "../path/to/module/1",
+}
+
+var moduleWithDescription = doc.Module{
+	Name:        "module-with-description",
+	Source:      "../path/to/module/2",
+	Description: "Direct description",
+}
+
+var moduleWithDescriptionInComment = doc.Module{
+	Name:        "module-with-description-in-comment",
+	Source:      "../path/to/module/3",
+	Description: "Description in comment",
+}
+
+var moduleWithBothDescriptions = doc.Module{
+	Name:        "module-with-both-descriptions",
+	Source:      "../path/to/module/4",
+	Description: "Direct description",
+}
+
 func TestComment(t *testing.T) {
 	actual := doc.TestDoc(t, ".").Comment
 
@@ -315,4 +338,15 @@ func TestOutputsFromOutputsTf(t *testing.T) {
 func TestOutputsFromVariablesTf(t *testing.T) {
 	actual := doc.TestDocFromFile(t, ".", "variables.tf").Outputs
 	assert.Equal(t, 0, len(actual))
+}
+
+func TestModulesFromModulesTf(t *testing.T) {
+	actual := doc.TestDocFromFile(t, ".", "modules.tf").Modules
+	expected := []doc.Module{
+		moduleWithoutDescription,
+		moduleWithDescription,
+		moduleWithDescriptionInComment,
+		moduleWithBothDescriptions,
+	}
+	assert.Equal(t, expected, actual)
 }
