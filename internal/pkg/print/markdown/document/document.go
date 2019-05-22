@@ -31,6 +31,14 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printInputs(&buffer, document.Inputs, settings)
 	}
 
+	if document.HasModules() {
+		if settings.Has(print.WithSortByName) {
+			doc.SortModulesByName(document.Modules)
+		}
+
+		printModules(&buffer, document.Modules, settings)
+	}
+
 	if document.HasOutputs() {
 		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)
@@ -124,5 +132,18 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 		buffer.WriteString("\n")
 		buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(output.Name, "_", "\\_", -1)))
 		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.ConvertMultiLineText(output.Description)))
+	}
+}
+
+func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
+	buffer.WriteString("## Modules\n\n")
+	buffer.WriteString("The following modules are referenced:\n")
+
+	for _, module := range modules {
+		buffer.WriteString(fmt.Sprintf(" - [%s](%s/readme.md)", strings.Replace(module.Name, "_", "\\_", -1), module.Source))
+		if module.HasDescription() {
+			buffer.WriteString(fmt.Sprintf(" (*%s*)", markdown.ConvertMultiLineText(module.Description)))
+		}
+		buffer.WriteString("\n")
 	}
 }

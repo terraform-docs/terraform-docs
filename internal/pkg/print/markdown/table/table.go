@@ -31,12 +31,24 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printInputs(&buffer, document.Inputs, settings)
 	}
 
+	if document.HasModules() {
+		if settings.Has(print.WithSortByName) {
+			doc.SortModulesByName(document.Modules)
+		}
+
+		if document.HasInputs() {
+			buffer.WriteString("\n")
+		}
+
+		printModules(&buffer, document.Modules, settings)
+	}
+
 	if document.HasOutputs() {
 		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)
 		}
 
-		if document.HasInputs() {
+		if document.HasModules() || document.HasInputs() {
 			buffer.WriteString("\n")
 		}
 
@@ -112,5 +124,18 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 			fmt.Sprintf("| %s | %s |\n",
 				strings.Replace(output.Name, "_", "\\_", -1),
 				markdown.ConvertMultiLineText(output.Description)))
+	}
+}
+
+func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
+	buffer.WriteString("## Modules\n\n")
+	buffer.WriteString("| Name | Source | Description |\n")
+	buffer.WriteString("|------|--------|-------------|\n")
+
+	for _, module := range modules {
+		buffer.WriteString(fmt.Sprintf("| %s ", strings.Replace(module.Name, "_", "\\_", -1)))
+		buffer.WriteString(fmt.Sprintf("| [%s](%s/readme.md) ", module.Source, module.Source))
+		buffer.WriteString(fmt.Sprintf("| %s ", module.Description))
+		buffer.WriteString("|\n")
 	}
 }
