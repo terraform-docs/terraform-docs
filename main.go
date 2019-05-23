@@ -18,7 +18,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [--links-to-modules <link-filename>] [json | markdown | md] [document | table] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -53,6 +53,7 @@ const usage = `
     --no-sort                        omit sorted rendering of inputs and outputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
+		--links-to-modules <filename>		 in markdown will print links to modules documentation as links, filename is name of markdown files to links to
     --version                        print version
 
   Types of Markdown:
@@ -62,9 +63,11 @@ const usage = `
 `
 
 func main() {
+	fmt.Println()
+
 	parser := &docopt.Parser{
-		HelpHandler: docopt.PrintHelpAndExit,
-		OptionsFirst: true,
+		HelpHandler:   docopt.PrintHelpAndExit,
+		OptionsFirst:  true,
 		SkipHelpFlags: false,
 	}
 
@@ -80,7 +83,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var printSettings settings.Settings
+	printSettings := settings.Settings{
+		Values: map[settings.Setting]string{
+			// default value for documentation readme file
+			print.ModuleDocumentationFileName: "documentation",
+		},
+	}
+
 	if !args["--no-required"].(bool) {
 		printSettings.Add(print.WithRequired)
 	}
@@ -95,6 +104,14 @@ func main() {
 
 	if args["--with-aggregate-type-defaults"].(bool) {
 		printSettings.Add(print.WithAggregateTypeDefaults)
+	}
+
+	if args["--links-to-modules"] != nil {
+		if !args["markdown"].(bool) && !args["md"].(bool) {
+			log.Fatal("parameter '--links-to-modules' is valid only when 'markdown' or 'md' is supplied")
+		}
+		printSettings.Add(print.WithLinksToModules)
+		printSettings.Set(print.ModuleDocumentationFileName, args["--links-to-modules"].(string))
 	}
 
 	var out string

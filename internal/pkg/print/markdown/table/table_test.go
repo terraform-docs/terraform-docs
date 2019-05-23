@@ -12,7 +12,7 @@ import (
 
 func TestPrint(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -30,8 +30,9 @@ func TestPrint(t *testing.T) {
 func TestWithAggregateTypeDefaults(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithAggregateTypeDefaults)
+	settings.Add(print.WithLinksToModules)
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -49,8 +50,9 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 func TestPrintWithRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithRequired)
+	settings.Add(print.WithLinksToModules)
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -68,8 +70,9 @@ func TestPrintWithRequired(t *testing.T) {
 func TestPrintWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithSortByName)
+	settings.Add(print.WithLinksToModules)
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -87,9 +90,10 @@ func TestPrintWithSortByName(t *testing.T) {
 func TestPrintWithSortInputsByRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithSortByName)
 	settings.Add(print.WithSortInputsByRequired)
+	settings.Add(print.WithLinksToModules)
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {

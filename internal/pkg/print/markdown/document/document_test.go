@@ -30,7 +30,8 @@ func TestPrint(t *testing.T) {
 func TestWithAggregateTypeDefaults(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithLinksToModules)
 	settings.Add(print.WithAggregateTypeDefaults)
 
 	actual, err := document.Print(doc, settings)
@@ -49,7 +50,8 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 func TestPrintWithRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithLinksToModules)
 	settings.Add(print.WithRequired)
 
 	actual, err := document.Print(doc, settings)
@@ -68,7 +70,8 @@ func TestPrintWithRequired(t *testing.T) {
 func TestPrintWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithLinksToModules)
 	settings.Add(print.WithSortByName)
 
 	actual, err := document.Print(doc, settings)
@@ -87,7 +90,8 @@ func TestPrintWithSortByName(t *testing.T) {
 func TestPrintWithSortInputsByRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithLinksToModules)
 	settings.Add(print.WithSortByName)
 	settings.Add(print.WithSortInputsByRequired)
 

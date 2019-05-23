@@ -134,7 +134,11 @@ func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.
 
 	for _, module := range modules {
 		buffer.WriteString(fmt.Sprintf("| %s ", strings.Replace(module.Name, "_", "\\_", -1)))
-		buffer.WriteString(fmt.Sprintf("| [%s](%s/readme.md) ", module.Source, module.Source))
+		if settings.Has(print.WithLinksToModules) {
+			buffer.WriteString(fmt.Sprintf("| [%s](%s/%s.md) ", module.Source, module.Source, settings.Get(print.ModuleDocumentationFileName)))
+		} else {
+			buffer.WriteString(fmt.Sprintf("| %s ", module.Source))
+		}
 		buffer.WriteString(fmt.Sprintf("| %s ", module.Description))
 		buffer.WriteString("|\n")
 	}

@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	_ settings.Setting = iota
+	_ settings.Flag = iota
 	A
 	B
 	C

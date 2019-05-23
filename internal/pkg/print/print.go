@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	_ settings.Setting = iota
+	_ settings.Flag = iota
 	// WithAggregateTypeDefaults prints defaults of aggregate type inputs
 	WithAggregateTypeDefaults
 	// WithRequired prints if inputs are required
@@ -19,6 +19,11 @@ const (
 	WithSortByName
 	// WithSortInputsByRequired sorts inputs by name and prints required inputs first
 	WithSortInputsByRequired
+	// WithLinksToModules will add links to nested modules documentation into markdown output
+	WithLinksToModules
+
+	// ModuleDocumentationFileName holds filename to which should links to modules point
+	ModuleDocumentationFileName = "documentation_file_name"
 )
 
 // GetPrintableValue returns a printable representation of a Terraform value.
