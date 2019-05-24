@@ -148,6 +148,23 @@ var moduleWithBothDescriptions = doc.Module{
 	Description: "Direct description",
 }
 
+var resourceWithStaticCount = doc.Resource{
+	Name:        "resource_with_static_count",
+	Type:        "azurerm_resource_group",
+	Description: "Description from comment",
+}
+
+var resourceWithDynamicCount = doc.Resource{
+	Name:        "resource_with_dynamic_count",
+	Type:        "azurerm_resource_group",
+	Description: "Description from comment",
+}
+
+var resourceWithoutCount = doc.Resource{
+	Name: "resource_without_count",
+	Type: "azurerm_resource_group",
+}
+
 func TestComment(t *testing.T) {
 	actual := doc.TestDoc(t, ".").Comment
 
@@ -347,6 +364,16 @@ func TestModulesFromModulesTf(t *testing.T) {
 		moduleWithDescription,
 		moduleWithDescriptionInComment,
 		moduleWithBothDescriptions,
+	}
+	assert.Equal(t, expected, actual)
+}
+
+func TestResourcesFromResourcesTf(t *testing.T) {
+	actual := doc.TestDocFromFile(t, ".", "resources.tf").Resources
+	expected := []doc.Resource{
+		resourceWithStaticCount,
+		resourceWithDynamicCount,
+		resourceWithoutCount,
 	}
 	assert.Equal(t, expected, actual)
 }

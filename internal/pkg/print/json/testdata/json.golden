@@ -129,5 +129,22 @@
       "Description": "Direct description",
       "Source": "../path/to/module/4"
     }
+  ],
+  "Resources": [
+    {
+      "Name": "resource_with_static_count",
+      "Description": "Description from comment",
+      "Type": "azurerm_resource_group"
+    },
+    {
+      "Name": "resource_with_dynamic_count",
+      "Description": "Description from comment",
+      "Type": "azurerm_resource_group"
+    },
+    {
+      "Name": "resource_without_count",
+      "Description": "",
+      "Type": "azurerm_resource_group"
+    }
   ]
 }

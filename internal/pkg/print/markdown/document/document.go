@@ -43,6 +43,18 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printModules(&buffer, document.Modules, settings)
 	}
 
+	if document.HasResources() {
+		if settings.Has(print.WithSortByName) {
+			doc.SortResourcesByName(document.Resources)
+		}
+
+		if document.HasInputs() {
+			buffer.WriteString("\n")
+		}
+
+		printResources(&buffer, document.Resources, settings)
+	}
+
 	if document.HasOutputs() {
 		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)
@@ -151,6 +163,19 @@ func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.
 		}
 		if module.HasDescription() {
 			buffer.WriteString(fmt.Sprintf(" (*%s*)", markdown.ConvertMultiLineText(module.Description)))
+		}
+		buffer.WriteString("\n")
+	}
+}
+
+func printResources(buffer *bytes.Buffer, resources []doc.Resource, settings settings.Settings) {
+	buffer.WriteString("## Resources\n\n")
+	buffer.WriteString("The following resources are created:\n")
+
+	for _, resource := range resources {
+		buffer.WriteString(fmt.Sprintf("- %s [`%s`](https://www.terraform.io/docs/providers/%s/r/%s.html) ", resource.Name, resource.Type, resource.Type.Provider(), resource.Type.Name()))
+		if resource.HasDescription() {
+			buffer.WriteString(fmt.Sprintf(" (*%s*)", markdown.ConvertMultiLineText(resource.Description)))
 		}
 		buffer.WriteString("\n")
 	}

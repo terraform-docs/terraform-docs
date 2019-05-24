@@ -16,10 +16,11 @@ import (
 
 // Doc represents a Terraform module.
 type Doc struct {
-	Comment string
-	Inputs  []Input
-	Outputs []Output
-	Modules []Module
+	Comment   string
+	Inputs    []Input
+	Outputs   []Output
+	Modules   []Module
+	Resources []Resource
 }
 
 // HasComment indicates if the document has a comment.
@@ -40,6 +41,11 @@ func (d *Doc) HasOutputs() bool {
 // HasModules indicates if the document has modules.
 func (d *Doc) HasModules() bool {
 	return len(d.Modules) > 0
+}
+
+// HasModules indicates if the document has resources.
+func (d *Doc) HasResources() bool {
+	return len(d.Resources) > 0
 }
 
 // Value represents a Terraform value.
@@ -101,6 +107,7 @@ func Create(files map[string]*ast.File) *Doc {
 		doc.Inputs = append(doc.Inputs, getInputs(objects)...)
 		doc.Outputs = append(doc.Outputs, getOutputs(objects)...)
 		doc.Modules = append(doc.Modules, getModules(objects)...)
+		doc.Resources = append(doc.Resources, getResources(objects)...)
 
 		filename := filepath.Base(name)
 		comments := file.Comments
@@ -163,6 +170,23 @@ func getModules(list *ast.ObjectList) []Module {
 	return result
 }
 
+// getOutputs returns a list of resources from an ast.ObjectList.
+func getResources(list *ast.ObjectList) []Resource {
+	var result []Resource
+
+	for _, item := range list.Items {
+		if isItemOfKindResource(item) {
+			result = append(result, Resource{
+				Name:        getResourceName(item),
+				Description: getItemDescription(item),
+				Type:        getResourceType(item),
+			})
+		}
+	}
+
+	return result
+}
+
 func getItemByKey(items []*ast.ObjectItem, key string) *Value {
 	for _, item := range items {
 		if isItemOfKind(item, key) {
@@ -217,6 +241,24 @@ func getItemDefault(item *ast.ObjectItem) *Value {
 func getItemSource(item *ast.ObjectItem) string {
 	items := item.Val.(*ast.ObjectType).List.Items
 	return getItemByKey(items, "source").Value.(string)
+}
+
+func getResourceName(item *ast.ObjectItem) string {
+	resourceName, err := strconv.Unquote(item.Keys[2].Token.Text)
+	if err != nil {
+		resourceName = item.Keys[2].Token.Text
+	}
+
+	return resourceName
+}
+
+func getResourceType(item *ast.ObjectItem) ResourceType {
+	resourceType, err := strconv.Unquote(item.Keys[1].Token.Text)
+	if err != nil {
+		resourceType = item.Keys[1].Token.Text
+	}
+
+	return ResourceType(resourceType)
 }
 
 func getItemDescription(item *ast.ObjectItem) string {
@@ -298,6 +340,10 @@ func isItemOfKindVariable(item *ast.ObjectItem) bool {
 
 func isItemOfKindModule(item *ast.ObjectItem) bool {
 	return isItemOfKind(item, "module")
+}
+
+func isItemOfKindResource(item *ast.ObjectItem) bool {
+	return isItemOfKind(item, "resource")
 }
 
 // Header returns the header comment from the list
