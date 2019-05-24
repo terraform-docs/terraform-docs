@@ -31,6 +31,12 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		}
 	}
 
+	if document.HasResources() {
+		if settings.Has(print.WithSortByName) {
+			doc.SortResourcesByName(document.Resources)
+		}
+	}
+
 	if document.HasOutputs() {
 		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)

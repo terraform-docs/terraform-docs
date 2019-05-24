@@ -37,6 +37,14 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printModules(&buffer, document.Modules, settings)
 	}
 
+	if document.HasResources() {
+		if settings.Has(print.WithSortByName) {
+			doc.SortResourcesByName(document.Resources)
+		}
+
+		printResources(&buffer, document.Resources, settings)
+	}
+
 	if document.HasOutputs() {
 		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)
@@ -107,6 +115,24 @@ func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.
 				module.Name,
 				description,
 				module.Source,
+			))
+	}
+	buffer.WriteString("\n")
+}
+
+func printResources(buffer *bytes.Buffer, resources []doc.Resource, settings settings.Settings) {
+	for _, resource := range resources {
+		format := "  \033[36mresource.%s.%s\033[0m%s\n\n"
+		description := ""
+		if resource.HasDescription() {
+			description = fmt.Sprintf(" (%s)", resource.Description)
+		}
+		buffer.WriteString(
+			fmt.Sprintf(
+				format,
+				resource.Type,
+				resource.Name,
+				description,
 			))
 	}
 	buffer.WriteString("\n")

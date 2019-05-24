@@ -89,6 +89,13 @@ func TestPretty(t *testing.T) {
 			"  " + sgr_color_2 + "../path/to/module/4" + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_static_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_dynamic_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_without_count" + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
@@ -183,6 +190,13 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "module.module-with-both-descriptions" + sgr_reset + " (Direct description)\n" +
 			"  " + sgr_color_2 + "../path/to/module/4" + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_static_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_dynamic_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_without_count" + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +
@@ -281,6 +295,13 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"  " + sgr_color_2 + "../path/to/module/1" + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_dynamic_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_static_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_without_count" + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
 			"\n" +
 			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
@@ -376,6 +397,13 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 			"\n" +
 			"  " + sgr_color_1 + "module.module-without-description" + sgr_reset + "\n" +
 			"  " + sgr_color_2 + "../path/to/module/1" + sgr_reset + "\n" +
+			"\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_dynamic_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_with_static_count" + sgr_reset + " (Description from comment)\n" +
+			"\n" +
+			"  " + sgr_color_1 + "resource.azurerm_resource_group.resource_without_count" + sgr_reset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +

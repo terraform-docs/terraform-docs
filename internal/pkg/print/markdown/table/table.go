@@ -43,6 +43,18 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 		printModules(&buffer, document.Modules, settings)
 	}
 
+	if document.HasResources() {
+		if settings.Has(print.WithSortByName) {
+			doc.SortResourcesByName(document.Resources)
+		}
+
+		if document.HasInputs() {
+			buffer.WriteString("\n")
+		}
+
+		printResources(&buffer, document.Resources, settings)
+	}
+
 	if document.HasOutputs() {
 		if settings.Has(print.WithSortByName) {
 			doc.SortOutputsByName(document.Outputs)
@@ -140,6 +152,19 @@ func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.
 			buffer.WriteString(fmt.Sprintf("| %s ", module.Source))
 		}
 		buffer.WriteString(fmt.Sprintf("| %s ", module.Description))
+		buffer.WriteString("|\n")
+	}
+}
+
+func printResources(buffer *bytes.Buffer, resources []doc.Resource, settings settings.Settings) {
+	buffer.WriteString("## Resources\n\n")
+	buffer.WriteString("| Name | Type | Description |\n")
+	buffer.WriteString("|------|------|-------------|\n")
+
+	for _, resource := range resources {
+		buffer.WriteString(fmt.Sprintf("| %s ", strings.Replace(resource.Name, "_", "\\_", -1)))
+		buffer.WriteString(fmt.Sprintf("| [%s](https://www.terraform.io/docs/providers/%s/r/%s.html) ", resource.Type, resource.Type.Provider(), resource.Type.Name()))
+		buffer.WriteString(fmt.Sprintf("| %s ", resource.Description))
 		buffer.WriteString("|\n")
 	}
 }

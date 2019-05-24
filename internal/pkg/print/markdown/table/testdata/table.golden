@@ -40,6 +40,14 @@ module "foo" {
 | module-with-description-in-comment | ../path/to/module/3 | Description in comment |
 | module-with-both-descriptions | ../path/to/module/4 | Direct description |
 
+## Resources
+
+| Name | Type | Description |
+|------|------|-------------|
+| resource\_with\_static\_count | [azurerm_resource_group](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html) | Description from comment |
+| resource\_with\_dynamic\_count | [azurerm_resource_group](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html) | Description from comment |
+| resource\_without\_count | [azurerm_resource_group](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html) |  |
+
 ## Outputs
 
 | Name | Description |
