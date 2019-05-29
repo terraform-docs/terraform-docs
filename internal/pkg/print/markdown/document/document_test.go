@@ -14,7 +14,7 @@ func TestPrint(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 	var settings settings.Settings
 
-	actual, err := document.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 	settings.Add(print.WithLinksToModules)
 	settings.Add(print.WithAggregateTypeDefaults)
 
-	actual, err := document.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,12 +54,70 @@ func TestPrintWithRequired(t *testing.T) {
 	settings.Add(print.WithLinksToModules)
 	settings.Add(print.WithRequired)
 
-	actual, err := document.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	expected, err := print.ReadGoldenFile("document-WithRequired")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithModules(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithModules)
+
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("document-WithModules")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithModulesWithLinks(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithModules)
+	settings.Add(print.WithLinksToModules)
+
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("document-WithLinksToModules")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithResources(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithResources)
+
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("document-WithResources")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +132,7 @@ func TestPrintWithSortByName(t *testing.T) {
 	settings.Add(print.WithLinksToModules)
 	settings.Add(print.WithSortByName)
 
-	actual, err := document.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -95,7 +153,7 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 	settings.Add(print.WithSortByName)
 	settings.Add(print.WithSortInputsByRequired)
 
-	actual, err := document.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: document.MarkdownDocument{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}

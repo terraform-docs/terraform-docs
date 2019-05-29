@@ -14,7 +14,7 @@ func TestPrint(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 
-	actual, err := table.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,9 +32,8 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 
 	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithAggregateTypeDefaults)
-	settings.Add(print.WithLinksToModules)
 
-	actual, err := table.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,9 +51,8 @@ func TestPrintWithRequired(t *testing.T) {
 
 	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithRequired)
-	settings.Add(print.WithLinksToModules)
 
-	actual, err := table.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -72,9 +70,8 @@ func TestPrintWithSortByName(t *testing.T) {
 
 	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithSortByName)
-	settings.Add(print.WithLinksToModules)
 
-	actual, err := table.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,14 +90,68 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
 	settings.Add(print.WithSortByName)
 	settings.Add(print.WithSortInputsByRequired)
-	settings.Add(print.WithLinksToModules)
 
-	actual, err := table.Print(doc, settings)
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	expected, err := print.ReadGoldenFile("table-WithSortInputsByRequired")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithModules(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithModules)
+
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("table-WithModules")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithResources(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithResources)
+
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("table-WithResources")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithLinksToModules(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+	settings := settings.Settings{Values: map[settings.Setting]string{print.ModuleDocumentationFileName: "readme"}}
+	settings.Add(print.WithModules)
+	settings.Add(print.WithLinksToModules)
+
+	actual, err := print.Printer{PrinterInterface: table.MarkdownTable{}}.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("table-WithLinksToModules")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -11,63 +11,14 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-// Print prints a document as Markdown tables.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
-	var buffer bytes.Buffer
+type MarkdownTable struct{}
 
-	if document.HasComment() {
-		printComment(&buffer, document.Comment, settings)
-	}
-
-	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
-				doc.SortInputsByRequired(document.Inputs)
-			} else {
-				doc.SortInputsByName(document.Inputs)
-			}
-		}
-
-		printInputs(&buffer, document.Inputs, settings)
-	}
-
-	if document.HasModules() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortModulesByName(document.Modules)
-		}
-
-		if document.HasInputs() {
-			buffer.WriteString("\n")
-		}
-
-		printModules(&buffer, document.Modules, settings)
-	}
-
-	if document.HasResources() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortResourcesByName(document.Resources)
-		}
-
-		if document.HasInputs() {
-			buffer.WriteString("\n")
-		}
-
-		printResources(&buffer, document.Resources, settings)
-	}
-
-	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortOutputsByName(document.Outputs)
-		}
-
-		if document.HasModules() || document.HasInputs() {
-			buffer.WriteString("\n")
-		}
-
-		printOutputs(&buffer, document.Outputs, settings)
-	}
-
+func (printer MarkdownTable) Postprocessing(buffer *bytes.Buffer) (string, error) {
 	return markdown.Sanitize(buffer.String()), nil
+}
+
+func (printer MarkdownTable) PrintSeparator(buffer *bytes.Buffer, settings settings.Settings) {
+	buffer.WriteString("\n")
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
@@ -80,11 +31,11 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	return result
 }
 
-func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
+func (printer MarkdownTable) PrintComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
 	buffer.WriteString(fmt.Sprintf("%s\n", comment))
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
+func (printer MarkdownTable) PrintInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
 	buffer.WriteString("## Inputs\n\n")
 	buffer.WriteString("| Name | Description | Type | Default |")
 
@@ -126,7 +77,7 @@ func printIsInputRequired(input *doc.Input) string {
 	return "no"
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
+func (printer MarkdownTable) PrintOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
 	buffer.WriteString("## Outputs\n\n")
 	buffer.WriteString("| Name | Description |\n")
 	buffer.WriteString("|------|-------------|\n")
@@ -139,7 +90,7 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 	}
 }
 
-func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
+func (printer MarkdownTable) PrintModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
 	buffer.WriteString("## Modules\n\n")
 	buffer.WriteString("| Name | Source | Description |\n")
 	buffer.WriteString("|------|--------|-------------|\n")
@@ -156,7 +107,7 @@ func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.
 	}
 }
 
-func printResources(buffer *bytes.Buffer, resources []doc.Resource, settings settings.Settings) {
+func (printer MarkdownTable) PrintResources(buffer *bytes.Buffer, resources []doc.Resource, settings settings.Settings) {
 	buffer.WriteString("## Resources\n\n")
 	buffer.WriteString("| Name | Type | Description |\n")
 	buffer.WriteString("|------|------|-------------|\n")

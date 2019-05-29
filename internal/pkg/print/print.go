@@ -19,6 +19,10 @@ const (
 	WithSortByName
 	// WithSortInputsByRequired sorts inputs by name and prints required inputs first
 	WithSortInputsByRequired
+	// WithModules will add used modules to output
+	WithModules
+	// WithResources will add created resources to output
+	WithResources
 	// WithLinksToModules will add links to nested modules documentation into markdown output
 	WithLinksToModules
 

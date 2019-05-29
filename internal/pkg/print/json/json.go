@@ -13,8 +13,10 @@ const (
 	prefix string = ""
 )
 
+type Printer struct{}
+
 // Print prints a document as json.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
+func (printer Printer) Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	if document.HasInputs() {
 		if settings.Has(print.WithSortByName) {
 			if settings.Has(print.WithSortInputsByRequired) {

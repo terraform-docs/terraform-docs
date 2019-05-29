@@ -57,11 +57,7 @@ Description:
 
 Type: `map`
 
-Default:
-
-```json
-{}
-```
+Default: `<map>`
 
 ### map-2
 
@@ -77,15 +73,7 @@ Description: It's map number one.
 
 Type: `map`
 
-Default:
-
-```json
-{
-  "a": 1,
-  "b": 2,
-  "c": 3
-}
-```
+Default: `<map>`
 
 ### list-3
 
@@ -93,11 +81,7 @@ Description:
 
 Type: `list`
 
-Default:
-
-```json
-[]
-```
+Default: `<list>`
 
 ### list-2
 
@@ -113,15 +97,7 @@ Description: It's list number one.
 
 Type: `list`
 
-Default:
-
-```json
-[
-  "a",
-  "b",
-  "c"
-]
-```
+Default: `<list>`
 
 ### input\_with\_underscores
 
@@ -130,6 +106,14 @@ Description: A variable with underscores.
 Type: `string`
 
 Default: n/a
+
+## Modules
+
+The following modules are referenced:
+ - module-without-description `../path/to/module/1`
+ - module-with-description `../path/to/module/2` (*Direct description*)
+ - module-with-description-in-comment `../path/to/module/3` (*Description in comment*)
+ - module-with-both-descriptions `../path/to/module/4` (*Direct description*)
 
 ## Outputs
 

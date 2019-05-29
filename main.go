@@ -18,7 +18,7 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [--links-to-modules <link-filename>] [json | markdown | md] [document | table] <path>...
+    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [--with-modules] [--with-resources] [--links-to-modules <link-filename>] [json | markdown | md] [document | table] <path>...
     terraform-docs -h | --help
 
   Examples:
@@ -53,6 +53,8 @@ const usage = `
     --no-sort                        omit sorted rendering of inputs and outputs
     --sort-inputs-by-required        sort inputs by name and prints required inputs first
     --with-aggregate-type-defaults   print default values of aggregate types
+    --with-modules   								 print used modules (allways true for json)
+    --with-resources						     print created resources (allways true for json)
 		--links-to-modules <filename>		 in markdown will print links to modules documentation as links, filename is name of markdown files to links to
     --version                        print version
 
@@ -106,6 +108,14 @@ func main() {
 		printSettings.Add(print.WithAggregateTypeDefaults)
 	}
 
+	if args["--with-modules"].(bool) {
+		printSettings.Add(print.WithModules)
+	}
+
+	if args["--with-resources"].(bool) {
+		printSettings.Add(print.WithResources)
+	}
+
 	if args["--links-to-modules"] != nil {
 		if !args["markdown"].(bool) && !args["md"].(bool) {
 			log.Fatal("parameter '--links-to-modules' is valid only when 'markdown' or 'md' is supplied")
@@ -119,14 +129,14 @@ func main() {
 	switch {
 	case args["markdown"].(bool), args["md"].(bool):
 		if args["document"].(bool) {
-			out, err = markdown_document.Print(document, printSettings)
+			out, err = print.Printer{PrinterInterface: markdown_document.MarkdownDocument{}}.Print(document, printSettings)
 		} else {
-			out, err = markdown_table.Print(document, printSettings)
+			out, err = print.Printer{PrinterInterface: markdown_table.MarkdownTable{}}.Print(document, printSettings)
 		}
 	case args["json"].(bool):
-		out, err = json.Print(document, printSettings)
+		out, err = json.Printer{}.Print(document, printSettings)
 	default:
-		out, err = pretty.Print(document, printSettings)
+		out, err = print.Printer{PrinterInterface: pretty.Pretty{}}.Print(document, printSettings)
 	}
 
 	if err != nil {
