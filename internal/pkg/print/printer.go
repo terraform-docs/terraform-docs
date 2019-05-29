@@ -69,7 +69,6 @@ func (printer Printer) Print(document *doc.Doc, settings settings.Settings) (str
 		}
 
 		printer.PrintOutputs(&buffer, document.Outputs, settings)
-		separationNeeded = true
 	}
 
 	return printer.Postprocessing(&buffer)
