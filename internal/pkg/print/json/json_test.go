@@ -15,7 +15,7 @@ func TestPrint(t *testing.T) {
 
 	var settings settings.Settings
 
-	actual, err := json.Print(doc, settings)
+	actual, err := json.Printer{}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func TestPrintWithSortByName(t *testing.T) {
 	var settings settings.Settings
 	settings.Add(print.WithSortByName)
 
-	actual, err := json.Print(doc, settings)
+	actual, err := json.Printer{}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 	settings.Add(print.WithSortByName)
 	settings.Add(print.WithSortInputsByRequired)
 
-	actual, err := json.Print(doc, settings)
+	actual, err := json.Printer{}.Print(doc, settings)
 	if err != nil {
 		t.Fatal(err)
 	}

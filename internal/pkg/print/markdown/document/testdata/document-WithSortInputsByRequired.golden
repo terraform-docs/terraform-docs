@@ -107,21 +107,6 @@ Type: `string`
 
 Default: `""`
 
-## Modules
-
-The following modules are referenced:
- - [module-with-both-descriptions](../path/to/module/4/readme.md) (*Direct description*)
- - [module-with-description](../path/to/module/2/readme.md) (*Direct description*)
- - [module-with-description-in-comment](../path/to/module/3/readme.md) (*Description in comment*)
- - [module-without-description](../path/to/module/1/readme.md)
-
-## Resources
-
-The following resources are created:
-- resource_with_dynamic_count [`azurerm_resource_group`](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html)  (*Description from comment*)
-- resource_with_static_count [`azurerm_resource_group`](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html)  (*Description from comment*)
-- resource_without_count [`azurerm_resource_group`](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html)
-
 ## Outputs
 
 The following outputs are exported:

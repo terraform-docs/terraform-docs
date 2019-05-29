@@ -9,51 +9,14 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-// Print prints a pretty document.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
-	var buffer bytes.Buffer
+type Pretty struct{}
 
-	if document.HasComment() {
-		printComment(&buffer, document.Comment, settings)
-	}
-
-	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
-				doc.SortInputsByRequired(document.Inputs)
-			} else {
-				doc.SortInputsByName(document.Inputs)
-			}
-		}
-
-		printInputs(&buffer, document.Inputs, settings)
-	}
-
-	if document.HasModules() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortModulesByName(document.Modules)
-		}
-
-		printModules(&buffer, document.Modules, settings)
-	}
-
-	if document.HasResources() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortResourcesByName(document.Resources)
-		}
-
-		printResources(&buffer, document.Resources, settings)
-	}
-
-	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortOutputsByName(document.Outputs)
-		}
-
-		printOutputs(&buffer, document.Outputs, settings)
-	}
-
+func (printer Pretty) Postprocessing(buffer *bytes.Buffer) (string, error) {
 	return buffer.String(), nil
+}
+
+func (printer Pretty) PrintSeparator(buffer *bytes.Buffer, settings settings.Settings) {
+	buffer.WriteString("\n")
 }
 
 func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
@@ -66,11 +29,11 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	return result
 }
 
-func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
+func (printer Pretty) PrintComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
 	buffer.WriteString(fmt.Sprintf("\n%s\n", comment))
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
+func (printer Pretty) PrintInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
 	buffer.WriteString("\n")
 
 	for _, input := range inputs {
@@ -86,7 +49,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 	buffer.WriteString("\n")
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
+func (printer Pretty) PrintOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
 	buffer.WriteString("\n")
 
 	for _, output := range outputs {
@@ -102,7 +65,7 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 	buffer.WriteString("\n")
 }
 
-func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
+func (printer Pretty) PrintModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.Settings) {
 	for _, module := range modules {
 		format := "  \033[36mmodule.%s\033[0m%s\n  \033[90m%s\033[0m\n\n"
 		description := ""
@@ -120,7 +83,7 @@ func printModules(buffer *bytes.Buffer, modules []doc.Module, settings settings.
 	buffer.WriteString("\n")
 }
 
-func printResources(buffer *bytes.Buffer, resources []doc.Resource, settings settings.Settings) {
+func (printer Pretty) PrintResources(buffer *bytes.Buffer, resources []doc.Resource, settings settings.Settings) {
 	for _, resource := range resources {
 		format := "  \033[36mresource.%s.%s\033[0m%s\n\n"
 		description := ""

@@ -1,6 +1,7 @@
 package print
 
 import (
+	"bytes"
 	"encoding/json"
 	"log"
 	"strings"
@@ -19,6 +20,10 @@ const (
 	WithSortByName
 	// WithSortInputsByRequired sorts inputs by name and prints required inputs first
 	WithSortInputsByRequired
+	// WithModules will add used modules to output
+	WithModules
+	// WithResources will add created resources to output
+	WithResources
 	// WithLinksToModules will add links to nested modules documentation into markdown output
 	WithLinksToModules
 
@@ -79,4 +84,68 @@ func getSingleLineJSONString(value interface{}) string {
 	}
 
 	return strings.Replace(string(buffer), "\n", " ", -1)
+}
+
+func (printer Printer) Print(document *doc.Doc, settings settings.Settings) (string, error) {
+	var buffer bytes.Buffer
+
+	separationNeeded := false
+
+	if document.HasComment() {
+		printer.PrintComment(&buffer, document.Comment, settings)
+	}
+
+	if document.HasInputs() {
+		if settings.Has(WithSortByName) {
+			if settings.Has(WithSortInputsByRequired) {
+				doc.SortInputsByRequired(document.Inputs)
+			} else {
+				doc.SortInputsByName(document.Inputs)
+			}
+		}
+
+		printer.PrintInputs(&buffer, document.Inputs, settings)
+		separationNeeded = true
+	}
+
+	if document.HasModules() && settings.Has(WithModules) {
+		if settings.Has(WithSortByName) {
+			doc.SortModulesByName(document.Modules)
+		}
+
+		if separationNeeded {
+			printer.PrintSeparator(&buffer, settings)
+		}
+
+		printer.PrintModules(&buffer, document.Modules, settings)
+		separationNeeded = true
+	}
+
+	if document.HasResources() && settings.Has(WithResources) {
+		if settings.Has(WithSortByName) {
+			doc.SortResourcesByName(document.Resources)
+		}
+
+		if separationNeeded {
+			printer.PrintSeparator(&buffer, settings)
+		}
+
+		printer.PrintResources(&buffer, document.Resources, settings)
+		separationNeeded = true
+	}
+
+	if document.HasOutputs() {
+		if settings.Has(WithSortByName) {
+			doc.SortOutputsByName(document.Outputs)
+		}
+
+		if separationNeeded {
+			printer.PrintSeparator(&buffer, settings)
+		}
+
+		printer.PrintOutputs(&buffer, document.Outputs, settings)
+		separationNeeded = true
+	}
+
+	return printer.Postprocessing(&buffer)
 }

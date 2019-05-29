@@ -31,6 +31,14 @@ module "foo" {
 | list-1 | It's list number one. | list | `<list>` |
 | input\_with\_underscores | A variable with underscores. | string | n/a |
 
+## Resources
+
+| Name | Type | Description |
+|------|------|-------------|
+| resource\_with\_static\_count | [azurerm_resource_group](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html) | Description from comment |
+| resource\_with\_dynamic\_count | [azurerm_resource_group](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html) | Description from comment |
+| resource\_without\_count | [azurerm_resource_group](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html) |  |
+
 ## Outputs
 
 | Name | Description |
