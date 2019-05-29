@@ -136,7 +136,7 @@ func main() {
 	case args["json"].(bool):
 		out, err = json.Printer{}.Print(document, printSettings)
 	default:
-		out, err = pretty.Print(document, printSettings)
+		out, err = print.Printer{PrinterInterface: pretty.Pretty{}}.Print(document, printSettings)
 	}
 
 	if err != nil {
