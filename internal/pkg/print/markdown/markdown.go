@@ -1,6 +1,7 @@
 package markdown
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -31,4 +32,11 @@ func Sanitize(markdown string) string {
 	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "$1")
 
 	return result
+}
+
+func PrintCode(code string, language string) string {
+	if strings.Contains(code, "\n") {
+		return fmt.Sprintf("```%s\n%s\n```\n", language, code)
+	}
+	return fmt.Sprintf("`%s`", code)
 }

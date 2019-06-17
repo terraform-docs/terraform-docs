@@ -3,74 +3,70 @@ package pretty
 import (
 	"bytes"
 	"fmt"
+	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
 // Print prints a pretty document.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
+func Print(document *doc.Doc, printSettings settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if document.HasComment() {
-		printComment(&buffer, document.Comment, settings)
+	if printSettings.Has(settings.WithProviders) {
+		printProviders(&buffer, document.Providers)
 	}
 
-	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
-				doc.SortInputsByRequired(document.Inputs)
-			} else {
-				doc.SortInputsByName(document.Inputs)
-			}
-		}
+	printVariables(&buffer, document.Variables, printSettings)
+	printOutputs(&buffer, document.Outputs, printSettings)
 
-		printInputs(&buffer, document.Inputs, settings)
-	}
-
-	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortOutputsByName(document.Outputs)
-		}
-
-		printOutputs(&buffer, document.Outputs, settings)
-	}
-
-	return buffer.String(), nil
+	return markdown.Sanitize(buffer.String()), nil
 }
 
-func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
+func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
+	buffer.WriteString("\n")
+
+	for _, provider := range providers {
+		var name = provider.Name
+		if len(provider.Alias) > 0 {
+			name = fmt.Sprintf("%s.%s", provider.Name, provider.Alias)
+		}
+		format := "  \033[36mprovider.%s\033[0m\n  \033[90m%s\033[0m\n\n"
+		buffer.WriteString(
+			fmt.Sprintf(
+				format,
+				name,
+				provider.Version))
+	}
+}
+
+func getVariableDefaultValue(variable *doc.Variable, printSettings settings.Settings) string {
 	var result = "required"
 
-	if input.HasDefault() {
-		result = print.GetPrintableValue(input.Default, settings, false)
+	if variable.HasDefault() {
+		result = variable.Default
 	}
 
 	return result
 }
 
-func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
-	buffer.WriteString(fmt.Sprintf("\n%s\n", comment))
-}
-
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
+func printVariables(buffer *bytes.Buffer, variables []doc.Variable, printSettings settings.Settings) {
 	buffer.WriteString("\n")
 
-	for _, input := range inputs {
+	for _, variable := range variables {
 		format := "  \033[36mvar.%s\033[0m (%s)\n  \033[90m%s\033[0m\n\n"
 		buffer.WriteString(
 			fmt.Sprintf(
 				format,
-				input.Name,
-				getInputDefaultValue(&input, settings),
-				input.Description))
+				variable.Name,
+				getVariableDefaultValue(&variable, printSettings),
+				variable.Description))
 	}
 
 	buffer.WriteString("\n")
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
+func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, printSettings settings.Settings) {
 	buffer.WriteString("\n")
 
 	for _, output := range outputs {

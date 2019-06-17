@@ -15,3 +15,13 @@ func (s *Settings) Add(setting Setting) {
 func (s *Settings) Has(setting Setting) bool {
 	return *s&Settings(1<<setting) != 0
 }
+
+const (
+	_ Setting = iota
+	// WithRequired prints if Variables are required
+	WithRequired
+	// WithSortVariablesByRequired sorts Variables by name and prints required Variables first
+	WithSortVariablesByRequired
+	// WithProviders prints information about the Terraform providers
+	WithProviders
+)

@@ -2,6 +2,51 @@
 
 The following variables are supported:
 
+#### list-2
+
+Description: It's list number two.
+
+Type:
+`list`
+
+Default: n/a
+
+#### map-2
+
+Description: It's map number two.
+
+Type:
+`map`
+
+Default: n/a
+
+#### string-2
+
+Description: It's string number two.
+
+Type:
+`string`
+
+Default: n/a
+
+#### unquoted
+
+Description:
+
+Type:
+``
+
+Default: n/a
+
+#### variable\_with\_underscores
+
+Description:
+
+Type:
+``
+
+Default: n/a
+
 #### list-1
 
 Description:
@@ -17,15 +62,6 @@ Default:
   "c"
 ]
 ```
-
-#### list-2
-
-Description: It's list number two.
-
-Type:
-`list`
-
-Default: n/a
 
 #### list-3
 
@@ -88,15 +124,6 @@ Default:
 }
 ```
 
-#### map-2
-
-Description: It's map number two.
-
-Type:
-`map`
-
-Default: n/a
-
 #### map-3
 
 Description:
@@ -117,15 +144,6 @@ Type:
 Default:
 `"bar"`
 
-#### string-2
-
-Description: It's string number two.
-
-Type:
-`string`
-
-Default: n/a
-
 #### string-3
 
 Description:
@@ -135,24 +153,6 @@ Type:
 
 Default:
 `""`
-
-#### unquoted
-
-Description:
-
-Type:
-``
-
-Default: n/a
-
-#### variable\_with\_underscores
-
-Description:
-
-Type:
-``
-
-Default: n/a
 
 ## Outputs
 

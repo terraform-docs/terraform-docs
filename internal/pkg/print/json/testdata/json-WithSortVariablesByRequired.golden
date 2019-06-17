@@ -1,14 +1,30 @@
 {
   "variables": [
     {
-      "name": "list-1",
-      "type": "list",
-      "default": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]"
-    },
-    {
       "name": "list-2",
       "type": "list",
       "description": "It's list number two."
+    },
+    {
+      "name": "map-2",
+      "type": "map",
+      "description": "It's map number two."
+    },
+    {
+      "name": "string-2",
+      "type": "string",
+      "description": "It's string number two."
+    },
+    {
+      "name": "unquoted"
+    },
+    {
+      "name": "variable_with_underscores"
+    },
+    {
+      "name": "list-1",
+      "type": "list",
+      "default": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]"
     },
     {
       "name": "list-3",
@@ -26,11 +42,6 @@
       "default": "{\n  \"a\": 1,\n  \"b\": 2,\n  \"c\": 3\n}"
     },
     {
-      "name": "map-2",
-      "type": "map",
-      "description": "It's map number two."
-    },
-    {
       "name": "map-3",
       "default": "{}"
     },
@@ -39,19 +50,8 @@
       "default": "\"bar\""
     },
     {
-      "name": "string-2",
-      "type": "string",
-      "description": "It's string number two."
-    },
-    {
       "name": "string-3",
       "default": "\"\""
-    },
-    {
-      "name": "unquoted"
-    },
-    {
-      "name": "variable_with_underscores"
     }
   ],
   "outputs": [

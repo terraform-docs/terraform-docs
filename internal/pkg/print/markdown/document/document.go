@@ -6,123 +6,109 @@ import (
 	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
 // Print prints a document as Markdown document.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
+func Print(document *doc.Doc, printSettings settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if document.HasComment() {
-		printComment(&buffer, document.Comment, settings)
+	if printSettings.Has(settings.WithProviders) {
+		printProviders(&buffer, document.Providers)
 	}
 
-	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
-				doc.SortInputsByRequired(document.Inputs)
-			} else {
-				doc.SortInputsByName(document.Inputs)
-			}
-		}
-
-		printInputs(&buffer, document.Inputs, settings)
-	}
-
-	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
-			doc.SortOutputsByName(document.Outputs)
-		}
-
-		if document.HasInputs() {
-			buffer.WriteString("\n")
-		}
-
-		printOutputs(&buffer, document.Outputs, settings)
-	}
+	printVariables(&buffer, document.Variables, printSettings)
+	printOutputs(&buffer, document.Outputs, printSettings)
 
 	return markdown.Sanitize(buffer.String()), nil
 }
 
-func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
-	var result = "n/a"
 
-	if input.HasDefault() {
-		if settings.Has(print.WithAggregateTypeDefaults) && input.IsAggregateType() {
-			result = printFencedCodeBlock(print.GetPrintableValue(input.Default, settings, true))
-		} else {
-			result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))
-		}
-	}
+func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
+	buffer.WriteString("## Providers\n\n")
 
-	return result
-}
-
-func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
-	buffer.WriteString(fmt.Sprintf("%s\n", comment))
-}
-
-func printFencedCodeBlock(code string) string {
-	var buffer bytes.Buffer
-	buffer.WriteString("\n\n")
-	buffer.WriteString("```json\n")
-	buffer.WriteString(code)
-	buffer.WriteString("\n")
-	buffer.WriteString("```")
-	return buffer.String()
-}
-
-func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
-	buffer.WriteString("\n")
-	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.ConvertMultiLineText(input.Description)))
-	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
-
-	// Don't print defaults for required inputs when we're already explicit about it being required
-	if !(settings.Has(print.WithRequired) && input.IsRequired()) {
-		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
-	}
-}
-
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
-	if settings.Has(print.WithRequired) {
-		buffer.WriteString("## Required Inputs\n\n")
-		buffer.WriteString("The following input variables are required:\n")
-
-		for _, input := range inputs {
-			if input.IsRequired() {
-				printInput(buffer, input, settings)
+	if len(providers) == 0 {
+		buffer.WriteString("None\n\n")
+	} else {
+		buffer.WriteString("The following providers are used by this module:\n\n")
+		for _, provider := range providers {
+			var name= provider.Name
+			if len(provider.Alias) > 0 {
+				name = fmt.Sprintf("%s.%s", provider.Name, provider.Alias)
 			}
+			name = strings.ReplaceAll(name, "_", "\\_")
+			var version = ""
+			if len(provider.Version) > 0 {
+				version = fmt.Sprintf(" (%s)", provider.Version)
+			}
+
+			buffer.WriteString(fmt.Sprintf("* %s%s\n", name, version))
 		}
 
 		buffer.WriteString("\n")
-		buffer.WriteString("## Optional Inputs\n\n")
-		buffer.WriteString("The following input variables are optional (have default values):\n")
+	}
+}
 
-		for _, input := range inputs {
-			if !input.IsRequired() {
-				printInput(buffer, input, settings)
+
+func printVariable(buffer *bytes.Buffer, variable doc.Variable, printSettings settings.Settings) {
+	buffer.WriteString(fmt.Sprintf("#### %s\n\n", strings.ReplaceAll(variable.Name, "_", "\\_")))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.ConvertMultiLineText(variable.Description)))
+	buffer.WriteString(fmt.Sprintf("Type:\n%s\n\n", markdown.PrintCode(variable.Type, "hcl")))
+
+	// Don't print defaults for required variables when we're already explicit about it being required
+	if variable.HasDefault() {
+		buffer.WriteString(fmt.Sprintf("Default:\n%s\n\n", markdown.PrintCode(variable.Default, "json")))
+	} else if !(printSettings.Has(settings.WithRequired)) {
+		buffer.WriteString("Default: n/a\n\n")
+	}
+}
+
+func printVariables(buffer *bytes.Buffer, variables []doc.Variable, printSettings settings.Settings) {
+	buffer.WriteString("## Variables\n\n")
+
+	if len(variables) == 0 {
+		buffer.WriteString("None\n\n")
+	}
+	if printSettings.Has(settings.WithRequired) {
+		buffer.WriteString("### Required Variables\n\n")
+		buffer.WriteString("The following variables are required:\n\n")
+
+		for _, variable := range variables {
+			if !variable.HasDefault() {
+				printVariable(buffer, variable, printSettings)
+			}
+		}
+
+		buffer.WriteString("### Optional Variables\n\n")
+		buffer.WriteString("The following variables are optional (have default values):\n\n")
+
+		for _, variable := range variables {
+			if variable.HasDefault() {
+				printVariable(buffer, variable, printSettings)
 			}
 		}
 	} else {
-		buffer.WriteString("## Inputs\n\n")
-		buffer.WriteString("The following input variables are supported:\n")
+		buffer.WriteString("The following variables are supported:\n\n")
 
-		for _, input := range inputs {
-			printInput(buffer, input, settings)
+		for _, variable := range variables {
+			printVariable(buffer, variable, printSettings)
 		}
 	}
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
+func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, printSettings settings.Settings) {
 	buffer.WriteString("## Outputs\n\n")
-	buffer.WriteString("The following outputs are exported:\n")
 
-	for _, output := range outputs {
-		buffer.WriteString("\n")
-		buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(output.Name, "_", "\\_", -1)))
-		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.ConvertMultiLineText(output.Description)))
+	if len(outputs) == 0 {
+		buffer.WriteString("None\n\n")
+	} else {
+		buffer.WriteString("The following outputs are exported:\n\n")
+
+		for _, output := range outputs {
+			buffer.WriteString(fmt.Sprintf("#### %s\n\n", strings.Replace(output.Name, "_", "\\_", -1)))
+			buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.ConvertMultiLineText(output.Description)))
+			buffer.WriteString("\n")
+		}
 	}
 }

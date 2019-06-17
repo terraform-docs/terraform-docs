@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	doc2 "github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"log"
 
 	"github.com/docopt/docopt.go"
-	"github.com/segmentio/terraform-docs/internal/pkg/doc"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
 	markdown_document "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
 	markdown_table "github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
@@ -18,53 +18,46 @@ var version = "dev"
 
 const usage = `
   Usage:
-    terraform-docs [--no-required] [--no-sort | --sort-inputs-by-required] [--with-aggregate-type-defaults] [json | markdown | md] [document | table] <path>...
+    terraform-docs [--no-required] [--sort-variables-by-required] [--providers] [json | markdown | md] [document | table] <path>
     terraform-docs -h | --help
 
   Examples:
 
-    # View inputs and outputs
+    # View variables and outputs
     $ terraform-docs ./my-module
 
-    # View inputs and outputs for variables.tf and outputs.tf only
-    $ terraform-docs variables.tf outputs.tf
-
-    # Generate a JSON of inputs and outputs
+    # Generate a JSON of variables and outputs
     $ terraform-docs json ./my-module
 
-    # Generate Markdown tables of inputs and outputs
+    # Generate Markdown tables of variables and outputs
     $ terraform-docs md ./my-module
 
-    # Generate Markdown tables of inputs and outputs
+    # Generate Markdown tables of variables and outputs
     $ terraform-docs md table ./my-module
 
-    # Generate Markdown document of inputs and outputs
+    # Generate Markdown document of variables and outputs
     $ terraform-docs md document ./my-module
 
-    # Generate Markdown tables of inputs and outputs, but don't print "Required" column
+    # Generate Markdown tables of variables and outputs, but don't print "Required" column
     $ terraform-docs --no-required md ./my-module
-
-    # Generate Markdown tables of inputs and outputs for the given module and ../config.tf
-    $ terraform-docs md ./my-module ../config.tf
 
   Options:
     -h, --help                       show help information
     --no-required                    omit "Required" column when generating Markdown
-    --no-sort                        omit sorted rendering of inputs and outputs
-    --sort-inputs-by-required        sort inputs by name and prints required inputs first
-    --with-aggregate-type-defaults   print default values of aggregate types
+    --sort-variables-by-required     sort variables by name and prints required variables first
     --version                        print version
+    --providers                      include Terraform provider info for the module
 
   Types of Markdown:
-    document                         generate Markdown document of inputs and outputs
-    table                            generate Markdown tables of inputs and outputs (default)
+    document                         generate Markdown document of variables and outputs
+    table                            generate Markdown tables of variables and outputs (default)
 
 `
 
 func main() {
 	parser := &docopt.Parser{
-		HelpHandler: docopt.PrintHelpAndExit,
-		OptionsFirst: true,
+		HelpHandler:   docopt.PrintHelpAndExit,
+		OptionsFirst:  true,
 		SkipHelpFlags: false,
 	}
 
@@ -73,28 +66,29 @@ func main() {
 		log.Fatal(err)
 	}
 
-	paths := args["<path>"].([]string)
+	path := args["<path>"].(string)
 
-	document, err := doc.CreateFromPaths(paths)
-	if err != nil {
+	module, diag := tfconfig.LoadModule(path)
+	if diag != nil && diag.HasErrors() {
 		log.Fatal(err)
 	}
 
 	var printSettings settings.Settings
 	if !args["--no-required"].(bool) {
-		printSettings.Add(print.WithRequired)
+		printSettings.Add(settings.WithRequired)
 	}
 
-	if !args["--no-sort"].(bool) {
-		printSettings.Add(print.WithSortByName)
+	if args["--sort-variables-by-required"].(bool) {
+		printSettings.Add(settings.WithSortVariablesByRequired)
 	}
 
-	if args["--sort-inputs-by-required"].(bool) {
-		printSettings.Add(print.WithSortInputsByRequired)
+	if args["--providers"].(bool) {
+		printSettings.Add(settings.WithProviders)
 	}
 
-	if args["--with-aggregate-type-defaults"].(bool) {
-		printSettings.Add(print.WithAggregateTypeDefaults)
+	doc, err := doc2.Create(module, printSettings)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	var out string
@@ -102,14 +96,14 @@ func main() {
 	switch {
 	case args["markdown"].(bool), args["md"].(bool):
 		if args["document"].(bool) {
-			out, err = markdown_document.Print(document, printSettings)
+			out, err = markdown_document.Print(doc, printSettings)
 		} else {
-			out, err = markdown_table.Print(document, printSettings)
+			out, err = markdown_table.Print(doc, printSettings)
 		}
 	case args["json"].(bool):
-		out, err = json.Print(document, printSettings)
+		out, err = json.Print(doc)
 	default:
-		out, err = pretty.Print(document, printSettings)
+		out, err = pretty.Print(doc, printSettings)
 	}
 
 	if err != nil {

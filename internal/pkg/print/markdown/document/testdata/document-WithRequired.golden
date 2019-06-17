@@ -1,118 +1,171 @@
-Usage:
+## Variables
 
-module "foo" {
-  source = "github.com/foo/bar"
+### Required Variables
 
-  id   = "1234567890"
-  name = "baz"
+The following variables are required:
 
-  zones = ["us-east-1", "us-west-1"]
-
-  tags = {
-    Name         = "baz"
-    Created-By   = "first.last@email.com"
-    Date-Created = "20180101"
-  }
-}
-
-## Required Inputs
-
-The following input variables are required:
-
-### unquoted
-
-Description:
-
-Type: `string`
-
-### string-2
-
-Description: It's string number two.
-
-Type: `string`
-
-### map-2
-
-Description: It's map number two.
-
-Type: `map`
-
-### list-2
+#### list-2
 
 Description: It's list number two.
 
-Type: `list`
+Type:
+`list`
 
-### input\_with\_underscores
+#### map-2
 
-Description: A variable with underscores.
+Description: It's map number two.
 
-Type: `string`
+Type:
+`map`
 
-## Optional Inputs
+#### string-2
 
-The following input variables are optional (have default values):
+Description: It's string number two.
 
-### string-3
+Type:
+`string`
 
-Description:
-
-Type: `string`
-
-Default: `""`
-
-### string-1
-
-Description: It's string number one.
-
-Type: `string`
-
-Default: `"bar"`
-
-### map-3
+#### unquoted
 
 Description:
 
-Type: `map`
+Type:
+``
 
-Default: `<map>`
-
-### map-1
-
-Description: It's map number one.
-
-Type: `map`
-
-Default: `<map>`
-
-### list-3
+#### variable\_with\_underscores
 
 Description:
 
-Type: `list`
+Type:
+``
 
-Default: `<list>`
+### Optional Variables
 
-### list-1
+The following variables are optional (have default values):
 
-Description: It's list number one.
+#### list-1
 
-Type: `list`
+Description:
 
-Default: `<list>`
+Type:
+`list`
+
+Default:
+```json
+[
+  "a",
+  "b",
+  "c"
+]
+```
+
+#### list-3
+
+Description:
+
+Type:
+``
+
+Default:
+`[]`
+
+#### long\_type
+
+Description: This description is itself markdown.<br><br>It spans over multiple lines.
+
+Type:
+```hcl
+object({
+    name = string,
+    foo  = object({ foo = string, bar = string }),
+    bar  = object({ foo = string, bar = string }),
+    fizz = list(string),
+    buzz = list(string)
+  })
+```
+
+Default:
+```json
+{
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+```
+
+#### map-1
+
+Description:
+
+Type:
+`map`
+
+Default:
+```json
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+```
+
+#### map-3
+
+Description:
+
+Type:
+``
+
+Default:
+`{}`
+
+#### string-1
+
+Description:
+
+Type:
+``
+
+Default:
+`"bar"`
+
+#### string-3
+
+Description:
+
+Type:
+``
+
+Default:
+`""`
 
 ## Outputs
 
 The following outputs are exported:
 
-### unquoted
+#### output-0.12
 
-Description: It's unquoted output.
+Description: terraform 0.12 only
 
-### output-2
+#### output-1
+
+Description:
+
+#### output-2
 
 Description: It's output number two.
 
-### output-1
+#### unquoted
 
-Description: It's output number one.
+Description: It's unquoted output.

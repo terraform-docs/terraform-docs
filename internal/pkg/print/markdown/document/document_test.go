@@ -1,6 +1,7 @@
 package document_test
 
 import (
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
@@ -11,10 +12,16 @@ import (
 )
 
 func TestPrint(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-	var settings settings.Settings
+	var printSettings settings.Settings
 
-	actual, err := document.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc2, err := doc.Create(module, printSettings)
+
+	actual, err := document.Print(doc2, printSettings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,32 +34,18 @@ func TestPrint(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestWithAggregateTypeDefaults(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings settings.Settings
-	settings.Add(print.WithAggregateTypeDefaults)
-
-	actual, err := document.Print(doc, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected, err := print.ReadGoldenFile("document-WithAggregateTypeDefaults")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
-}
-
 func TestPrintWithRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
+	var printSettings settings.Settings
+	printSettings.Add(settings.WithRequired)
 
-	var settings settings.Settings
-	settings.Add(print.WithRequired)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
 
-	actual, err := document.Print(doc, settings)
+	doc2, err := doc.Create(module, printSettings)
+
+	actual, err := document.Print(doc2, printSettings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,38 +58,23 @@ func TestPrintWithRequired(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestPrintWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
+func TestPrintWithSortVariablesByRequired(t *testing.T) {
+	var printSettings settings.Settings
+	printSettings.Add(settings.WithSortVariablesByRequired)
 
-	var settings settings.Settings
-	settings.Add(print.WithSortByName)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
 
-	actual, err := document.Print(doc, settings)
+	doc2, err := doc.Create(module, printSettings)
+
+	actual, err := document.Print(doc2, printSettings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("document-WithSortByName")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
-}
-
-func TestPrintWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings settings.Settings
-	settings.Add(print.WithSortByName)
-	settings.Add(print.WithSortInputsByRequired)
-
-	actual, err := document.Print(doc, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected, err := print.ReadGoldenFile("document-WithSortInputsByRequired")
+	expected, err := print.ReadGoldenFile("document-WithSortVariablesByRequired")
 	if err != nil {
 		t.Fatal(err)
 	}
