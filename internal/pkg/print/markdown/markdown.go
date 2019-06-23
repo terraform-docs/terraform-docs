@@ -5,6 +5,14 @@ import (
 	"strings"
 )
 
+// SanitizeDescription converts description to suitable Markdown representation. (including mline-break, illegal characters, etc)
+func SanitizeDescription(s string) string {
+	s = ConvertMultiLineText(s)
+	s = EscapeIllegalCharacters(s)
+
+	return s
+}
+
 // ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
 func ConvertMultiLineText(s string) string {
 	// Convert double newlines to <br><br>.
@@ -16,6 +24,17 @@ func ConvertMultiLineText(s string) string {
 
 	// Convert single newline to space.
 	return strings.Replace(s, "\n", " ", -1)
+}
+
+// EscapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
+func EscapeIllegalCharacters(s string) string {
+	// Escape pipe
+	s = strings.Replace(s, "|", "\\|", -1)
+
+	// Escape underscore
+	s = strings.Replace(s, "_", "\\_", -1)
+
+	return s
 }
 
 // Sanitize cleans a Markdown document to soothe linters.

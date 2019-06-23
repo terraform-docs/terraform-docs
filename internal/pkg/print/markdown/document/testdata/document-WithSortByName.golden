@@ -19,6 +19,14 @@ module "foo" {
 
 The following input variables are supported:
 
+### input-with-pipe
+
+Description: It includes v1 \| v2 \| v3
+
+Type: `string`
+
+Default: `"v1"`
+
 ### input\_with\_underscores
 
 Description: A variable with underscores.

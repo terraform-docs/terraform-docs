@@ -77,7 +77,7 @@ func printFencedCodeBlock(code string) string {
 func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(input.Name, "_", "\\_", -1)))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.ConvertMultiLineText(input.Description)))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeDescription(input.Description)))
 	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
 
 	// Don't print defaults for required inputs when we're already explicit about it being required
@@ -123,6 +123,6 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 	for _, output := range outputs {
 		buffer.WriteString("\n")
 		buffer.WriteString(fmt.Sprintf("### %s\n\n", strings.Replace(output.Name, "_", "\\_", -1)))
-		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.ConvertMultiLineText(output.Description)))
+		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.SanitizeDescription(output.Description)))
 	}
 }

@@ -59,6 +59,14 @@ Type: `string`
 
 Default: n/a
 
+### input-with-pipe
+
+Description: It includes v1 \| v2 \| v3
+
+Type: `string`
+
+Default: `"v1"`
+
 ### list-1
 
 Description: It's list number one.

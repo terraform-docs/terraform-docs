@@ -32,6 +32,15 @@
       "Type": "string"
     },
     {
+      "Name": "input-with-pipe",
+      "Description": "It includes v1 | v2 | v3",
+      "Default": {
+        "Type": "string",
+        "Value": "v1"
+      },
+      "Type": "string"
+    },
+    {
       "Name": "list-1",
       "Description": "It's list number one.",
       "Default": {
