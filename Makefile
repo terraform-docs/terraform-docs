@@ -106,10 +106,14 @@ build-all: clean ## Build binary for all OS/ARCH
 		printf -- "--> %15s: Done\n" "$${OSARCH}" ;								\
 	done ;														\
 	cd ./$(BUILD_DIR) ;												\
-	touch $(NAME)_${VERSION}.sha256sum ;										\
-	for binary in `find . -mindepth 1 -maxdepth 1 -type f | grep -v "$(NAME)_${VERSION}.sha256sum" | sort` ; do	\
+	touch $(NAME)-${VERSION}.sha256sum ;										\
+	for binary in `find . -mindepth 1 -maxdepth 1 -type f | grep -v "$(NAME)-${VERSION}.sha256sum" | sort` ; do	\
 		binary=`basename $${binary}` ;										\
-		shasum -a256 $${binary} >> $(NAME)_${VERSION}.sha256sum ;						\
+		if command -v sha256sum > /dev/null; then								\
+			sha256sum $${binary} >> $(NAME)-${VERSION}.sha256sum ;						\
+		elif command -v shasum > /dev/null; then 								\
+			shasum -a256 $${binary} >> $(NAME)-${VERSION}.sha256sum ;					\
+		fi ;													\
 	done ;														\
 	cd - >/dev/null 2>&1 ;												\
 	printf -- "\n--> %15s: Done\n" "sha256sum" ;
