@@ -3,6 +3,8 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+- Escape pipe character when generating Markdown ([#114](https://github.com/segmentio/terraform-docs/issues/114))
+- Add appropriate Changelog header.
 - Complete development requirements documentation.
 - Configure git-chglog to not show git merge commit messages.
 - Add Changelog generation via git-chglog. ([#104](https://github.com/segmentio/terraform-docs/issues/104))
