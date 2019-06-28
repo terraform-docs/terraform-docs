@@ -110,6 +110,16 @@ var inputWithUnderscores = doc.Input{
 	Default:     nil,
 }
 
+var inputWithPipe = doc.Input{
+	Name:        "input-with-pipe",
+	Description: "It includes v1 | v2 | v3",
+	Default: &doc.Value{
+		Type:  "string",
+		Value: "v1",
+	},
+	Type: "string",
+}
+
 var output1 = doc.Output{
 	Name:        "output-1",
 	Description: "It's output number one.",
@@ -204,6 +214,7 @@ func TestInputs(t *testing.T) {
 		inputList2,
 		inputList1,
 		inputWithUnderscores,
+		inputWithPipe,
 	}
 
 	assert.Equal(t, expected, actual)
@@ -234,6 +245,7 @@ func TestInputsFromVariablesTf(t *testing.T) {
 		inputList2,
 		inputList1,
 		inputWithUnderscores,
+		inputWithPipe,
 	}
 
 	assert.Equal(t, expected, actual)
@@ -245,6 +257,7 @@ func TestInputsSortedByName(t *testing.T) {
 	doc.SortInputsByName(actual)
 
 	expected := []doc.Input{
+		inputWithPipe,
 		inputWithUnderscores,
 		inputList1,
 		inputList2,
@@ -272,6 +285,7 @@ func TestInputsSortedByRequired(t *testing.T) {
 		inputMap2,
 		inputString2,
 		inputUnquoted,
+		inputWithPipe,
 		inputList1,
 		inputList3,
 		inputMap1,

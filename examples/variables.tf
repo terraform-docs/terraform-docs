@@ -51,3 +51,9 @@ variable "list-1" {
 
 // A variable with underscores.
 variable "input_with_underscores" {}
+
+// A variable with pipe in the description
+variable "input-with-pipe" {
+  description = "It includes v1 | v2 | v3"
+  default     = "v1"
+}

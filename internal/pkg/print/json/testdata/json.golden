@@ -92,6 +92,15 @@
       "Description": "A variable with underscores.",
       "Default": null,
       "Type": "string"
+    },
+    {
+      "Name": "input-with-pipe",
+      "Description": "It includes v1 | v2 | v3",
+      "Default": {
+        "Type": "string",
+        "Value": "v1"
+      },
+      "Type": "string"
     }
   ],
   "Outputs": [
