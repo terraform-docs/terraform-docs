@@ -20,8 +20,8 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
+		if settings.SortByName {
+			if settings.SortInputsByRequired {
 				doc.SortInputsByRequired(document.Inputs)
 			} else {
 				doc.SortInputsByName(document.Inputs)
@@ -32,7 +32,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
+		if settings.SortByName {
 			doc.SortOutputsByName(document.Outputs)
 		}
 
@@ -64,7 +64,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 	buffer.WriteString("## Inputs\n\n")
 	buffer.WriteString("| Name | Description | Type | Default |")
 
-	if settings.Has(print.WithRequired) {
+	if settings.ShowRequired {
 		buffer.WriteString(" Required |\n")
 	} else {
 		buffer.WriteString("\n")
@@ -72,7 +72,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 
 	buffer.WriteString("|------|-------------|:----:|:-----:|")
 
-	if settings.Has(print.WithRequired) {
+	if settings.ShowRequired {
 		buffer.WriteString(":-----:|\n")
 	} else {
 		buffer.WriteString("\n")
@@ -86,7 +86,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 				input.Type,
 				getInputDefaultValue(&input, settings)))
 
-		if settings.Has(print.WithRequired) {
+		if settings.ShowRequired {
 			buffer.WriteString(fmt.Sprintf(" %v |\n", printIsInputRequired(&input)))
 		} else {
 			buffer.WriteString("\n")

@@ -20,8 +20,8 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
+		if settings.SortByName {
+			if settings.SortInputsByRequired {
 				doc.SortInputsByRequired(document.Inputs)
 			} else {
 				doc.SortInputsByName(document.Inputs)
@@ -32,7 +32,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
+		if settings.SortByName {
 			doc.SortOutputsByName(document.Outputs)
 		}
 
@@ -50,7 +50,7 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	var result = "n/a"
 
 	if input.HasDefault() {
-		if settings.Has(print.WithAggregateTypeDefaults) && input.IsAggregateType() {
+		if settings.AggregateTypeDefaults && input.IsAggregateType() {
 			result = printFencedCodeBlock(print.GetPrintableValue(input.Default, settings, true))
 		} else {
 			result = fmt.Sprintf("`%s`", print.GetPrintableValue(input.Default, settings, false))
@@ -81,13 +81,13 @@ func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Setting
 	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
 
 	// Don't print defaults for required inputs when we're already explicit about it being required
-	if !(settings.Has(print.WithRequired) && input.IsRequired()) {
+	if !(settings.ShowRequired && input.IsRequired()) {
 		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
 	}
 }
 
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
-	if settings.Has(print.WithRequired) {
+	if settings.ShowRequired {
 		buffer.WriteString("## Required Inputs\n\n")
 		buffer.WriteString("The following input variables are required:\n")
 

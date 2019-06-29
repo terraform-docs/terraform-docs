@@ -6,13 +6,14 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
-	"github.com/segmentio/terraform-docs/internal/pkg/settings"
+	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPrint(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
-	var settings settings.Settings
+
+	var settings = _settings.Settings{}
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -30,8 +31,9 @@ func TestPrint(t *testing.T) {
 func TestWithAggregateTypeDefaults(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
-	settings.Add(print.WithAggregateTypeDefaults)
+	var settings = _settings.Settings{
+		AggregateTypeDefaults: true,
+	}
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -49,8 +51,9 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 func TestPrintWithRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
-	settings.Add(print.WithRequired)
+	var settings = _settings.Settings{
+		ShowRequired: true,
+	}
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -68,8 +71,9 @@ func TestPrintWithRequired(t *testing.T) {
 func TestPrintWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
-	settings.Add(print.WithSortByName)
+	var settings = _settings.Settings{
+		SortByName: true,
+	}
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -87,9 +91,10 @@ func TestPrintWithSortByName(t *testing.T) {
 func TestPrintWithSortInputsByRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings settings.Settings
-	settings.Add(print.WithSortByName)
-	settings.Add(print.WithSortInputsByRequired)
+	var settings = _settings.Settings{
+		SortByName:           true,
+		SortInputsByRequired: true,
+	}
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
