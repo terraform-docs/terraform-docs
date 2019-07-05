@@ -6,10 +6,14 @@ MAINTAINER  := Martin Etmajer <metmajer@getcloudnative.io>
 URL         := https://github.com/$(VENDOR)/$(NAME)
 LICENSE     := MIT
 
+# Repository variables
+PACKAGE     := github.com/$(VENDOR)/$(NAME)
+
 # Build variables
 BUILD_DIR   := bin
 COMMIT_HASH ?= $(shell git rev-parse --short HEAD 2>/dev/null)
 VERSION     ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
+BUILD_DATE  ?= $(shell date +%FT%T%z)
 
 # Go variables
 GOOS        ?= $(shell go env GOOS)
@@ -20,7 +24,9 @@ GOFILES     ?= $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 GOPKGS      ?= $(shell $(GOCMD) list $(MODVENDOR) ./... | grep -v /vendor)
 
 GOLDFLAGS   :="
-GOLDFLAGS   += -X main.version=$(VERSION)
+GOLDFLAGS   += -X $(PACKAGE)/internal/pkg/version.version=$(VERSION)
+GOLDFLAGS   += -X $(PACKAGE)/internal/pkg/version.commitHash=$(COMMIT_HASH)
+GOLDFLAGS   += -X $(PACKAGE)/internal/pkg/version.buildDate=$(BUILD_DATE)
 GOLDFLAGS   +="
 
 GOBUILD     ?= CGO_ENABLED=0 $(GOCMD) build $(MODVENDOR) -ldflags $(GOLDFLAGS)
