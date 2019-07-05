@@ -108,3 +108,23 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 
 	assert.Equal(t, expected, actual)
 }
+
+func TestPrintWithEscapeName(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	var settings = _settings.Settings{
+		EscapeMarkdown: true,
+	}
+
+	actual, err := document.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("document-WithEscapeName")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}

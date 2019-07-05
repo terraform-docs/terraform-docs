@@ -20,9 +20,11 @@ var rootCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		nosort, _ := cmd.Flags().GetBool("no-sort")
 		norequired, _ := cmd.Flags().GetBool("no-required")
+		noescape, _ := cmd.Flags().GetBool("no-escape")
 
 		settings.SortByName = !nosort
 		settings.ShowRequired = !norequired
+		settings.EscapeMarkdown = !noescape
 	},
 }
 
@@ -36,7 +38,10 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&settings.AggregateTypeDefaults, "with-aggregate-type-defaults", false, "print default values of aggregate types")
 
 	var norequired bool
+	var noesape bool
+
 	markdownCmd.PersistentFlags().BoolVar(&norequired, "no-required", false, "omit \"Required\" column when generating Markdown")
+	markdownCmd.PersistentFlags().BoolVar(&noesape, "no-escape", false, "do not escape special characters")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

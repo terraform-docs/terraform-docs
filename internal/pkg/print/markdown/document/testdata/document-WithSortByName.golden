@@ -27,7 +27,7 @@ Type: `string`
 
 Default: `"v1"`
 
-### input\_with\_underscores
+### input_with_underscores
 
 Description: A variable with underscores.
 

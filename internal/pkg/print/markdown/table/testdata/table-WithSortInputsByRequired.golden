@@ -19,7 +19,7 @@ module "foo" {
 
 | Name | Description | Type | Default |
 |------|-------------|:----:|:-----:|
-| input\_with\_underscores | A variable with underscores. | string | n/a |
+| input_with_underscores | A variable with underscores. | string | n/a |
 | list-2 | It's list number two. | list | n/a |
 | map-2 | It's map number two. | map | n/a |
 | string-2 | It's string number two. | string | n/a |

@@ -3,12 +3,24 @@ package markdown
 import (
 	"regexp"
 	"strings"
+
+	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-// SanitizeDescription converts description to suitable Markdown representation. (including mline-break, illegal characters, etc)
-func SanitizeDescription(s string) string {
+// SanitizeName escapes underscore character which have special meaning in Markdown.
+func SanitizeName(s string, settings settings.Settings) string {
+	if settings.EscapeMarkdown {
+		// Escape underscore
+		s = strings.Replace(s, "_", "\\_", -1)
+	}
+
+	return s
+}
+
+// SanitizeDescription converts description to suitable Markdown representation. (including line-break, illegal characters, etc)
+func SanitizeDescription(s string, settings settings.Settings) string {
 	s = ConvertMultiLineText(s)
-	s = EscapeIllegalCharacters(s)
+	s = EscapeIllegalCharacters(s, settings)
 
 	return s
 }
@@ -27,12 +39,29 @@ func ConvertMultiLineText(s string) string {
 }
 
 // EscapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
-func EscapeIllegalCharacters(s string) string {
+func EscapeIllegalCharacters(s string, settings settings.Settings) string {
 	// Escape pipe
 	s = strings.Replace(s, "|", "\\|", -1)
 
-	// Escape underscore
-	s = strings.Replace(s, "_", "\\_", -1)
+	if settings.EscapeMarkdown {
+		// Escape underscore
+		s = strings.Replace(s, "_", "\\_", -1)
+
+		// Escape asterisk
+		s = strings.Replace(s, "*", "\\*", -1)
+
+		// Escape paranthesis
+		s = strings.Replace(s, "(", "\\(", -1)
+		s = strings.Replace(s, ")", "\\)", -1)
+
+		// Escape brackets
+		s = strings.Replace(s, "[", "\\[", -1)
+		s = strings.Replace(s, "]", "\\]", -1)
+
+		// Escape curly brackets
+		s = strings.Replace(s, "{", "\\{", -1)
+		s = strings.Replace(s, "}", "\\}", -1)
+	}
 
 	return s
 }
