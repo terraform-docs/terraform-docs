@@ -3,6 +3,8 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+- Use Cobra CLI instead of docopt ([#116](https://github.com/segmentio/terraform-docs/issues/116))
+- Update Changelog.
 - Escape pipe character when generating Markdown ([#114](https://github.com/segmentio/terraform-docs/issues/114))
 - Add appropriate Changelog header.
 - Complete development requirements documentation.
