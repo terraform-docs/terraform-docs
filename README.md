@@ -34,6 +34,22 @@ brew install terraform-docs
 
 For other platforms, please have a look at our [binary releases](https://github.com/segmentio/terraform-docs/releases).
 
+## Code Completion
+
+The code completion for `bash` or `zsh` can be installed using:
+
+``` bash
+source <(terraform-docs completion bash)
+```
+
+or
+
+``` bash
+source <(terraform-docs completion zsh)
+```
+
+To make this change permenant, the above command can be added to you `~/.profile`.
+
 ## Getting Started
 
 Show help information:

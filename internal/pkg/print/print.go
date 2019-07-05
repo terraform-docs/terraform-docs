@@ -9,18 +9,6 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
-const (
-	_ settings.Setting = iota
-	// WithAggregateTypeDefaults prints defaults of aggregate type inputs
-	WithAggregateTypeDefaults
-	// WithRequired prints if inputs are required
-	WithRequired
-	// WithSortByName prints sorted inputs and outputs
-	WithSortByName
-	// WithSortInputsByRequired sorts inputs by name and prints required inputs first
-	WithSortInputsByRequired
-)
-
 // GetPrintableValue returns a printable representation of a Terraform value.
 func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool) string {
 	var result string
@@ -30,7 +18,7 @@ func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool
 	}
 
 	if value.IsAggregateType() {
-		if settings.Has(WithAggregateTypeDefaults) {
+		if settings.AggregateTypeDefaults {
 			if value.Value == nil {
 				if value.Type == "list" {
 					result = "[]"

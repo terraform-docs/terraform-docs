@@ -18,8 +18,8 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
+		if settings.SortByName {
+			if settings.SortInputsByRequired {
 				doc.SortInputsByRequired(document.Inputs)
 			} else {
 				doc.SortInputsByName(document.Inputs)
@@ -30,7 +30,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
+		if settings.SortByName {
 			doc.SortOutputsByName(document.Outputs)
 		}
 

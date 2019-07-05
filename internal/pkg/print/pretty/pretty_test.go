@@ -4,15 +4,15 @@ import (
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
-	"github.com/segmentio/terraform-docs/internal/pkg/settings"
+	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPretty(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
-	var settings settings.Settings
+
+	var settings = _settings.Settings{}
 
 	actual, err := pretty.Print(doc, settings)
 	if err != nil {
@@ -97,8 +97,9 @@ func TestPretty(t *testing.T) {
 func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings settings.Settings
-	settings.Add(print.WithAggregateTypeDefaults)
+	var settings = _settings.Settings{
+		AggregateTypeDefaults: true,
+	}
 
 	actual, err := pretty.Print(doc, settings)
 	if err != nil {
@@ -183,8 +184,9 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 func TestPrettyWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings settings.Settings
-	settings.Add(print.WithSortByName)
+	var settings = _settings.Settings{
+		SortByName: true,
+	}
 
 	actual, err := pretty.Print(doc, settings)
 	if err != nil {
@@ -269,9 +271,10 @@ func TestPrettyWithSortByName(t *testing.T) {
 func TestPrettyWithSortInputsByRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings settings.Settings
-	settings.Add(print.WithSortByName)
-	settings.Add(print.WithSortInputsByRequired)
+	var settings = _settings.Settings{
+		SortByName:           true,
+		SortInputsByRequired: true,
+	}
 
 	actual, err := pretty.Print(doc, settings)
 	if err != nil {

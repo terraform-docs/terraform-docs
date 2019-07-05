@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
@@ -16,8 +15,8 @@ const (
 // Print prints a document as json.
 func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	if document.HasInputs() {
-		if settings.Has(print.WithSortByName) {
-			if settings.Has(print.WithSortInputsByRequired) {
+		if settings.SortByName {
+			if settings.SortInputsByRequired {
 				doc.SortInputsByRequired(document.Inputs)
 			} else {
 				doc.SortInputsByName(document.Inputs)
@@ -26,7 +25,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	}
 
 	if document.HasOutputs() {
-		if settings.Has(print.WithSortByName) {
+		if settings.SortByName {
 			doc.SortOutputsByName(document.Outputs)
 		}
 	}

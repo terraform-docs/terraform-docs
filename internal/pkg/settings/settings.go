@@ -1,17 +1,16 @@
 package settings
 
-// Setting represents a setting
-type Setting uint
-
 // Settings represents all settings
-type Settings uint
+type Settings struct {
+	// ShowRequired show "Required" column when generating Markdown
+	ShowRequired bool
 
-// Add adds a setting to settings
-func (s *Settings) Add(setting Setting) {
-	*s |= Settings(1 << setting)
-}
+	// SortByName sorted rendering of inputs and outputs (default: true)
+	SortByName bool
 
-// Has indicates if settings contain a setting
-func (s *Settings) Has(setting Setting) bool {
-	return *s&Settings(1<<setting) != 0
+	// SortInputsByRequired sort inputs by name and prints required inputs first (default: false)
+	SortInputsByRequired bool
+
+	// AggregateTypeDefaults print default values of aggregate types (default: false)
+	AggregateTypeDefaults bool
 }
