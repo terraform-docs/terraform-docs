@@ -65,10 +65,10 @@ lint: ## Run linter
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) fmt $(GOPKGS)
+	goimports -w $(GOFILES)
 
 .PHONY: checkfmt
-checkfmt: RESULT = $(shell gofmt -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
+checkfmt: RESULT = $(shell goimports -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
 checkfmt: SHELL := /bin/bash
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
