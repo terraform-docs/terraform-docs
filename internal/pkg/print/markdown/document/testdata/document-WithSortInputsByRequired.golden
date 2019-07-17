@@ -19,7 +19,7 @@ module "foo" {
 
 The following input variables are supported:
 
-### input\_with\_underscores
+### input_with_underscores
 
 Description: A variable with underscores.
 

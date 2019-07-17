@@ -3,7 +3,6 @@ package table
 import (
 	"bytes"
 	"fmt"
-	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
@@ -81,8 +80,8 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 	for _, input := range inputs {
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s | %s | %s |",
-				strings.Replace(input.Name, "_", "\\_", -1),
-				markdown.SanitizeDescription(input.Description),
+				markdown.SanitizeName(input.Name, settings),
+				markdown.SanitizeDescription(input.Description, settings),
 				input.Type,
 				getInputDefaultValue(&input, settings)))
 
@@ -110,7 +109,7 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.
 	for _, output := range outputs {
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s |\n",
-				strings.Replace(output.Name, "_", "\\_", -1),
-				markdown.SanitizeDescription(output.Description)))
+				markdown.SanitizeName(output.Name, settings),
+				markdown.SanitizeDescription(output.Description, settings)))
 	}
 }
