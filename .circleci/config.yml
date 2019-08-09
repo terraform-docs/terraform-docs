@@ -26,7 +26,7 @@ jobs:
     steps:
     - restore_cache:
         key: repo-{{ .Environment.CIRCLE_SHA1 }}
-    - run: make checkfmt
+    - run: make goimports checkfmt
 
   lint:
     <<: *defaults

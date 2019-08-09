@@ -164,6 +164,11 @@ authors: ## Generate Authors
 changelog: ## Generate Changelog
 	git-chglog -o CHANGELOG.md
 
+.PHONY: goimports
+goimports: ## Install goimports
+	@ $(MAKE) --no-print-directory log-$@
+	GO111MODULE=off go get -u golang.org/x/tools/cmd/goimports
+
 .PHONY: tools
 tools: ## Install required tools
 	@ $(MAKE) --no-print-directory log-$@
