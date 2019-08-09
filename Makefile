@@ -69,7 +69,7 @@ fmt: ## Format all go files
 
 .PHONY: checkfmt
 checkfmt: RESULT = $(shell goimports -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
-checkfmt: SHELL := /bin/bash
+checkfmt: SHELL := /usr/bin/env bash
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
 	@ echo "$(RESULT)"
@@ -90,39 +90,10 @@ build: clean ## Build binary for current OS/ARCH
 
 .PHONY: build-all
 build-all: GOOS      = linux darwin windows freebsd
-build-all: GOARCH    = amd64
+build-all: GOARCH    = amd64 arm
 build-all: clean ## Build binary for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
-	@ CGO_ENABLED=0 gox					\
-		-verbose					\
-		-ldflags $(GOLDFLAGS)				\
-		-gcflags=-trimpath=$(GOPATH)			\
-		-os="$(GOOS)"					\
-		-arch="$(GOARCH)"				\
-		-output="$(BUILD_DIR)/{{.OS}}-{{.Arch}}/{{.Dir}}" .
-
-	@ printf "\033[36m==> Compress binary\033[0m\n" ;								\
-	FULL_PATH="./$(BUILD_DIR)/$(NAME)-$(VERSION)" ;									\
-	for platform in `find ./$(BUILD_DIR) -mindepth 1 -maxdepth 1 -type d` ; do					\
-		OSARCH=`basename $${platform}` ;									\
-		case "$${OSARCH}" in											\
-			"windows"*) zip -q -j $${FULL_PATH}-$${OSARCH}.zip $${platform}/$(NAME).exe ;;			\
-			*)          tar -czf $${FULL_PATH}-$${OSARCH}.tar.gz --directory $${platform}/ $(NAME) ;;	\
-		esac ;													\
-		printf -- "--> %15s: Done\n" "$${OSARCH}" ;								\
-	done ;														\
-	cd ./$(BUILD_DIR) ;												\
-	touch $(NAME)-${VERSION}.sha256sum ;										\
-	for binary in `find . -mindepth 1 -maxdepth 1 -type f | grep -v "$(NAME)-${VERSION}.sha256sum" | sort` ; do	\
-		binary=`basename $${binary}` ;										\
-		if command -v sha256sum > /dev/null; then								\
-			sha256sum $${binary} >> $(NAME)-${VERSION}.sha256sum ;						\
-		elif command -v shasum > /dev/null; then 								\
-			shasum -a256 $${binary} >> $(NAME)-${VERSION}.sha256sum ;					\
-		fi ;													\
-	done ;														\
-	cd - >/dev/null 2>&1 ;												\
-	printf -- "\n--> %15s: Done\n" "sha256sum" ;
+	@ ./hack/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
 
 #####################
 ## Release targets ##
@@ -133,16 +104,7 @@ PATTERN =
 release: version ?= $(shell echo $(VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
 release: ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
-	@ if [ -z "$(version)" ]; then								\
-		echo "Error: missing value for 'version'. e.g. 'make release version=x.y.z'" ;	\
-	elif [ "v$(version)" = "$(VERSION)" ] ; then						\
-		echo "Error: provided version (v$(version)) exists." ;				\
-	else											\
-		git tag --annotate --message "v$(version) Release" v$(version) ;		\
-		echo "Tag v$(version) Release" ;						\
-		git push origin v$(version) ;							\
-		echo "Push v$(version) Release" ;						\
-	fi
+	@ ./hack/release/release.sh "$(version)" "$(VERSION)"
 
 patch: PATTERN = '\$$1\".\"\$$2\".\"\$$3+1'
 patch: release ## Prepare Patch release
