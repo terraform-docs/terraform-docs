@@ -93,7 +93,7 @@ build-all: GOOS      = linux darwin windows freebsd
 build-all: GOARCH    = amd64 arm
 build-all: clean ## Build binary for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
-	@ ./hack/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
+	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
 
 #####################
 ## Release targets ##
@@ -104,7 +104,7 @@ PATTERN =
 release: version ?= $(shell echo $(VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
 release: ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
-	@ ./hack/release/release.sh "$(version)" "$(VERSION)"
+	@ ./scripts/release/release.sh "$(version)" "$(VERSION)"
 
 .PHONY: patch
 patch: PATTERN = '\$$1\".\"\$$2\".\"\$$3+1'
