@@ -42,10 +42,33 @@ all: clean deps lint test build
 #########################
 ## Development targets ##
 #########################
+.PHONY: checkfmt
+checkfmt: RESULT = $(shell goimports -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
+checkfmt: SHELL := /usr/bin/env bash
+checkfmt: ## Check formatting of all go files
+	@ $(MAKE) --no-print-directory log-$@
+	@ echo "$(RESULT)"
+	@ if [ "$(RESULT)" != "OK" ]; then exit 1; fi
+
 .PHONY: clean
 clean: ## Clean workspace
 	@ $(MAKE) --no-print-directory log-$@
 	rm -rf ./$(BUILD_DIR)
+
+.PHONY: fmt
+fmt: ## Format all go files
+	@ $(MAKE) --no-print-directory log-$@
+	goimports -w $(GOFILES)
+
+.PHONY: lint
+lint: ## Run linter
+	@ $(MAKE) --no-print-directory log-$@
+	GO111MODULE=on golangci-lint run ./...
+
+.PHONY: test
+test: ## Run tests
+	@ $(MAKE) --no-print-directory log-$@
+	$(GOCMD) test $(MODVENDOR) -v $(GOPKGS)
 
 .PHONY: vendor
 vendor: ## Install 'vendor' dependencies
@@ -56,29 +79,6 @@ vendor: ## Install 'vendor' dependencies
 verify: ## Verify 'vendor' dependencies
 	@ $(MAKE) --no-print-directory log-$@
 	$(GOCMD) mod verify
-
-.PHONY: lint
-lint: ## Run linter
-	@ $(MAKE) --no-print-directory log-$@
-	GO111MODULE=on golangci-lint run ./...
-
-.PHONY: fmt
-fmt: ## Format all go files
-	@ $(MAKE) --no-print-directory log-$@
-	goimports -w $(GOFILES)
-
-.PHONY: checkfmt
-checkfmt: RESULT = $(shell goimports -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
-checkfmt: SHELL := /usr/bin/env bash
-checkfmt: ## Check formatting of all go files
-	@ $(MAKE) --no-print-directory log-$@
-	@ echo "$(RESULT)"
-	@ if [ "$(RESULT)" != "OK" ]; then exit 1; fi
-
-.PHONY: test
-test: ## Run tests
-	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) test $(MODVENDOR) -v $(GOPKGS)
 
 ###################
 ## Build targets ##
