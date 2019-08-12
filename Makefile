@@ -98,20 +98,23 @@ build-all: clean ## Build binary for all OS/ARCH
 #####################
 ## Release targets ##
 #####################
-.PHONY: release patch minor major
 PATTERN =
 
+.PHONY: release
 release: version ?= $(shell echo $(VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
 release: ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
 	@ ./hack/release/release.sh "$(version)" "$(VERSION)"
 
+.PHONY: patch
 patch: PATTERN = '\$$1\".\"\$$2\".\"\$$3+1'
 patch: release ## Prepare Patch release
 
+.PHONY: minor
 minor: PATTERN = '\$$1\".\"\$$2+1\".0\"'
 minor: release ## Prepare Minor release
 
+.PHONY: major
 major: PATTERN = '\$$1+1\".0.0\"'
 major: release ## Prepare Major release
 
