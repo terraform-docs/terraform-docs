@@ -12,16 +12,16 @@ PACKAGE     := github.com/$(VENDOR)/$(NAME)
 # Build variables
 BUILD_DIR   := bin
 COMMIT_HASH ?= $(shell git rev-parse --short HEAD 2>/dev/null)
-VERSION     ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
 BUILD_DATE  ?= $(shell date +%FT%T%z)
+VERSION     ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
 
 # Go variables
+GOCMD       := GO111MODULE=on go
 GOOS        ?= $(shell go env GOOS)
 GOARCH      ?= $(shell go env GOARCH)
-GOCMD       := GO111MODULE=on go
-MODVENDOR   := -mod=vendor
 GOFILES     ?= $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 GOPKGS      ?= $(shell $(GOCMD) list $(MODVENDOR) ./... | grep -v /vendor)
+MODVENDOR   := -mod=vendor
 
 GOLDFLAGS   :="
 GOLDFLAGS   += -X $(PACKAGE)/internal/pkg/version.version=$(VERSION)
@@ -33,8 +33,8 @@ GOBUILD     ?= CGO_ENABLED=0 $(GOCMD) build $(MODVENDOR) -ldflags $(GOLDFLAGS)
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
 
 # Binary versions
-GOLANGCI_VERSION  := v1.17.1
 GITCHGLOG_VERSION := 0.8.0
+GOLANGCI_VERSION  := v1.17.1
 
 .PHONY: all
 all: clean deps lint test build
