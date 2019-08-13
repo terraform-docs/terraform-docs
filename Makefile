@@ -141,9 +141,10 @@ tools: ## Install required tools
 	curl -sfL https://github.com/git-chglog/git-chglog/releases/download/$(GITCHGLOG_VERSION)/git-chglog_$(shell go env GOOS)_$(shell go env GOARCH) -o $(shell go env GOPATH)/bin/git-chglog && chmod +x $(shell go env GOPATH)/bin/git-chglog
 	GO111MODULE=off go get -u github.com/mitchellh/gox
 
-####################################
-## Self-Documenting Makefile Help ##
-####################################
+########################################################################
+## Self-Documenting Makefile Help                                     ##
+## https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html ##
+########################################################################
 .PHONY: help
 help:
 	@ grep -h -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
