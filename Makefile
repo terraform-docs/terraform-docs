@@ -3,7 +3,7 @@ NAME        := terraform-docs
 VENDOR      := segmentio
 DESCRIPTION := Generate docs from Terraform modules
 MAINTAINER  := Martin Etmajer <metmajer@getcloudnative.io>
-URL         := https://github.com/segmentio/terraform-docs
+URL         := https://github.com/$(VENDOR)/$(NAME)
 LICENSE     := MIT
 
 # Repository variables
