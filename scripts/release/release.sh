@@ -15,10 +15,18 @@ if [ -z "${CURRENT_VERSION}" ]; then
     exit 1
 fi
 
+PWD=$(cd $(dirname "$0") && pwd -P)
+
 if [ "v${RELEASE_VERSION}" = "${CURRENT_VERSION}" ]; then
     echo "Error: provided version (v${RELEASE_VERSION}) exists."
     exit 1
 else
+    git-chglog -o ${PWD}/../../CHANGELOG.md --next-tag "v${RELEASE_VERSION}"
+    git add CHANGELOG.md
+    git commit -m "Update Changelog"
+    git push origin master
+    echo "Push v${RELEASE_VERSION} Changelog"
+
     git tag --annotate --message "v${RELEASE_VERSION} Release" v${RELEASE_VERSION}
     echo "Tag v${RELEASE_VERSION} Release"
     git push origin v${RELEASE_VERSION}

@@ -128,6 +128,8 @@ authors: ## Generate Authors
 .PHONY: changelog
 changelog: ## Generate Changelog
 	git-chglog -o CHANGELOG.md
+	git add CHANGELOG.md
+	git commit -m "Update Changelog"
 
 .PHONY: goimports
 goimports: ## Install goimports
