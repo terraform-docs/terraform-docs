@@ -60,7 +60,7 @@ func printComment(buffer *bytes.Buffer, comment string, settings *settings.Setti
 }
 
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Settings) {
-	buffer.WriteString("## Inputs\n\n")
+	buffer.WriteString(fmt.Sprintf("%s Inputs\n\n", markdown.GenerateIndentation(0, settings)))
 	buffer.WriteString("| Name | Description | Type | Default |")
 
 	if settings.ShowRequired {
@@ -102,7 +102,7 @@ func printIsInputRequired(input *doc.Input) string {
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *settings.Settings) {
-	buffer.WriteString("## Outputs\n\n")
+	buffer.WriteString(fmt.Sprintf("%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
 	buffer.WriteString("| Name | Description |\n")
 	buffer.WriteString("|------|-------------|\n")
 

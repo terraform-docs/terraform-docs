@@ -77,7 +77,7 @@ func printFencedCodeBlock(code string) string {
 
 func printInput(buffer *bytes.Buffer, input doc.Input, settings *settings.Settings) {
 	buffer.WriteString("\n")
-	buffer.WriteString(fmt.Sprintf("### %s\n\n", markdown.SanitizeName(input.Name, settings)))
+	buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(input.Name, settings)))
 	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeDescription(input.Description, settings)))
 	buffer.WriteString(fmt.Sprintf("Type: `%s`\n", input.Type))
 
@@ -89,7 +89,7 @@ func printInput(buffer *bytes.Buffer, input doc.Input, settings *settings.Settin
 
 func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Settings) {
 	if settings.ShowRequired {
-		buffer.WriteString("## Required Inputs\n\n")
+		buffer.WriteString(fmt.Sprintf("%s Required Inputs\n\n", markdown.GenerateIndentation(0, settings)))
 		buffer.WriteString("The following input variables are required:\n")
 
 		for _, input := range inputs {
@@ -99,7 +99,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Se
 		}
 
 		buffer.WriteString("\n")
-		buffer.WriteString("## Optional Inputs\n\n")
+		buffer.WriteString(fmt.Sprintf("%s Optional Inputs\n\n", markdown.GenerateIndentation(0, settings)))
 		buffer.WriteString("The following input variables are optional (have default values):\n")
 
 		for _, input := range inputs {
@@ -108,7 +108,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Se
 			}
 		}
 	} else {
-		buffer.WriteString("## Inputs\n\n")
+		buffer.WriteString(fmt.Sprintf("%s Inputs\n\n", markdown.GenerateIndentation(0, settings)))
 		buffer.WriteString("The following input variables are supported:\n")
 
 		for _, input := range inputs {
@@ -118,12 +118,12 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Se
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *settings.Settings) {
-	buffer.WriteString("## Outputs\n\n")
+	buffer.WriteString(fmt.Sprintf("%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
 	buffer.WriteString("The following outputs are exported:\n")
 
 	for _, output := range outputs {
 		buffer.WriteString("\n")
-		buffer.WriteString(fmt.Sprintf("### %s\n\n", markdown.SanitizeName(output.Name, settings)))
+		buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(output.Name, settings)))
 		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.SanitizeDescription(output.Description, settings)))
 	}
 }

@@ -10,6 +10,10 @@ type Settings struct {
 	// scope: Markdown
 	EscapeMarkdown bool
 
+	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5, 6, 7] (default: 2)
+	// scope: Markdown
+	MarkdownIndent int
+
 	// ShowRequired show "Required" column when generating Markdown (default: true)
 	// scope: Markdown
 	ShowRequired bool
@@ -28,6 +32,7 @@ func NewSettings() *Settings {
 	return &Settings{
 		AggregateTypeDefaults: false,
 		EscapeMarkdown:        true,
+		MarkdownIndent:        2,
 		ShowRequired:          true,
 		SortByName:            true,
 		SortInputsByRequired:  false,
