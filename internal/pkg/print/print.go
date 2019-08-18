@@ -10,7 +10,7 @@ import (
 )
 
 // GetPrintableValue returns a printable representation of a Terraform value.
-func GetPrintableValue(value *doc.Value, settings settings.Settings, pretty bool) string {
+func GetPrintableValue(value *doc.Value, settings *settings.Settings, pretty bool) string {
 	var result string
 
 	if value == nil {

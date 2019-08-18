@@ -13,7 +13,7 @@ import (
 func TestPrint(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings = _settings.Settings{}
+	var settings = &_settings.Settings{}
 
 	actual, err := json.Print(doc, settings)
 	if err != nil {
@@ -31,7 +31,7 @@ func TestPrint(t *testing.T) {
 func TestPrintWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		SortByName: true,
 	}
 
@@ -51,7 +51,7 @@ func TestPrintWithSortByName(t *testing.T) {
 func TestPrintWithSortInputsByRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}

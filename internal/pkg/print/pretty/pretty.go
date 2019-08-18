@@ -10,7 +10,7 @@ import (
 )
 
 // Print prints a pretty document.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
+func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
 	if document.HasComment() {
@@ -40,7 +40,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	return buffer.String(), nil
 }
 
-func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
+func getInputDefaultValue(input *doc.Input, settings *settings.Settings) string {
 	var result = "required"
 
 	if input.HasDefault() {
@@ -50,11 +50,11 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	return result
 }
 
-func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
+func printComment(buffer *bytes.Buffer, comment string, settings *settings.Settings) {
 	buffer.WriteString(fmt.Sprintf("\n%s\n", comment))
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
+func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Settings) {
 	buffer.WriteString("\n")
 
 	for _, input := range inputs {
@@ -70,7 +70,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 	buffer.WriteString("\n")
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
+func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *settings.Settings) {
 	buffer.WriteString("\n")
 
 	for _, output := range outputs {

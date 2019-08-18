@@ -13,7 +13,7 @@ const (
 )
 
 // Print prints a document as json.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
+func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 	if document.HasInputs() {
 		if settings.SortByName {
 			if settings.SortInputsByRequired {

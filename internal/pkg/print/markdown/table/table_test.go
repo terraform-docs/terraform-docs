@@ -13,7 +13,7 @@ import (
 func TestPrint(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = _settings.Settings{}
+	var settings = &_settings.Settings{}
 
 	actual, err := table.Print(doc, settings)
 	if err != nil {
@@ -31,7 +31,7 @@ func TestPrint(t *testing.T) {
 func TestWithAggregateTypeDefaults(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		AggregateTypeDefaults: true,
 	}
 
@@ -51,7 +51,7 @@ func TestWithAggregateTypeDefaults(t *testing.T) {
 func TestPrintWithRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		ShowRequired: true,
 	}
 
@@ -71,7 +71,7 @@ func TestPrintWithRequired(t *testing.T) {
 func TestPrintWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		SortByName: true,
 	}
 
@@ -91,7 +91,7 @@ func TestPrintWithSortByName(t *testing.T) {
 func TestPrintWithSortInputsByRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}
@@ -112,7 +112,7 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 func TestPrintWithEscapeName(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		EscapeMarkdown: true,
 	}
 

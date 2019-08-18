@@ -14,7 +14,7 @@ var prettyCmd = &cobra.Command{
 	PreRun: commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return pretty.Print(docs, *settings)
+			return pretty.Print(docs, settings)
 		}))
 	},
 }
