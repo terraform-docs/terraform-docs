@@ -11,7 +11,7 @@ import (
 )
 
 // Print prints a document as Markdown document.
-func Print(document *doc.Doc, settings settings.Settings) (string, error) {
+func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
 	if document.HasComment() {
@@ -45,7 +45,7 @@ func Print(document *doc.Doc, settings settings.Settings) (string, error) {
 	return markdown.Sanitize(buffer.String()), nil
 }
 
-func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
+func getInputDefaultValue(input *doc.Input, settings *settings.Settings) string {
 	var result = "n/a"
 
 	if input.HasDefault() {
@@ -59,7 +59,7 @@ func getInputDefaultValue(input *doc.Input, settings settings.Settings) string {
 	return result
 }
 
-func printComment(buffer *bytes.Buffer, comment string, settings settings.Settings) {
+func printComment(buffer *bytes.Buffer, comment string, settings *settings.Settings) {
 	buffer.WriteString(fmt.Sprintf("%s\n", comment))
 }
 
@@ -75,7 +75,7 @@ func printFencedCodeBlock(code string) string {
 	return buffer.String()
 }
 
-func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Settings) {
+func printInput(buffer *bytes.Buffer, input doc.Input, settings *settings.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("### %s\n\n", markdown.SanitizeName(input.Name, settings)))
 	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeDescription(input.Description, settings)))
@@ -87,7 +87,7 @@ func printInput(buffer *bytes.Buffer, input doc.Input, settings settings.Setting
 	}
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Settings) {
+func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Settings) {
 	if settings.ShowRequired {
 		buffer.WriteString("## Required Inputs\n\n")
 		buffer.WriteString("The following input variables are required:\n")
@@ -117,7 +117,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings settings.Set
 	}
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings settings.Settings) {
+func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *settings.Settings) {
 	buffer.WriteString("## Outputs\n\n")
 	buffer.WriteString("The following outputs are exported:\n")
 

@@ -12,7 +12,7 @@ import (
 func TestPretty(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings = _settings.Settings{}
+	var settings = &_settings.Settings{}
 
 	actual, err := pretty.Print(doc, settings)
 	if err != nil {
@@ -97,7 +97,7 @@ func TestPretty(t *testing.T) {
 func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		AggregateTypeDefaults: true,
 	}
 
@@ -184,7 +184,7 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 func TestPrettyWithSortByName(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		SortByName: true,
 	}
 
@@ -271,7 +271,7 @@ func TestPrettyWithSortByName(t *testing.T) {
 func TestPrettyWithSortInputsByRequired(t *testing.T) {
 	doc := doc.TestDoc(t, "..")
 
-	var settings = _settings.Settings{
+	var settings = &_settings.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}

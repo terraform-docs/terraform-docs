@@ -28,20 +28,15 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-var settings = &_settings.Settings{}
+var settings = _settings.NewSettings()
 
 func init() {
-	var nosort bool
-
-	rootCmd.PersistentFlags().BoolVar(&nosort, "no-sort", false, "omit sorted rendering of inputs and outputs")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of inputs and outputs")
 	rootCmd.PersistentFlags().BoolVar(&settings.SortInputsByRequired, "sort-inputs-by-required", false, "sort inputs by name and prints required inputs first")
 	rootCmd.PersistentFlags().BoolVar(&settings.AggregateTypeDefaults, "with-aggregate-type-defaults", false, "print default values of aggregate types")
 
-	var norequired bool
-	var noesape bool
-
-	markdownCmd.PersistentFlags().BoolVar(&norequired, "no-required", false, "omit \"Required\" column when generating Markdown")
-	markdownCmd.PersistentFlags().BoolVar(&noesape, "no-escape", false, "do not escape special characters")
+	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "omit \"Required\" column when generating Markdown")
+	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

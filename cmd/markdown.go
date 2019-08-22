@@ -16,7 +16,7 @@ var markdownCmd = &cobra.Command{
 	PreRun:  commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return table.Print(docs, *settings)
+			return table.Print(docs, settings)
 		}))
 	},
 }
@@ -28,7 +28,7 @@ var mdTableCmd = &cobra.Command{
 	PreRun:  commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return table.Print(docs, *settings)
+			return table.Print(docs, settings)
 		}))
 	},
 }
@@ -40,7 +40,7 @@ var mdDocumentCmd = &cobra.Command{
 	PreRun:  commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return document.Print(docs, *settings)
+			return document.Print(docs, settings)
 		}))
 	},
 }

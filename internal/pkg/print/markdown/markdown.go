@@ -8,7 +8,7 @@ import (
 )
 
 // SanitizeName escapes underscore character which have special meaning in Markdown.
-func SanitizeName(s string, settings settings.Settings) string {
+func SanitizeName(s string, settings *settings.Settings) string {
 	if settings.EscapeMarkdown {
 		// Escape underscore
 		s = strings.Replace(s, "_", "\\_", -1)
@@ -18,7 +18,7 @@ func SanitizeName(s string, settings settings.Settings) string {
 }
 
 // SanitizeDescription converts description to suitable Markdown representation. (including line-break, illegal characters, etc)
-func SanitizeDescription(s string, settings settings.Settings) string {
+func SanitizeDescription(s string, settings *settings.Settings) string {
 	s = ConvertMultiLineText(s)
 	s = EscapeIllegalCharacters(s, settings)
 
@@ -39,7 +39,7 @@ func ConvertMultiLineText(s string) string {
 }
 
 // EscapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
-func EscapeIllegalCharacters(s string, settings settings.Settings) string {
+func EscapeIllegalCharacters(s string, settings *settings.Settings) string {
 	// Escape pipe
 	s = strings.Replace(s, "|", "\\|", -1)
 

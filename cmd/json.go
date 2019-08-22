@@ -14,7 +14,7 @@ var jsonCmd = &cobra.Command{
 	PreRun: commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return json.Print(docs, *settings)
+			return json.Print(docs, settings)
 		}))
 	},
 }
