@@ -4,9 +4,25 @@ info:
   title: CHANGELOG
   repository_url: https://github.com/segmentio/terraform-docs
 options:
+  commits:
+    filters:
+      Type:
+        - docs
+        - feat
+        - fix
+        - perf
+        - refactor
+  commit_groups:
+    title_maps:
+      docs: Documentations
+      feat: Features
+      fix: Bug Fixes
+      perf: Performance Improvements
+      refactor: Code Refactoring
   header:
-    pattern: "^(.*)$"
+    pattern: "^(\\w*)?\\:\\s(.*)$"
     pattern_maps:
+      - Type
       - Subject
   notes:
     keywords:
