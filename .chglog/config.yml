@@ -14,7 +14,7 @@ options:
         - refactor
   commit_groups:
     title_maps:
-      docs: Documentations
+      docs: Documentation
       feat: Features
       fix: Bug Fixes
       perf: Performance Improvements
