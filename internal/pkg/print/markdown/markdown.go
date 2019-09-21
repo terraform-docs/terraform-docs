@@ -19,16 +19,36 @@ func SanitizeName(s string, settings *settings.Settings) string {
 }
 
 func SanitizeDescription(s string, settings *settings.Settings) string {
-	s = ConvertMultiLineText(s)
-	s = EscapeIllegalCharacters(s, settings)
-	return s
+	// s = ConvertMultiLineText(s)
+	// s = EscapeIllegalCharacters(s, settings)
+	// return s
+	// Isolate blocks of code. Dont escape anything inside them
+	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
+	segments := strings.Split(s, "\n```\n")
+	buf := bytes.NewBufferString("")
+	for i, segment := range segments {
+		if !nextIsInCodeBlock {
+			segment = ConvertMultiLineText(segment)
+			segment = EscapeIllegalCharacters(segment, settings)
+			if i > 0 && len(segment) > 0 {
+				buf.WriteString("<br>```<br>")
+			}
+			buf.WriteString(segment)
+			nextIsInCodeBlock = true
+		} else {
+			buf.WriteString("<br>```<br>")
+			buf.WriteString(segment)
+			buf.WriteString("<br>```")
+			nextIsInCodeBlock = false
+		}
+	}
+	return buf.String()
 }
 
 // SanitizeDescription converts description to suitable Markdown representation for a table. (including line-break, illegal characters, code blocks etc)
 func SanitizeDescriptionForTable(s string, settings *settings.Settings) string {
 	// Isolate blocks of code. Dont escape anything inside them
-	// Take care of windows:
-	nextIsInCodeBlock := strings.HasPrefix(s,"```\n")
+	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
 	segments := strings.Split(s, "```\n")
 	buf := bytes.NewBufferString("")
 	for _, segment := range segments {
@@ -37,7 +57,7 @@ func SanitizeDescriptionForTable(s string, settings *settings.Settings) string {
 			segment = EscapeIllegalCharacters(segment, settings)
 			buf.WriteString(segment)
 			nextIsInCodeBlock = true
-		} else{
+		} else {
 			buf.WriteString("<code><pre>")
 			buf.WriteString(strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
 			buf.WriteString("</pre></code>")

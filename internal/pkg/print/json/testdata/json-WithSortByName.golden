@@ -2,6 +2,17 @@
   "Comment": "Usage:\n\nmodule \"foo\" {\n  source = \"github.com/foo/bar\"\n\n  id   = \"1234567890\"\n  name = \"baz\"\n\n  zones = [\"us-east-1\", \"us-west-1\"]\n\n  tags = {\n    Name         = \"baz\"\n    Created-By   = \"first.last@email.com\"\n    Date-Created = \"20180101\"\n  }\n}\n",
   "Inputs": [
     {
+      "Name": "input-with-code-block",
+      "Description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
+      "Default": {
+        "Type": "list",
+        "Value": [
+          "name rack:location"
+        ]
+      },
+      "Type": "list"
+    },
+    {
       "Name": "input-with-pipe",
       "Description": "It includes v1 | v2 | v3",
       "Default": {

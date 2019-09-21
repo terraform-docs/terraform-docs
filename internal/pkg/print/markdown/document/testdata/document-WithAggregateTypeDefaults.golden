@@ -139,6 +139,26 @@ Type: `string`
 
 Default: `"v1"`
 
+### input-with-code-block
+
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+
+Type: `list`
+
+Default:
+
+```json
+[
+  "name rack:location"
+]
+```
+
 ## Outputs
 
 The following outputs are exported:
