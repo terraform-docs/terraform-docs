@@ -80,3 +80,19 @@ func Sanitize(markdown string) string {
 
 	return result
 }
+
+// GenerateIndentation generates indentation of Markdown headers
+// with base level of provided 'settings.MarkdownIndent' plus any
+// extra level needed for subsection (e.g. 'Required Inputs' which
+// is a subsection of 'Inputs' section)
+func GenerateIndentation(extra int, settings *settings.Settings) string {
+	var base = settings.MarkdownIndent
+	if base < 1 || base > 5 {
+		base = 2
+	}
+	var indent string
+	for i := 0; i < base+extra; i++ {
+		indent += "#"
+	}
+	return indent
+}
