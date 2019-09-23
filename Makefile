@@ -104,7 +104,7 @@ PATTERN =
 release: version ?= $(shell echo $(VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
 release: ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
-	@ ./scripts/release/release.sh "$(version)" "$(VERSION)"
+	@ ./scripts/release/release.sh "$(version)" "$(VERSION)" "1"
 
 .PHONY: patch
 patch: PATTERN = '\$$1\".\"\$$2\".\"\$$3+1'
@@ -130,6 +130,7 @@ changelog: ## Generate Changelog
 	git-chglog -o CHANGELOG.md
 	git add CHANGELOG.md
 	git commit -m "Update Changelog"
+	git push origin master
 
 .PHONY: git-chglog
 git-chglog:
