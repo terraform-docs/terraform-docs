@@ -87,7 +87,7 @@ func Sanitize(markdown string) string {
 // is a subsection of 'Inputs' section)
 func GenerateIndentation(extra int, settings *settings.Settings) string {
 	var base = settings.MarkdownIndent
-	if base < 1 || base > 7 {
+	if base < 1 || base > 5 {
 		base = 2
 	}
 	var indent string

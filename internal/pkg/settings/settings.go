@@ -10,7 +10,7 @@ type Settings struct {
 	// scope: Markdown
 	EscapeMarkdown bool
 
-	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5, 6, 7] (default: 2)
+	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5] (default: 2)
 	// scope: Markdown
 	MarkdownIndent int
 
