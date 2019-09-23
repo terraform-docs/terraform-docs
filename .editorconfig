@@ -1,0 +1,26 @@
+# http://editorconfig.org
+
+# this file is the top-most editorconfig file
+root = true
+
+# all files
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.go]
+indent_style = tab
+indent_size = 4
+
+[json*.golden]
+insert_final_newline = false
+
+[*.{yaml,yml}]
+indent_size = 2
+
+[Makefile]
+indent_style = tab
