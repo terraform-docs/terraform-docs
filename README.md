@@ -32,6 +32,18 @@ If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
 brew install terraform-docs
 ```
 
+If you want to use it inside a container:
+
+```bash
+docker run --rm -it -v $(pwd):/app/ -w /app/ tmknom/terraform-docs
+```
+
+You can add the command as an alias on your `.bashrc` or `.zshrc`:
+
+```bash
+alias terraform-docs='docker run --rm -it -v $(pwd):/app/ -w /app/ tmknom/terraform-docs'
+```
+
 For other platforms, please have a look at our [binary releases](https://github.com/segmentio/terraform-docs/releases).
 
 ## Code Completion
