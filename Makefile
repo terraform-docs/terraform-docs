@@ -55,6 +55,9 @@ clean: ## Clean workspace
 	@ $(MAKE) --no-print-directory log-$@
 	rm -rf ./$(BUILD_DIR)
 
+.PHONY: deps
+deps: vendor ## Install dependencies
+
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
