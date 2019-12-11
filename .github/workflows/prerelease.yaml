@@ -22,7 +22,7 @@ jobs:
     - name: Build binaries for all OS/ARCH platforms
       run: |
         export PATH=$PATH:$(go env GOPATH)/bin
-        make gox build-all compress=true
+        make gox build-all
 
     - name: Release
       uses: softprops/action-gh-release@v1
