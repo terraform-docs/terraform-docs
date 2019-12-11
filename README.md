@@ -4,7 +4,7 @@
 
 > **A utility to generate documentation from Terraform modules in various output formats.**
 
-![terraform-docs-teaser](https://raw.githubusercontent.com/segmentio/terraform-docs/media/terraform-docs-teaser.png)
+![terraform-docs-teaser](./images/terraform-docs-teaser.png)
 
 ## Table of Contents
 
@@ -16,14 +16,14 @@
 
 ## Maintenance
 
-This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer), unaffiliated with Segment, from [GetCloudnative](https://github.com/getcloudnative), is maintaining the project with help from these awesome [contributors](AUTHORS).
+This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
 
 ## Installation
 
 The latest version can be installed using `go get`:
 
 ``` bash
-go get github.com/segmentio/terraform-docs
+GO111MODULE="off" go get github.com/segmentio/terraform-docs@v0.6.0
 ```
 
 If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
@@ -32,23 +32,48 @@ If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
 brew install terraform-docs
 ```
 
-For other platforms, please have a look at our [binary releases](https://github.com/segmentio/terraform-docs/releases).
+**NOTE:** please use the latest go to do this, ideally go 1.12.9 or greater.
+
+This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error `terraform-docs: command not found` after installation then you may need to either add that directory to your `$PATH` as shown [here](https://golang.org/doc/code.html#GOPATH) or do a manual installation by cloning the repo and run `make build` from the repository which will put `terraform-docs` in:
+
+```bash
+$(go env GOPATH)/src/github.com/segmentio/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
+```
+
+Stable binaries are also available on the [releases](https://github.com/segmentio/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
+
+```bash
+curl -Lo ./terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.6.0/terraform-docs-$(uname)-amd64
+chmod +x ./terraform-docs
+mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
+```
+
+**NOTE:** Windows releases are in `EXE` format.
 
 ## Code Completion
 
 The code completion for `bash` or `zsh` can be installed using:
 
+**Note:** Shell auto-completion is not available for Windows users.
+
+### bash
+
 ``` bash
+terraform-docs completion bash > ~/.terraform-docs-completion
+source ~/.terraform-docs-completion
+
+# or simply the one-liner below
 source <(terraform-docs completion bash)
 ```
 
-or
+### zsh
 
 ``` bash
-source <(terraform-docs completion zsh)
+terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-docs
+autoload -U compinit && compinit
 ```
 
-To make this change permenant, the above command can be added to you `~/.profile`.
+To make this change permenant, the above commands can be added to your `~/.profile` file.
 
 ## Getting Started
 
@@ -78,7 +103,7 @@ terraform-docs markdown document ./examples
 
 ## Development Requirements
 
-- Go 1.11+
+- Go 1.12+
 - [git-chlog](https://github.com/git-chglog/git-chglog)
 - [golangci-lint](https://github.com/golangci/golangci-lint)
 
