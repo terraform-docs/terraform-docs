@@ -19,6 +19,7 @@ module "foo" {
 
 | Name | Description | Type | Default |
 |------|-------------|:----:|:-----:|
+| input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<code><pre>default     = [<br>  "machine rack01:neptune"<br>]<br></pre></code> | list | `<list>` |
 | input-with-pipe | It includes v1 \| v2 \| v3 | string | `"v1"` |
 | input_with_underscores | A variable with underscores. | string | n/a |
 | list-1 | It's list number one. | list | `<list>` |

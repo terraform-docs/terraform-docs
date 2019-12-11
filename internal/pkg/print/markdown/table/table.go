@@ -81,7 +81,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *settings.Se
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s | %s | %s |",
 				markdown.SanitizeName(input.Name, settings),
-				markdown.SanitizeDescription(input.Description, settings),
+				markdown.SanitizeDescriptionForTable(input.Description, settings),
 				input.Type,
 				getInputDefaultValue(&input, settings)))
 
@@ -110,6 +110,6 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *settings
 		buffer.WriteString(
 			fmt.Sprintf("| %s | %s |\n",
 				markdown.SanitizeName(output.Name, settings),
-				markdown.SanitizeDescription(output.Description, settings)))
+				markdown.SanitizeDescriptionForTable(output.Description, settings)))
 	}
 }

@@ -101,6 +101,17 @@
         "Value": "v1"
       },
       "Type": "string"
+    },
+    {
+      "Name": "input-with-code-block",
+      "Description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
+      "Default": {
+        "Type": "list",
+        "Value": [
+          "name rack:location"
+        ]
+      },
+      "Type": "list"
     }
   ],
   "Outputs": [

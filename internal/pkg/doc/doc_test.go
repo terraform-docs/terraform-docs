@@ -120,6 +120,18 @@ var inputWithPipe = doc.Input{
 	Type: "string",
 }
 
+var inputWithCodeBlock = doc.Input{
+	Name:        "input-with-code-block",
+	Description: "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
+	Default: &doc.Value{
+		Type: "list",
+		Value: []interface{}{
+			"name rack:location",
+		},
+	},
+	Type: "list",
+}
+
 var output1 = doc.Output{
 	Name:        "output-1",
 	Description: "It's output number one.",
@@ -215,6 +227,7 @@ func TestInputs(t *testing.T) {
 		inputList1,
 		inputWithUnderscores,
 		inputWithPipe,
+		inputWithCodeBlock,
 	}
 
 	assert.Equal(t, expected, actual)
@@ -246,6 +259,7 @@ func TestInputsFromVariablesTf(t *testing.T) {
 		inputList1,
 		inputWithUnderscores,
 		inputWithPipe,
+		inputWithCodeBlock,
 	}
 
 	assert.Equal(t, expected, actual)
@@ -257,6 +271,7 @@ func TestInputsSortedByName(t *testing.T) {
 	doc.SortInputsByName(actual)
 
 	expected := []doc.Input{
+		inputWithCodeBlock,
 		inputWithPipe,
 		inputWithUnderscores,
 		inputList1,
@@ -285,6 +300,7 @@ func TestInputsSortedByRequired(t *testing.T) {
 		inputMap2,
 		inputString2,
 		inputUnquoted,
+		inputWithCodeBlock,
 		inputWithPipe,
 		inputList1,
 		inputList3,

@@ -1,6 +1,7 @@
 package markdown
 
 import (
+	"bytes"
 	"regexp"
 	"strings"
 
@@ -17,22 +18,68 @@ func SanitizeName(s string, settings *settings.Settings) string {
 	return s
 }
 
-// SanitizeDescription converts description to suitable Markdown representation. (including line-break, illegal characters, etc)
 func SanitizeDescription(s string, settings *settings.Settings) string {
-	s = ConvertMultiLineText(s)
-	s = EscapeIllegalCharacters(s, settings)
+	// s = ConvertMultiLineText(s)
+	// s = EscapeIllegalCharacters(s, settings)
+	// return s
+	// Isolate blocks of code. Dont escape anything inside them
+	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
+	segments := strings.Split(s, "\n```\n")
+	buf := bytes.NewBufferString("")
+	for i, segment := range segments {
+		if !nextIsInCodeBlock {
+			segment = ConvertMultiLineText(segment)
+			segment = EscapeIllegalCharacters(segment, settings)
+			if i > 0 && len(segment) > 0 {
+				buf.WriteString("<br>```<br>")
+			}
+			buf.WriteString(segment)
+			nextIsInCodeBlock = true
+		} else {
+			buf.WriteString("<br>```<br>")
+			buf.WriteString(segment)
+			buf.WriteString("<br>```")
+			nextIsInCodeBlock = false
+		}
+	}
+	return buf.String()
+}
 
-	return s
+// SanitizeDescription converts description to suitable Markdown representation for a table. (including line-break, illegal characters, code blocks etc)
+func SanitizeDescriptionForTable(s string, settings *settings.Settings) string {
+	// Isolate blocks of code. Dont escape anything inside them
+	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
+	segments := strings.Split(s, "```\n")
+	buf := bytes.NewBufferString("")
+	for _, segment := range segments {
+		if !nextIsInCodeBlock {
+			segment = ConvertMultiLineText(segment)
+			segment = EscapeIllegalCharacters(segment, settings)
+			buf.WriteString(segment)
+			nextIsInCodeBlock = true
+		} else {
+			buf.WriteString("<code><pre>")
+			buf.WriteString(strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
+			buf.WriteString("</pre></code>")
+			nextIsInCodeBlock = false
+		}
+	}
+
+	return buf.String()
 }
 
 // ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
 func ConvertMultiLineText(s string) string {
+
 	// Convert double newlines to <br><br>.
 	s = strings.Replace(
 		strings.TrimSpace(s),
 		"\n\n",
 		"<br><br>",
 		-1)
+
+	// Convert space-space-newline to <br>
+	s = strings.Replace(s, "  \n", "<br>", -1)
 
 	// Convert single newline to space.
 	return strings.Replace(s, "\n", " ", -1)
@@ -50,7 +97,7 @@ func EscapeIllegalCharacters(s string, settings *settings.Settings) string {
 		// Escape asterisk
 		s = strings.Replace(s, "*", "\\*", -1)
 
-		// Escape paranthesis
+		// Escape parenthesis
 		s = strings.Replace(s, "(", "\\(", -1)
 		s = strings.Replace(s, ")", "\\)", -1)
 

@@ -3,6 +3,7 @@ package document
 import (
 	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
@@ -42,7 +43,31 @@ func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 		printOutputs(&buffer, document.Outputs, settings)
 	}
 
-	return markdown.Sanitize(buffer.String()), nil
+	// out := markdown.Sanitize(buffer.String())
+
+	out := strings.Replace(buffer.String(), "<br>```<br>", "\n```\n", -1)
+
+	// the left over <br> or either inside or outside a code block:
+	segments := strings.Split(out, "\n```\n")
+	buf := bytes.NewBufferString("")
+	nextIsInCodeBlock := strings.HasPrefix(out, "```\n")
+	for i, segment := range segments {
+		if !nextIsInCodeBlock {
+			if i > 0 && len(segment) > 0 {
+				buf.WriteString("\n```\n")
+			}
+			segment = markdown.Sanitize(segment)
+			segment = strings.Replace(segment, "<br><br>", "\n\n", -1)
+			segment = strings.Replace(segment, "<br>", "  \n", -1)
+			buf.WriteString(segment)
+			nextIsInCodeBlock = true
+		} else {
+			buf.WriteString("\n```\n")
+			buf.WriteString(strings.Replace(segment, "<br>", "\n", -1))
+			nextIsInCodeBlock = false
+		}
+	}
+	return strings.Replace(buf.String(), " \n\n", "\n\n", -1), nil
 }
 
 func getInputDefaultValue(input *doc.Input, settings *settings.Settings) string {

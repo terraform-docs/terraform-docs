@@ -57,3 +57,18 @@ variable "input-with-pipe" {
   description = "It includes v1 | v2 | v3"
   default     = "v1"
 }
+
+variable "input-with-code-block" {
+  description = <<EOD
+This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+EOD
+  default     = [
+    "name rack:location"
+  ]
+}
