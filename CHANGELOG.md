@@ -3,6 +3,13 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+- Release version v0.7.0
+- Use Github Actions instead of Circle CI ([#124](https://github.com/segmentio/terraform-docs/issues/124))
+- Enhance release scripts
+- Generate release note based on the current tag changelog
+- Update Installation and Code Completion in README
+- Code blocks support for all formats. Single line break support ([#123](https://github.com/segmentio/terraform-docs/issues/123))
+- Update Changelog
 - target deps was missing (required by all) ([#126](https://github.com/segmentio/terraform-docs/issues/126))
 - Enhance Makefile and add editorconfig ([#115](https://github.com/segmentio/terraform-docs/issues/115))
 - Add support for controlling the indentation of Markdown headers ([#120](https://github.com/segmentio/terraform-docs/issues/120))
