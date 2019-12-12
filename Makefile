@@ -129,11 +129,13 @@ authors: ## Generate Authors
 	git log --all --format='%aN <%aE>' | sort -u | egrep -v noreply > AUTHORS
 
 .PHONY: changelog
+changelog: NEXT ?=
 changelog: ## Generate Changelog
-	git-chglog -o CHANGELOG.md
-	git add CHANGELOG.md
-	git commit -m "Update Changelog"
-	git push origin master
+	@ $(MAKE) --no-print-directory log-$@
+	git-chglog --config ./scripts/chglog/config-full-history.yml --tag-filter-pattern v[0-9]+.[0-9]+.[0-9]+$$ --output CHANGELOG.md $(NEXT)
+	@ git add CHANGELOG.md
+	@ git commit -m "Update Changelog"
+	@ git push origin master
 
 .PHONY: git-chglog
 git-chglog:

@@ -1,5 +1,5 @@
 style: github
-template: CHANGELOG.tpl.md
+template: CHANGELOG-full-history.tpl.md
 info:
   title: CHANGELOG
   repository_url: https://github.com/segmentio/terraform-docs
