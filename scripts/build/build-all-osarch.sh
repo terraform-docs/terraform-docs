@@ -30,7 +30,7 @@ CGO_ENABLED=0 gox \
     -osarch="!darwin/arm" \
     -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/{{.Dir}}" ${PWD}/../../
 
-printf "\033[36m==> Compress binary\033[0m\n"
+printf "\033[36m==> Finalize binary\033[0m\n"
 
 for platform in $(find ${BUILD_DIR} -mindepth 1 -maxdepth 1 -type d); do
     OSARCH=$(basename ${platform})
@@ -38,23 +38,13 @@ for platform in $(find ${BUILD_DIR} -mindepth 1 -maxdepth 1 -type d); do
 
     case "${OSARCH}" in
     "windows"*)
-        if ! command -v zip >/dev/null; then
-            echo "Error: cannot compress, 'zip' not found"
-            exit 1
-        fi
-
-        zip -q -j ${BUILD_DIR}/${FULLNAME}.zip ${platform}/${NAME}.exe
-        printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}.zip"
+        mv ${platform}/${NAME}.exe ${BUILD_DIR}/${FULLNAME}.exe
+        printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}.exe"
 
         ;;
     *)
-        if ! command -v tar >/dev/null; then
-            echo "Error: cannot compress, 'tar' not found"
-            exit 1
-        fi
-
-        tar -czf ${BUILD_DIR}/${FULLNAME}.tar.gz --directory ${platform}/ ${NAME}
-        printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}.tar.gz"
+        mv ${platform}/${NAME} ${BUILD_DIR}/${FULLNAME}
+        printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}"
 
         ;;
     esac

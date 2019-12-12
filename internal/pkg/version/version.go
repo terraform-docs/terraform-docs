@@ -7,7 +7,8 @@ import (
 	"time"
 )
 
-const dev = "dev"
+// current version
+const dev = "v0.7.0-alpha"
 
 // Provisioned by ldflags
 var (
