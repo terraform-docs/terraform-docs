@@ -1,0 +1,42 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - '!v*.*.*-*'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go 1.12
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.12
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Build binaries for all OS/ARCH platforms
+      run: |
+        export PATH=$PATH:$(go env GOPATH)/bin
+        make gox build-all
+
+    - name: Generate Changelog
+      run: |
+        export PATH=$PATH:$(go env GOPATH)/bin
+        ./scripts/release/release-note.sh
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        body_path: CURRENT-RELEASE-CHANGELOG.md
+        files: bin/terraform-docs-v*
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
