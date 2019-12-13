@@ -8,7 +8,6 @@ linters:
   enable:
     - govet
     - golint
-    - goconst
     - misspell
     - varcheck
     - structcheck
