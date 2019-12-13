@@ -1,6 +1,4 @@
-# terraform-docs
-
-[![CircleCI](https://circleci.com/gh/segmentio/terraform-docs.svg?style=svg)](https://circleci.com/gh/segmentio/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/terraform-docs)](https://goreportcard.com/report/github.com/segmentio/terraform-docs)
+# terraform-docs [![Build Status](https://github.com/segmentio/terraform-docs/workflows/build/badge.svg)](https://github.com/segmentio/terraform-docs/actions) [![GoDoc](https://godoc.org/github.com/segmentio/terraform-docs?status.svg)](https://godoc.org/github.com/segmentio/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/terraform-docs)](https://goreportcard.com/report/github.com/segmentio/terraform-docs)
 
 > **A utility to generate documentation from Terraform modules in various output formats.**
 
