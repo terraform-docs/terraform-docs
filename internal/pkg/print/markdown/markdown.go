@@ -18,7 +18,8 @@ func SanitizeName(s string, settings *settings.Settings) string {
 	return s
 }
 
-func SanitizeDescription(s string, settings *settings.Settings) string {
+// SanitizeDescriptionForDocument converts description to suitable Markdown representation for a document. (including line-break, illegal characters, code blocks etc)
+func SanitizeDescriptionForDocument(s string, settings *settings.Settings) string {
 	// s = ConvertMultiLineText(s)
 	// s = EscapeIllegalCharacters(s, settings)
 	// return s
@@ -45,7 +46,7 @@ func SanitizeDescription(s string, settings *settings.Settings) string {
 	return buf.String()
 }
 
-// SanitizeDescription converts description to suitable Markdown representation for a table. (including line-break, illegal characters, code blocks etc)
+// SanitizeDescriptionForTable converts description to suitable Markdown representation for a table. (including line-break, illegal characters, code blocks etc)
 func SanitizeDescriptionForTable(s string, settings *settings.Settings) string {
 	// Isolate blocks of code. Dont escape anything inside them
 	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
