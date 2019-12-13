@@ -2,10 +2,8 @@
 
 <a name="unreleased"></a>
 ## [Unreleased]
-
-- Update badges in README
-- Update list of authors
-- Bump version to v0.8.0-alpha
+### Enhancements
+- Enable new go linters and fix the existing issues ([#132](https://github.com/segmentio/terraform-docs/issues/132))
 
 
 <a name="v0.7.0"></a>
