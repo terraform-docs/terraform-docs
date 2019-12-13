@@ -28,13 +28,13 @@ func ParseAstNode(node *ast.Node, nodeType string) (interface{}, error) {
 	// Unmarshals HCL Text into a Go data structure
 	err := hcl.Unmarshal(buffer.Bytes(), &result)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to parse HCL: %s", err)
+		return nil, fmt.Errorf("unable to parse HCL: %s", err)
 	}
 
 	// Marshals the Go data structure into JSON text
 	data, err := json.Marshal(result)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to marshal JSON: %s", err)
+		return nil, fmt.Errorf("unable to marshal JSON: %s", err)
 	}
 
 	// Extract the desired value from JSON text
@@ -45,13 +45,13 @@ func ParseAstNode(node *ast.Node, nodeType string) (interface{}, error) {
 
 	data, _, _, err = jsonparser.Get(data, path...)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to extract value from JSON: %s", err)
+		return nil, fmt.Errorf("unable to extract value from JSON: %s", err)
 	}
 
 	// Unmarshal JSON text into a Go data structure
 	err = json.Unmarshal(data, &result)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to unmarshal JSON: %s", err)
+		return nil, fmt.Errorf("unable to unmarshal JSON: %s", err)
 	}
 
 	return result, nil
