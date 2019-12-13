@@ -8,6 +8,7 @@ options:
     filters:
       Type:
         - docs
+        - enhance
         - feat
         - fix
         - perf
@@ -15,6 +16,7 @@ options:
   commit_groups:
     title_maps:
       docs: Documentation
+      enhance: Enhancements
       feat: Features
       fix: Bug Fixes
       perf: Performance Improvements
