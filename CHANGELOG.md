@@ -3,6 +3,15 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+- Update badges in README
+- Update list of authors
+- Bump version to v0.8.0-alpha
+
+
+<a name="v0.7.0"></a>
+## [v0.7.0] - 2019-12-12
+
+- Update Changelog
 - Release version v0.7.0
 - Use Github Actions instead of Circle CI ([#124](https://github.com/segmentio/terraform-docs/issues/124))
 - Enhance release scripts
@@ -209,7 +218,8 @@
 - Initial commit
 
 
-[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.7.0...HEAD
+[v0.7.0]: https://github.com/segmentio/terraform-docs/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/segmentio/terraform-docs/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/segmentio/terraform-docs/compare/v0.4.5...v0.5.0
 [v0.4.5]: https://github.com/segmentio/terraform-docs/compare/v0.4.0...v0.4.5
