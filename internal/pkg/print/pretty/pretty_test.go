@@ -19,9 +19,9 @@ func TestPretty(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sgr_color_1 := "\x1b[36m"
-	sgr_color_2 := "\x1b[90m"
-	sgr_reset := "\x1b[0m"
+	sgrColor1 := "\x1b[36m"
+	sgrColor2 := "\x1b[90m"
+	sgrReset := "\x1b[0m"
 
 	expected :=
 		"\nUsage:\n" +
@@ -42,55 +42,55 @@ func TestPretty(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.unquoted" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-3" + sgr_reset + " (\"\")\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-3" + sgrReset + " (\"\")\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's string number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-1" + sgr_reset + " (\"bar\")\n" +
-			"  " + sgr_color_2 + "It's string number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-1" + sgrReset + " (\"bar\")\n" +
+			"  " + sgrColor2 + "It's string number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-3" + sgr_reset + " (<map>)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-3" + sgrReset + " (<map>)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's map number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's map number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-1" + sgr_reset + " (<map>)\n" +
-			"  " + sgr_color_2 + "It's map number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-1" + sgrReset + " (<map>)\n" +
+			"  " + sgrColor2 + "It's map number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-3" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-3" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's list number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's list number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-1" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "It's list number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input_with_underscores" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "A variable with underscores." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-pipe" + sgr_reset + " (\"v1\")\n" +
-			"  " + sgr_color_2 + "It includes v1 | v2 | v3" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-pipe" + sgrReset + " (\"v1\")\n" +
+			"  " + sgrColor2 + "It includes v1 | v2 | v3" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-code-block" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-code-block" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgrReset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.unquoted" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's unquoted output." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-2" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-1" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number one." + sgrReset + "\n" +
 			"\n" +
 			"\n"
 
@@ -109,9 +109,9 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sgr_color_1 := "\x1b[36m"
-	sgr_color_2 := "\x1b[90m"
-	sgr_reset := "\x1b[0m"
+	sgrColor1 := "\x1b[36m"
+	sgrColor2 := "\x1b[90m"
+	sgrReset := "\x1b[0m"
 
 	expected :=
 		"\nUsage:\n" +
@@ -132,55 +132,55 @@ func TestPrettyWithWithAggregateTypeDefaults(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.unquoted" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-3" + sgr_reset + " (\"\")\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-3" + sgrReset + " (\"\")\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's string number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-1" + sgr_reset + " (\"bar\")\n" +
-			"  " + sgr_color_2 + "It's string number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-1" + sgrReset + " (\"bar\")\n" +
+			"  " + sgrColor2 + "It's string number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-3" + sgr_reset + " ({})\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-3" + sgrReset + " ({})\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's map number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's map number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-1" + sgr_reset + " ({ \"a\": 1, \"b\": 2, \"c\": 3 })\n" +
-			"  " + sgr_color_2 + "It's map number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-1" + sgrReset + " ({ \"a\": 1, \"b\": 2, \"c\": 3 })\n" +
+			"  " + sgrColor2 + "It's map number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-3" + sgr_reset + " ([])\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-3" + sgrReset + " ([])\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's list number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's list number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " ([ \"a\", \"b\", \"c\" ])\n" +
-			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-1" + sgrReset + " ([ \"a\", \"b\", \"c\" ])\n" +
+			"  " + sgrColor2 + "It's list number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input_with_underscores" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "A variable with underscores." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-pipe" + sgr_reset + " (\"v1\")\n" +
-			"  " + sgr_color_2 + "It includes v1 | v2 | v3" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-pipe" + sgrReset + " (\"v1\")\n" +
+			"  " + sgrColor2 + "It includes v1 | v2 | v3" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-code-block" + sgr_reset + " ([ \"name rack:location\" ])\n" +
-			"  " + sgr_color_2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-code-block" + sgrReset + " ([ \"name rack:location\" ])\n" +
+			"  " + sgrColor2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgrReset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.unquoted" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's unquoted output." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-2" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-1" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number one." + sgrReset + "\n" +
 			"\n" +
 			"\n"
 
@@ -199,9 +199,9 @@ func TestPrettyWithSortByName(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sgr_color_1 := "\x1b[36m"
-	sgr_color_2 := "\x1b[90m"
-	sgr_reset := "\x1b[0m"
+	sgrColor1 := "\x1b[36m"
+	sgrColor2 := "\x1b[90m"
+	sgrReset := "\x1b[0m"
 
 	expected :=
 		"\nUsage:\n" +
@@ -222,55 +222,55 @@ func TestPrettyWithSortByName(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-code-block" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-code-block" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-pipe" + sgr_reset + " (\"v1\")\n" +
-			"  " + sgr_color_2 + "It includes v1 | v2 | v3" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-pipe" + sgrReset + " (\"v1\")\n" +
+			"  " + sgrColor2 + "It includes v1 | v2 | v3" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input_with_underscores" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "A variable with underscores." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-1" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "It's list number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's list number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's list number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-3" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-3" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-1" + sgr_reset + " (<map>)\n" +
-			"  " + sgr_color_2 + "It's map number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-1" + sgrReset + " (<map>)\n" +
+			"  " + sgrColor2 + "It's map number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's map number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's map number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-3" + sgr_reset + " (<map>)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-3" + sgrReset + " (<map>)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-1" + sgr_reset + " (\"bar\")\n" +
-			"  " + sgr_color_2 + "It's string number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-1" + sgrReset + " (\"bar\")\n" +
+			"  " + sgrColor2 + "It's string number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's string number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-3" + sgr_reset + " (\"\")\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-3" + sgrReset + " (\"\")\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.unquoted" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-1" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-2" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.unquoted" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's unquoted output." + sgrReset + "\n" +
 			"\n" +
 			"\n"
 
@@ -290,9 +290,9 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sgr_color_1 := "\x1b[36m"
-	sgr_color_2 := "\x1b[90m"
-	sgr_reset := "\x1b[0m"
+	sgrColor1 := "\x1b[36m"
+	sgrColor2 := "\x1b[90m"
+	sgrReset := "\x1b[0m"
 
 	expected :=
 		"\nUsage:\n" +
@@ -313,55 +313,55 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 			"}\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input_with_underscores" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "A variable with underscores." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input_with_underscores" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "A variable with underscores." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's list number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's list number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's map number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's map number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-2" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "It's string number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-2" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "It's string number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.unquoted" + sgr_reset + " (required)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.unquoted" + sgrReset + " (required)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-code-block" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-code-block" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.input-with-pipe" + sgr_reset + " (\"v1\")\n" +
-			"  " + sgr_color_2 + "It includes v1 | v2 | v3" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.input-with-pipe" + sgrReset + " (\"v1\")\n" +
+			"  " + sgrColor2 + "It includes v1 | v2 | v3" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-1" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "It's list number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-1" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "It's list number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.list-3" + sgr_reset + " (<list>)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.list-3" + sgrReset + " (<list>)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-1" + sgr_reset + " (<map>)\n" +
-			"  " + sgr_color_2 + "It's map number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-1" + sgrReset + " (<map>)\n" +
+			"  " + sgrColor2 + "It's map number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.map-3" + sgr_reset + " (<map>)\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.map-3" + sgrReset + " (<map>)\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-1" + sgr_reset + " (\"bar\")\n" +
-			"  " + sgr_color_2 + "It's string number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-1" + sgrReset + " (\"bar\")\n" +
+			"  " + sgrColor2 + "It's string number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "var.string-3" + sgr_reset + " (\"\")\n" +
-			"  " + sgr_color_2 + "" + sgr_reset + "\n" +
+			"  " + sgrColor1 + "var.string-3" + sgrReset + " (\"\")\n" +
+			"  " + sgrColor2 + "" + sgrReset + "\n" +
 			"\n" +
 			"\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-1" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number one." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-1" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number one." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.output-2" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's output number two." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.output-2" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's output number two." + sgrReset + "\n" +
 			"\n" +
-			"  " + sgr_color_1 + "output.unquoted" + sgr_reset + "\n" +
-			"  " + sgr_color_2 + "It's unquoted output." + sgr_reset + "\n" +
+			"  " + sgrColor1 + "output.unquoted" + sgrReset + "\n" +
+			"  " + sgrColor2 + "It's unquoted output." + sgrReset + "\n" +
 			"\n" +
 			"\n"
 
