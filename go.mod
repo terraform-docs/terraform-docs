@@ -1,5 +1,7 @@
 module github.com/segmentio/terraform-docs
 
+go 1.13
+
 require (
 	github.com/buger/jsonparser v0.0.0-20180910192245-6acdf747ae99
 	github.com/hashicorp/hcl v1.0.0

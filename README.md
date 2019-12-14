@@ -30,7 +30,7 @@ If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
 brew install terraform-docs
 ```
 
-**NOTE:** please use the latest go to do this, ideally go 1.12.9 or greater.
+**NOTE:** please use the latest go to do this, ideally go 1.13.5 or greater.
 
 This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error `terraform-docs: command not found` after installation then you may need to either add that directory to your `$PATH` as shown [here](https://golang.org/doc/code.html#GOPATH) or do a manual installation by cloning the repo and run `make build` from the repository which will put `terraform-docs` in:
 
@@ -101,7 +101,7 @@ terraform-docs markdown document ./examples
 
 ## Development Requirements
 
-- Go 1.12+
+- Go 1.13+
 - [git-chlog](https://github.com/git-chglog/git-chglog)
 - [golangci-lint](https://github.com/golangci/golangci-lint)
 
