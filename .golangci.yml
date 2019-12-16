@@ -1,0 +1,38 @@
+run:
+  deadline: 5m
+  tests: true
+  modules-download-mode: vendor
+
+linters:
+  disable-all: true
+  enable:
+    - govet
+    - golint
+    - misspell
+    - varcheck
+    - structcheck
+    - staticcheck
+    - errcheck
+    - unconvert
+    - unused
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  golint:
+    min-confidence: 0
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  misspell:
+    locale: US
+  unused:
+    check-exported: false
+
+issues:
+  exclude-rules:
+    - linters:
+        - golint
+      text: "should have a package comment"
+
+  exclude-use-default: false

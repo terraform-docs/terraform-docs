@@ -7,7 +7,7 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
-	"github.com/segmentio/terraform-docs/internal/pkg/settings"
+	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -76,6 +76,86 @@ func TestPrintWithSortVariablesByRequired(t *testing.T) {
 	}
 
 	expected, err := print.ReadGoldenFile("table-WithSortVariablesByRequired")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithEscapeName(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	var settings = &_settings.Settings{
+		EscapeMarkdown: true,
+	}
+
+	actual, err := table.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("table-WithEscapeName")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithIndentationBellowAllowed(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	var settings = &_settings.Settings{
+		MarkdownIndent: 0,
+	}
+
+	actual, err := table.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("table-WithIndentationBellowAllowed")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithIndentationAboveAllowed(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	var settings = &_settings.Settings{
+		MarkdownIndent: 10,
+	}
+
+	actual, err := table.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("table-WithIndentationAboveAllowed")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithIndentationOfFour(t *testing.T) {
+	doc := doc.TestDoc(t, "../..")
+
+	var settings = &_settings.Settings{
+		MarkdownIndent: 4,
+	}
+
+	actual, err := table.Print(doc, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("table-WithIndentationOfFour")
 	if err != nil {
 		t.Fatal(err)
 	}

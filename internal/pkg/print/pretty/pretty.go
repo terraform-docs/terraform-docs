@@ -10,15 +10,15 @@ import (
 )
 
 // Print prints a pretty document.
-func Print(document *doc.Doc, printSettings settings.Settings) (string, error) {
+func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if printSettings.Has(settings.WithProviders) {
+	if settings.Has(settings.WithProviders) {
 		printProviders(&buffer, document.Providers)
 	}
 
-	printVariables(&buffer, document.Variables, printSettings)
-	printOutputs(&buffer, document.Outputs, printSettings)
+	printVariables(&buffer, document.Variables, settings)
+	printOutputs(&buffer, document.Outputs, settings)
 
 	return markdown.Sanitize(buffer.String()), nil
 }

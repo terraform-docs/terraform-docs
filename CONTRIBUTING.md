@@ -33,4 +33,3 @@ Pull requests have to meet the following requirements:
 
 - [Golang Basics: Writing Unit Tests (Alex Ellis)](https://blog.alexellis.io/golang-writing-unit-tests/)
 - [Advanced Testing in Go (Mitchell Hashimoto)](https://about.sourcegraph.com/go/advanced-testing-in-go/)
-

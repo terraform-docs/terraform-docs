@@ -3,15 +3,16 @@ package doc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"sort"
 	"strings"
+
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
+	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
 type Doc struct {
 	Variables []Variable `json:"variables"`
-	Outputs []Output `json:"outputs"`
+	Outputs   []Output   `json:"outputs"`
 	Providers []Provider `json:"providers"`
 }
 
@@ -46,7 +47,7 @@ func Create(module *tfconfig.Module, printSettings settings.Settings) (*Doc, err
 			Name:        variable.Name,
 			Type:        variable.Type,
 			Description: variable.Description,
-			Default:	 defaultValue,
+			Default:     defaultValue,
 		})
 	}
 

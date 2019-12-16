@@ -147,12 +147,25 @@ Default: n/a
 
 #### variable\_with\_underscores
 
-Description:
+Description: It includes v1 \| v2 \| v3
 
-Type:
-``
+Type: `string`
 
-Default: n/a
+Default: `"v1"`
+
+### input-with-code-block
+
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+
+Type: `list`
+
+Default: `<list>`
 
 ## Outputs
 

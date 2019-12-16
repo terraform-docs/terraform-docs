@@ -1,0 +1,31 @@
+style: github
+template: CHANGELOG-release-note.tpl.md
+info:
+  title: CHANGELOG
+  repository_url: https://github.com/segmentio/terraform-docs
+options:
+  commits:
+    filters:
+      Type:
+        - docs
+        - enhance
+        - feat
+        - fix
+        - perf
+        - refactor
+  commit_groups:
+    title_maps:
+      docs: Documentation
+      enhance: Enhancements
+      feat: Features
+      fix: Bug Fixes
+      perf: Performance Improvements
+      refactor: Code Refactoring
+  header:
+    pattern: "^(\\w*)?\\:\\s(.*)$"
+    pattern_maps:
+      - Type
+      - Subject
+  notes:
+    keywords:
+      - BREAKING CHANGE

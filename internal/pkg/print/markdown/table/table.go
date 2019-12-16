@@ -11,7 +11,7 @@ import (
 )
 
 // Print prints a document as Markdown tables.
-func Print(document *doc.Doc, printSettings settings.Settings) (string, error) {
+func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 	var buffer bytes.Buffer
 
 	if printSettings.Has(settings.WithProviders) {

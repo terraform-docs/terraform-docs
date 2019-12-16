@@ -1,19 +1,42 @@
 package settings
 
-// Setting represents a setting
-type Setting uint
-
 // Settings represents all settings
-type Settings uint
+type Settings struct {
+	// AggregateTypeDefaults print default values of aggregate types (default: false)
+	// scope: Global
+	AggregateTypeDefaults bool
 
-// Add adds a setting to settings
-func (s *Settings) Add(setting Setting) {
-	*s |= Settings(1 << setting)
+	// EscapeMarkdown escapes special Markdown characters (such as | _ * and etc) (default: true)
+	// scope: Markdown
+	EscapeMarkdown bool
+
+	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5] (default: 2)
+	// scope: Markdown
+	MarkdownIndent int
+
+	// ShowRequired show "Required" column when generating Markdown (default: true)
+	// scope: Markdown
+	ShowRequired bool
+
+	// SortByName sorted rendering of inputs and outputs (default: true)
+	// scope: Global
+	SortByName bool
+
+	// SortInputsByRequired sort inputs by name and prints required inputs first (default: false)
+	// scope: Global
+	SortInputsByRequired bool
 }
 
-// Has indicates if settings contain a setting
-func (s *Settings) Has(setting Setting) bool {
-	return *s&Settings(1<<setting) != 0
+//NewSettings returns new instance of Settings
+func NewSettings() *Settings {
+	return &Settings{
+		AggregateTypeDefaults: false,
+		EscapeMarkdown:        true,
+		MarkdownIndent:        2,
+		ShowRequired:          true,
+		SortByName:            true,
+		SortInputsByRequired:  false,
+	}
 }
 
 const (

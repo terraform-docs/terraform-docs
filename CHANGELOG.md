@@ -2,7 +2,31 @@
 
 <a name="unreleased"></a>
 ## [Unreleased]
+### Enhancements
+- Enable new go linters and fix the existing issues ([#132](https://github.com/segmentio/terraform-docs/issues/132))
 
+
+<a name="v0.7.0"></a>
+## [v0.7.0] - 2019-12-12
+
+- Update Changelog
+- Release version v0.7.0
+- Use Github Actions instead of Circle CI ([#124](https://github.com/segmentio/terraform-docs/issues/124))
+- Enhance release scripts
+- Generate release note based on the current tag changelog
+- Update Installation and Code Completion in README
+- Code blocks support for all formats. Single line break support ([#123](https://github.com/segmentio/terraform-docs/issues/123))
+- Update Changelog
+- target deps was missing (required by all) ([#126](https://github.com/segmentio/terraform-docs/issues/126))
+- Enhance Makefile and add editorconfig ([#115](https://github.com/segmentio/terraform-docs/issues/115))
+- Add support for controlling the indentation of Markdown headers ([#120](https://github.com/segmentio/terraform-docs/issues/120))
+- Refactor Settings for better performance ([#119](https://github.com/segmentio/terraform-docs/issues/119))
+- Add --no-escape flag for Markdown printer ([#117](https://github.com/segmentio/terraform-docs/issues/117))
+- Update Changelog.
+- Use Cobra CLI instead of docopt ([#116](https://github.com/segmentio/terraform-docs/issues/116))
+- Update Changelog.
+- Escape pipe character when generating Markdown ([#114](https://github.com/segmentio/terraform-docs/issues/114))
+- Add appropriate Changelog header.
 - Complete development requirements documentation.
 - Configure git-chglog to not show git merge commit messages.
 - Add Changelog generation via git-chglog. ([#104](https://github.com/segmentio/terraform-docs/issues/104))
@@ -118,7 +142,7 @@
 - Merge pull request [#25](https://github.com/segmentio/terraform-docs/issues/25) from fatmcgav/support_output_description
 - Prefer leading comments over description for outputs to maintain compatability.
 - *: add --no-required option
-- doc: snakecase -> camelcase
+- snakecase -> camelcase
 - Merge pull request [#27](https://github.com/segmentio/terraform-docs/issues/27) from fatmcgav/support_printing_type
 - Add support for printing the variable 'type' in Markdown. Currently only markdown supported, but trivial to add to other outputs.
 - Add support for reading `description` tag from `output` resources. Fixes [#24](https://github.com/segmentio/terraform-docs/issues/24)
@@ -134,17 +158,17 @@
 
 - Release v0.1.0
 - Merge pull request [#21](https://github.com/segmentio/terraform-docs/issues/21) from s-urbaniak/files
-- main: add support for files
+- add support for files
 - Merge pull request [#20](https://github.com/segmentio/terraform-docs/issues/20) from nwalke/update_readme_example
 - closes [#17](https://github.com/segmentio/terraform-docs/issues/17) Updated example in README
 - Merge pull request [#19](https://github.com/segmentio/terraform-docs/issues/19) from nwalke/add_sorting
 - Closes [#18](https://github.com/segmentio/terraform-docs/issues/18) Added a very basic sort to inputs and outputs
 - Merge pull request [#16](https://github.com/segmentio/terraform-docs/issues/16) from paybyphone/master
-- doc: Account for single whitespace after comment character in header
+- Account for single whitespace after comment character in header
 - print/markdown: Better markdown description normalizations
 - print/markdown: Added line break conversion for outputs
-- doc: placeholder for list types
-- doc: Allow top-level comments for variables when description missing
+- placeholder for list types
+- Allow top-level comments for variables when description missing
 - print/markdown: Replace table cell newlines with HTML line breaks
 - Merge pull request [#13](https://github.com/segmentio/terraform-docs/issues/13) from jbussdieker/jbb-fix-heredoc-description
 - Trim whitespace on markdown description too
@@ -156,9 +180,9 @@
 
 - Release v0.0.2
 - Merge pull request [#11](https://github.com/segmentio/terraform-docs/issues/11) from segmentio/fix-md
-- print: wrap default values
+- wrap default values
 - Merge pull request [#10](https://github.com/segmentio/terraform-docs/issues/10) from segmentio/fix-map-type
-- doc: fix map type
+- fix map type
 - add more install notes
 - add dist
 
@@ -168,12 +192,12 @@
 
 - Merge pull request [#5](https://github.com/segmentio/terraform-docs/issues/5) from segmentio/fix-comment
 - use /** comment for module commnet
-- print: actually print head comment
+- actually print head comment
 - img
 - Merge pull request [#4](https://github.com/segmentio/terraform-docs/issues/4) from segmentio/layout
 - fix view
 - docs
-- doc: ignore comments with /** prefix
+- ignore comments with /** prefix
 - add head comment
 - cleanup
 - cleanup
@@ -185,14 +209,15 @@
 - add usage
 - better md output
 - add markdown output
-- outputs: use comments as description
+- use comments as description
 - ocd
 - clean
 - working
 - Initial commit
 
 
-[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.7.0...HEAD
+[v0.7.0]: https://github.com/segmentio/terraform-docs/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/segmentio/terraform-docs/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/segmentio/terraform-docs/compare/v0.4.5...v0.5.0
 [v0.4.5]: https://github.com/segmentio/terraform-docs/compare/v0.4.0...v0.4.5

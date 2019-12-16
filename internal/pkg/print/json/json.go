@@ -2,7 +2,9 @@ package json
 
 import (
 	"encoding/json"
+
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
+	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
 const (
@@ -11,7 +13,7 @@ const (
 )
 
 // Print prints a document as json.
-func Print(document *doc.Doc) (string, error) {
+func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 	buffer, err := json.MarshalIndent(document, prefix, indent)
 	if err != nil {
 		return "", err
