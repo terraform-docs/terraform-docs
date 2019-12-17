@@ -2,34 +2,15 @@ package doc
 
 import (
 	"encoding/json"
-	"fmt"
 	"sort"
-	"strings"
 
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 )
 
 type Doc struct {
-	Inputs    []Input    `json:"variables"`
-	Outputs   []Output   `json:"outputs"`
-	Providers []Provider `json:"providers"`
-}
-
-// TODO: verify that the side effects to tracker stick
-func discoverAliases(tracker map[string]Provider, versionLookup map[string][]string, resources map[string]*tfconfig.Resource) {
-	for _, resource := range resources {
-		key := fmt.Sprintf("%s.%s", resource.Provider.Name, resource.Provider.Alias)
-		var version = ""
-		if requiredVersion, ok := versionLookup[resource.Provider.Name]; ok {
-			version = strings.Join(requiredVersion, " ")
-		}
-		tracker[key] = Provider{
-			Name:    resource.Provider.Name,
-			Alias:   resource.Provider.Alias,
-			Version: version,
-		}
-	}
+	Inputs  []Input  `json:"variables"`
+	Outputs []Output `json:"outputs"`
 }
 
 func Create(module *tfconfig.Module, settings *print.Settings) (*Doc, error) {
@@ -59,26 +40,16 @@ func Create(module *tfconfig.Module, settings *print.Settings) (*Doc, error) {
 		})
 	}
 
-	var providerSet = make(map[string]Provider)
-	discoverAliases(providerSet, module.RequiredProviders, module.DataResources)
-	discoverAliases(providerSet, module.RequiredProviders, module.ManagedResources)
-	var providers = make([]Provider, 0, len(providerSet))
-	for _, provider := range providerSet {
-		providers = append(providers, provider)
-	}
-
 	if settings.SortInputsByRequired {
 		sort.Sort(variablesSortedByRequired(inputs))
 	} else {
 		sort.Sort(variablesSortedByName(inputs))
 	}
 	sort.Sort(outputsSortedByName(outputs))
-	sort.Sort(providersSortedByRequired(providers))
 
 	doc := &Doc{
-		Inputs:    inputs,
-		Outputs:   outputs,
-		Providers: providers,
+		Inputs:  inputs,
+		Outputs: outputs,
 	}
 	return doc, nil
 

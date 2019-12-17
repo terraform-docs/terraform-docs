@@ -14,39 +14,10 @@ import (
 func Print(document *doc.Doc, settings *print.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if settings.Has(settings.WithProviders) {
-		printProviders(&buffer, document.Providers)
-	}
-
 	printInputs(&buffer, document.Inputs, settings)
 	printOutputs(&buffer, document.Outputs, settings)
 
 	return markdown.Sanitize(buffer.String()), nil
-}
-
-func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
-	buffer.WriteString("## Providers\n\n")
-
-	if len(providers) == 0 {
-		buffer.WriteString("None\n\n")
-	} else {
-		buffer.WriteString("The following providers are used by this module:\n\n")
-		for _, provider := range providers {
-			var name = provider.Name
-			if len(provider.Alias) > 0 {
-				name = fmt.Sprintf("%s.%s", provider.Name, provider.Alias)
-			}
-			name = strings.ReplaceAll(name, "_", "\\_")
-			var version = ""
-			if len(provider.Version) > 0 {
-				version = fmt.Sprintf(" (%s)", provider.Version)
-			}
-
-			buffer.WriteString(fmt.Sprintf("* %s%s\n", name, version))
-		}
-
-		buffer.WriteString("\n")
-	}
 }
 
 func printInput(buffer *bytes.Buffer, input doc.Input, settings *print.Settings) {

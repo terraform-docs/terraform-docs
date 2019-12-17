@@ -13,31 +13,10 @@ import (
 func Print(document *doc.Doc, settings *print.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if settings.Has(settings.WithProviders) {
-		printProviders(&buffer, document.Providers)
-	}
-
 	printInputs(&buffer, document.Inputs, settings)
 	printOutputs(&buffer, document.Outputs, settings)
 
 	return markdown.Sanitize(buffer.String()), nil
-}
-
-func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
-	buffer.WriteString("\n")
-
-	for _, provider := range providers {
-		var name = provider.Name
-		if len(provider.Alias) > 0 {
-			name = fmt.Sprintf("%s.%s", provider.Name, provider.Alias)
-		}
-		format := "  \033[36mprovider.%s\033[0m\n  \033[90m%s\033[0m\n\n"
-		buffer.WriteString(
-			fmt.Sprintf(
-				format,
-				name,
-				provider.Version))
-	}
 }
 
 func getInputDefaultValue(input *doc.Input, settings *print.Settings) string {
