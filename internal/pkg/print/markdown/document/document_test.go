@@ -8,12 +8,11 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
-	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPrint(t *testing.T) {
-	var settings print.Settings
+	var settings = &print.Settings{}
 
 	module, diag := tfconfig.LoadModule("../../../../../examples")
 	if diag != nil && diag.HasErrors() {
@@ -36,8 +35,9 @@ func TestPrint(t *testing.T) {
 }
 
 func TestPrintWithRequired(t *testing.T) {
-	var settings print.Settings
-	settings.Add(settings.WithRequired)
+	var settings = &print.Settings{
+		ShowRequired: true,
+	}
 
 	module, diag := tfconfig.LoadModule("../../../../../examples")
 	if diag != nil && diag.HasErrors() {
@@ -60,8 +60,10 @@ func TestPrintWithRequired(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	var settings print.Settings
-	settings.Add(settings.WithSortVariablesByRequired)
+	var settings = &print.Settings{
+		SortByName:           true,
+		SortInputsByRequired: true,
+	}
 
 	module, diag := tfconfig.LoadModule("../../../../../examples")
 	if diag != nil && diag.HasErrors() {
@@ -86,7 +88,7 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 func TestPrintWithEscapeName(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_print.Settings{
+	var settings = &print.Settings{
 		EscapeMarkdown: true,
 	}
 
@@ -106,7 +108,7 @@ func TestPrintWithEscapeName(t *testing.T) {
 func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_print.Settings{
+	var settings = &print.Settings{
 		MarkdownIndent: 0,
 	}
 
@@ -126,7 +128,7 @@ func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_print.Settings{
+	var settings = &print.Settings{
 		MarkdownIndent: 10,
 	}
 
@@ -146,7 +148,7 @@ func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 func TestPrintWithIndentationOfFour(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_print.Settings{
+	var settings = &print.Settings{
 		MarkdownIndent: 4,
 	}
 
