@@ -1,4 +1,4 @@
-package settings
+package print
 
 // Settings represents all settings
 type Settings struct {
@@ -38,13 +38,3 @@ func NewSettings() *Settings {
 		SortInputsByRequired:  false,
 	}
 }
-
-const (
-	_ Setting = iota
-	// WithRequired prints if Variables are required
-	WithRequired
-	// WithSortVariablesByRequired sorts Variables by name and prints required Variables first
-	WithSortVariablesByRequired
-	// WithProviders prints information about the Terraform providers
-	WithProviders
-)

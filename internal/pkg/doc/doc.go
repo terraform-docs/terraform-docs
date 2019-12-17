@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-	"github.com/segmentio/terraform-docs/internal/pkg/settings"
+	"github.com/segmentio/terraform-docs/internal/pkg/print"
 )
 
 type Doc struct {
@@ -32,7 +32,7 @@ func discoverAliases(tracker map[string]Provider, versionLookup map[string][]str
 	}
 }
 
-func Create(module *tfconfig.Module, printSettings settings.Settings) (*Doc, error) {
+func Create(module *tfconfig.Module, settings *print.Settings) (*Doc, error) {
 	var inputs = make([]Input, 0, len(module.Variables))
 	for _, input := range module.Variables {
 		var defaultValue string
@@ -67,7 +67,7 @@ func Create(module *tfconfig.Module, printSettings settings.Settings) (*Doc, err
 		providers = append(providers, provider)
 	}
 
-	if printSettings.Has(settings.WithSortVariablesByRequired) {
+	if settings.SortInputsByRequired {
 		sort.Sort(variablesSortedByRequired(inputs))
 	} else {
 		sort.Sort(variablesSortedByName(inputs))

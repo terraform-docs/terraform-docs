@@ -13,16 +13,16 @@ import (
 )
 
 func TestPrint(t *testing.T) {
-	var printSettings settings.Settings
+	var settings print.Settings
 
 	module, diag := tfconfig.LoadModule("../../../../../examples")
 	if diag != nil && diag.HasErrors() {
 		t.Fatal(diag)
 	}
 
-	doc2, err := doc.Create(module, printSettings)
+	doc2, err := doc.Create(module, settings)
 
-	actual, err := document.Print(doc2, printSettings)
+	actual, err := document.Print(doc2, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -36,17 +36,17 @@ func TestPrint(t *testing.T) {
 }
 
 func TestPrintWithRequired(t *testing.T) {
-	var printSettings settings.Settings
-	printSettings.Add(settings.WithRequired)
+	var settings print.Settings
+	settings.Add(settings.WithRequired)
 
 	module, diag := tfconfig.LoadModule("../../../../../examples")
 	if diag != nil && diag.HasErrors() {
 		t.Fatal(diag)
 	}
 
-	doc2, err := doc.Create(module, printSettings)
+	doc2, err := doc.Create(module, settings)
 
-	actual, err := document.Print(doc2, printSettings)
+	actual, err := document.Print(doc2, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,17 +60,17 @@ func TestPrintWithRequired(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	var printSettings settings.Settings
-	printSettings.Add(settings.WithSortVariablesByRequired)
+	var settings print.Settings
+	settings.Add(settings.WithSortVariablesByRequired)
 
 	module, diag := tfconfig.LoadModule("../../../../../examples")
 	if diag != nil && diag.HasErrors() {
 		t.Fatal(diag)
 	}
 
-	doc2, err := doc.Create(module, printSettings)
+	doc2, err := doc.Create(module, settings)
 
-	actual, err := document.Print(doc2, printSettings)
+	actual, err := document.Print(doc2, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +86,7 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 func TestPrintWithEscapeName(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_settings.Settings{
+	var settings = &_print.Settings{
 		EscapeMarkdown: true,
 	}
 
@@ -106,7 +106,7 @@ func TestPrintWithEscapeName(t *testing.T) {
 func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_settings.Settings{
+	var settings = &_print.Settings{
 		MarkdownIndent: 0,
 	}
 
@@ -126,7 +126,7 @@ func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_settings.Settings{
+	var settings = &_print.Settings{
 		MarkdownIndent: 10,
 	}
 
@@ -146,7 +146,7 @@ func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 func TestPrintWithIndentationOfFour(t *testing.T) {
 	doc := doc.TestDoc(t, "../..")
 
-	var settings = &_settings.Settings{
+	var settings = &_print.Settings{
 		MarkdownIndent: 4,
 	}
 

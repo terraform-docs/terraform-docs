@@ -6,11 +6,11 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/segmentio/terraform-docs/internal/pkg/settings"
+	"github.com/segmentio/terraform-docs/internal/pkg/print"
 )
 
 // SanitizeName escapes underscore character which have special meaning in Markdown.
-func SanitizeName(s string, settings *settings.Settings) string {
+func SanitizeName(s string, settings *print.Settings) string {
 	if settings.EscapeMarkdown {
 		// Escape underscore
 		s = strings.Replace(s, "_", "\\_", -1)
@@ -20,7 +20,7 @@ func SanitizeName(s string, settings *settings.Settings) string {
 }
 
 // SanitizeDescriptionForDocument converts description to suitable Markdown representation for a document. (including line-break, illegal characters, code blocks etc)
-func SanitizeDescriptionForDocument(s string, settings *settings.Settings) string {
+func SanitizeDescriptionForDocument(s string, settings *print.Settings) string {
 	// s = ConvertMultiLineText(s)
 	// s = EscapeIllegalCharacters(s, settings)
 	// return s
@@ -48,7 +48,7 @@ func SanitizeDescriptionForDocument(s string, settings *settings.Settings) strin
 }
 
 // SanitizeDescriptionForTable converts description to suitable Markdown representation for a table. (including line-break, illegal characters, code blocks etc)
-func SanitizeDescriptionForTable(s string, settings *settings.Settings) string {
+func SanitizeDescriptionForTable(s string, settings *print.Settings) string {
 	// Isolate blocks of code. Dont escape anything inside them
 	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
 	segments := strings.Split(s, "```\n")
@@ -88,7 +88,7 @@ func ConvertMultiLineText(s string) string {
 }
 
 // EscapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
-func EscapeIllegalCharacters(s string, settings *settings.Settings) string {
+func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 	// Escape pipe
 	s = strings.Replace(s, "|", "\\|", -1)
 
@@ -134,7 +134,7 @@ func Sanitize(markdown string) string {
 // with base level of provided 'settings.MarkdownIndent' plus any
 // extra level needed for subsection (e.g. 'Required Inputs' which
 // is a subsection of 'Inputs' section)
-func GenerateIndentation(extra int, settings *settings.Settings) string {
+func GenerateIndentation(extra int, settings *print.Settings) string {
 	var base = settings.MarkdownIndent
 	if base < 1 || base > 5 {
 		base = 2

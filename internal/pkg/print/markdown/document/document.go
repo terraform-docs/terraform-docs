@@ -6,24 +6,23 @@ import (
 	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
+	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
-	"github.com/segmentio/terraform-docs/internal/pkg/settings"
 )
 
 // Print prints a document as Markdown document.
-func Print(document *doc.Doc, printSettings settings.Settings) (string, error) {
+func Print(document *doc.Doc, settings *print.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if printSettings.Has(settings.WithProviders) {
+	if settings.Has(settings.WithProviders) {
 		printProviders(&buffer, document.Providers)
 	}
 
-	printInputs(&buffer, document.Inputs, printSettings)
-	printOutputs(&buffer, document.Outputs, printSettings)
+	printInputs(&buffer, document.Inputs, settings)
+	printOutputs(&buffer, document.Outputs, settings)
 
 	return markdown.Sanitize(buffer.String()), nil
 }
-
 
 func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
 	buffer.WriteString("## Providers\n\n")
@@ -33,7 +32,7 @@ func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
 	} else {
 		buffer.WriteString("The following providers are used by this module:\n\n")
 		for _, provider := range providers {
-			var name= provider.Name
+			var name = provider.Name
 			if len(provider.Alias) > 0 {
 				name = fmt.Sprintf("%s.%s", provider.Name, provider.Alias)
 			}
@@ -50,8 +49,7 @@ func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
 	}
 }
 
-
-func printInput(buffer *bytes.Buffer, input doc.Input, printSettings settings.Settings) {
+func printInput(buffer *bytes.Buffer, input doc.Input, settings *print.Settings) {
 	buffer.WriteString(fmt.Sprintf("#### %s\n\n", strings.ReplaceAll(input.Name, "_", "\\_")))
 	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.ConvertMultiLineText(input.Description)))
 	buffer.WriteString(fmt.Sprintf("Type:\n%s\n\n", markdown.PrintCode(input.Type, "hcl")))
@@ -59,24 +57,24 @@ func printInput(buffer *bytes.Buffer, input doc.Input, printSettings settings.Se
 	// Don't print defaults for required variables when we're already explicit about it being required
 	if input.HasDefault() {
 		buffer.WriteString(fmt.Sprintf("Default:\n%s\n\n", markdown.PrintCode(input.Default, "json")))
-	} else if !(printSettings.Has(settings.WithRequired)) {
+	} else if !settings.ShowRequired {
 		buffer.WriteString("Default: n/a\n\n")
 	}
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, printSettings settings.Settings) {
+func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Settings) {
 	buffer.WriteString("## Inputs\n\n")
 
 	if len(inputs) == 0 {
 		buffer.WriteString("None\n\n")
 	}
-	if printSettings.Has(settings.WithRequired) {
+	if settings.ShowRequired {
 		buffer.WriteString("### Required Inputs\n\n")
 		buffer.WriteString("The following input variables are required:\n\n")
 
 		for _, input := range inputs {
 			if !input.HasDefault() {
-				printInput(buffer, input, printSettings)
+				printInput(buffer, input, settings)
 			}
 		}
 
@@ -85,19 +83,19 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, printSettings setting
 
 		for _, input := range inputs {
 			if input.HasDefault() {
-				printInput(buffer, input, printSettings)
+				printInput(buffer, input, settings)
 			}
 		}
 	} else {
 		buffer.WriteString("The following input variables are supported:\n\n")
 
 		for _, input := range inputs {
-			printInput(buffer, input, printSettings)
+			printInput(buffer, input, settings)
 		}
 	}
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, printSettings settings.Settings) {
+func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *print.Settings) {
 	buffer.WriteString("## Outputs\n\n")
 
 	if len(outputs) == 0 {

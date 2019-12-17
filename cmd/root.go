@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
-	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
+	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/version"
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-var settings = _settings.NewSettings()
+var settings = print.NewSettings()
 
 func init() {
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of inputs and outputs")

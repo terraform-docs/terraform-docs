@@ -13,14 +13,14 @@ import (
 
 func TestPrint(t *testing.T) {
 
-	var printSettings settings.Settings
+	var settings print.Settings
 
 	module, diag := tfconfig.LoadModule("../../../../examples")
 	if diag != nil && diag.HasErrors() {
 		t.Fatal(diag)
 	}
 
-	doc2, err := doc.Create(module, printSettings)
+	doc2, err := doc.Create(module, settings)
 
 	actual, err := json.Print(doc2)
 	if err != nil {
@@ -36,15 +36,15 @@ func TestPrint(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	var printSettings settings.Settings
-	printSettings.Add(settings.WithSortVariablesByRequired)
+	var settings print.Settings
+	settings.Add(settings.WithSortVariablesByRequired)
 
 	module, diag := tfconfig.LoadModule("../../../../examples")
 	if diag != nil && diag.HasErrors() {
 		t.Fatal(diag)
 	}
 
-	doc2, err := doc.Create(module, printSettings)
+	doc2, err := doc.Create(module, settings)
 
 	actual, err := json.Print(doc2)
 	if err != nil {
