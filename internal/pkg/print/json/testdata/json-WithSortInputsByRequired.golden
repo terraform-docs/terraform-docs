@@ -1,0 +1,85 @@
+{
+  "inputs": [
+    {
+      "name": "list-2",
+      "type": "list",
+      "description": "It's list number two."
+    },
+    {
+      "name": "map-2",
+      "type": "map",
+      "description": "It's map number two."
+    },
+    {
+      "name": "string-2",
+      "type": "string",
+      "description": "It's string number two."
+    },
+    {
+      "name": "unquoted"
+    },
+    {
+      "name": "variable_with_underscores"
+    },
+    {
+      "name": "list-1",
+      "type": "list",
+      "default": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]"
+    },
+    {
+      "name": "list-3",
+      "default": "[]"
+    },
+    {
+      "name": "long_type",
+      "type": "object({\n    name = string,\n    foo  = object({ foo = string, bar = string }),\n    bar  = object({ foo = string, bar = string }),\n    fizz = list(string),\n    buzz = list(string)\n  })",
+      "description": "This description is itself markdown.\n\nIt spans over multiple lines.\n",
+      "default": "{\n  \"bar\": {\n    \"bar\": \"bar\",\n    \"foo\": \"bar\"\n  },\n  \"buzz\": [\n    \"fizz\",\n    \"buzz\"\n  ],\n  \"fizz\": [],\n  \"foo\": {\n    \"bar\": \"foo\",\n    \"foo\": \"foo\"\n  },\n  \"name\": \"hello\"\n}"
+    },
+    {
+      "name": "map-1",
+      "type": "map",
+      "default": "{\n  \"a\": 1,\n  \"b\": 2,\n  \"c\": 3\n}"
+    },
+    {
+      "name": "map-3",
+      "default": "{}"
+    },
+    {
+      "name": "string-1",
+      "default": "\"bar\""
+    },
+    {
+      "name": "string-3",
+      "default": "\"\""
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output-0.12",
+      "description": "terraform 0.12 only"
+    },
+    {
+      "name": "output-1"
+    },
+    {
+      "name": "output-2",
+      "description": "It's output number two."
+    },
+    {
+      "name": "unquoted",
+      "description": "It's unquoted output."
+    }
+  ],
+  "providers": [
+    {
+      "name": "aws",
+      "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "aws",
+      "alias": "ident",
+      "version": "\u003e= 2.15.0"
+    }
+  ]
+}

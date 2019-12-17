@@ -1,8 +1,9 @@
 package table_test
 
 import (
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"testing"
+
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
@@ -58,8 +59,7 @@ func TestPrintWithRequired(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-
-func TestPrintWithSortVariablesByRequired(t *testing.T) {
+func TestPrintWithSortInputsByRequired(t *testing.T) {
 	var printSettings settings.Settings
 	printSettings.Add(settings.WithSortVariablesByRequired)
 
@@ -75,7 +75,7 @@ func TestPrintWithSortVariablesByRequired(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("table-WithSortVariablesByRequired")
+	expected, err := print.ReadGoldenFile("table-WithSortInputsByRequired")
 	if err != nil {
 		t.Fatal(err)
 	}

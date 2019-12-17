@@ -18,7 +18,7 @@ func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 		printProviders(&buffer, document.Providers)
 	}
 
-	printVariables(&buffer, document.Variables, printSettings)
+	printInputs(&buffer, document.Inputs, printSettings)
 	printOutputs(&buffer, document.Outputs, printSettings)
 
 	return markdown.Sanitize(buffer.String()), nil
@@ -45,23 +45,22 @@ func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
 	}
 }
 
-func getVariableDefaultValue(variable *doc.Variable) string {
+func getInputDefaultValue(input *doc.Input) string {
 	var result = "n/a"
 
-	if variable.HasDefault() {
-		result = markdown.PrintCode(variable.Default, "json")
+	if input.HasDefault() {
+		result = markdown.PrintCode(input.Default, "json")
 	}
 
 	return result
 }
 
-func printVariables(buffer *bytes.Buffer, variables []doc.Variable, printSettings settings.Settings) {
-	buffer.WriteString("## Variables\n\n")
+func printInputs(buffer *bytes.Buffer, inputs []doc.Input, printSettings settings.Settings) {
+	buffer.WriteString("## Inputs\n\n")
 
-	if len(variables) == 0 {
+	if len(inputs) == 0 {
 		buffer.WriteString("None\n\n")
 	} else {
-
 		buffer.WriteString("<table>\n")
 		buffer.WriteString("<tr><th>Name</th><th>Description</th><th>Type</th><th>Default</th>")
 
@@ -71,14 +70,14 @@ func printVariables(buffer *bytes.Buffer, variables []doc.Variable, printSetting
 			buffer.WriteString("</tr>\n")
 		}
 
-		for _, variable := range variables {
+		for _, input := range inputs {
 			buffer.WriteString("<tr>\n")
-			buffer.WriteString(fmt.Sprintf("<td>%s</td>\n", variable.Name))
-			buffer.WriteString(fmt.Sprintf("<td>%s</td>\n", markdown.ConvertMultiLineText(variable.Description)))
-			buffer.WriteString(fmt.Sprintf("<td>\n\n%s</td>\n", markdown.PrintCode(variable.Type, "hcl")))
-			buffer.WriteString(fmt.Sprintf("<td>\n\n%s</td>\n", getVariableDefaultValue(&variable)))
+			buffer.WriteString(fmt.Sprintf("<td>%s</td>\n", input.Name))
+			buffer.WriteString(fmt.Sprintf("<td>%s</td>\n", markdown.ConvertMultiLineText(input.Description)))
+			buffer.WriteString(fmt.Sprintf("<td>\n\n%s</td>\n", markdown.PrintCode(input.Type, "hcl")))
+			buffer.WriteString(fmt.Sprintf("<td>\n\n%s</td>\n", getInputDefaultValue(&input)))
 			if printSettings.Has(settings.WithRequired) {
-				buffer.WriteString(fmt.Sprintf("<td>%s</td>\n", printIsVariableRequired(&variable)))
+				buffer.WriteString(fmt.Sprintf("<td>%s</td>\n", printIsInputRequired(&input)))
 			}
 			buffer.WriteString("</tr>\n")
 		}
@@ -86,8 +85,8 @@ func printVariables(buffer *bytes.Buffer, variables []doc.Variable, printSetting
 	}
 }
 
-func printIsVariableRequired(variable *doc.Variable) string {
-	if !variable.HasDefault() {
+func printIsInputRequired(input *doc.Input) string {
+	if !input.HasDefault() {
 		return "yes"
 	}
 

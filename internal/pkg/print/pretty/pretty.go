@@ -3,6 +3,7 @@ package pretty
 import (
 	"bytes"
 	"fmt"
+
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
@@ -17,7 +18,7 @@ func Print(document *doc.Doc, settings *settings.Settings) (string, error) {
 		printProviders(&buffer, document.Providers)
 	}
 
-	printVariables(&buffer, document.Variables, settings)
+	printInputs(&buffer, document.Inputs, settings)
 	printOutputs(&buffer, document.Outputs, settings)
 
 	return markdown.Sanitize(buffer.String()), nil
@@ -40,27 +41,27 @@ func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
 	}
 }
 
-func getVariableDefaultValue(variable *doc.Variable, printSettings settings.Settings) string {
+func getInputDefaultValue(input *doc.Input, printSettings settings.Settings) string {
 	var result = "required"
 
-	if variable.HasDefault() {
-		result = variable.Default
+	if inputs.HasDefault() {
+		result = input.Default
 	}
 
 	return result
 }
 
-func printVariables(buffer *bytes.Buffer, variables []doc.Variable, printSettings settings.Settings) {
+func printInput(buffer *bytes.Buffer, inputs []doc.Input, printSettings settings.Settings) {
 	buffer.WriteString("\n")
 
-	for _, variable := range variables {
+	for _, input := range inputs {
 		format := "  \033[36mvar.%s\033[0m (%s)\n  \033[90m%s\033[0m\n\n"
 		buffer.WriteString(
 			fmt.Sprintf(
 				format,
-				variable.Name,
-				getVariableDefaultValue(&variable, printSettings),
-				variable.Description))
+				input.Name,
+				getInputDefaultValue(&input, printSettings),
+				input.Description))
 	}
 
 	buffer.WriteString("\n")

@@ -18,7 +18,7 @@ func Print(document *doc.Doc, printSettings settings.Settings) (string, error) {
 		printProviders(&buffer, document.Providers)
 	}
 
-	printVariables(&buffer, document.Variables, printSettings)
+	printInputs(&buffer, document.Inputs, printSettings)
 	printOutputs(&buffer, document.Outputs, printSettings)
 
 	return markdown.Sanitize(buffer.String()), nil
@@ -51,48 +51,48 @@ func printProviders(buffer *bytes.Buffer, providers []doc.Provider) {
 }
 
 
-func printVariable(buffer *bytes.Buffer, variable doc.Variable, printSettings settings.Settings) {
-	buffer.WriteString(fmt.Sprintf("#### %s\n\n", strings.ReplaceAll(variable.Name, "_", "\\_")))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.ConvertMultiLineText(variable.Description)))
-	buffer.WriteString(fmt.Sprintf("Type:\n%s\n\n", markdown.PrintCode(variable.Type, "hcl")))
+func printInput(buffer *bytes.Buffer, input doc.Input, printSettings settings.Settings) {
+	buffer.WriteString(fmt.Sprintf("#### %s\n\n", strings.ReplaceAll(input.Name, "_", "\\_")))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.ConvertMultiLineText(input.Description)))
+	buffer.WriteString(fmt.Sprintf("Type:\n%s\n\n", markdown.PrintCode(input.Type, "hcl")))
 
 	// Don't print defaults for required variables when we're already explicit about it being required
-	if variable.HasDefault() {
-		buffer.WriteString(fmt.Sprintf("Default:\n%s\n\n", markdown.PrintCode(variable.Default, "json")))
+	if input.HasDefault() {
+		buffer.WriteString(fmt.Sprintf("Default:\n%s\n\n", markdown.PrintCode(input.Default, "json")))
 	} else if !(printSettings.Has(settings.WithRequired)) {
 		buffer.WriteString("Default: n/a\n\n")
 	}
 }
 
-func printVariables(buffer *bytes.Buffer, variables []doc.Variable, printSettings settings.Settings) {
-	buffer.WriteString("## Variables\n\n")
+func printInputs(buffer *bytes.Buffer, inputs []doc.Input, printSettings settings.Settings) {
+	buffer.WriteString("## Inputs\n\n")
 
-	if len(variables) == 0 {
+	if len(inputs) == 0 {
 		buffer.WriteString("None\n\n")
 	}
 	if printSettings.Has(settings.WithRequired) {
-		buffer.WriteString("### Required Variables\n\n")
-		buffer.WriteString("The following variables are required:\n\n")
+		buffer.WriteString("### Required Inputs\n\n")
+		buffer.WriteString("The following input variables are required:\n\n")
 
-		for _, variable := range variables {
-			if !variable.HasDefault() {
-				printVariable(buffer, variable, printSettings)
+		for _, input := range inputs {
+			if !input.HasDefault() {
+				printInput(buffer, input, printSettings)
 			}
 		}
 
-		buffer.WriteString("### Optional Variables\n\n")
-		buffer.WriteString("The following variables are optional (have default values):\n\n")
+		buffer.WriteString("### Optional Inputs\n\n")
+		buffer.WriteString("The following input variables are optional (have default values):\n\n")
 
-		for _, variable := range variables {
-			if variable.HasDefault() {
-				printVariable(buffer, variable, printSettings)
+		for _, input := range inputs {
+			if input.HasDefault() {
+				printInput(buffer, input, printSettings)
 			}
 		}
 	} else {
-		buffer.WriteString("The following variables are supported:\n\n")
+		buffer.WriteString("The following input variables are supported:\n\n")
 
-		for _, variable := range variables {
-			printVariable(buffer, variable, printSettings)
+		for _, input := range inputs {
+			printInput(buffer, input, printSettings)
 		}
 	}
 }

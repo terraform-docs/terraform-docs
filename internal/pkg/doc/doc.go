@@ -11,7 +11,7 @@ import (
 )
 
 type Doc struct {
-	Variables []Variable `json:"variables"`
+	Inputs    []Input    `json:"variables"`
 	Outputs   []Output   `json:"outputs"`
 	Providers []Provider `json:"providers"`
 }
@@ -33,20 +33,20 @@ func discoverAliases(tracker map[string]Provider, versionLookup map[string][]str
 }
 
 func Create(module *tfconfig.Module, printSettings settings.Settings) (*Doc, error) {
-	var variables = make([]Variable, 0, len(module.Variables))
-	for _, variable := range module.Variables {
+	var inputs = make([]Input, 0, len(module.Variables))
+	for _, input := range module.Variables {
 		var defaultValue string
-		if variable.Default != nil {
-			marshaled, err := json.MarshalIndent(variable.Default, "", "  ")
+		if input.Default != nil {
+			marshaled, err := json.MarshalIndent(input.Default, "", "  ")
 			if err != nil {
 				return nil, err
 			}
 			defaultValue = string(marshaled)
 		}
-		variables = append(variables, Variable{
-			Name:        variable.Name,
-			Type:        variable.Type,
-			Description: variable.Description,
+		inputs = append(inputs, Input{
+			Name:        input.Name,
+			Type:        input.Type,
+			Description: input.Description,
 			Default:     defaultValue,
 		})
 	}
@@ -68,15 +68,15 @@ func Create(module *tfconfig.Module, printSettings settings.Settings) (*Doc, err
 	}
 
 	if printSettings.Has(settings.WithSortVariablesByRequired) {
-		sort.Sort(variablesSortedByRequired(variables))
+		sort.Sort(variablesSortedByRequired(inputs))
 	} else {
-		sort.Sort(variablesSortedByName(variables))
+		sort.Sort(variablesSortedByName(inputs))
 	}
 	sort.Sort(outputsSortedByName(outputs))
 	sort.Sort(providersSortedByRequired(providers))
 
 	doc := &Doc{
-		Variables: variables,
+		Inputs:    inputs,
 		Outputs:   outputs,
 		Providers: providers,
 	}

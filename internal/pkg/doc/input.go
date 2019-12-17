@@ -1,6 +1,7 @@
 package doc
 
-type Variable struct {
+// Input represents a Terraform input.
+type Input struct {
 	Name        string `json:"name"`
 	Type        string `json:"type,omitempty"`
 	Description string `json:"description,omitempty"`
@@ -8,11 +9,11 @@ type Variable struct {
 }
 
 // HasDefault indicates if a Terraform variable has a default value set.
-func (i *Variable) HasDefault() bool {
+func (i *Input) HasDefault() bool {
 	return len(i.Default) > 0
 }
 
-type variablesSortedByName []Variable
+type variablesSortedByName []Input
 
 func (a variablesSortedByName) Len() int {
 	return len(a)
@@ -26,7 +27,7 @@ func (a variablesSortedByName) Less(i, j int) bool {
 	return a[i].Name < a[j].Name
 }
 
-type variablesSortedByRequired []Variable
+type variablesSortedByRequired []Input
 
 func (a variablesSortedByRequired) Len() int {
 	return len(a)
