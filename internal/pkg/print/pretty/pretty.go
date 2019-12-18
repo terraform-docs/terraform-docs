@@ -42,7 +42,7 @@ func getInputDefaultValue(input *doc.Input, settings *print.Settings) string {
 }
 
 func getDescription(description string) string {
-	var result = "no description"
+	var result = "n/a"
 
 	if description != "" {
 		result = strings.TrimSuffix(description, "\n")
