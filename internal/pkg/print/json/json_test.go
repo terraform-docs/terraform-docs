@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
@@ -12,21 +11,55 @@ import (
 )
 
 func TestPrint(t *testing.T) {
-	var settings = &print.Settings{}
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName: true,
+	}
 
 	module, diag := tfconfig.LoadModule("../../../../examples")
 	if diag != nil && diag.HasErrors() {
 		t.Fatal(diag)
 	}
 
-	doc2, err := doc.Create(module, settings)
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	actual, err := json.Print(doc2)
+	actual, err := json.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	expected, err := print.ReadGoldenFile("json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, actual)
+}
+
+func TestPrintWithSortByName(t *testing.T) {
+	var settings = &print.Settings{
+		SortByName: true,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := json.Print(document, settings)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected, err := print.ReadGoldenFile("json-WithSortByName")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,9 +78,12 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 		t.Fatal(diag)
 	}
 
-	doc2, err := doc.Create(module, settings)
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	actual, err := json.Print(doc2)
+	actual, err := json.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}

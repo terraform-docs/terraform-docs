@@ -1,5 +1,18 @@
 {
-  "variables": [
+  "inputs": [
+    {
+      "name": "input-with-code-block",
+      "description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
+      "default": "[\n  \"name rack:location\"\n]"
+    },
+    {
+      "name": "input-with-pipe",
+      "description": "It includes v1 | v2 | v3",
+      "default": "\"v1\""
+    },
+    {
+      "name": "input_with_underscores"
+    },
     {
       "name": "list-1",
       "type": "list",
@@ -49,9 +62,6 @@
     },
     {
       "name": "unquoted"
-    },
-    {
-      "name": "variable_with_underscores"
     }
   ],
   "outputs": [
@@ -69,17 +79,6 @@
     {
       "name": "unquoted",
       "description": "It's unquoted output."
-    }
-  ],
-  "providers": [
-    {
-      "name": "aws",
-      "version": "\u003e= 2.15.0"
-    },
-    {
-      "name": "aws",
-      "alias": "ident",
-      "version": "\u003e= 2.15.0"
     }
   ]
 }
