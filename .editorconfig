@@ -16,7 +16,8 @@ insert_final_newline = true
 indent_style = tab
 indent_size = 4
 
-[json*.golden]
+[*.golden]
+trim_trailing_whitespace = false
 insert_final_newline = false
 
 [*.{yaml,yml}]
