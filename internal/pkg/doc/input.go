@@ -1,5 +1,9 @@
 package doc
 
+import (
+	"sort"
+)
+
 // Input represents a Terraform input.
 type Input struct {
 	Name        string `json:"name"`
@@ -13,31 +17,36 @@ func (i *Input) HasDefault() bool {
 	return len(i.Default) > 0
 }
 
-type variablesSortedByName []Input
+type inputsSortedByName []Input
 
-func (a variablesSortedByName) Len() int {
+func (a inputsSortedByName) Len() int {
 	return len(a)
 }
 
-func (a variablesSortedByName) Swap(i, j int) {
+func (a inputsSortedByName) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 
-func (a variablesSortedByName) Less(i, j int) bool {
+func (a inputsSortedByName) Less(i, j int) bool {
 	return a[i].Name < a[j].Name
 }
 
-type variablesSortedByRequired []Input
+// SortInputsByName sorts a list of inputs by name.
+func SortInputsByName(inputs []Input) {
+	sort.Sort(inputsSortedByName(inputs))
+}
 
-func (a variablesSortedByRequired) Len() int {
+type inputsSortedByRequired []Input
+
+func (a inputsSortedByRequired) Len() int {
 	return len(a)
 }
 
-func (a variablesSortedByRequired) Swap(i, j int) {
+func (a inputsSortedByRequired) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 
-func (a variablesSortedByRequired) Less(i, j int) bool {
+func (a inputsSortedByRequired) Less(i, j int) bool {
 	switch {
 	// i required, j not: i gets priority
 	case !a[i].HasDefault() && a[j].HasDefault():
@@ -49,4 +58,9 @@ func (a variablesSortedByRequired) Less(i, j int) bool {
 	default:
 		return a[i].Name < a[j].Name
 	}
+}
+
+// SortInputsByRequired sorts a list of inputs by whether they are required
+func SortInputsByRequired(inputs []Input) {
+	sort.Sort(inputsSortedByRequired(inputs))
 }

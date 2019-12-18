@@ -2,18 +2,28 @@ package doc
 
 import (
 	"encoding/json"
-	"sort"
 
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
 )
 
+// Doc represents a Terraform module.
 type Doc struct {
-	Inputs  []Input  `json:"variables"`
+	Inputs  []Input  `json:"inputs"`
 	Outputs []Output `json:"outputs"`
 }
 
-func Create(module *tfconfig.Module, settings *print.Settings) (*Doc, error) {
+// HasInputs indicates if the document has inputs.
+func (d *Doc) HasInputs() bool {
+	return len(d.Inputs) > 0
+}
+
+// HasOutputs indicates if the document has outputs.
+func (d *Doc) HasOutputs() bool {
+	return len(d.Outputs) > 0
+}
+
+// Create TODO
+func Create(module *tfconfig.Module) (*Doc, error) {
 	var inputs = make([]Input, 0, len(module.Variables))
 	for _, input := range module.Variables {
 		var defaultValue string
@@ -40,17 +50,9 @@ func Create(module *tfconfig.Module, settings *print.Settings) (*Doc, error) {
 		})
 	}
 
-	if settings.SortInputsByRequired {
-		sort.Sort(variablesSortedByRequired(inputs))
-	} else {
-		sort.Sort(variablesSortedByName(inputs))
-	}
-	sort.Sort(outputsSortedByName(outputs))
-
 	doc := &Doc{
 		Inputs:  inputs,
 		Outputs: outputs,
 	}
 	return doc, nil
-
 }
