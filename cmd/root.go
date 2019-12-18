@@ -3,16 +3,19 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"os"
 
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/version"
 	"github.com/spf13/cobra"
 )
 
+var settings = print.NewSettings()
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
+	Args:    cobra.NoArgs,
 	Use:     "terraform-docs",
 	Short:   "A utility to generate documentation from Terraform modules in various output formats",
 	Long:    "A utility to generate documentation from Terraform modules in various output formats",
@@ -27,8 +30,6 @@ var rootCmd = &cobra.Command{
 		settings.EscapeMarkdown = !noescape
 	},
 }
-
-var settings = print.NewSettings()
 
 func init() {
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of inputs and outputs")
@@ -46,25 +47,22 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-func commandsPreRun(cmd *cobra.Command, args []string) {
-	if len(args) < 1 {
-		fmt.Println("Error: No path provided!")
-		os.Exit(1)
+func doPrint(paths []string, fn func(*doc.Doc) (string, error)) {
+	module, diag := tfconfig.LoadModule(paths[0])
+	if diag != nil && diag.HasErrors() {
+		log.Fatal(diag)
 	}
-}
 
-func doPrint(paths []string, fn func(*doc.Doc) (string, error)) string {
-	docs, err := doc.CreateFromPaths(paths)
+	document, err := doc.Create(module)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	output, err := fn(document)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	output, err := fn(docs)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return output
+	fmt.Println(output)
 }
