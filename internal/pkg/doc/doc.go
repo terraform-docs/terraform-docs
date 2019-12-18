@@ -34,9 +34,13 @@ func Create(module *tfconfig.Module) (*Doc, error) {
 			}
 			defaultValue = string(marshaled)
 		}
+		var inputType string
+		if input.Type == "" {
+			inputType = "any"
+		}
 		inputs = append(inputs, Input{
 			Name:        input.Name,
-			Type:        input.Type,
+			Type:        inputType,
 			Description: input.Description,
 			Default:     defaultValue,
 		})
