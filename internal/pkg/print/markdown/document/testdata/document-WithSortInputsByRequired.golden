@@ -1,60 +1,83 @@
 ## Inputs
 
-The following inputs variables are supported:
+The following input variables are supported:
 
-#### list-2
+### input_with_underscores
+
+Description: n/a
+
+Type: `any`
+
+Default: n/a
+
+### list-2
 
 Description: It's list number two.
 
-Type:
-`list`
+Type: `list`
 
 Default: n/a
 
-#### map-2
+### map-2
 
 Description: It's map number two.
 
-Type:
-`map`
+Type: `map`
 
 Default: n/a
 
-#### string-2
+### string-2
 
 Description: It's string number two.
 
-Type:
-`string`
+Type: `string`
 
 Default: n/a
 
-#### unquoted
+### unquoted
 
-Description:
+Description: n/a
 
-Type:
-``
-
-Default: n/a
-
-#### variable\_with\_underscores
-
-Description:
-
-Type:
-``
+Type: `any`
 
 Default: n/a
 
-#### list-1
+### input-with-code-block
 
-Description:
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
 
-Type:
-`list`
+Type: `any`
 
 Default:
+
+```json
+[
+  "name rack:location"
+]
+```
+
+### input-with-pipe
+
+Description: It includes v1 \| v2 \| v3
+
+Type: `any`
+
+Default: `"v1"`
+
+### list-1
+
+Description: n/a
+
+Type: `list`
+
+Default:
+
 ```json
 [
   "a",
@@ -63,21 +86,22 @@ Default:
 ]
 ```
 
-#### list-3
+### list-3
 
-Description:
+Description: n/a
+
+Type: `any`
+
+Default: `[]`
+
+### long_type
+
+Description: This description is itself markdown.
+
+It spans over multiple lines.
 
 Type:
-``
 
-Default:
-`[]`
-
-#### long\_type
-
-Description: This description is itself markdown.<br><br>It spans over multiple lines.
-
-Type:
 ```hcl
 object({
     name = string,
@@ -89,6 +113,7 @@ object({
 ```
 
 Default:
+
 ```json
 {
   "bar": {
@@ -108,14 +133,14 @@ Default:
 }
 ```
 
-#### map-1
+### map-1
 
-Description:
+Description: n/a
 
-Type:
-`map`
+Type: `map`
 
 Default:
+
 ```json
 {
   "a": 1,
@@ -124,52 +149,46 @@ Default:
 }
 ```
 
-#### map-3
+### map-3
 
-Description:
+Description: n/a
 
-Type:
-``
+Type: `any`
 
-Default:
-`{}`
+Default: `{}`
 
-#### string-1
+### string-1
 
-Description:
+Description: n/a
 
-Type:
-``
+Type: `any`
 
-Default:
-`"bar"`
+Default: `"bar"`
 
-#### string-3
+### string-3
 
-Description:
+Description: n/a
 
-Type:
-``
+Type: `any`
 
-Default:
-`""`
+Default: `""`
 
 ## Outputs
 
 The following outputs are exported:
 
-#### output-0.12
+### output-0.12
 
 Description: terraform 0.12 only
 
-#### output-1
+### output-1
 
-Description:
+Description: n/a
 
-#### output-2
+### output-2
 
 Description: It's output number two.
 
-#### unquoted
+### unquoted
 
 Description: It's unquoted output.

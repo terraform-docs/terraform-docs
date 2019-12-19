@@ -17,8 +17,12 @@ func Print(document *doc.Doc, settings *print.Settings) (string, error) {
 	if settings.SortByName {
 		if settings.SortInputsByRequired {
 			doc.SortInputsByRequired(document.Inputs)
+			doc.SortInputsByRequired(document.RequiredInputs)
+			doc.SortInputsByRequired(document.OptionalInputs)
 		} else {
 			doc.SortInputsByName(document.Inputs)
+			doc.SortInputsByName(document.RequiredInputs)
+			doc.SortInputsByName(document.OptionalInputs)
 		}
 	}
 
@@ -130,7 +134,7 @@ func printInputs(buffer *bytes.Buffer, document *doc.Doc, settings *print.Settin
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *print.Settings) {
-	buffer.WriteString(fmt.Sprintf("%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
+	buffer.WriteString(fmt.Sprintf("\n%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
 
 	if len(outputs) == 0 {
 		buffer.WriteString("No output.\n\n")
