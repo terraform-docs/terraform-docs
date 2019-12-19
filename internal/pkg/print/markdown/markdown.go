@@ -9,21 +9,37 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 )
 
-// SanitizeName escapes underscore character which have special meaning in Markdown.
-func SanitizeName(s string, settings *print.Settings) string {
-	if settings.EscapeMarkdown {
-		// Escape underscore
-		s = strings.Replace(s, "_", "\\_", -1)
-	}
+// Sanitize cleans a Markdown document to soothe linters.
+func Sanitize(markdown string) string {
+	result := markdown
 
-	return s
+	// Remove trailing spaces from the end of lines
+	result = regexp.MustCompile(` +(\r?\n)`).ReplaceAllString(result, "$1")
+	result = regexp.MustCompile(` +$`).ReplaceAllLiteralString(result, "")
+
+	// Remove multiple consecutive blank lines
+	result = regexp.MustCompile(`(\r?\n){3,}`).ReplaceAllString(result, "$1$1")
+	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "$1")
+
+	return result
 }
 
-// SanitizeDescriptionForDocument converts description to suitable Markdown representation for a document. (including line-break, illegal characters, code blocks etc)
+// SanitizeName escapes underscore character which have special meaning in Markdown.
+func SanitizeName(name string, settings *print.Settings) string {
+	if settings.EscapeMarkdown {
+		// Escape underscore
+		name = strings.Replace(name, "_", "\\_", -1)
+	}
+
+	return name
+}
+
+// SanitizeDescriptionForDocument converts description to suitable Markdown representation
+// for a document. (including line-break, illegal characters, code blocks etc)
 func SanitizeDescriptionForDocument(s string, settings *print.Settings) string {
-	// s = ConvertMultiLineText(s)
-	// s = EscapeIllegalCharacters(s, settings)
-	// return s
+	if s == "" {
+		return "n/a"
+	}
 	// Isolate blocks of code. Dont escape anything inside them
 	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
 	segments := strings.Split(s, "\n```\n")
@@ -47,28 +63,29 @@ func SanitizeDescriptionForDocument(s string, settings *print.Settings) string {
 	return buf.String()
 }
 
-// SanitizeDescriptionForTable converts description to suitable Markdown representation for a table. (including line-break, illegal characters, code blocks etc)
-func SanitizeDescriptionForTable(s string, settings *print.Settings) string {
-	// Isolate blocks of code. Dont escape anything inside them
-	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
-	segments := strings.Split(s, "```\n")
-	buf := bytes.NewBufferString("")
-	for _, segment := range segments {
-		if !nextIsInCodeBlock {
-			segment = ConvertMultiLineText(segment)
-			segment = EscapeIllegalCharacters(segment, settings)
-			buf.WriteString(segment)
-			nextIsInCodeBlock = true
-		} else {
-			buf.WriteString("<code><pre>")
-			buf.WriteString(strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
-			buf.WriteString("</pre></code>")
-			nextIsInCodeBlock = false
-		}
-	}
+// // SanitizeDescriptionForTable converts description to suitable Markdown representation
+// // for a table. (including line-break, illegal characters, code blocks etc)
+// func SanitizeDescriptionForTable(s string, settings *print.Settings) string {
+// 	// Isolate blocks of code. Dont escape anything inside them
+// 	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
+// 	segments := strings.Split(s, "```\n")
+// 	buf := bytes.NewBufferString("")
+// 	for _, segment := range segments {
+// 		if !nextIsInCodeBlock {
+// 			segment = ConvertMultiLineText(segment)
+// 			segment = EscapeIllegalCharacters(segment, settings)
+// 			buf.WriteString(segment)
+// 			nextIsInCodeBlock = true
+// 		} else {
+// 			buf.WriteString("<code><pre>")
+// 			buf.WriteString(strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
+// 			buf.WriteString("</pre></code>")
+// 			nextIsInCodeBlock = false
+// 		}
+// 	}
 
-	return buf.String()
-}
+// 	return buf.String()
+// }
 
 // ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
 func ConvertMultiLineText(s string) string {
@@ -115,21 +132,6 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 	return s
 }
 
-// Sanitize cleans a Markdown document to soothe linters.
-func Sanitize(markdown string) string {
-	result := markdown
-
-	// Remove trailing spaces from the end of lines
-	result = regexp.MustCompile(` +(\r?\n)`).ReplaceAllString(result, "$1")
-	result = regexp.MustCompile(` +$`).ReplaceAllLiteralString(result, "")
-
-	// Remove multiple consecutive blank lines
-	result = regexp.MustCompile(`(\r?\n){3,}`).ReplaceAllString(result, "$1$1")
-	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "$1")
-
-	return result
-}
-
 // GenerateIndentation generates indentation of Markdown headers
 // with base level of provided 'settings.MarkdownIndent' plus any
 // extra level needed for subsection (e.g. 'Required Inputs' which
@@ -146,9 +148,10 @@ func GenerateIndentation(extra int, settings *print.Settings) string {
 	return indent
 }
 
-func PrintCode(code string, language string) string {
+// PrintFencedCodeBlock TODO
+func PrintFencedCodeBlock(code string, language string) string {
 	if strings.Contains(code, "\n") {
-		return fmt.Sprintf("```%s\n%s\n```\n", language, code)
+		return fmt.Sprintf("\n\n```%s\n%s\n```", language, code)
 	}
 	return fmt.Sprintf("`%s`", code)
 }
