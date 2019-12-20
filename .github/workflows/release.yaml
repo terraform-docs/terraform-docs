@@ -40,3 +40,15 @@ jobs:
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  homebrew:
+    name: Homebrew formula
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bump Homebrew formula version
+        uses: mislav/bump-homebrew-formula-action@v1.4
+        if: "!contains(github.ref, '-')" # skip prereleases
+        with:
+          formula-name: terraform-docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
