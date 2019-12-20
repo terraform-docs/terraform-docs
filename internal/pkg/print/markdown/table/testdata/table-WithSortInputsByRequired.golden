@@ -1,175 +1,27 @@
-## Variables
+## Inputs
 
-<table>
-<tr><th>Name</th><th>Description</th><th>Type</th><th>Default</th></tr>
-<tr>
-<td>list-2</td>
-<td>It's list number two.</td>
-<td>
-
-`list`</td>
-<td>
-
-n/a</td>
-</tr>
-<tr>
-<td>map-2</td>
-<td>It's map number two.</td>
-<td>
-
-`map`</td>
-<td>
-
-n/a</td>
-</tr>
-<tr>
-<td>string-2</td>
-<td>It's string number two.</td>
-<td>
-
-`string`</td>
-<td>
-
-n/a</td>
-</tr>
-<tr>
-<td>unquoted</td>
-<td></td>
-<td>
-
-``</td>
-<td>
-
-n/a</td>
-</tr>
-<tr>
-<td>variable_with_underscores</td>
-<td></td>
-<td>
-
-``</td>
-<td>
-
-n/a</td>
-</tr>
-<tr>
-<td>list-1</td>
-<td></td>
-<td>
-
-`list`</td>
-<td>
-
-```json
-[
-  "a",
-  "b",
-  "c"
-]
-```
-</td>
-</tr>
-<tr>
-<td>list-3</td>
-<td></td>
-<td>
-
-``</td>
-<td>
-
-`[]`</td>
-</tr>
-<tr>
-<td>long_type</td>
-<td>This description is itself markdown.<br><br>It spans over multiple lines.</td>
-<td>
-
-```hcl
-object({
-    name = string,
-    foo  = object({ foo = string, bar = string }),
-    bar  = object({ foo = string, bar = string }),
-    fizz = list(string),
-    buzz = list(string)
-  })
-```
-</td>
-<td>
-
-```json
-{
-  "bar": {
-    "bar": "bar",
-    "foo": "bar"
-  },
-  "buzz": [
-    "fizz",
-    "buzz"
-  ],
-  "fizz": [],
-  "foo": {
-    "bar": "foo",
-    "foo": "foo"
-  },
-  "name": "hello"
-}
-```
-</td>
-</tr>
-<tr>
-<td>map-1</td>
-<td></td>
-<td>
-
-`map`</td>
-<td>
-
-```json
-{
-  "a": 1,
-  "b": 2,
-  "c": 3
-}
-```
-</td>
-</tr>
-<tr>
-<td>map-3</td>
-<td></td>
-<td>
-
-``</td>
-<td>
-
-`{}`</td>
-</tr>
-<tr>
-<td>string-1</td>
-<td></td>
-<td>
-
-``</td>
-<td>
-
-`"bar"`</td>
-</tr>
-<tr>
-<td>string-3</td>
-<td></td>
-<td>
-
-``</td>
-<td>
-
-`""`</td>
-</tr>
-</table>
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| input_with_underscores | n/a | `any` | n/a |
+| list-2 | It's list number two. | `list` | n/a |
+| map-2 | It's map number two. | `map` | n/a |
+| string-2 | It's string number two. | `string` | n/a |
+| unquoted | n/a | `any` | n/a |
+| input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<code><pre>default     = [<br>  "machine rack01:neptune"<br>]<br></pre></code> | `any` | <code><pre>[<br>  "name rack:location"<br>]<br></pre></code> |
+| input-with-pipe | It includes v1 \| v2 \| v3 | `any` | `"v1"` |
+| list-1 | n/a | `list` | <code><pre>[<br>  "a",<br>  "b",<br>  "c"<br>]<br></pre></code> |
+| list-3 | n/a | `any` | `[]` |
+| long_type | This description is itself markdown.<br><br>It spans over multiple lines. | <code><pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })<br></pre></code> | <code><pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}<br></pre></code> |
+| map-1 | n/a | `map` | <code><pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}<br></pre></code> |
+| map-3 | n/a | `any` | `{}` |
+| string-1 | n/a | `any` | `"bar"` |
+| string-3 | n/a | `any` | `""` |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | output-0.12 | terraform 0.12 only |
-| output-1 |  |
+| output-1 | n/a |
 | output-2 | It's output number two. |
 | unquoted | It's unquoted output. |

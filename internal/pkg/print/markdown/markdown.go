@@ -126,10 +126,12 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 		// Escape brackets
 		s = strings.Replace(s, "[", "\\[", -1)
 		s = strings.Replace(s, "]", "\\]", -1)
+		s = strings.Replace(s, "`\\[\\]`", "`[]`", -1)
 
 		// Escape curly brackets
 		s = strings.Replace(s, "{", "\\{", -1)
 		s = strings.Replace(s, "}", "\\}", -1)
+		s = strings.Replace(s, "`\\{\\}`", "`{}`", -1)
 	}
 
 	return s
