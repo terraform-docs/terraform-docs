@@ -52,6 +52,9 @@ func TestPrintWithRequired(t *testing.T) {
 	}
 
 	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	actual, err := document.Print(doc, settings)
 	if err != nil {
@@ -106,6 +109,9 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 	}
 
 	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	actual, err := document.Print(doc, settings)
 	if err != nil {
