@@ -118,20 +118,6 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 
 		// Escape asterisk
 		s = strings.Replace(s, "*", "\\*", -1)
-
-		// Escape parenthesis
-		s = strings.Replace(s, "(", "\\(", -1)
-		s = strings.Replace(s, ")", "\\)", -1)
-
-		// Escape brackets
-		s = strings.Replace(s, "[", "\\[", -1)
-		s = strings.Replace(s, "]", "\\]", -1)
-		s = strings.Replace(s, "`\\[\\]`", "`[]`", -1)
-
-		// Escape curly brackets
-		s = strings.Replace(s, "{", "\\{", -1)
-		s = strings.Replace(s, "}", "\\}", -1)
-		s = strings.Replace(s, "`\\{\\}`", "`{}`", -1)
 	}
 
 	return s
