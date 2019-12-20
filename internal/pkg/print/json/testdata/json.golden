@@ -2,13 +2,13 @@
   "inputs": [
     {
       "name": "input-with-code-block",
-      "type": "any",
+      "type": "list",
       "description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
       "default": "[\n  \"name rack:location\"\n]"
     },
     {
       "name": "input-with-pipe",
-      "type": "any",
+      "type": "string",
       "description": "It includes v1 | v2 | v3",
       "default": "\"v1\""
     },
@@ -28,7 +28,7 @@
     },
     {
       "name": "list-3",
-      "type": "any",
+      "type": "list",
       "default": "[]"
     },
     {
@@ -49,12 +49,12 @@
     },
     {
       "name": "map-3",
-      "type": "any",
+      "type": "map",
       "default": "{}"
     },
     {
       "name": "string-1",
-      "type": "any",
+      "type": "string",
       "default": "\"bar\""
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "name": "string-3",
-      "type": "any",
+      "type": "string",
       "default": "\"\""
     },
     {

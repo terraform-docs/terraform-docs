@@ -12,7 +12,7 @@ default     = [
 ]
 ```
 
-Type: `any`
+Type: `list`
 
 Default:
 
@@ -26,7 +26,7 @@ Default:
 
 Description: It includes v1 \| v2 \| v3
 
-Type: `any`
+Type: `string`
 
 Default: `"v1"`
 
@@ -66,7 +66,7 @@ Default: n/a
 
 Description: n/a
 
-Type: `any`
+Type: `list`
 
 Default: `[]`
 
@@ -137,7 +137,7 @@ Default: n/a
 
 Description: n/a
 
-Type: `any`
+Type: `map`
 
 Default: `{}`
 
@@ -145,7 +145,7 @@ Default: `{}`
 
 Description: n/a
 
-Type: `any`
+Type: `string`
 
 Default: `"bar"`
 
@@ -161,7 +161,7 @@ Default: n/a
 
 Description: n/a
 
-Type: `any`
+Type: `string`
 
 Default: `""`
 

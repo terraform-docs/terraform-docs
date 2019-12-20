@@ -2,6 +2,7 @@ package doc
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 )
@@ -43,6 +44,21 @@ func Create(module *tfconfig.Module) (*Doc, error) {
 				return nil, err
 			}
 			defaultValue = string(marshaled)
+
+			if inputType == "any" {
+				switch xType := fmt.Sprintf("%T", input.Default); xType {
+				case "string":
+					inputType = "string"
+				case "int", "int8", "int16", "int32", "int64", "float32", "float64":
+					inputType = "number"
+				case "bool":
+					inputType = "bool"
+				case "[]interface {}":
+					inputType = "list"
+				case "map[string]interface {}":
+					inputType = "map"
+				}
+			}
 		}
 
 		i := Input{
