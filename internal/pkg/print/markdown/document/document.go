@@ -58,25 +58,37 @@ func Print(document *doc.Doc, settings *print.Settings) (string, error) {
 	return strings.Replace(buf.String(), " \n\n", "\n\n", -1), nil
 }
 
-func getInputDefaultValue(input *doc.Input, settings *print.Settings) string {
-	var result = "n/a"
+func getInputType(input *doc.Input) string {
+	var result = ""
+	var extraline = false
+
+	if result, extraline = markdown.PrintFencedCodeBlock(input.Type, "hcl"); !extraline {
+		result += "\n"
+	}
+	return result
+}
+
+func getInputValue(input *doc.Input) string {
+	var result = "n/a\n"
+	var extraline = false
 
 	if input.HasDefault() {
-		result = markdown.PrintFencedCodeBlock(input.Default, "json")
+		if result, extraline = markdown.PrintFencedCodeBlock(input.Default, "json"); !extraline {
+			result += "\n"
+		}
 	}
-
 	return result
 }
 
 func printInput(buffer *bytes.Buffer, input doc.Input, settings *print.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(input.Name, settings)))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeDescriptionForDocument(input.Description, settings)))
-	buffer.WriteString(fmt.Sprintf("Type: %s\n", markdown.PrintFencedCodeBlock(input.Type, "hcl")))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeItemForDocument(input.Description, settings)))
+	buffer.WriteString(fmt.Sprintf("Type: %s", getInputType(&input)))
 
 	// Don't print defaults for required inputs when we're already explicit about it being required
 	if input.HasDefault() || !settings.ShowRequired {
-		buffer.WriteString(fmt.Sprintf("\nDefault: %s\n", getInputDefaultValue(&input, settings)))
+		buffer.WriteString(fmt.Sprintf("\nDefault: %s", getInputValue(&input)))
 	}
 }
 
@@ -146,6 +158,6 @@ func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *print.Se
 	for _, output := range outputs {
 		buffer.WriteString("\n")
 		buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(output.Name, settings)))
-		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.SanitizeDescriptionForDocument(output.Description, settings)))
+		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.SanitizeItemForDocument(output.Description, settings)))
 	}
 }

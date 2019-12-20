@@ -34,9 +34,9 @@ func SanitizeName(name string, settings *print.Settings) string {
 	return name
 }
 
-// SanitizeDescriptionForDocument converts description to suitable Markdown representation
+// SanitizeItemForDocument converts passed 'string to suitable Markdown representation
 // for a document. (including line-break, illegal characters, code blocks etc)
-func SanitizeDescriptionForDocument(s string, settings *print.Settings) string {
+func SanitizeItemForDocument(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -63,29 +63,32 @@ func SanitizeDescriptionForDocument(s string, settings *print.Settings) string {
 	return buf.String()
 }
 
-// // SanitizeDescriptionForTable converts description to suitable Markdown representation
-// // for a table. (including line-break, illegal characters, code blocks etc)
-// func SanitizeDescriptionForTable(s string, settings *print.Settings) string {
-// 	// Isolate blocks of code. Dont escape anything inside them
-// 	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
-// 	segments := strings.Split(s, "```\n")
-// 	buf := bytes.NewBufferString("")
-// 	for _, segment := range segments {
-// 		if !nextIsInCodeBlock {
-// 			segment = ConvertMultiLineText(segment)
-// 			segment = EscapeIllegalCharacters(segment, settings)
-// 			buf.WriteString(segment)
-// 			nextIsInCodeBlock = true
-// 		} else {
-// 			buf.WriteString("<code><pre>")
-// 			buf.WriteString(strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
-// 			buf.WriteString("</pre></code>")
-// 			nextIsInCodeBlock = false
-// 		}
-// 	}
+// SanitizeItemForTable converts passed 'string' to suitable Markdown representation
+// for a table. (including line-break, illegal characters, code blocks etc)
+func SanitizeItemForTable(s string, settings *print.Settings) string {
+	if s == "" {
+		return "n/a"
+	}
+	// Isolate blocks of code. Dont escape anything inside them
+	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
+	segments := strings.Split(s, "```\n")
+	buf := bytes.NewBufferString("")
+	for _, segment := range segments {
+		if !nextIsInCodeBlock {
+			segment = ConvertMultiLineText(segment)
+			segment = EscapeIllegalCharacters(segment, settings)
+			buf.WriteString(segment)
+			nextIsInCodeBlock = true
+		} else {
+			buf.WriteString("<code><pre>")
+			buf.WriteString(strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
+			buf.WriteString("</pre></code>")
+			nextIsInCodeBlock = false
+		}
+	}
 
-// 	return buf.String()
-// }
+	return buf.String()
+}
 
 // ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
 func ConvertMultiLineText(s string) string {
@@ -148,10 +151,14 @@ func GenerateIndentation(extra int, settings *print.Settings) string {
 	return indent
 }
 
-// PrintFencedCodeBlock TODO
-func PrintFencedCodeBlock(code string, language string) string {
+// PrintFencedCodeBlock prints codes in fences, it automatically detects if
+// the input 'code' contains '\n' it will use multi line fence, otherwise it
+// wraps the 'code' inside single-tick block.
+// If the fenced is multi-line it also appens an extra '\n` at the end and
+// returns true accordingly, otherwise returns false for non-carriage return.
+func PrintFencedCodeBlock(code string, language string) (string, bool) {
 	if strings.Contains(code, "\n") {
-		return fmt.Sprintf("\n\n```%s\n%s\n```", language, code)
+		return fmt.Sprintf("\n\n```%s\n%s\n```\n", language, code), true
 	}
-	return fmt.Sprintf("`%s`", code)
+	return fmt.Sprintf("`%s`", code), false
 }
