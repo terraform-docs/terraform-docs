@@ -1,42 +1,27 @@
-Usage:
-
-module "foo" {
-  source = "github.com/foo/bar"
-
-  id   = "1234567890"
-  name = "baz"
-
-  zones = ["us-east-1", "us-west-1"]
-
-  tags = {
-    Name         = "baz"
-    Created-By   = "first.last@email.com"
-    Date-Created = "20180101"
-  }
-}
-
 ## Inputs
 
 | Name | Description | Type | Default |
-|------|-------------|:----:|:-----:|
-| input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<code><pre>default     = [<br>  "machine rack01:neptune"<br>]<br></pre></code> | list | `<list>` |
-| input-with-pipe | It includes v1 \| v2 \| v3 | string | `"v1"` |
-| input_with_underscores | A variable with underscores. | string | n/a |
-| list-1 | It's list number one. | list | `<list>` |
-| list-2 | It's list number two. | list | n/a |
-| list-3 |  | list | `<list>` |
-| map-1 | It's map number one. | map | `<map>` |
-| map-2 | It's map number two. | map | n/a |
-| map-3 |  | map | `<map>` |
-| string-1 | It's string number one. | string | `"bar"` |
-| string-2 | It's string number two. | string | n/a |
-| string-3 |  | string | `""` |
-| unquoted |  | string | n/a |
+|------|-------------|------|---------|
+| input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<code><pre>default     = [<br>  "machine rack01:neptune"<br>]<br></pre></code> | `list` | <code><pre>[<br>  "name rack:location"<br>]<br></pre></code> |
+| input-with-pipe | It includes v1 \| v2 \| v3 | `string` | `"v1"` |
+| input_with_underscores | n/a | `any` | n/a |
+| list-1 | n/a | `list` | <code><pre>[<br>  "a",<br>  "b",<br>  "c"<br>]<br></pre></code> |
+| list-2 | It's list number two. | `list` | n/a |
+| list-3 | n/a | `list` | `[]` |
+| long_type | This description is itself markdown.<br><br>It spans over multiple lines. | <code><pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })<br></pre></code> | <code><pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}<br></pre></code> |
+| map-1 | n/a | `map` | <code><pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}<br></pre></code> |
+| map-2 | It's map number two. | `map` | n/a |
+| map-3 | n/a | `map` | `{}` |
+| string-1 | n/a | `string` | `"bar"` |
+| string-2 | It's string number two. | `string` | n/a |
+| string-3 | n/a | `string` | `""` |
+| unquoted | n/a | `any` | n/a |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| output-1 | It's output number one. |
+| output-0.12 | terraform 0.12 only |
+| output-1 | n/a |
 | output-2 | It's output number two. |
 | unquoted | It's unquoted output. |

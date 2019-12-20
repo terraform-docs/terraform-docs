@@ -72,3 +72,31 @@ EOD
     "name rack:location"
   ]
 }
+
+variable "long_type" {
+  type = object({
+    name = string,
+    foo  = object({ foo = string, bar = string }),
+    bar  = object({ foo = string, bar = string }),
+    fizz = list(string),
+    buzz = list(string)
+  })
+  default = {
+    name = "hello"
+    foo = {
+      foo = "foo"
+      bar = "foo"
+    }
+    bar = {
+      foo = "bar"
+      bar = "bar"
+    },
+    fizz = []
+    buzz = ["fizz", "buzz"]
+  }
+  description = <<EOF
+This description is itself markdown.
+
+It spans over multiple lines.
+EOF
+}

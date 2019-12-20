@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
@@ -10,38 +8,38 @@ import (
 )
 
 var markdownCmd = &cobra.Command{
+	Args:    cobra.ExactArgs(1),
 	Use:     "markdown [PATH...]",
 	Aliases: []string{"md"},
 	Short:   "Generate Markdown of inputs and outputs",
-	PreRun:  commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return table.Print(docs, settings)
-		}))
+		doPrint(args, func(doc *doc.Doc) (string, error) {
+			return table.Print(doc, settings)
+		})
 	},
 }
 
 var mdTableCmd = &cobra.Command{
+	Args:    cobra.ExactArgs(1),
 	Use:     "table [PATH...]",
 	Aliases: []string{"tbl"},
 	Short:   "Generate Markdown tables of inputs and outputs",
-	PreRun:  commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return table.Print(docs, settings)
-		}))
+		doPrint(args, func(doc *doc.Doc) (string, error) {
+			return table.Print(doc, settings)
+		})
 	},
 }
 
 var mdDocumentCmd = &cobra.Command{
+	Args:    cobra.ExactArgs(1),
 	Use:     "document [PATH...]",
 	Aliases: []string{"doc"},
 	Short:   "Generate Markdown document of inputs and outputs",
-	PreRun:  commandsPreRun,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(doPrint(args, func(docs *doc.Doc) (string, error) {
-			return document.Print(docs, settings)
-		}))
+		doPrint(args, func(doc *doc.Doc) (string, error) {
+			return document.Print(doc, settings)
+		})
 	},
 }
 

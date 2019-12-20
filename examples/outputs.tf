@@ -12,3 +12,8 @@ output "output-2" {
 output "output-1" {
   value = "1"
 }
+
+output "output-0.12" {
+  value       = join(",", var.list-3)
+  description = "terraform 0.12 only"
+}

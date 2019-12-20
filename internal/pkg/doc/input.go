@@ -1,43 +1,20 @@
 package doc
 
-import "sort"
+import (
+	"sort"
+)
 
 // Input represents a Terraform input.
 type Input struct {
-	Name        string
-	Description string
-	Default     *Value
-	Type        string
+	Name        string `json:"name"`
+	Type        string `json:"type,omitempty"`
+	Description string `json:"description,omitempty"`
+	Default     string `json:"default,omitempty"`
 }
 
-// GetDefault returns the Terraform input's default value.
-func (i *Input) GetDefault() *Value {
-	return i.Default
-}
-
-// HasDefault indicates if a Terraform input has a default value set.
+// HasDefault indicates if a Terraform variable has a default value set.
 func (i *Input) HasDefault() bool {
-	return i.GetDefault() != nil
-}
-
-// HasDescription indicates if a Terraform input has a description.
-func (i *Input) HasDescription() bool {
-	return i.Description != ""
-}
-
-// IsAggregateType indicates if a Terraform input is an aggregate type.
-func (i *Input) IsAggregateType() bool {
-	return i.Type == "list" || i.Type == "map"
-}
-
-// IsOptional indicates if a Terraform input is optional.
-func (i *Input) IsOptional() bool {
-	return i.HasDefault()
-}
-
-// IsRequired indicates if a Terraform input is required.
-func (i *Input) IsRequired() bool {
-	return !i.IsOptional()
+	return len(i.Default) > 0
 }
 
 type inputsSortedByName []Input

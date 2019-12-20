@@ -3,19 +3,30 @@ package table_test
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
-	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPrint(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName: true,
+	}
 
-	var settings = &_settings.Settings{}
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
 
-	actual, err := table.Print(doc, settings)
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,34 +39,24 @@ func TestPrint(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestWithAggregateTypeDefaults(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
-		AggregateTypeDefaults: true,
-	}
-
-	actual, err := table.Print(doc, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected, err := print.ReadGoldenFile("table-WithAggregateTypeDefaults")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
-}
-
 func TestPrintWithRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:   true,
 		ShowRequired: true,
 	}
 
-	actual, err := table.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -69,13 +70,21 @@ func TestPrintWithRequired(t *testing.T) {
 }
 
 func TestPrintWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	var settings = &print.Settings{
 		SortByName: true,
 	}
 
-	actual, err := table.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -89,14 +98,22 @@ func TestPrintWithSortByName(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	var settings = &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}
 
-	actual, err := table.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -110,13 +127,23 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 }
 
 func TestPrintWithEscapeName(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		EscapeMarkdown: true,
 	}
 
-	actual, err := table.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -130,13 +157,23 @@ func TestPrintWithEscapeName(t *testing.T) {
 }
 
 func TestPrintWithIndentationBellowAllowed(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		MarkdownIndent: 0,
 	}
 
-	actual, err := table.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -150,13 +187,23 @@ func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 }
 
 func TestPrintWithIndentationAboveAllowed(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		MarkdownIndent: 10,
 	}
 
-	actual, err := table.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -170,13 +217,23 @@ func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 }
 
 func TestPrintWithIndentationOfFour(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		MarkdownIndent: 4,
 	}
 
-	actual, err := table.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := table.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}

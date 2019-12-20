@@ -3,19 +3,30 @@ package json_test
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
-	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPrint(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName: true,
+	}
 
-	var settings = &_settings.Settings{}
+	module, diag := tfconfig.LoadModule("../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
 
-	actual, err := json.Print(doc, settings)
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := json.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -29,13 +40,21 @@ func TestPrint(t *testing.T) {
 }
 
 func TestPrintWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
-
-	var settings = &_settings.Settings{
+	var settings = &print.Settings{
 		SortByName: true,
 	}
 
-	actual, err := json.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := json.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,14 +68,22 @@ func TestPrintWithSortByName(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "..")
-
-	var settings = &_settings.Settings{
+	var settings = &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}
 
-	actual, err := json.Print(doc, settings)
+	module, diag := tfconfig.LoadModule("../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	document, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actual, err := json.Print(document, settings)
 	if err != nil {
 		t.Fatal(err)
 	}

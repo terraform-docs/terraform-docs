@@ -1,131 +1,92 @@
 {
-  "Comment": "Usage:\n\nmodule \"foo\" {\n  source = \"github.com/foo/bar\"\n\n  id   = \"1234567890\"\n  name = \"baz\"\n\n  zones = [\"us-east-1\", \"us-west-1\"]\n\n  tags = {\n    Name         = \"baz\"\n    Created-By   = \"first.last@email.com\"\n    Date-Created = \"20180101\"\n  }\n}\n",
-  "Inputs": [
+  "inputs": [
     {
-      "Name": "input_with_underscores",
-      "Description": "A variable with underscores.",
-      "Default": null,
-      "Type": "string"
+      "name": "input_with_underscores",
+      "type": "any"
     },
     {
-      "Name": "list-2",
-      "Description": "It's list number two.",
-      "Default": null,
-      "Type": "list"
+      "name": "list-2",
+      "type": "list",
+      "description": "It's list number two."
     },
     {
-      "Name": "map-2",
-      "Description": "It's map number two.",
-      "Default": null,
-      "Type": "map"
+      "name": "map-2",
+      "type": "map",
+      "description": "It's map number two."
     },
     {
-      "Name": "string-2",
-      "Description": "It's string number two.",
-      "Default": null,
-      "Type": "string"
+      "name": "string-2",
+      "type": "string",
+      "description": "It's string number two."
     },
     {
-      "Name": "unquoted",
-      "Description": "",
-      "Default": null,
-      "Type": "string"
+      "name": "unquoted",
+      "type": "any"
     },
     {
-      "Name": "input-with-code-block",
-      "Description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
-      "Default": {
-        "Type": "list",
-        "Value": [
-          "name rack:location"
-        ]
-      },
-      "Type": "list"
+      "name": "input-with-code-block",
+      "type": "list",
+      "description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
+      "default": "[\n  \"name rack:location\"\n]"
     },
     {
-      "Name": "input-with-pipe",
-      "Description": "It includes v1 | v2 | v3",
-      "Default": {
-        "Type": "string",
-        "Value": "v1"
-      },
-      "Type": "string"
+      "name": "input-with-pipe",
+      "type": "string",
+      "description": "It includes v1 | v2 | v3",
+      "default": "\"v1\""
     },
     {
-      "Name": "list-1",
-      "Description": "It's list number one.",
-      "Default": {
-        "Type": "list",
-        "Value": [
-          "a",
-          "b",
-          "c"
-        ]
-      },
-      "Type": "list"
+      "name": "list-1",
+      "type": "list",
+      "default": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]"
     },
     {
-      "Name": "list-3",
-      "Description": "",
-      "Default": {
-        "Type": "list",
-        "Value": []
-      },
-      "Type": "list"
+      "name": "list-3",
+      "type": "list",
+      "default": "[]"
     },
     {
-      "Name": "map-1",
-      "Description": "It's map number one.",
-      "Default": {
-        "Type": "map",
-        "Value": {
-          "a": 1,
-          "b": 2,
-          "c": 3
-        }
-      },
-      "Type": "map"
+      "name": "long_type",
+      "type": "object({\n    name = string,\n    foo  = object({ foo = string, bar = string }),\n    bar  = object({ foo = string, bar = string }),\n    fizz = list(string),\n    buzz = list(string)\n  })",
+      "description": "This description is itself markdown.\n\nIt spans over multiple lines.\n",
+      "default": "{\n  \"bar\": {\n    \"bar\": \"bar\",\n    \"foo\": \"bar\"\n  },\n  \"buzz\": [\n    \"fizz\",\n    \"buzz\"\n  ],\n  \"fizz\": [],\n  \"foo\": {\n    \"bar\": \"foo\",\n    \"foo\": \"foo\"\n  },\n  \"name\": \"hello\"\n}"
     },
     {
-      "Name": "map-3",
-      "Description": "",
-      "Default": {
-        "Type": "map",
-        "Value": {}
-      },
-      "Type": "map"
+      "name": "map-1",
+      "type": "map",
+      "default": "{\n  \"a\": 1,\n  \"b\": 2,\n  \"c\": 3\n}"
     },
     {
-      "Name": "string-1",
-      "Description": "It's string number one.",
-      "Default": {
-        "Type": "string",
-        "Value": "bar"
-      },
-      "Type": "string"
+      "name": "map-3",
+      "type": "map",
+      "default": "{}"
     },
     {
-      "Name": "string-3",
-      "Description": "",
-      "Default": {
-        "Type": "string",
-        "Value": ""
-      },
-      "Type": "string"
+      "name": "string-1",
+      "type": "string",
+      "default": "\"bar\""
+    },
+    {
+      "name": "string-3",
+      "type": "string",
+      "default": "\"\""
     }
   ],
-  "Outputs": [
+  "outputs": [
     {
-      "Name": "output-1",
-      "Description": "It's output number one."
+      "name": "output-0.12",
+      "description": "terraform 0.12 only"
     },
     {
-      "Name": "output-2",
-      "Description": "It's output number two."
+      "name": "output-1"
     },
     {
-      "Name": "unquoted",
-      "Description": "It's unquoted output."
+      "name": "output-2",
+      "description": "It's output number two."
+    },
+    {
+      "name": "unquoted",
+      "description": "It's unquoted output."
     }
   ]
 }

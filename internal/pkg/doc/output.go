@@ -1,16 +1,13 @@
 package doc
 
-import "sort"
+import (
+	"sort"
+)
 
 // Output represents a Terraform output.
 type Output struct {
-	Name        string
-	Description string
-}
-
-// HasDescription indicates if a Terraform output has a description.
-func (o *Output) HasDescription() bool {
-	return o.Description != ""
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
 }
 
 type outputsSortedByName []Output

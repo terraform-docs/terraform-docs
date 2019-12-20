@@ -3,17 +3,28 @@ package document_test
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
-	_settings "github.com/segmentio/terraform-docs/internal/pkg/settings"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPrint(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName: true,
+	}
 
-	var settings = &_settings.Settings{}
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	actual, err := document.Print(doc, settings)
 	if err != nil {
@@ -28,31 +39,21 @@ func TestPrint(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestWithAggregateTypeDefaults(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
-		AggregateTypeDefaults: true,
-	}
-
-	actual, err := document.Print(doc, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected, err := print.ReadGoldenFile("document-WithAggregateTypeDefaults")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
-}
-
 func TestPrintWithRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:   true,
 		ShowRequired: true,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	actual, err := document.Print(doc, settings)
@@ -69,10 +70,18 @@ func TestPrintWithRequired(t *testing.T) {
 }
 
 func TestPrintWithSortByName(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	var settings = &print.Settings{
 		SortByName: true,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	actual, err := document.Print(doc, settings)
@@ -89,11 +98,19 @@ func TestPrintWithSortByName(t *testing.T) {
 }
 
 func TestPrintWithSortInputsByRequired(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	var settings = &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	actual, err := document.Print(doc, settings)
@@ -110,10 +127,20 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 }
 
 func TestPrintWithEscapeName(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		EscapeMarkdown: true,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	actual, err := document.Print(doc, settings)
@@ -130,10 +157,20 @@ func TestPrintWithEscapeName(t *testing.T) {
 }
 
 func TestPrintWithIndentationBellowAllowed(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		MarkdownIndent: 0,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	actual, err := document.Print(doc, settings)
@@ -150,10 +187,20 @@ func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 }
 
 func TestPrintWithIndentationAboveAllowed(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		MarkdownIndent: 10,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	actual, err := document.Print(doc, settings)
@@ -170,10 +217,20 @@ func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 }
 
 func TestPrintWithIndentationOfFour(t *testing.T) {
-	doc := doc.TestDoc(t, "../..")
-
-	var settings = &_settings.Settings{
+	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
+	var settings = &print.Settings{
+		SortByName:     true,
 		MarkdownIndent: 4,
+	}
+
+	module, diag := tfconfig.LoadModule("../../../../../examples")
+	if diag != nil && diag.HasErrors() {
+		t.Fatal(diag)
+	}
+
+	doc, err := doc.Create(module)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	actual, err := document.Print(doc, settings)

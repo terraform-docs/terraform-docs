@@ -1,29 +1,12 @@
-Usage:
-
-module "foo" {
-  source = "github.com/foo/bar"
-
-  id   = "1234567890"
-  name = "baz"
-
-  zones = ["us-east-1", "us-west-1"]
-
-  tags = {
-    Name         = "baz"
-    Created-By   = "first.last@email.com"
-    Date-Created = "20180101"
-  }
-}
-
 ## Inputs
 
 The following input variables are supported:
 
 ### input_with_underscores
 
-Description: A variable with underscores.
+Description: n/a
 
-Type: `string`
+Type: `any`
 
 Default: n/a
 
@@ -53,9 +36,9 @@ Default: n/a
 
 ### unquoted
 
-Description:
+Description: n/a
 
-Type: `string`
+Type: `any`
 
 Default: n/a
 
@@ -71,7 +54,13 @@ default     = [
 
 Type: `list`
 
-Default: `<list>`
+Default:
+
+```json
+[
+  "name rack:location"
+]
+```
 
 ### input-with-pipe
 
@@ -83,39 +72,94 @@ Default: `"v1"`
 
 ### list-1
 
-Description: It's list number one.
+Description: n/a
 
 Type: `list`
 
-Default: `<list>`
+Default:
+
+```json
+[
+  "a",
+  "b",
+  "c"
+]
+```
 
 ### list-3
 
-Description:
+Description: n/a
 
 Type: `list`
 
-Default: `<list>`
+Default: `[]`
+
+### long_type
+
+Description: This description is itself markdown.
+
+It spans over multiple lines.
+
+Type:
+
+```hcl
+object({
+    name = string,
+    foo  = object({ foo = string, bar = string }),
+    bar  = object({ foo = string, bar = string }),
+    fizz = list(string),
+    buzz = list(string)
+  })
+```
+
+Default:
+
+```json
+{
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+```
 
 ### map-1
 
-Description: It's map number one.
+Description: n/a
 
 Type: `map`
 
-Default: `<map>`
+Default:
+
+```json
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+```
 
 ### map-3
 
-Description:
+Description: n/a
 
 Type: `map`
 
-Default: `<map>`
+Default: `{}`
 
 ### string-1
 
-Description: It's string number one.
+Description: n/a
 
 Type: `string`
 
@@ -123,7 +167,7 @@ Default: `"bar"`
 
 ### string-3
 
-Description:
+Description: n/a
 
 Type: `string`
 
@@ -133,9 +177,13 @@ Default: `""`
 
 The following outputs are exported:
 
+### output-0.12
+
+Description: terraform 0.12 only
+
 ### output-1
 
-Description: It's output number one.
+Description: n/a
 
 ### output-2
 
