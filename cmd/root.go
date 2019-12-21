@@ -31,8 +31,9 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of inputs and outputs")
-	rootCmd.PersistentFlags().BoolVar(&settings.SortInputsByRequired, "sort-inputs-by-required", false, "sort inputs by name and prints required inputs first")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of variables and outputs")
+	rootCmd.PersistentFlags().BoolVar(&settings.SortVariablesByRequired, "sort-inputs-by-required", false, "[Deprecated] use --sort-by-required instead")
+	rootCmd.PersistentFlags().BoolVar(&settings.SortVariablesByRequired, "sort-by-required", false, "sort variables by name and prints required ones first")
 	rootCmd.PersistentFlags().BoolVar(&settings.AggregateTypeDefaults, "with-aggregate-type-defaults", false, "print default values of aggregate types")
 
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "omit \"Required\" column when generating Markdown")

@@ -56,10 +56,10 @@ func TestPrintWithSortByName(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestPrintWithSortInputsByRequired(t *testing.T) {
+func TestPrintWithSortVariablesByRequired(t *testing.T) {
 	var settings = &print.Settings{
-		SortByName:           true,
-		SortInputsByRequired: true,
+		SortByName:              true,
+		SortVariablesByRequired: true,
 	}
 
 	module, err := tfconf.CreateModule("../../../../examples")
@@ -72,7 +72,7 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("json-WithSortInputsByRequired")
+	expected, err := print.ReadGoldenFile("json-WithSortVariablesByRequired")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,5 +1,5 @@
 {
-  "inputs": [
+  "variables": [
     {
       "name": "input-with-code-block",
       "type": "list",

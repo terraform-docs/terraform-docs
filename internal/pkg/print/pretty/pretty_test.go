@@ -56,10 +56,10 @@ func TestPrettyWithSortByName(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestPrettyWithSortInputsByRequired(t *testing.T) {
+func TestPrettyWithSortVariablesByRequired(t *testing.T) {
 	var settings = &print.Settings{
-		SortByName:           true,
-		SortInputsByRequired: true,
+		SortByName:              true,
+		SortVariablesByRequired: true,
 	}
 
 	module, err := tfconf.CreateModule("../../../../examples")
@@ -72,7 +72,7 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected, err := print.ReadGoldenFile("pretty-WithSortInputsByRequired")
+	expected, err := print.ReadGoldenFile("pretty-WithSortVariablesByRequired")
 	if err != nil {
 		t.Fatal(err)
 	}

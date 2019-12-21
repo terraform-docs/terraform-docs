@@ -125,8 +125,8 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 
 // GenerateIndentation generates indentation of Markdown headers
 // with base level of provided 'settings.MarkdownIndent' plus any
-// extra level needed for subsection (e.g. 'Required Inputs' which
-// is a subsection of 'Inputs' section)
+// extra level needed for subsection (e.g. 'Required Variables'
+// which is a subsection of 'Variables' section)
 func GenerateIndentation(extra int, settings *print.Settings) string {
 	var base = settings.MarkdownIndent
 	if base < 1 || base > 5 {

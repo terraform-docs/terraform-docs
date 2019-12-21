@@ -9,7 +9,7 @@ import (
 var prettyCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Use:   "pretty [PATH...]",
-	Short: "Generate a colorized pretty of inputs and outputs",
+	Short: "Generate a colorized pretty of variables and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
 		doPrint(args, func(module *tfconf.Module) (string, error) {
 			return pretty.Print(module, settings)

@@ -1,7 +1,7 @@
-## Inputs
+## Variables
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<code><pre>default     = [<br>  "machine rack01:neptune"<br>]<br></pre></code> | `list` | <code><pre>[<br>  "name rack:location"<br>]<br></pre></code> | no |
 | input-with-pipe | It includes v1 \| v2 \| v3 | `string` | `"v1"` | no |
 | input_with_underscores | n/a | `any` | n/a | yes |

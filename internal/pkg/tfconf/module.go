@@ -12,15 +12,15 @@ import (
 
 // Module represents a Terraform mod.
 type Module struct {
-	Inputs         []*Input  `json:"inputs"`
-	Outputs        []*Output `json:"outputs"`
-	RequiredInputs []*Input  `json:"-"`
-	OptionalInputs []*Input  `json:"-"`
+	Variables         []*Variable `json:"variables"`
+	Outputs           []*Output   `json:"outputs"`
+	RequiredVariables []*Variable `json:"-"`
+	OptionalVariables []*Variable `json:"-"`
 }
 
 // HasInputs indicates if the document has inputs.
 func (m *Module) HasInputs() bool {
-	return len(m.Inputs) > 0
+	return len(m.Variables) > 0
 }
 
 // HasOutputs indicates if the document has outputs.
@@ -28,16 +28,16 @@ func (m *Module) HasOutputs() bool {
 	return len(m.Outputs) > 0
 }
 
-func (m *Module) sortInputsByName() {
-	sort.Sort(inputsSortedByName(m.Inputs))
-	sort.Sort(inputsSortedByName(m.RequiredInputs))
-	sort.Sort(inputsSortedByName(m.OptionalInputs))
+func (m *Module) sortVariablesByName() {
+	sort.Sort(variablesSortedByName(m.Variables))
+	sort.Sort(variablesSortedByName(m.RequiredVariables))
+	sort.Sort(variablesSortedByName(m.OptionalVariables))
 }
 
-func (m *Module) sortInputsByRequired() {
-	sort.Sort(inputsSortedByRequired(m.Inputs))
-	sort.Sort(inputsSortedByRequired(m.RequiredInputs))
-	sort.Sort(inputsSortedByRequired(m.OptionalInputs))
+func (m *Module) sortVariablesByRequired() {
+	sort.Sort(variablesSortedByRequired(m.Variables))
+	sort.Sort(variablesSortedByRequired(m.RequiredVariables))
+	sort.Sort(variablesSortedByRequired(m.OptionalVariables))
 }
 
 func (m *Module) sortOutputsByName() {
@@ -47,10 +47,10 @@ func (m *Module) sortOutputsByName() {
 // Sort sorts list of inputs and outputs based on provided flags (name, required, etc)
 func (m *Module) Sort(settings *print.Settings) {
 	if settings.SortByName {
-		if settings.SortInputsByRequired {
-			m.sortInputsByRequired()
+		if settings.SortVariablesByRequired {
+			m.sortVariablesByRequired()
 		} else {
-			m.sortInputsByName()
+			m.sortVariablesByName()
 		}
 	}
 
@@ -60,57 +60,57 @@ func (m *Module) Sort(settings *print.Settings) {
 
 }
 
-// CreateModule returns new instance of Module with all the inputs and
+// CreateModule returns new instance of Module with all the variables and
 // outputs dircoverd from provided 'path' containing Terraform config
 func CreateModule(path string) (*Module, error) {
 	mod := loadModule(path)
 
-	var inputs = make([]*Input, 0, len(mod.Variables))
-	var requiredInputs = make([]*Input, 0, len(mod.Variables))
-	var optionalInputs = make([]*Input, 0, len(mod.Variables))
+	var variables = make([]*Variable, 0, len(mod.Variables))
+	var requiredVariables = make([]*Variable, 0, len(mod.Variables))
+	var optionalVariables = make([]*Variable, 0, len(mod.Variables))
 
-	for _, input := range mod.Variables {
-		inputType := input.Type
-		if input.Type == "" {
-			inputType = "any"
+	for _, variable := range mod.Variables {
+		variableType := variable.Type
+		if variable.Type == "" {
+			variableType = "any"
 		}
 
 		var defaultValue string
-		if input.Default != nil {
-			marshaled, err := json.MarshalIndent(input.Default, "", "  ")
+		if variable.Default != nil {
+			marshaled, err := json.MarshalIndent(variable.Default, "", "  ")
 			if err != nil {
 				return nil, err
 			}
 			defaultValue = string(marshaled)
 
-			if inputType == "any" {
-				switch xType := fmt.Sprintf("%T", input.Default); xType {
+			if variableType == "any" {
+				switch xType := fmt.Sprintf("%T", variable.Default); xType {
 				case "string":
-					inputType = "string"
+					variableType = "string"
 				case "int", "int8", "int16", "int32", "int64", "float32", "float64":
-					inputType = "number"
+					variableType = "number"
 				case "bool":
-					inputType = "bool"
+					variableType = "bool"
 				case "[]interface {}":
-					inputType = "list"
+					variableType = "list"
 				case "map[string]interface {}":
-					inputType = "map"
+					variableType = "map"
 				}
 			}
 		}
 
-		i := &Input{
-			Name:        input.Name,
-			Type:        inputType,
-			Description: input.Description,
+		v := &Variable{
+			Name:        variable.Name,
+			Type:        variableType,
+			Description: variable.Description,
 			Default:     defaultValue,
 		}
 
-		inputs = append(inputs, i)
-		if i.HasDefault() {
-			optionalInputs = append(optionalInputs, i)
+		variables = append(variables, v)
+		if v.HasDefault() {
+			optionalVariables = append(optionalVariables, v)
 		} else {
-			requiredInputs = append(requiredInputs, i)
+			requiredVariables = append(requiredVariables, v)
 		}
 	}
 
@@ -123,10 +123,10 @@ func CreateModule(path string) (*Module, error) {
 	}
 
 	module := &Module{
-		Inputs:         inputs,
-		Outputs:        outputs,
-		RequiredInputs: requiredInputs,
-		OptionalInputs: optionalInputs,
+		Variables:         variables,
+		Outputs:           outputs,
+		RequiredVariables: requiredVariables,
+		OptionalVariables: optionalVariables,
 	}
 	return module, nil
 }

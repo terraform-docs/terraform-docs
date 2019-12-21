@@ -1,6 +1,6 @@
-## Required Inputs
+## Required Variables
 
-The following input variables are required:
+The following variables are required:
 
 ### input_with_underscores
 
@@ -32,9 +32,9 @@ Description: n/a
 
 Type: `any`
 
-## Optional Inputs
+## Optional Variables
 
-The following input variables are optional (have default values):
+The following variables are optional (have default values):
 
 ### input-with-code-block
 

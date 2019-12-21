@@ -18,23 +18,23 @@ type Settings struct {
 	// scope: Markdown
 	ShowRequired bool
 
-	// SortByName sorted rendering of inputs and outputs (default: true)
+	// SortByName sorted rendering of variables and outputs (default: true)
 	// scope: Global
 	SortByName bool
 
-	// SortInputsByRequired sort inputs by name and prints required inputs first (default: false)
+	// SortVariablesByRequired sort variables by name and prints required variables first (default: false)
 	// scope: Global
-	SortInputsByRequired bool
+	SortVariablesByRequired bool
 }
 
 //NewSettings returns new instance of Settings
 func NewSettings() *Settings {
 	return &Settings{
-		AggregateTypeDefaults: false,
-		EscapeMarkdown:        true,
-		MarkdownIndent:        2,
-		ShowRequired:          true,
-		SortByName:            true,
-		SortInputsByRequired:  false,
+		AggregateTypeDefaults:   false,
+		EscapeMarkdown:          true,
+		MarkdownIndent:          2,
+		ShowRequired:            true,
+		SortByName:              true,
+		SortVariablesByRequired: false,
 	}
 }

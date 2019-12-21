@@ -15,38 +15,38 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
-	printInputs(&buffer, module.Inputs, settings)
+	printVariables(&buffer, module.Variables, settings)
 	printOutputs(&buffer, module.Outputs, settings)
 
 	return markdown.Sanitize(buffer.String()), nil
 }
 
-func getInputType(input *tfconf.Input) string {
-	inputType, _ := markdown.PrintFencedCodeBlock(input.Type, "")
-	return inputType
+func getVariableType(variable *tfconf.Variable) string {
+	varType, _ := markdown.PrintFencedCodeBlock(variable.Type, "")
+	return varType
 }
 
-func getInputValue(input *tfconf.Input) string {
+func getVariableValue(variable *tfconf.Variable) string {
 	var result = "n/a"
 
-	if input.HasDefault() {
-		result, _ = markdown.PrintFencedCodeBlock(input.Default, "")
+	if variable.HasDefault() {
+		result, _ = markdown.PrintFencedCodeBlock(variable.Default, "")
 	}
 	return result
 }
 
-func printIsInputRequired(input *tfconf.Input) string {
-	if !input.HasDefault() {
+func printIsVariableRequired(variable *tfconf.Variable) string {
+	if !variable.HasDefault() {
 		return "yes"
 	}
 	return "no"
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
-	buffer.WriteString(fmt.Sprintf("%s Inputs\n\n", markdown.GenerateIndentation(0, settings)))
+func printVariables(buffer *bytes.Buffer, variables []*tfconf.Variable, settings *print.Settings) {
+	buffer.WriteString(fmt.Sprintf("%s Variables\n\n", markdown.GenerateIndentation(0, settings)))
 
-	if len(inputs) == 0 {
-		buffer.WriteString("No input.\n\n")
+	if len(variables) == 0 {
+		buffer.WriteString("No variable.\n\n")
 		return
 	}
 
@@ -61,24 +61,24 @@ func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.S
 	buffer.WriteString("|------|-------------|------|---------|")
 
 	if settings.ShowRequired {
-		buffer.WriteString(":-----:|\n")
+		buffer.WriteString(":--------:|\n")
 	} else {
 		buffer.WriteString("\n")
 	}
 
-	for _, input := range inputs {
+	for _, variable := range variables {
 		buffer.WriteString(
 			fmt.Sprintf(
 				"| %s | %s | %s | %s |",
-				markdown.SanitizeName(input.Name, settings),
-				markdown.SanitizeItemForTable(input.Description, settings),
-				markdown.SanitizeItemForTable(getInputType(input), settings),
-				markdown.SanitizeItemForTable(getInputValue(input), settings),
+				markdown.SanitizeName(variable.Name, settings),
+				markdown.SanitizeItemForTable(variable.Description, settings),
+				markdown.SanitizeItemForTable(getVariableType(variable), settings),
+				markdown.SanitizeItemForTable(getVariableValue(variable), settings),
 			),
 		)
 
 		if settings.ShowRequired {
-			buffer.WriteString(fmt.Sprintf(" %v |\n", printIsInputRequired(input)))
+			buffer.WriteString(fmt.Sprintf(" %v |\n", printIsVariableRequired(variable)))
 		} else {
 			buffer.WriteString("\n")
 		}

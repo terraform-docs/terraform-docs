@@ -16,7 +16,7 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
-	printInputs(&buffer, module, settings)
+	printVariables(&buffer, module, settings)
 	printOutputs(&buffer, module.Outputs, settings)
 
 	out := strings.Replace(buffer.String(), "<br>```<br>", "\n```\n", -1)
@@ -44,90 +44,90 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	return strings.Replace(buf.String(), " \n\n", "\n\n", -1), nil
 }
 
-func getInputType(input *tfconf.Input) string {
+func getVariableType(variable *tfconf.Variable) string {
 	var result = ""
 	var extraline = false
 
-	if result, extraline = markdown.PrintFencedCodeBlock(input.Type, "hcl"); !extraline {
+	if result, extraline = markdown.PrintFencedCodeBlock(variable.Type, "hcl"); !extraline {
 		result += "\n"
 	}
 	return result
 }
 
-func getInputValue(input *tfconf.Input) string {
+func getVariableValue(variable *tfconf.Variable) string {
 	var result = "n/a\n"
 	var extraline = false
 
-	if input.HasDefault() {
-		if result, extraline = markdown.PrintFencedCodeBlock(input.Default, "json"); !extraline {
+	if variable.HasDefault() {
+		if result, extraline = markdown.PrintFencedCodeBlock(variable.Default, "json"); !extraline {
 			result += "\n"
 		}
 	}
 	return result
 }
 
-func printInput(buffer *bytes.Buffer, input *tfconf.Input, settings *print.Settings) {
+func printVariable(buffer *bytes.Buffer, variable *tfconf.Variable, settings *print.Settings) {
 	buffer.WriteString("\n")
-	buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(input.Name, settings)))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeItemForDocument(input.Description, settings)))
-	buffer.WriteString(fmt.Sprintf("Type: %s", getInputType(input)))
+	buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(variable.Name, settings)))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeItemForDocument(variable.Description, settings)))
+	buffer.WriteString(fmt.Sprintf("Type: %s", getVariableType(variable)))
 
-	// Don't print defaults for required inputs when we're already explicit about it being required
-	if input.HasDefault() || !settings.ShowRequired {
-		buffer.WriteString(fmt.Sprintf("\nDefault: %s", getInputValue(input)))
+	// Don't print defaults for required variables when we're already explicit about it being required
+	if variable.HasDefault() || !settings.ShowRequired {
+		buffer.WriteString(fmt.Sprintf("\nDefault: %s", getVariableValue(variable)))
 	}
 }
 
-func printInputsRequired(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
-	buffer.WriteString(fmt.Sprintf("%s Required Inputs\n\n", markdown.GenerateIndentation(0, settings)))
+func printVariablesRequired(buffer *bytes.Buffer, variables []*tfconf.Variable, settings *print.Settings) {
+	buffer.WriteString(fmt.Sprintf("%s Required Variables\n\n", markdown.GenerateIndentation(0, settings)))
 
-	if len(inputs) == 0 {
-		buffer.WriteString("No required input.\n\n")
+	if len(variables) == 0 {
+		buffer.WriteString("No required variable.\n\n")
 	} else {
-		buffer.WriteString("The following input variables are required:\n")
+		buffer.WriteString("The following variables are required:\n")
 
-		for _, input := range inputs {
-			printInput(buffer, input, settings)
+		for _, variable := range variables {
+			printVariable(buffer, variable, settings)
 		}
 	}
 }
 
-func printInputsOptional(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
+func printVariablesOptional(buffer *bytes.Buffer, variables []*tfconf.Variable, settings *print.Settings) {
 	buffer.WriteString("\n")
-	buffer.WriteString(fmt.Sprintf("%s Optional Inputs\n\n", markdown.GenerateIndentation(0, settings)))
+	buffer.WriteString(fmt.Sprintf("%s Optional Variables\n\n", markdown.GenerateIndentation(0, settings)))
 
-	if len(inputs) == 0 {
-		buffer.WriteString("No optional input.\n\n")
+	if len(variables) == 0 {
+		buffer.WriteString("No optional variable.\n\n")
 	} else {
-		buffer.WriteString("The following input variables are optional (have default values):\n")
+		buffer.WriteString("The following variables are optional (have default values):\n")
 
-		for _, input := range inputs {
-			printInput(buffer, input, settings)
+		for _, variable := range variables {
+			printVariable(buffer, variable, settings)
 		}
 	}
 }
 
-func printInputsAll(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
-	buffer.WriteString(fmt.Sprintf("%s Inputs\n\n", markdown.GenerateIndentation(0, settings)))
+func printVariablesAll(buffer *bytes.Buffer, variables []*tfconf.Variable, settings *print.Settings) {
+	buffer.WriteString(fmt.Sprintf("%s Variables\n\n", markdown.GenerateIndentation(0, settings)))
 
-	if len(inputs) == 0 {
-		buffer.WriteString("No input.\n\n")
+	if len(variables) == 0 {
+		buffer.WriteString("No variable.\n\n")
 		return
 	}
 
-	buffer.WriteString("The following input variables are supported:\n")
+	buffer.WriteString("The following variables are supported:\n")
 
-	for _, input := range inputs {
-		printInput(buffer, input, settings)
+	for _, variable := range variables {
+		printVariable(buffer, variable, settings)
 	}
 }
 
-func printInputs(buffer *bytes.Buffer, module *tfconf.Module, settings *print.Settings) {
+func printVariables(buffer *bytes.Buffer, module *tfconf.Module, settings *print.Settings) {
 	if settings.ShowRequired {
-		printInputsRequired(buffer, module.RequiredInputs, settings)
-		printInputsOptional(buffer, module.OptionalInputs, settings)
+		printVariablesRequired(buffer, module.RequiredVariables, settings)
+		printVariablesOptional(buffer, module.OptionalVariables, settings)
 	} else {
-		printInputsAll(buffer, module.Inputs, settings)
+		printVariablesAll(buffer, module.Variables, settings)
 	}
 }
 

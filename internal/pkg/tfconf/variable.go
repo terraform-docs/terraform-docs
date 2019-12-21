@@ -1,7 +1,7 @@
 package tfconf
 
-// Input represents a Terraform input.
-type Input struct {
+// Variable represents a Terraform variable.
+type Variable struct {
 	Name        string `json:"name"`
 	Type        string `json:"type,omitempty"`
 	Description string `json:"description,omitempty"`
@@ -9,35 +9,35 @@ type Input struct {
 }
 
 // HasDefault indicates if a Terraform variable has a default value set.
-func (i *Input) HasDefault() bool {
+func (i *Variable) HasDefault() bool {
 	return len(i.Default) > 0
 }
 
-type inputsSortedByName []*Input
+type variablesSortedByName []*Variable
 
-func (a inputsSortedByName) Len() int {
+func (a variablesSortedByName) Len() int {
 	return len(a)
 }
 
-func (a inputsSortedByName) Swap(i, j int) {
+func (a variablesSortedByName) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 
-func (a inputsSortedByName) Less(i, j int) bool {
+func (a variablesSortedByName) Less(i, j int) bool {
 	return a[i].Name < a[j].Name
 }
 
-type inputsSortedByRequired []*Input
+type variablesSortedByRequired []*Variable
 
-func (a inputsSortedByRequired) Len() int {
+func (a variablesSortedByRequired) Len() int {
 	return len(a)
 }
 
-func (a inputsSortedByRequired) Swap(i, j int) {
+func (a variablesSortedByRequired) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 
-func (a inputsSortedByRequired) Less(i, j int) bool {
+func (a variablesSortedByRequired) Less(i, j int) bool {
 	switch {
 	// i required, j not: i gets priority
 	case !a[i].HasDefault() && a[j].HasDefault():

@@ -15,17 +15,17 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
-	printInputs(&buffer, module.Inputs, settings)
+	printVariables(&buffer, module.Variables, settings)
 	printOutputs(&buffer, module.Outputs, settings)
 
 	return buffer.String(), nil
 }
 
-func getInputDefaultValue(input *tfconf.Input, settings *print.Settings) string {
+func getVariableDefaultValue(variable *tfconf.Variable, settings *print.Settings) string {
 	var result = "required"
 
-	if input.HasDefault() {
-		result = input.Default
+	if variable.HasDefault() {
+		result = variable.Default
 	}
 
 	return result
@@ -41,17 +41,17 @@ func getDescription(description string) string {
 	return result
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
+func printVariables(buffer *bytes.Buffer, variables []*tfconf.Variable, settings *print.Settings) {
 	buffer.WriteString("\n\n")
 
-	for _, input := range inputs {
-		format := "\033[36minput.%s\033[0m (%s)\n\033[90m%s\033[0m\n\n"
+	for _, variable := range variables {
+		format := "\033[36mvariable.%s\033[0m (%s)\n\033[90m%s\033[0m\n\n"
 		buffer.WriteString(
 			fmt.Sprintf(
 				format,
-				input.Name,
-				getInputDefaultValue(input, settings),
-				getDescription(input.Description),
+				variable.Name,
+				getVariableDefaultValue(variable, settings),
+				getDescription(variable.Description),
 			),
 		)
 	}

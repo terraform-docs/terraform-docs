@@ -1,5 +1,5 @@
 {
-  "inputs": [
+  "variables": [
     {
       "name": "input_with_underscores",
       "type": "any"
