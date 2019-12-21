@@ -3,10 +3,9 @@ package table_test
 import (
 	"testing"
 
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
+	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,17 +15,12 @@ func TestPrint(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -46,17 +40,12 @@ func TestPrintWithRequired(t *testing.T) {
 		ShowRequired: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,17 +63,12 @@ func TestPrintWithSortByName(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,17 +87,12 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 		SortInputsByRequired: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -133,17 +112,12 @@ func TestPrintWithEscapeName(t *testing.T) {
 		EscapeMarkdown: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -163,17 +137,12 @@ func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 		MarkdownIndent: 0,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -193,17 +162,12 @@ func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 		MarkdownIndent: 10,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -223,17 +187,12 @@ func TestPrintWithIndentationOfFour(t *testing.T) {
 		MarkdownIndent: 4,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := table.Print(document, settings)
+	actual, err := table.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}

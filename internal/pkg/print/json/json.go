@@ -3,8 +3,8 @@ package json
 import (
 	"encoding/json"
 
-	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 )
 
 const (
@@ -13,20 +13,10 @@ const (
 )
 
 // Print prints a document as json.
-func Print(document *doc.Doc, settings *print.Settings) (string, error) {
-	if settings.SortByName {
-		if settings.SortInputsByRequired {
-			doc.SortInputsByRequired(document.Inputs)
-		} else {
-			doc.SortInputsByName(document.Inputs)
-		}
-	}
+func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+	module.Sort(settings)
 
-	if settings.SortByName {
-		doc.SortOutputsByName(document.Outputs)
-	}
-
-	buffer, err := json.MarshalIndent(document, prefix, indent)
+	buffer, err := json.MarshalIndent(module, prefix, indent)
 	if err != nil {
 		return "", err
 	}

@@ -1,8 +1,4 @@
-package doc
-
-import (
-	"sort"
-)
+package tfconf
 
 // Input represents a Terraform input.
 type Input struct {
@@ -17,7 +13,7 @@ func (i *Input) HasDefault() bool {
 	return len(i.Default) > 0
 }
 
-type inputsSortedByName []Input
+type inputsSortedByName []*Input
 
 func (a inputsSortedByName) Len() int {
 	return len(a)
@@ -31,12 +27,7 @@ func (a inputsSortedByName) Less(i, j int) bool {
 	return a[i].Name < a[j].Name
 }
 
-// SortInputsByName sorts a list of inputs by name.
-func SortInputsByName(inputs []Input) {
-	sort.Sort(inputsSortedByName(inputs))
-}
-
-type inputsSortedByRequired []Input
+type inputsSortedByRequired []*Input
 
 func (a inputsSortedByRequired) Len() int {
 	return len(a)
@@ -58,9 +49,4 @@ func (a inputsSortedByRequired) Less(i, j int) bool {
 	default:
 		return a[i].Name < a[j].Name
 	}
-}
-
-// SortInputsByRequired sorts a list of inputs by whether they are required
-func SortInputsByRequired(inputs []Input) {
-	sort.Sort(inputsSortedByRequired(inputs))
 }

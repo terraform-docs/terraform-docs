@@ -5,33 +5,19 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
+	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 )
 
 // Print prints a document as Markdown document.
-func Print(document *doc.Doc, settings *print.Settings) (string, error) {
+func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if settings.SortByName {
-		if settings.SortInputsByRequired {
-			doc.SortInputsByRequired(document.Inputs)
-			doc.SortInputsByRequired(document.RequiredInputs)
-			doc.SortInputsByRequired(document.OptionalInputs)
-		} else {
-			doc.SortInputsByName(document.Inputs)
-			doc.SortInputsByName(document.RequiredInputs)
-			doc.SortInputsByName(document.OptionalInputs)
-		}
-	}
+	module.Sort(settings)
 
-	if settings.SortByName {
-		doc.SortOutputsByName(document.Outputs)
-	}
-
-	printInputs(&buffer, document, settings)
-	printOutputs(&buffer, document.Outputs, settings)
+	printInputs(&buffer, module, settings)
+	printOutputs(&buffer, module.Outputs, settings)
 
 	out := strings.Replace(buffer.String(), "<br>```<br>", "\n```\n", -1)
 
@@ -58,7 +44,7 @@ func Print(document *doc.Doc, settings *print.Settings) (string, error) {
 	return strings.Replace(buf.String(), " \n\n", "\n\n", -1), nil
 }
 
-func getInputType(input *doc.Input) string {
+func getInputType(input *tfconf.Input) string {
 	var result = ""
 	var extraline = false
 
@@ -68,7 +54,7 @@ func getInputType(input *doc.Input) string {
 	return result
 }
 
-func getInputValue(input *doc.Input) string {
+func getInputValue(input *tfconf.Input) string {
 	var result = "n/a\n"
 	var extraline = false
 
@@ -80,19 +66,19 @@ func getInputValue(input *doc.Input) string {
 	return result
 }
 
-func printInput(buffer *bytes.Buffer, input doc.Input, settings *print.Settings) {
+func printInput(buffer *bytes.Buffer, input *tfconf.Input, settings *print.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(input.Name, settings)))
 	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeItemForDocument(input.Description, settings)))
-	buffer.WriteString(fmt.Sprintf("Type: %s", getInputType(&input)))
+	buffer.WriteString(fmt.Sprintf("Type: %s", getInputType(input)))
 
 	// Don't print defaults for required inputs when we're already explicit about it being required
 	if input.HasDefault() || !settings.ShowRequired {
-		buffer.WriteString(fmt.Sprintf("\nDefault: %s", getInputValue(&input)))
+		buffer.WriteString(fmt.Sprintf("\nDefault: %s", getInputValue(input)))
 	}
 }
 
-func printInputsRequired(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Settings) {
+func printInputsRequired(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
 	buffer.WriteString(fmt.Sprintf("%s Required Inputs\n\n", markdown.GenerateIndentation(0, settings)))
 
 	if len(inputs) == 0 {
@@ -106,7 +92,7 @@ func printInputsRequired(buffer *bytes.Buffer, inputs []doc.Input, settings *pri
 	}
 }
 
-func printInputsOptional(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Settings) {
+func printInputsOptional(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("%s Optional Inputs\n\n", markdown.GenerateIndentation(0, settings)))
 
@@ -121,7 +107,7 @@ func printInputsOptional(buffer *bytes.Buffer, inputs []doc.Input, settings *pri
 	}
 }
 
-func printInputsAll(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Settings) {
+func printInputsAll(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
 	buffer.WriteString(fmt.Sprintf("%s Inputs\n\n", markdown.GenerateIndentation(0, settings)))
 
 	if len(inputs) == 0 {
@@ -136,16 +122,16 @@ func printInputsAll(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Se
 	}
 }
 
-func printInputs(buffer *bytes.Buffer, document *doc.Doc, settings *print.Settings) {
+func printInputs(buffer *bytes.Buffer, module *tfconf.Module, settings *print.Settings) {
 	if settings.ShowRequired {
-		printInputsRequired(buffer, document.RequiredInputs, settings)
-		printInputsOptional(buffer, document.OptionalInputs, settings)
+		printInputsRequired(buffer, module.RequiredInputs, settings)
+		printInputsOptional(buffer, module.OptionalInputs, settings)
 	} else {
-		printInputsAll(buffer, document.Inputs, settings)
+		printInputsAll(buffer, module.Inputs, settings)
 	}
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *print.Settings) {
+func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *print.Settings) {
 	buffer.WriteString(fmt.Sprintf("\n%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
 
 	if len(outputs) == 0 {

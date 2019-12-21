@@ -1,8 +1,4 @@
-package doc
-
-import (
-	"sort"
-)
+package tfconf
 
 // Output represents a Terraform output.
 type Output struct {
@@ -10,7 +6,7 @@ type Output struct {
 	Description string `json:"description,omitempty"`
 }
 
-type outputsSortedByName []Output
+type outputsSortedByName []*Output
 
 func (a outputsSortedByName) Len() int {
 	return len(a)
@@ -22,9 +18,4 @@ func (a outputsSortedByName) Swap(i, j int) {
 
 func (a outputsSortedByName) Less(i, j int) bool {
 	return a[i].Name < a[j].Name
-}
-
-// SortOutputsByName sorts a list of outputs by name.
-func SortOutputsByName(outputs []Output) {
-	sort.Sort(outputsSortedByName(outputs))
 }
