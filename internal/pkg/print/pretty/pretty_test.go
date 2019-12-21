@@ -3,10 +3,9 @@ package pretty_test
 import (
 	"testing"
 
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
+	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,17 +15,12 @@ func TestPretty(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := pretty.Print(document, settings)
+	actual, err := pretty.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -44,17 +38,12 @@ func TestPrettyWithSortByName(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := pretty.Print(document, settings)
+	actual, err := pretty.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,17 +62,12 @@ func TestPrettyWithSortInputsByRequired(t *testing.T) {
 		SortInputsByRequired: true,
 	}
 
-	module, diag := tfconfig.LoadModule("../../../../examples")
-	if diag != nil && diag.HasErrors() {
-		t.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+	module, err := tfconf.CreateModule("../../../../examples")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actual, err := pretty.Print(document, settings)
+	actual, err := pretty.Print(module, settings)
 	if err != nil {
 		t.Fatal(err)
 	}

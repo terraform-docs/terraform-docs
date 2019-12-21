@@ -5,33 +5,23 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 )
 
 // Print prints a pretty document.
-func Print(document *doc.Doc, settings *print.Settings) (string, error) {
+func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	var buffer bytes.Buffer
 
-	if settings.SortByName {
-		if settings.SortInputsByRequired {
-			doc.SortInputsByRequired(document.Inputs)
-		} else {
-			doc.SortInputsByName(document.Inputs)
-		}
-	}
+	module.Sort(settings)
 
-	if settings.SortByName {
-		doc.SortOutputsByName(document.Outputs)
-	}
-
-	printInputs(&buffer, document.Inputs, settings)
-	printOutputs(&buffer, document.Outputs, settings)
+	printInputs(&buffer, module.Inputs, settings)
+	printOutputs(&buffer, module.Outputs, settings)
 
 	return buffer.String(), nil
 }
 
-func getInputDefaultValue(input *doc.Input, settings *print.Settings) string {
+func getInputDefaultValue(input *tfconf.Input, settings *print.Settings) string {
 	var result = "required"
 
 	if input.HasDefault() {
@@ -51,7 +41,7 @@ func getDescription(description string) string {
 	return result
 }
 
-func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Settings) {
+func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
 	buffer.WriteString("\n\n")
 
 	for _, input := range inputs {
@@ -60,7 +50,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Setti
 			fmt.Sprintf(
 				format,
 				input.Name,
-				getInputDefaultValue(&input, settings),
+				getInputDefaultValue(input, settings),
 				getDescription(input.Description),
 			),
 		)
@@ -69,7 +59,7 @@ func printInputs(buffer *bytes.Buffer, inputs []doc.Input, settings *print.Setti
 	buffer.WriteString("\n")
 }
 
-func printOutputs(buffer *bytes.Buffer, outputs []doc.Output, settings *print.Settings) {
+func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *print.Settings) {
 	buffer.WriteString("\n")
 
 	for _, output := range outputs {

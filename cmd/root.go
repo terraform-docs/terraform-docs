@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-	"github.com/segmentio/terraform-docs/internal/pkg/doc"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 	"github.com/segmentio/terraform-docs/internal/pkg/version"
 	"github.com/spf13/cobra"
 )
@@ -47,18 +46,13 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-func doPrint(paths []string, fn func(*doc.Doc) (string, error)) {
-	module, diag := tfconfig.LoadModule(paths[0])
-	if diag != nil && diag.HasErrors() {
-		log.Fatal(diag)
-	}
-
-	document, err := doc.Create(module)
+func doPrint(paths []string, fn func(*tfconf.Module) (string, error)) {
+	module, err := tfconf.CreateModule(paths[0])
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	output, err := fn(document)
+	output, err := fn(module)
 
 	if err != nil {
 		log.Fatal(err)
