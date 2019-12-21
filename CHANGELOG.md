@@ -2,8 +2,16 @@
 
 <a name="unreleased"></a>
 ## [Unreleased]
+### Code Refactoring
+- Move doc.Doc to tfconf.Module ([#136](https://github.com/segmentio/terraform-docs/issues/136))
+
 ### Enhancements
+- Bump homebrew formula version on release ([#135](https://github.com/segmentio/terraform-docs/issues/135))
 - Enable new go linters and fix the existing issues ([#132](https://github.com/segmentio/terraform-docs/issues/132))
+
+### Features
+- Bump golang to latest v1.13 ([#133](https://github.com/segmentio/terraform-docs/issues/133))
+- Support Terraform 0.12.x configuration ([#113](https://github.com/segmentio/terraform-docs/issues/113))
 
 
 <a name="v0.7.0"></a>
