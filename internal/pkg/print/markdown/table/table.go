@@ -15,10 +15,19 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
+	printProviders(&buffer, module.Providers, settings)
 	printInputs(&buffer, module.Inputs, settings)
 	printOutputs(&buffer, module.Outputs, settings)
 
 	return markdown.Sanitize(buffer.String()), nil
+}
+
+func getProviderVersion(provider *tfconf.Provider) string {
+	var result = "n/a"
+	if provider.Version != "" {
+		result = provider.Version
+	}
+	return result
 }
 
 func getInputType(input *tfconf.Input) string {
@@ -40,6 +49,29 @@ func printIsInputRequired(input *tfconf.Input) string {
 		return "yes"
 	}
 	return "no"
+}
+
+func printProviders(buffer *bytes.Buffer, providers []*tfconf.Provider, settings *print.Settings) {
+	buffer.WriteString(fmt.Sprintf("%s Providers\n\n", markdown.GenerateIndentation(0, settings)))
+
+	if len(providers) == 0 {
+		buffer.WriteString("No provider.\n\n")
+		return
+	}
+
+	buffer.WriteString("| Name | Version |\n")
+	buffer.WriteString("|------|---------|\n")
+
+	for _, provider := range providers {
+		buffer.WriteString(
+			fmt.Sprintf(
+				"| %s | %s |\n",
+				markdown.SanitizeName(provider.GetName(), settings),
+				getProviderVersion(provider),
+			),
+		)
+	}
+	buffer.WriteString("\n")
 }
 
 func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {

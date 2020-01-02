@@ -1,3 +1,13 @@
+## Providers
+
+The following providers are used by this module:
+
+- aws (>= 2.15.0)
+
+- aws.ident (>= 2.15.0)
+
+- null
+
 ## Required Inputs
 
 The following input variables are required:

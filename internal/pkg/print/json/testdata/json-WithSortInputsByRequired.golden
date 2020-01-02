@@ -88,5 +88,19 @@
       "name": "unquoted",
       "description": "It's unquoted output."
     }
+  ],
+  "providers": [
+    {
+      "name": "aws",
+      "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "aws",
+      "alias": "ident",
+      "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "null"
+    }
   ]
 }

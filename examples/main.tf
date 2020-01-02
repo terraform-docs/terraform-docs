@@ -9,3 +9,4 @@ terraform {
     aws = ">= 2.15.0"
   }
 }
+resource "null_resource" "foo" {}
