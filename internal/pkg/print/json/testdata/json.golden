@@ -91,6 +91,9 @@
   ],
   "providers": [
     {
+      "name": "tls"
+    },
+    {
       "name": "aws",
       "version": "\u003e= 2.15.0"
     },

@@ -6,9 +6,10 @@ import (
 
 // Provider represents a Terraform output.
 type Provider struct {
-	Name    string `json:"name"`
-	Alias   string `json:"alias,omitempty"`
-	Version string `json:"version,omitempty"`
+	Name     string   `json:"name"`
+	Alias    string   `json:"alias,omitempty"`
+	Version  string   `json:"version,omitempty"`
+	Position Position `json:"-"`
 }
 
 // GetName returns full name of the provider, with alias if available
@@ -31,4 +32,18 @@ func (a providersSortedByName) Swap(i, j int) {
 
 func (a providersSortedByName) Less(i, j int) bool {
 	return a[i].Name < a[j].Name || (a[i].Name == a[j].Name && a[i].Alias < a[j].Alias)
+}
+
+type providersSortedByPosition []*Provider
+
+func (a providersSortedByPosition) Len() int {
+	return len(a)
+}
+
+func (a providersSortedByPosition) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func (a providersSortedByPosition) Less(i, j int) bool {
+	return a[i].Position.Filename < a[j].Position.Filename || a[i].Position.Line < a[j].Position.Line
 }

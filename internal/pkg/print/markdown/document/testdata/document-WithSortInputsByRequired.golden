@@ -8,6 +8,8 @@ The following providers are used by this module:
 
 - null
 
+- tls
+
 ## Inputs
 
 The following input variables are supported:

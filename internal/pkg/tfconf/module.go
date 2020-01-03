@@ -34,6 +34,8 @@ func (m *Module) HasOutputs() bool {
 func (m *Module) Sort(settings *print.Settings) {
 	if settings.SortByName {
 		sort.Sort(providersSortedByName(m.Providers))
+	} else {
+		sort.Sort(providersSortedByPosition(m.Providers))
 	}
 
 	if settings.SortByName {
@@ -166,6 +168,10 @@ func loadProviders(requiredProviders map[string]*tfconfig.ProviderRequirement, r
 				Name:    r.Provider.Name,
 				Alias:   r.Provider.Alias,
 				Version: version,
+				Position: Position{
+					Filename: r.Pos.Filename,
+					Line:     r.Pos.Line,
+				},
 			}
 		}
 	}
