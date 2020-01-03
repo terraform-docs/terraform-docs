@@ -10,10 +10,7 @@ import (
 )
 
 func TestPrint(t *testing.T) {
-	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
-	var settings = &print.Settings{
-		SortByName: true,
-	}
+	var settings = &print.Settings{}
 
 	module, err := tfconf.CreateModule("../../../../../examples")
 	if err != nil {
@@ -34,9 +31,7 @@ func TestPrint(t *testing.T) {
 }
 
 func TestPrintWithRequired(t *testing.T) {
-	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
 	var settings = &print.Settings{
-		SortByName:   true,
 		ShowRequired: true,
 	}
 
@@ -106,9 +101,7 @@ func TestPrintWithSortInputsByRequired(t *testing.T) {
 }
 
 func TestPrintWithEscapeName(t *testing.T) {
-	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
 	var settings = &print.Settings{
-		SortByName:     true,
 		EscapeMarkdown: true,
 	}
 
@@ -131,9 +124,7 @@ func TestPrintWithEscapeName(t *testing.T) {
 }
 
 func TestPrintWithIndentationBellowAllowed(t *testing.T) {
-	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
 	var settings = &print.Settings{
-		SortByName:     true,
 		MarkdownIndent: 0,
 	}
 
@@ -156,9 +147,7 @@ func TestPrintWithIndentationBellowAllowed(t *testing.T) {
 }
 
 func TestPrintWithIndentationAboveAllowed(t *testing.T) {
-	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
 	var settings = &print.Settings{
-		SortByName:     true,
 		MarkdownIndent: 10,
 	}
 
@@ -181,9 +170,7 @@ func TestPrintWithIndentationAboveAllowed(t *testing.T) {
 }
 
 func TestPrintWithIndentationOfFour(t *testing.T) {
-	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
 	var settings = &print.Settings{
-		SortByName:     true,
 		MarkdownIndent: 4,
 	}
 
