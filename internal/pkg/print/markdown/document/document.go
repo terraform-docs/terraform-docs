@@ -3,7 +3,6 @@ package document
 import (
 	"bytes"
 	"fmt"
-	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown"
@@ -16,33 +15,17 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
-	printProviders(&buffer, module.Providers, settings)
-	printInputs(&buffer, module, settings)
-	printOutputs(&buffer, module.Outputs, settings)
-
-	out := strings.Replace(buffer.String(), "<br>```<br>", "\n```\n", -1)
-
-	// the left over <br> or either inside or outside a code block:
-	segments := strings.Split(out, "\n```\n")
-	buf := bytes.NewBufferString("")
-	nextIsInCodeBlock := strings.HasPrefix(out, "```\n")
-	for i, segment := range segments {
-		if !nextIsInCodeBlock {
-			if i > 0 && len(segment) > 0 {
-				buf.WriteString("\n```\n")
-			}
-			segment = markdown.Sanitize(segment)
-			segment = strings.Replace(segment, "<br><br>", "\n\n", -1)
-			segment = strings.Replace(segment, "<br>", "  \n", -1)
-			buf.WriteString(segment)
-			nextIsInCodeBlock = true
-		} else {
-			buf.WriteString("\n```\n")
-			buf.WriteString(strings.Replace(segment, "<br>", "\n", -1))
-			nextIsInCodeBlock = false
-		}
+	if settings.ShowProviders {
+		printProviders(&buffer, module.Providers, settings)
 	}
-	return strings.Replace(buf.String(), " \n\n", "\n\n", -1), nil
+	if settings.ShowInputs {
+		printInputs(&buffer, module, settings)
+	}
+	if settings.ShowOutputs {
+		printOutputs(&buffer, module.Outputs, settings)
+	}
+
+	return markdown.Sanitize(buffer.String()), nil
 }
 
 func getProviderVersion(provider *tfconf.Provider) string {
@@ -92,12 +75,13 @@ func printInputsRequired(buffer *bytes.Buffer, inputs []*tfconf.Input, settings 
 
 	if len(inputs) == 0 {
 		buffer.WriteString("No required input.\n\n")
-	} else {
-		buffer.WriteString("The following input variables are required:\n")
+		return
+	}
 
-		for _, input := range inputs {
-			printInput(buffer, input, settings)
-		}
+	buffer.WriteString("The following input variables are required:\n")
+
+	for _, input := range inputs {
+		printInput(buffer, input, settings)
 	}
 }
 
@@ -107,12 +91,13 @@ func printInputsOptional(buffer *bytes.Buffer, inputs []*tfconf.Input, settings 
 
 	if len(inputs) == 0 {
 		buffer.WriteString("No optional input.\n\n")
-	} else {
-		buffer.WriteString("The following input variables are optional (have default values):\n")
+		return
+	}
 
-		for _, input := range inputs {
-			printInput(buffer, input, settings)
-		}
+	buffer.WriteString("The following input variables are optional (have default values):\n")
+
+	for _, input := range inputs {
+		printInput(buffer, input, settings)
 	}
 }
 
@@ -155,10 +140,11 @@ func printInputs(buffer *bytes.Buffer, module *tfconf.Module, settings *print.Se
 	} else {
 		printInputsAll(buffer, module.Inputs, settings)
 	}
+	buffer.WriteString("\n")
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *print.Settings) {
-	buffer.WriteString(fmt.Sprintf("\n%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
+	buffer.WriteString(fmt.Sprintf("%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
 
 	if len(outputs) == 0 {
 		buffer.WriteString("No output.\n\n")

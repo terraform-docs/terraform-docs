@@ -1,0 +1,93 @@
+{
+  "inputs": [
+    {
+      "name": "unquoted",
+      "type": "any"
+    },
+    {
+      "name": "string-3",
+      "type": "string",
+      "default": "\"\""
+    },
+    {
+      "name": "string-2",
+      "type": "string",
+      "description": "It's string number two."
+    },
+    {
+      "name": "string-1",
+      "type": "string",
+      "default": "\"bar\""
+    },
+    {
+      "name": "map-3",
+      "type": "map",
+      "default": "{}"
+    },
+    {
+      "name": "map-2",
+      "type": "map",
+      "description": "It's map number two."
+    },
+    {
+      "name": "map-1",
+      "type": "map",
+      "default": "{\n  \"a\": 1,\n  \"b\": 2,\n  \"c\": 3\n}"
+    },
+    {
+      "name": "list-3",
+      "type": "list",
+      "default": "[]"
+    },
+    {
+      "name": "list-2",
+      "type": "list",
+      "description": "It's list number two."
+    },
+    {
+      "name": "list-1",
+      "type": "list",
+      "default": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]"
+    },
+    {
+      "name": "input_with_underscores",
+      "type": "any"
+    },
+    {
+      "name": "input-with-pipe",
+      "type": "string",
+      "description": "It includes v1 | v2 | v3",
+      "default": "\"v1\""
+    },
+    {
+      "name": "input-with-code-block",
+      "type": "list",
+      "description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
+      "default": "[\n  \"name rack:location\"\n]"
+    },
+    {
+      "name": "long_type",
+      "type": "object({\n    name = string,\n    foo  = object({ foo = string, bar = string }),\n    bar  = object({ foo = string, bar = string }),\n    fizz = list(string),\n    buzz = list(string)\n  })",
+      "description": "This description is itself markdown.\n\nIt spans over multiple lines.\n",
+      "default": "{\n  \"bar\": {\n    \"bar\": \"bar\",\n    \"foo\": \"bar\"\n  },\n  \"buzz\": [\n    \"fizz\",\n    \"buzz\"\n  ],\n  \"fizz\": [],\n  \"foo\": {\n    \"bar\": \"foo\",\n    \"foo\": \"foo\"\n  },\n  \"name\": \"hello\"\n}"
+    }
+  ],
+  "outputs": [],
+  "providers": [
+    {
+      "name": "tls"
+    },
+    {
+      "name": "aws",
+      "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "aws",
+      "alias": "ident",
+      "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "null"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+## Providers
+
+The following providers are used by this module:
+
+- tls
+
+- aws (>= 2.15.0)
+
+- aws.ident (>= 2.15.0)
+
+- null
+
+## Outputs
+
+The following outputs are exported:
+
+### unquoted
+
+Description: It's unquoted output.
+
+### output-2
+
+Description: It's output number two.
+
+### output-1
+
+Description: n/a
+
+### output-0.12
+
+Description: terraform 0.12 only

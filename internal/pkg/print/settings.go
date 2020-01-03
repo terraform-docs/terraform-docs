@@ -14,13 +14,25 @@ type Settings struct {
 	// scope: Markdown
 	MarkdownIndent int
 
-	// ShowRequired show "Required" column when generating Markdown (default: true)
-	// scope: Markdown
-	ShowRequired bool
-
 	// ShowColor print "colorized" version of result in the terminal (default: true)
 	// scope: Pretty
 	ShowColor bool
+
+	// ShowInputs show "Inputs" information (default: true)
+	// scope: Global
+	ShowInputs bool
+
+	// ShowOutputs show "Outputs" information (default: true)
+	// scope: Global
+	ShowOutputs bool
+
+	// ShowProviders show "Providers" information (default: true)
+	// scope: Global
+	ShowProviders bool
+
+	// ShowRequired show "Required" column when generating Markdown (default: true)
+	// scope: Markdown
+	ShowRequired bool
 
 	// SortByName sorted rendering of inputs and outputs (default: true)
 	// scope: Global
@@ -38,6 +50,9 @@ func NewSettings() *Settings {
 		EscapeMarkdown:        true,
 		MarkdownIndent:        2,
 		ShowColor:             true,
+		ShowInputs:            true,
+		ShowOutputs:           true,
+		ShowProviders:         true,
 		ShowRequired:          true,
 		SortByName:            true,
 		SortInputsByRequired:  false,

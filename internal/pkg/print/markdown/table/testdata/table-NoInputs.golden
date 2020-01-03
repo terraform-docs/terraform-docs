@@ -1,0 +1,17 @@
+## Providers
+
+| Name | Version |
+|------|---------|
+| tls | n/a |
+| aws | >= 2.15.0 |
+| aws.ident | >= 2.15.0 |
+| null | n/a |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| unquoted | It's unquoted output. |
+| output-2 | It's output number two. |
+| output-1 | n/a |
+| output-0.12 | terraform 0.12 only |

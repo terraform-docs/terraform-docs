@@ -13,9 +13,15 @@ import (
 func Sanitize(markdown string) string {
 	result := markdown
 
+	// Preserve double spaces at the end of the line
+	result = regexp.MustCompile(` {2}(\r?\n)`).ReplaceAllString(result, "‡‡$1")
+
 	// Remove trailing spaces from the end of lines
 	result = regexp.MustCompile(` +(\r?\n)`).ReplaceAllString(result, "$1")
 	result = regexp.MustCompile(` +$`).ReplaceAllLiteralString(result, "")
+
+	// Preserve double spaces at the end of the line
+	result = regexp.MustCompile(`‡‡(\r?\n)`).ReplaceAllString(result, "  $1")
 
 	// Remove multiple consecutive blank lines
 	result = regexp.MustCompile(`(\r?\n){3,}`).ReplaceAllString(result, "$1$1")
@@ -46,21 +52,21 @@ func SanitizeItemForDocument(s string, settings *print.Settings) string {
 	buf := bytes.NewBufferString("")
 	for i, segment := range segments {
 		if !nextIsInCodeBlock {
-			segment = ConvertMultiLineText(segment)
+			segment = ConvertMultiLineText(segment, false)
 			segment = EscapeIllegalCharacters(segment, settings)
 			if i > 0 && len(segment) > 0 {
-				buf.WriteString("<br>```<br>")
+				buf.WriteString("\n```\n")
 			}
 			buf.WriteString(segment)
 			nextIsInCodeBlock = true
 		} else {
-			buf.WriteString("<br>```<br>")
+			buf.WriteString("\n```\n")
 			buf.WriteString(segment)
-			buf.WriteString("<br>```")
+			buf.WriteString("\n```")
 			nextIsInCodeBlock = false
 		}
 	}
-	return buf.String()
+	return strings.Replace(buf.String(), "<br>", "\n", -1)
 }
 
 // SanitizeItemForTable converts passed 'string' to suitable Markdown representation
@@ -75,7 +81,7 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 	buf := bytes.NewBufferString("")
 	for _, segment := range segments {
 		if !nextIsInCodeBlock {
-			segment = ConvertMultiLineText(segment)
+			segment = ConvertMultiLineText(segment, true)
 			segment = EscapeIllegalCharacters(segment, settings)
 			buf.WriteString(segment)
 			nextIsInCodeBlock = true
@@ -91,20 +97,25 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 }
 
 // ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
-func ConvertMultiLineText(s string) string {
+func ConvertMultiLineText(s string, convertDoubleSpaces bool) string {
 
 	// Convert double newlines to <br><br>.
 	s = strings.Replace(
 		strings.TrimSpace(s),
 		"\n\n",
 		"<br><br>",
-		-1)
+		-1,
+	)
 
-	// Convert space-space-newline to <br>
-	s = strings.Replace(s, "  \n", "<br>", -1)
+	if convertDoubleSpaces {
+		// Convert space-space-newline to <br>
+		s = strings.Replace(s, "  \n", "<br>", -1)
 
-	// Convert single newline to space.
-	return strings.Replace(s, "\n", " ", -1)
+		// Convert single newline to space.
+		s = strings.Replace(s, "\n", " ", -1)
+	}
+
+	return s
 }
 
 // EscapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
