@@ -2,39 +2,83 @@
 
 The following input variables are supported:
 
-##### input-with-code-block
-
-Description: This is a complicated one. We need a newline.  
-And an example in a code block
-```
-default     = [
-  "machine rack01:neptune"
-]
-```
-
-Type: `list`
-
-Default:
-
-```json
-[
-  "name rack:location"
-]
-```
-
-##### input-with-pipe
-
-Description: It includes v1 \| v2 \| v3
-
-Type: `string`
-
-Default: `"v1"`
-
-##### input_with_underscores
+##### unquoted
 
 Description: n/a
 
 Type: `any`
+
+Default: n/a
+
+##### string-3
+
+Description: n/a
+
+Type: `string`
+
+Default: `""`
+
+##### string-2
+
+Description: It's string number two.
+
+Type: `string`
+
+Default: n/a
+
+##### string-1
+
+Description: n/a
+
+Type: `string`
+
+Default: `"bar"`
+
+##### map-3
+
+Description: n/a
+
+Type: `map`
+
+Default: `{}`
+
+##### map-2
+
+Description: It's map number two.
+
+Type: `map`
+
+Default: n/a
+
+##### map-1
+
+Description: n/a
+
+Type: `map`
+
+Default:
+
+```json
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+```
+
+##### list-3
+
+Description: n/a
+
+Type: `list`
+
+Default: `[]`
+
+##### list-2
+
+Description: It's list number two.
+
+Type: `list`
 
 Default: n/a
 
@@ -54,21 +98,41 @@ Default:
 ]
 ```
 
-##### list-2
-
-Description: It's list number two.
-
-Type: `list`
-
-Default: n/a
-
-##### list-3
+##### input_with_underscores
 
 Description: n/a
 
+Type: `any`
+
+Default: n/a
+
+##### input-with-pipe
+
+Description: It includes v1 \| v2 \| v3
+
+Type: `string`
+
+Default: `"v1"`
+
+##### input-with-code-block
+
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+
 Type: `list`
 
-Default: `[]`
+Default:
+
+```json
+[
+  "name rack:location"
+]
+```
 
 ##### long_type
 
@@ -109,86 +173,22 @@ Default:
 }
 ```
 
-##### map-1
-
-Description: n/a
-
-Type: `map`
-
-Default:
-
-```json
-{
-  "a": 1,
-  "b": 2,
-  "c": 3
-}
-```
-
-##### map-2
-
-Description: It's map number two.
-
-Type: `map`
-
-Default: n/a
-
-##### map-3
-
-Description: n/a
-
-Type: `map`
-
-Default: `{}`
-
-##### string-1
-
-Description: n/a
-
-Type: `string`
-
-Default: `"bar"`
-
-##### string-2
-
-Description: It's string number two.
-
-Type: `string`
-
-Default: n/a
-
-##### string-3
-
-Description: n/a
-
-Type: `string`
-
-Default: `""`
-
-##### unquoted
-
-Description: n/a
-
-Type: `any`
-
-Default: n/a
-
 #### Outputs
 
 The following outputs are exported:
 
-##### output-0.12
+##### unquoted
 
-Description: terraform 0.12 only
-
-##### output-1
-
-Description: n/a
+Description: It's unquoted output.
 
 ##### output-2
 
 Description: It's output number two.
 
-##### unquoted
+##### output-1
 
-Description: It's unquoted output.
+Description: n/a
+
+##### output-0.12
+
+Description: terraform 0.12 only

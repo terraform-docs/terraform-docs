@@ -2,23 +2,11 @@
 
 The following input variables are required:
 
-### input_with_underscores
+### unquoted
 
 Description: n/a
 
 Type: `any`
-
-### list-2
-
-Description: It's list number two.
-
-Type: `list`
-
-### map-2
-
-Description: It's map number two.
-
-Type: `map`
 
 ### string-2
 
@@ -26,7 +14,19 @@ Description: It's string number two.
 
 Type: `string`
 
-### unquoted
+### map-2
+
+Description: It's map number two.
+
+Type: `map`
+
+### list-2
+
+Description: It's list number two.
+
+Type: `list`
+
+### input_with_underscores
 
 Description: n/a
 
@@ -35,6 +35,78 @@ Type: `any`
 ## Optional Inputs
 
 The following input variables are optional (have default values):
+
+### string-3
+
+Description: n/a
+
+Type: `string`
+
+Default: `""`
+
+### string-1
+
+Description: n/a
+
+Type: `string`
+
+Default: `"bar"`
+
+### map-3
+
+Description: n/a
+
+Type: `map`
+
+Default: `{}`
+
+### map-1
+
+Description: n/a
+
+Type: `map`
+
+Default:
+
+```json
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+```
+
+### list-3
+
+Description: n/a
+
+Type: `list`
+
+Default: `[]`
+
+### list-1
+
+Description: n/a
+
+Type: `list`
+
+Default:
+
+```json
+[
+  "a",
+  "b",
+  "c"
+]
+```
+
+### input-with-pipe
+
+Description: It includes v1 \| v2 \| v3
+
+Type: `string`
+
+Default: `"v1"`
 
 ### input-with-code-block
 
@@ -55,38 +127,6 @@ Default:
   "name rack:location"
 ]
 ```
-
-### input-with-pipe
-
-Description: It includes v1 \| v2 \| v3
-
-Type: `string`
-
-Default: `"v1"`
-
-### list-1
-
-Description: n/a
-
-Type: `list`
-
-Default:
-
-```json
-[
-  "a",
-  "b",
-  "c"
-]
-```
-
-### list-3
-
-Description: n/a
-
-Type: `list`
-
-Default: `[]`
 
 ### long_type
 
@@ -127,62 +167,22 @@ Default:
 }
 ```
 
-### map-1
-
-Description: n/a
-
-Type: `map`
-
-Default:
-
-```json
-{
-  "a": 1,
-  "b": 2,
-  "c": 3
-}
-```
-
-### map-3
-
-Description: n/a
-
-Type: `map`
-
-Default: `{}`
-
-### string-1
-
-Description: n/a
-
-Type: `string`
-
-Default: `"bar"`
-
-### string-3
-
-Description: n/a
-
-Type: `string`
-
-Default: `""`
-
 ## Outputs
 
 The following outputs are exported:
 
-### output-0.12
+### unquoted
 
-Description: terraform 0.12 only
-
-### output-1
-
-Description: n/a
+Description: It's unquoted output.
 
 ### output-2
 
 Description: It's output number two.
 
-### unquoted
+### output-1
 
-Description: It's unquoted output.
+Description: n/a
+
+### output-0.12
+
+Description: terraform 0.12 only

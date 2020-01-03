@@ -10,10 +10,7 @@ import (
 )
 
 func TestPrint(t *testing.T) {
-	// TODO remove SortByName when --no-sort for Terraform 0.12 is implemented
-	var settings = &print.Settings{
-		SortByName: true,
-	}
+	var settings = &print.Settings{}
 
 	module, err := tfconf.CreateModule("../../../../examples")
 	if err != nil {

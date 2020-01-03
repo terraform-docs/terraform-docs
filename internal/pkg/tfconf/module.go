@@ -28,36 +28,29 @@ func (m *Module) HasOutputs() bool {
 	return len(m.Outputs) > 0
 }
 
-func (m *Module) sortInputsByName() {
-	sort.Sort(inputsSortedByName(m.Inputs))
-	sort.Sort(inputsSortedByName(m.RequiredInputs))
-	sort.Sort(inputsSortedByName(m.OptionalInputs))
-}
-
-func (m *Module) sortInputsByRequired() {
-	sort.Sort(inputsSortedByRequired(m.Inputs))
-	sort.Sort(inputsSortedByRequired(m.RequiredInputs))
-	sort.Sort(inputsSortedByRequired(m.OptionalInputs))
-}
-
-func (m *Module) sortOutputsByName() {
-	sort.Sort(outputsSortedByName(m.Outputs))
-}
-
 // Sort sorts list of inputs and outputs based on provided flags (name, required, etc)
 func (m *Module) Sort(settings *print.Settings) {
 	if settings.SortByName {
 		if settings.SortInputsByRequired {
-			m.sortInputsByRequired()
+			sort.Sort(inputsSortedByRequired(m.Inputs))
+			sort.Sort(inputsSortedByRequired(m.RequiredInputs))
+			sort.Sort(inputsSortedByRequired(m.OptionalInputs))
 		} else {
-			m.sortInputsByName()
+			sort.Sort(inputsSortedByName(m.Inputs))
+			sort.Sort(inputsSortedByName(m.RequiredInputs))
+			sort.Sort(inputsSortedByName(m.OptionalInputs))
 		}
+	} else {
+		sort.Sort(inputsSortedByPosition(m.Inputs))
+		sort.Sort(inputsSortedByPosition(m.RequiredInputs))
+		sort.Sort(inputsSortedByPosition(m.OptionalInputs))
 	}
 
 	if settings.SortByName {
-		m.sortOutputsByName()
+		sort.Sort(outputsSortedByName(m.Outputs))
+	} else {
+		sort.Sort(outputsSortedByPosition(m.Outputs))
 	}
-
 }
 
 // CreateModule returns new instance of Module with all the inputs and
@@ -104,6 +97,10 @@ func CreateModule(path string) (*Module, error) {
 			Type:        inputType,
 			Description: input.Description,
 			Default:     defaultValue,
+			Position: Position{
+				Filename: input.Pos.Filename,
+				Line:     input.Pos.Line,
+			},
 		}
 
 		inputs = append(inputs, i)
@@ -119,6 +116,10 @@ func CreateModule(path string) (*Module, error) {
 		outputs = append(outputs, &Output{
 			Name:        output.Name,
 			Description: output.Description,
+			Position: Position{
+				Filename: output.Pos.Filename,
+				Line:     output.Pos.Line,
+			},
 		})
 	}
 

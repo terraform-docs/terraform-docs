@@ -1,5 +1,49 @@
 
 
+[36minput.unquoted[0m (required)
+[90mn/a[0m
+
+[36minput.string-3[0m ("")
+[90mn/a[0m
+
+[36minput.string-2[0m (required)
+[90mIt's string number two.[0m
+
+[36minput.string-1[0m ("bar")
+[90mn/a[0m
+
+[36minput.map-3[0m ({})
+[90mn/a[0m
+
+[36minput.map-2[0m (required)
+[90mIt's map number two.[0m
+
+[36minput.map-1[0m ({
+  "a": 1,
+  "b": 2,
+  "c": 3
+})
+[90mn/a[0m
+
+[36minput.list-3[0m ([])
+[90mn/a[0m
+
+[36minput.list-2[0m (required)
+[90mIt's list number two.[0m
+
+[36minput.list-1[0m ([
+  "a",
+  "b",
+  "c"
+])
+[90mn/a[0m
+
+[36minput.input_with_underscores[0m (required)
+[90mn/a[0m
+
+[36minput.input-with-pipe[0m ("v1")
+[90mIt includes v1 | v2 | v3[0m
+
 [36minput.input-with-code-block[0m ([
   "name rack:location"
 ])
@@ -10,25 +54,6 @@ default     = [
   "machine rack01:neptune"
 ]
 ```[0m
-
-[36minput.input-with-pipe[0m ("v1")
-[90mIt includes v1 | v2 | v3[0m
-
-[36minput.input_with_underscores[0m (required)
-[90mn/a[0m
-
-[36minput.list-1[0m ([
-  "a",
-  "b",
-  "c"
-])
-[90mn/a[0m
-
-[36minput.list-2[0m (required)
-[90mIt's list number two.[0m
-
-[36minput.list-3[0m ([])
-[90mn/a[0m
 
 [36minput.long_type[0m ({
   "bar": {
@@ -50,42 +75,17 @@ default     = [
 
 It spans over multiple lines.[0m
 
-[36minput.map-1[0m ({
-  "a": 1,
-  "b": 2,
-  "c": 3
-})
-[90mn/a[0m
-
-[36minput.map-2[0m (required)
-[90mIt's map number two.[0m
-
-[36minput.map-3[0m ({})
-[90mn/a[0m
-
-[36minput.string-1[0m ("bar")
-[90mn/a[0m
-
-[36minput.string-2[0m (required)
-[90mIt's string number two.[0m
-
-[36minput.string-3[0m ("")
-[90mn/a[0m
-
-[36minput.unquoted[0m (required)
-[90mn/a[0m
 
 
-
-[36moutput.output-0.12[0m
-[90mterraform 0.12 only[0m
-
-[36moutput.output-1[0m
-[90mn/a[0m
+[36moutput.unquoted[0m
+[90mIt's unquoted output.[0m
 
 [36moutput.output-2[0m
 [90mIt's output number two.[0m
 
-[36moutput.unquoted[0m
-[90mIt's unquoted output.[0m
+[36moutput.output-1[0m
+[90mn/a[0m
+
+[36moutput.output-0.12[0m
+[90mterraform 0.12 only[0m
 
