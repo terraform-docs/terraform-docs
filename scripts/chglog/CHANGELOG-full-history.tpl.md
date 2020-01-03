@@ -15,6 +15,15 @@
 - {{ if .Scope }}**{{ .Scope }}:** {{ end }}{{ if .Subject }}{{ .Subject }}{{ else }}{{ .Header }}{{ end }}
 {{ end }}
 {{ end -}}
+
+{{- if .Unreleased.NoteGroups -}}
+{{ range .Unreleased.NoteGroups -}}
+### {{ .Title }}
+{{ range .Notes }}
+{{ .Body }}
+{{ end }}
+{{ end -}}
+{{ end -}}
 {{ end -}}
 
 {{ range .Versions }}
