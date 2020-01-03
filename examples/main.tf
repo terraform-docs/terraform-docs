@@ -1,3 +1,5 @@
+resource "tls_private_key" "baz" {}
+
 data "aws_caller_identity" "current" {
   provider = "aws"
 }
@@ -9,3 +11,4 @@ terraform {
     aws = ">= 2.15.0"
   }
 }
+resource "null_resource" "foo" {}

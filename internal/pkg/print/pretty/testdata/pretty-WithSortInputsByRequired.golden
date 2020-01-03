@@ -1,5 +1,15 @@
 
 
+[36mprovider.aws[0m (>= 2.15.0)
+
+[36mprovider.aws.ident[0m (>= 2.15.0)
+
+[36mprovider.null[0m
+
+[36mprovider.tls[0m
+
+
+
 [36minput.input_with_underscores[0m (required)
 [90mn/a[0m
 

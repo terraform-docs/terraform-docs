@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"sort"
+	"strings"
 
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
@@ -12,10 +13,11 @@ import (
 
 // Module represents a Terraform mod.
 type Module struct {
-	Inputs         []*Input  `json:"inputs"`
-	Outputs        []*Output `json:"outputs"`
-	RequiredInputs []*Input  `json:"-"`
-	OptionalInputs []*Input  `json:"-"`
+	Inputs         []*Input    `json:"inputs"`
+	Outputs        []*Output   `json:"outputs"`
+	Providers      []*Provider `json:"providers"`
+	RequiredInputs []*Input    `json:"-"`
+	OptionalInputs []*Input    `json:"-"`
 }
 
 // HasInputs indicates if the document has inputs.
@@ -30,6 +32,12 @@ func (m *Module) HasOutputs() bool {
 
 // Sort sorts list of inputs and outputs based on provided flags (name, required, etc)
 func (m *Module) Sort(settings *print.Settings) {
+	if settings.SortByName {
+		sort.Sort(providersSortedByName(m.Providers))
+	} else {
+		sort.Sort(providersSortedByPosition(m.Providers))
+	}
+
 	if settings.SortByName {
 		if settings.SortInputsByRequired {
 			sort.Sort(inputsSortedByRequired(m.Inputs))
@@ -123,9 +131,16 @@ func CreateModule(path string) (*Module, error) {
 		})
 	}
 
+	var providerSet = loadProviders(mod.RequiredProviders, mod.ManagedResources, mod.DataResources)
+	var providers = make([]*Provider, 0, len(providerSet))
+	for _, provider := range providerSet {
+		providers = append(providers, provider)
+	}
+
 	module := &Module{
 		Inputs:         inputs,
 		Outputs:        outputs,
+		Providers:      providers,
 		RequiredInputs: requiredInputs,
 		OptionalInputs: optionalInputs,
 	}
@@ -138,4 +153,27 @@ func loadModule(path string) *tfconfig.Module {
 		log.Fatal(diag)
 	}
 	return module
+}
+
+func loadProviders(requiredProviders map[string]*tfconfig.ProviderRequirement, resources ...map[string]*tfconfig.Resource) map[string]*Provider {
+	var providers = make(map[string]*Provider)
+	for _, resource := range resources {
+		for _, r := range resource {
+			var version = ""
+			if requiredVersion, ok := requiredProviders[r.Provider.Name]; ok {
+				version = strings.Join(requiredVersion.VersionConstraints, " ")
+			}
+			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
+			providers[key] = &Provider{
+				Name:    r.Provider.Name,
+				Alias:   r.Provider.Alias,
+				Version: version,
+				Position: Position{
+					Filename: r.Pos.Filename,
+					Line:     r.Pos.Line,
+				},
+			}
+		}
+	}
+	return providers
 }

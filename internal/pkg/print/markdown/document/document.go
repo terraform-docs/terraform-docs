@@ -16,6 +16,7 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
+	printProviders(&buffer, module.Providers, settings)
 	printInputs(&buffer, module, settings)
 	printOutputs(&buffer, module.Outputs, settings)
 
@@ -42,6 +43,14 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 		}
 	}
 	return strings.Replace(buf.String(), " \n\n", "\n\n", -1), nil
+}
+
+func getProviderVersion(provider *tfconf.Provider) string {
+	var result = ""
+	if provider.Version != "" {
+		result = fmt.Sprintf(" (%s)", provider.Version)
+	}
+	return result
 }
 
 func getInputType(input *tfconf.Input) string {
@@ -120,6 +129,23 @@ func printInputsAll(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *prin
 	for _, input := range inputs {
 		printInput(buffer, input, settings)
 	}
+}
+
+func printProviders(buffer *bytes.Buffer, providers []*tfconf.Provider, settings *print.Settings) {
+	buffer.WriteString(fmt.Sprintf("%s Providers\n\n", markdown.GenerateIndentation(0, settings)))
+
+	if len(providers) == 0 {
+		buffer.WriteString("No provider.\n\n")
+		return
+	}
+
+	buffer.WriteString("The following providers are used by this module:\n")
+
+	for _, provider := range providers {
+		buffer.WriteString("\n")
+		buffer.WriteString(fmt.Sprintf("- %s%s\n", markdown.SanitizeName(provider.GetName(), settings), getProviderVersion(provider)))
+	}
+	buffer.WriteString("\n")
 }
 
 func printInputs(buffer *bytes.Buffer, module *tfconf.Module, settings *print.Settings) {

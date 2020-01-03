@@ -1,3 +1,15 @@
+## Providers
+
+The following providers are used by this module:
+
+- tls
+
+- aws (>= 2.15.0)
+
+- aws.ident (>= 2.15.0)
+
+- null
+
 ## Inputs
 
 The following input variables are supported:
