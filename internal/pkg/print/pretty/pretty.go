@@ -54,7 +54,12 @@ func printProviders(buffer *bytes.Buffer, providers []*tfconf.Provider, settings
 	buffer.WriteString("\n\n")
 
 	for _, provider := range providers {
-		format := "\033[36mprovider.%s\033[0m%s\n\n"
+		var format string
+		if settings.ShowColor {
+			format = "\033[36mprovider.%s\033[0m%s\n\n"
+		} else {
+			format = "provider.%s%s\n\n"
+		}
 		buffer.WriteString(
 			fmt.Sprintf(
 				format,
@@ -70,7 +75,12 @@ func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.S
 	buffer.WriteString("\n")
 
 	for _, input := range inputs {
-		format := "\033[36minput.%s\033[0m (%s)\n\033[90m%s\033[0m\n\n"
+		var format string
+		if settings.ShowColor {
+			format = "\033[36minput.%s\033[0m (%s)\n\033[90m%s\033[0m\n\n"
+		} else {
+			format = "input.%s (%s)\n%s\n\n"
+		}
 		buffer.WriteString(
 			fmt.Sprintf(
 				format,
@@ -88,7 +98,12 @@ func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *prin
 	buffer.WriteString("\n")
 
 	for _, output := range outputs {
-		format := "\033[36moutput.%s\033[0m\n\033[90m%s\033[0m\n\n"
+		var format string
+		if settings.ShowColor {
+			format = "\033[36moutput.%s\033[0m\n\033[90m%s\033[0m\n\n"
+		} else {
+			format = "output.%s\n%s\n\n"
+		}
 		buffer.WriteString(
 			fmt.Sprintf(
 				format,

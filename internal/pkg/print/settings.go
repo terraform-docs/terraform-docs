@@ -18,6 +18,10 @@ type Settings struct {
 	// scope: Markdown
 	ShowRequired bool
 
+	// ShowColor print "colorized" version of result in the terminal (default: true)
+	// scope: Pretty
+	ShowColor bool
+
 	// SortByName sorted rendering of inputs and outputs (default: true)
 	// scope: Global
 	SortByName bool
@@ -33,6 +37,7 @@ func NewSettings() *Settings {
 		AggregateTypeDefaults: false,
 		EscapeMarkdown:        true,
 		MarkdownIndent:        2,
+		ShowColor:             true,
 		ShowRequired:          true,
 		SortByName:            true,
 		SortInputsByRequired:  false,

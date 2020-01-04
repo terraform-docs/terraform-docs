@@ -1,0 +1,101 @@
+
+
+provider.tls
+
+provider.aws (>= 2.15.0)
+
+provider.aws.ident (>= 2.15.0)
+
+provider.null
+
+
+
+input.unquoted (required)
+n/a
+
+input.string-3 ("")
+n/a
+
+input.string-2 (required)
+It's string number two.
+
+input.string-1 ("bar")
+n/a
+
+input.map-3 ({})
+n/a
+
+input.map-2 (required)
+It's map number two.
+
+input.map-1 ({
+  "a": 1,
+  "b": 2,
+  "c": 3
+})
+n/a
+
+input.list-3 ([])
+n/a
+
+input.list-2 (required)
+It's list number two.
+
+input.list-1 ([
+  "a",
+  "b",
+  "c"
+])
+n/a
+
+input.input_with_underscores (required)
+n/a
+
+input.input-with-pipe ("v1")
+It includes v1 | v2 | v3
+
+input.input-with-code-block ([
+  "name rack:location"
+])
+This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+
+input.long_type ({
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+})
+This description is itself markdown.
+
+It spans over multiple lines.
+
+
+
+output.unquoted
+It's unquoted output.
+
+output.output-2
+It's output number two.
+
+output.output-1
+n/a
+
+output.output-0.12
+terraform 0.12 only
+
