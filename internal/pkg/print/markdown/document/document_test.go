@@ -1,193 +1,128 @@
-package document_test
+package document
 
 import (
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
-	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
+	"github.com/segmentio/terraform-docs/internal/pkg/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPrint(t *testing.T) {
-	var settings = &print.Settings{}
+func TestDocument(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithRequired(t *testing.T) {
-	var settings = &print.Settings{
+func TestDocumentWithRequired(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		ShowRequired: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document-WithRequired")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document-WithRequired")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithSortByName(t *testing.T) {
-	var settings = &print.Settings{
+func TestDocumentSortByName(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		SortByName: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document-SortByName")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document-WithSortByName")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithSortInputsByRequired(t *testing.T) {
-	var settings = &print.Settings{
+func TestDocumentSortByRequired(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document-SortByRequired")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document-WithSortInputsByRequired")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithEscapeName(t *testing.T) {
-	var settings = &print.Settings{
+func TestDocumentEscapeMarkdown(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		EscapeMarkdown: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document-EscapeMarkdown")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document-WithEscapeName")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithIndentationBellowAllowed(t *testing.T) {
-	var settings = &print.Settings{
+func TestDocumentIndentationBellowAllowed(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		MarkdownIndent: 0,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document-IndentationBellowAllowed")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document-WithIndentationBellowAllowed")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithIndentationAboveAllowed(t *testing.T) {
-	var settings = &print.Settings{
+func TestDocumentIndentationAboveAllowed(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		MarkdownIndent: 10,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document-IndentationAboveAllowed")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document-WithIndentationAboveAllowed")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithIndentationOfFour(t *testing.T) {
-	var settings = &print.Settings{
+func TestDocumentIndentationOfFour(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		MarkdownIndent: 4,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("document-IndentationOfFour")
+	assert.Nil(err)
 
-	actual, err := document.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("document-WithIndentationOfFour")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }

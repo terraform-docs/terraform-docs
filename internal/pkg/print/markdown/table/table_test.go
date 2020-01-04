@@ -1,193 +1,128 @@
-package table_test
+package table
 
 import (
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
-	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
+	"github.com/segmentio/terraform-docs/internal/pkg/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPrint(t *testing.T) {
-	var settings = &print.Settings{}
+func TestTable(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithRequired(t *testing.T) {
-	var settings = &print.Settings{
+func TestTableWithRequired(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		ShowRequired: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table-WithRequired")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table-WithRequired")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithSortByName(t *testing.T) {
-	var settings = &print.Settings{
+func TestTableSortByName(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		SortByName: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table-SortByName")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table-WithSortByName")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithSortInputsByRequired(t *testing.T) {
-	var settings = &print.Settings{
+func TestTableSortByRequired(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table-SortByRequired")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table-WithSortInputsByRequired")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithEscapeName(t *testing.T) {
-	var settings = &print.Settings{
+func TestTableEscapeMarkdown(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		EscapeMarkdown: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table-EscapeMarkdown")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table-WithEscapeName")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithIndentationBellowAllowed(t *testing.T) {
-	var settings = &print.Settings{
+func TestTableIndentationBellowAllowed(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		MarkdownIndent: 0,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table-IndentationBellowAllowed")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table-WithIndentationBellowAllowed")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithIndentationAboveAllowed(t *testing.T) {
-	var settings = &print.Settings{
+func TestTableIndentationAboveAllowed(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		MarkdownIndent: 10,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table-IndentationAboveAllowed")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table-WithIndentationAboveAllowed")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrintWithIndentationOfFour(t *testing.T) {
-	var settings = &print.Settings{
+func TestTableIndentationOfFour(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		MarkdownIndent: 4,
 	}
 
-	module, err := tfconf.CreateModule("../../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("table-IndentationOfFour")
+	assert.Nil(err)
 
-	actual, err := table.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("table-WithIndentationOfFour")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }

@@ -1,78 +1,53 @@
-package pretty_test
+package pretty
 
 import (
 	"testing"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
-	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
+	"github.com/segmentio/terraform-docs/internal/pkg/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPretty(t *testing.T) {
-	var settings = &print.Settings{}
+	assert := assert.New(t)
+	settings := &print.Settings{}
 
-	module, err := tfconf.CreateModule("../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("pretty")
+	assert.Nil(err)
 
-	actual, err := pretty.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("pretty")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrettyWithSortByName(t *testing.T) {
-	var settings = &print.Settings{
+func TestPrettySortByName(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		SortByName: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("pretty-SortByName")
+	assert.Nil(err)
 
-	actual, err := pretty.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("pretty-WithSortByName")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
 
-func TestPrettyWithSortInputsByRequired(t *testing.T) {
-	var settings = &print.Settings{
+func TestPrettySortByRequired(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
 	}
 
-	module, err := tfconf.CreateModule("../../../../examples")
-	if err != nil {
-		t.Fatal(err)
-	}
+	module, expected, err := testutil.GetExpected("pretty-SortByRequired")
+	assert.Nil(err)
 
-	actual, err := pretty.Print(module, settings)
-	if err != nil {
-		t.Fatal(err)
-	}
+	actual, err := Print(module, settings)
 
-	expected, err := print.ReadGoldenFile("pretty-WithSortInputsByRequired")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	assert.Equal(t, expected, actual)
+	assert.Nil(err)
+	assert.Equal(expected, actual)
 }
