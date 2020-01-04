@@ -12,7 +12,7 @@ func TestTable(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{}
 
-	module, expected, err := testutil.GetExpexted("table")
+	module, expected, err := testutil.GetExpected("table")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -27,7 +27,7 @@ func TestTableWithRequired(t *testing.T) {
 		ShowRequired: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("table-WithRequired")
+	module, expected, err := testutil.GetExpected("table-WithRequired")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -42,7 +42,7 @@ func TestTableSortByName(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("table-SortByName")
+	module, expected, err := testutil.GetExpected("table-SortByName")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -58,7 +58,7 @@ func TestTableSortByRequired(t *testing.T) {
 		SortInputsByRequired: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("table-SortByRequired")
+	module, expected, err := testutil.GetExpected("table-SortByRequired")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -73,7 +73,7 @@ func TestTableEscapeMarkdown(t *testing.T) {
 		EscapeMarkdown: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("table-EscapeMarkdown")
+	module, expected, err := testutil.GetExpected("table-EscapeMarkdown")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -88,7 +88,7 @@ func TestTableIndentationBellowAllowed(t *testing.T) {
 		MarkdownIndent: 0,
 	}
 
-	module, expected, err := testutil.GetExpexted("table-IndentationBellowAllowed")
+	module, expected, err := testutil.GetExpected("table-IndentationBellowAllowed")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -103,7 +103,7 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 		MarkdownIndent: 10,
 	}
 
-	module, expected, err := testutil.GetExpexted("table-IndentationAboveAllowed")
+	module, expected, err := testutil.GetExpected("table-IndentationAboveAllowed")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -118,7 +118,7 @@ func TestTableIndentationOfFour(t *testing.T) {
 		MarkdownIndent: 4,
 	}
 
-	module, expected, err := testutil.GetExpexted("table-IndentationOfFour")
+	module, expected, err := testutil.GetExpected("table-IndentationOfFour")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)

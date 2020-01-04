@@ -12,7 +12,7 @@ func TestPretty(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{}
 
-	module, expected, err := testutil.GetExpexted("pretty")
+	module, expected, err := testutil.GetExpected("pretty")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -27,7 +27,7 @@ func TestPrettySortByName(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("pretty-SortByName")
+	module, expected, err := testutil.GetExpected("pretty-SortByName")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -43,7 +43,7 @@ func TestPrettySortByRequired(t *testing.T) {
 		SortInputsByRequired: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("pretty-SortByRequired")
+	module, expected, err := testutil.GetExpected("pretty-SortByRequired")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)

@@ -9,8 +9,8 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 )
 
-// GetExpexted returns 'example' Module and expected Golden file content
-func GetExpexted(goldenFile string) (*tfconf.Module, string, error) {
+// GetExpected returns 'example' Module and expected Golden file content
+func GetExpected(goldenFile string) (*tfconf.Module, string, error) {
 	path, err := getExampleFolder()
 	if err != nil {
 		return nil, "", err

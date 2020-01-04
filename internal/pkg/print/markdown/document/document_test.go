@@ -12,7 +12,7 @@ func TestDocument(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{}
 
-	module, expected, err := testutil.GetExpexted("document")
+	module, expected, err := testutil.GetExpected("document")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -27,7 +27,7 @@ func TestDocumentWithRequired(t *testing.T) {
 		ShowRequired: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("document-WithRequired")
+	module, expected, err := testutil.GetExpected("document-WithRequired")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -42,7 +42,7 @@ func TestDocumentSortByName(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("document-SortByName")
+	module, expected, err := testutil.GetExpected("document-SortByName")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -58,7 +58,7 @@ func TestDocumentSortByRequired(t *testing.T) {
 		SortInputsByRequired: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("document-SortByRequired")
+	module, expected, err := testutil.GetExpected("document-SortByRequired")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -73,7 +73,7 @@ func TestDocumentEscapeMarkdown(t *testing.T) {
 		EscapeMarkdown: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("document-EscapeMarkdown")
+	module, expected, err := testutil.GetExpected("document-EscapeMarkdown")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -88,7 +88,7 @@ func TestDocumentIndentationBellowAllowed(t *testing.T) {
 		MarkdownIndent: 0,
 	}
 
-	module, expected, err := testutil.GetExpexted("document-IndentationBellowAllowed")
+	module, expected, err := testutil.GetExpected("document-IndentationBellowAllowed")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -103,7 +103,7 @@ func TestDocumentIndentationAboveAllowed(t *testing.T) {
 		MarkdownIndent: 10,
 	}
 
-	module, expected, err := testutil.GetExpexted("document-IndentationAboveAllowed")
+	module, expected, err := testutil.GetExpected("document-IndentationAboveAllowed")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -118,7 +118,7 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 		MarkdownIndent: 4,
 	}
 
-	module, expected, err := testutil.GetExpexted("document-IndentationOfFour")
+	module, expected, err := testutil.GetExpected("document-IndentationOfFour")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)

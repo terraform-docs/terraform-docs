@@ -12,7 +12,7 @@ func TestJson(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{}
 
-	module, expected, err := testutil.GetExpexted("json")
+	module, expected, err := testutil.GetExpected("json")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -27,7 +27,7 @@ func TestJsonSortByName(t *testing.T) {
 		SortByName: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("json-SortByName")
+	module, expected, err := testutil.GetExpected("json-SortByName")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -43,7 +43,7 @@ func TestJsonSortByRequired(t *testing.T) {
 		SortInputsByRequired: true,
 	}
 
-	module, expected, err := testutil.GetExpexted("json-SortByRequired")
+	module, expected, err := testutil.GetExpected("json-SortByRequired")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
