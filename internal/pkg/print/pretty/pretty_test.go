@@ -10,7 +10,9 @@ import (
 
 func TestPretty(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{}
+	settings := &print.Settings{
+		ShowColor: true,
+	}
 
 	module, expected, err := testutil.GetExpected("pretty")
 	assert.Nil(err)
@@ -25,6 +27,7 @@ func TestPrettySortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		SortByName: true,
+		ShowColor:  true,
 	}
 
 	module, expected, err := testutil.GetExpected("pretty-SortByName")
@@ -41,9 +44,25 @@ func TestPrettySortByRequired(t *testing.T) {
 	settings := &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
+		ShowColor:            true,
 	}
 
 	module, expected, err := testutil.GetExpected("pretty-SortByRequired")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestPrettyNoColor(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowColor: false,
+	}
+
+	module, expected, err := testutil.GetExpected("pretty-NoColor")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
