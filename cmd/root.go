@@ -20,10 +20,18 @@ var rootCmd = &cobra.Command{
 	Long:    "A utility to generate documentation from Terraform modules in various output formats",
 	Version: version.Version(),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		noproviders, _ := cmd.Flags().GetBool("no-providers")
+		noinputs, _ := cmd.Flags().GetBool("no-inputs")
+		nooutputs, _ := cmd.Flags().GetBool("no-outputs")
+
 		nocolor, _ := cmd.Flags().GetBool("no-color")
 		nosort, _ := cmd.Flags().GetBool("no-sort")
 		norequired, _ := cmd.Flags().GetBool("no-required")
 		noescape, _ := cmd.Flags().GetBool("no-escape")
+
+		settings.ShowProviders = !noproviders
+		settings.ShowInputs = !noinputs
+		settings.ShowOutputs = !nooutputs
 
 		settings.ShowColor = !nocolor
 		settings.SortByName = !nosort
@@ -33,6 +41,10 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-providers", false, "do not show providers information")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-inputs", false, "do not show inputs information")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-outputs", false, "do not show outputs information")
+
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of inputs and outputs")
 	rootCmd.PersistentFlags().BoolVar(&settings.SortInputsByRequired, "sort-inputs-by-required", false, "sort inputs by name and prints required inputs first")
 	rootCmd.PersistentFlags().BoolVar(&settings.AggregateTypeDefaults, "with-aggregate-type-defaults", false, "print default values of aggregate types")

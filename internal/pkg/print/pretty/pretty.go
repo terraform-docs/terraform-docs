@@ -15,9 +15,15 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
-	printProviders(&buffer, module.Providers, settings)
-	printInputs(&buffer, module.Inputs, settings)
-	printOutputs(&buffer, module.Outputs, settings)
+	if settings.ShowProviders {
+		printProviders(&buffer, module.Providers, settings)
+	}
+	if settings.ShowInputs {
+		printInputs(&buffer, module.Inputs, settings)
+	}
+	if settings.ShowOutputs {
+		printOutputs(&buffer, module.Outputs, settings)
+	}
 
 	return buffer.String(), nil
 }
@@ -68,11 +74,10 @@ func printProviders(buffer *bytes.Buffer, providers []*tfconf.Provider, settings
 			),
 		)
 	}
-	buffer.WriteString("\n")
 }
 
 func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.Settings) {
-	buffer.WriteString("\n")
+	buffer.WriteString("\n\n")
 
 	for _, input := range inputs {
 		var format string
@@ -90,12 +95,10 @@ func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.S
 			),
 		)
 	}
-
-	buffer.WriteString("\n")
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *print.Settings) {
-	buffer.WriteString("\n")
+	buffer.WriteString("\n\n")
 
 	for _, output := range outputs {
 		var format string

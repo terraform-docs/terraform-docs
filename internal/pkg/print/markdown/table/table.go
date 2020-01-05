@@ -15,9 +15,15 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
-	printProviders(&buffer, module.Providers, settings)
-	printInputs(&buffer, module.Inputs, settings)
-	printOutputs(&buffer, module.Outputs, settings)
+	if settings.ShowProviders {
+		printProviders(&buffer, module.Providers, settings)
+	}
+	if settings.ShowInputs {
+		printInputs(&buffer, module.Inputs, settings)
+	}
+	if settings.ShowOutputs {
+		printOutputs(&buffer, module.Outputs, settings)
+	}
 
 	return markdown.Sanitize(buffer.String()), nil
 }
@@ -115,11 +121,11 @@ func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.S
 			buffer.WriteString("\n")
 		}
 	}
-
+	buffer.WriteString("\n")
 }
 
 func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *print.Settings) {
-	buffer.WriteString(fmt.Sprintf("\n%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
+	buffer.WriteString(fmt.Sprintf("%s Outputs\n\n", markdown.GenerateIndentation(0, settings)))
 
 	if len(outputs) == 0 {
 		buffer.WriteString("No output.\n\n")

@@ -16,7 +16,23 @@ const (
 func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	module.Sort(settings)
 
-	buffer, err := json.MarshalIndent(module, prefix, indent)
+	copy := &tfconf.Module{
+		Providers: make([]*tfconf.Provider, 0),
+		Inputs:    make([]*tfconf.Input, 0),
+		Outputs:   make([]*tfconf.Output, 0),
+	}
+
+	if settings.ShowProviders {
+		copy.Providers = module.Providers
+	}
+	if settings.ShowInputs {
+		copy.Inputs = module.Inputs
+	}
+	if settings.ShowOutputs {
+		copy.Outputs = module.Outputs
+	}
+
+	buffer, err := json.MarshalIndent(copy, prefix, indent)
 	if err != nil {
 		return "", err
 	}

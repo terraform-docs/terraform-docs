@@ -10,7 +10,11 @@ import (
 
 func TestDocument(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{}
+	settings := &print.Settings{
+		ShowProviders: true,
+		ShowInputs:    true,
+		ShowOutputs:   true,
+	}
 
 	module, expected, err := testutil.GetExpected("document")
 	assert.Nil(err)
@@ -24,7 +28,10 @@ func TestDocument(t *testing.T) {
 func TestDocumentWithRequired(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
-		ShowRequired: true,
+		ShowRequired:  true,
+		ShowProviders: true,
+		ShowInputs:    true,
+		ShowOutputs:   true,
 	}
 
 	module, expected, err := testutil.GetExpected("document-WithRequired")
@@ -39,7 +46,10 @@ func TestDocumentWithRequired(t *testing.T) {
 func TestDocumentSortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
-		SortByName: true,
+		SortByName:    true,
+		ShowProviders: true,
+		ShowInputs:    true,
+		ShowOutputs:   true,
 	}
 
 	module, expected, err := testutil.GetExpected("document-SortByName")
@@ -56,9 +66,114 @@ func TestDocumentSortByRequired(t *testing.T) {
 	settings := &print.Settings{
 		SortByName:           true,
 		SortInputsByRequired: true,
+		ShowProviders:        true,
+		ShowInputs:           true,
+		ShowOutputs:          true,
 	}
 
 	module, expected, err := testutil.GetExpected("document-SortByRequired")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentNoProviders(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowProviders: false,
+		ShowInputs:    true,
+		ShowOutputs:   true,
+	}
+
+	module, expected, err := testutil.GetExpected("document-NoProviders")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentNoInputs(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowProviders: true,
+		ShowInputs:    false,
+		ShowOutputs:   true,
+	}
+
+	module, expected, err := testutil.GetExpected("document-NoInputs")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentNoOutputs(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowProviders: true,
+		ShowInputs:    true,
+		ShowOutputs:   false,
+	}
+
+	module, expected, err := testutil.GetExpected("document-NoOutputs")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentOnlyProviders(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowProviders: true,
+		ShowInputs:    false,
+		ShowOutputs:   false,
+	}
+
+	module, expected, err := testutil.GetExpected("document-OnlyProviders")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentOnlyInputs(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowProviders: false,
+		ShowInputs:    true,
+		ShowOutputs:   false,
+	}
+
+	module, expected, err := testutil.GetExpected("document-OnlyInputs")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentOnlyOutputs(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowProviders: false,
+		ShowInputs:    false,
+		ShowOutputs:   true,
+	}
+
+	module, expected, err := testutil.GetExpected("document-OnlyOutputs")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -71,6 +186,9 @@ func TestDocumentEscapeMarkdown(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		EscapeMarkdown: true,
+		ShowProviders:  true,
+		ShowInputs:     true,
+		ShowOutputs:    true,
 	}
 
 	module, expected, err := testutil.GetExpected("document-EscapeMarkdown")
@@ -86,6 +204,9 @@ func TestDocumentIndentationBellowAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 0,
+		ShowProviders:  true,
+		ShowInputs:     true,
+		ShowOutputs:    true,
 	}
 
 	module, expected, err := testutil.GetExpected("document-IndentationBellowAllowed")
@@ -101,6 +222,9 @@ func TestDocumentIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 10,
+		ShowProviders:  true,
+		ShowInputs:     true,
+		ShowOutputs:    true,
 	}
 
 	module, expected, err := testutil.GetExpected("document-IndentationAboveAllowed")
@@ -116,6 +240,9 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 4,
+		ShowProviders:  true,
+		ShowInputs:     true,
+		ShowOutputs:    true,
 	}
 
 	module, expected, err := testutil.GetExpected("document-IndentationOfFour")

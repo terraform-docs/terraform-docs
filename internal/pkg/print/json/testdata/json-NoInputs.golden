@@ -1,0 +1,37 @@
+{
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "unquoted",
+      "description": "It's unquoted output."
+    },
+    {
+      "name": "output-2",
+      "description": "It's output number two."
+    },
+    {
+      "name": "output-1"
+    },
+    {
+      "name": "output-0.12",
+      "description": "terraform 0.12 only"
+    }
+  ],
+  "providers": [
+    {
+      "name": "tls"
+    },
+    {
+      "name": "aws",
+      "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "aws",
+      "alias": "ident",
+      "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "null"
+    }
+  ]
+}

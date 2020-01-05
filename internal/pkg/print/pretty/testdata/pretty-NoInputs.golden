@@ -1,0 +1,24 @@
+
+
+[36mprovider.tls[0m
+
+[36mprovider.aws[0m (>= 2.15.0)
+
+[36mprovider.aws.ident[0m (>= 2.15.0)
+
+[36mprovider.null[0m
+
+
+
+[36moutput.unquoted[0m
+[90mIt's unquoted output.[0m
+
+[36moutput.output-2[0m
+[90mIt's output number two.[0m
+
+[36moutput.output-1[0m
+[90mn/a[0m
+
+[36moutput.output-0.12[0m
+[90mterraform 0.12 only[0m
+
