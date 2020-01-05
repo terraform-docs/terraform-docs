@@ -13,6 +13,8 @@
 - Enable new go linters and fix the existing issues ([#132](https://github.com/segmentio/terraform-docs/issues/132))
 
 ### Features
+- Add flags to not show different sections ([#144](https://github.com/segmentio/terraform-docs/issues/144))
+- Add '--no-color' flag to 'pretty' command ([#143](https://github.com/segmentio/terraform-docs/issues/143))
 - Show 'providers' information ([#140](https://github.com/segmentio/terraform-docs/issues/140))
 - Bump golang to latest v1.13 ([#133](https://github.com/segmentio/terraform-docs/issues/133))
 - Support Terraform 0.12.x configuration ([#113](https://github.com/segmentio/terraform-docs/issues/113))
