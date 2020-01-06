@@ -1,5 +1,5 @@
 {
-  "header": "Usage:\n\nmodule \"foo\" {\n  source = \"github.com/foo/bar\"\n\n  id   = \"1234567890\"\n  name = \"baz\"\n\n  zones = [\"us-east-1\", \"us-west-1\"]\n\n  tags = {\n    Name         = \"baz\"\n    Created-By   = \"first.last@email.com\"\n    Date-Created = \"20180101\"\n  }\n}",
+  "header": "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n```hcl\nmodule \"foo_bar\" {\n  source = \"github.com/foo/bar\"\n\n  id   = \"1234567890\"\n  name = \"baz\"\n\n  zones = [\"us-east-1\", \"us-west-1\"]\n\n  tags = {\n    Name         = \"baz\"\n    Created-By   = \"first.last@email.com\"\n    Date-Created = \"20180101\"\n  }\n}\n```",
   "inputs": [
     {
       "name": "unquoted",
@@ -75,6 +75,12 @@
       "type": "object({\n    name = string,\n    foo  = object({ foo = string, bar = string }),\n    bar  = object({ foo = string, bar = string }),\n    fizz = list(string),\n    buzz = list(string)\n  })",
       "description": "This description is itself markdown.\n\nIt spans over multiple lines.\n",
       "default": "{\n  \"bar\": {\n    \"bar\": \"bar\",\n    \"foo\": \"bar\"\n  },\n  \"buzz\": [\n    \"fizz\",\n    \"buzz\"\n  ],\n  \"fizz\": [],\n  \"foo\": {\n    \"bar\": \"foo\",\n    \"foo\": \"foo\"\n  },\n  \"name\": \"hello\"\n}"
+    },
+    {
+      "name": "no-escape-default-value",
+      "type": "string",
+      "description": "The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.",
+      "default": "\"VALUE_WITH_UNDERSCORE\""
     }
   ],
   "outputs": [

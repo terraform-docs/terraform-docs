@@ -1,6 +1,9 @@
 Usage:
 
-module "foo" {
+Example of 'foo_bar' module in `foo_bar.tf`.
+
+```hcl
+module "foo_bar" {
   source = "github.com/foo/bar"
 
   id   = "1234567890"
@@ -14,6 +17,7 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
+```
 
 ## Providers
 
@@ -147,6 +151,7 @@ Default: `"v1"`
 
 Description: This is a complicated one. We need a newline.  
 And an example in a code block
+
 ```
 default     = [
   "machine rack01:neptune"
@@ -201,6 +206,14 @@ Default:
   "name": "hello"
 }
 ```
+
+### no-escape-default-value
+
+Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
+
+Type: `string`
+
+Default: `"VALUE_WITH_UNDERSCORE"`
 
 ## Outputs
 

@@ -36,37 +36,30 @@ func SanitizeName(name string, settings *print.Settings) string {
 		// Escape underscore
 		name = strings.Replace(name, "_", "\\_", -1)
 	}
-
 	return name
 }
 
-// SanitizeItemForDocument converts passed 'string to suitable Markdown representation
+// SanitizeItemForDocument converts passed 'string' to suitable Markdown representation
 // for a document. (including line-break, illegal characters, code blocks etc)
 func SanitizeItemForDocument(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
-	// Isolate blocks of code. Dont escape anything inside them
-	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
-	segments := strings.Split(s, "\n```\n")
-	buf := bytes.NewBufferString("")
-	for i, segment := range segments {
-		if !nextIsInCodeBlock {
+	result := processSegments(
+		s,
+		"\n```",
+		func(segment string) string {
 			segment = ConvertMultiLineText(segment, false)
 			segment = EscapeIllegalCharacters(segment, settings)
-			if i > 0 && len(segment) > 0 {
-				buf.WriteString("\n```\n")
-			}
-			buf.WriteString(segment)
-			nextIsInCodeBlock = true
-		} else {
-			buf.WriteString("\n```\n")
-			buf.WriteString(segment)
-			buf.WriteString("\n```")
-			nextIsInCodeBlock = false
-		}
-	}
-	return strings.Replace(buf.String(), "<br>", "\n", -1)
+			segment = fmt.Sprintf("%s\n", segment)
+			return segment
+		},
+		func(segment string) string {
+			segment = fmt.Sprintf("\n```%s\n```", segment)
+			return segment
+		},
+	)
+	return strings.Replace(result, "<br>", "\n", -1)
 }
 
 // SanitizeItemForTable converts passed 'string' to suitable Markdown representation
@@ -75,30 +68,24 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
-	// Isolate blocks of code. Dont escape anything inside them
-	nextIsInCodeBlock := strings.HasPrefix(s, "```\n")
-	segments := strings.Split(s, "```\n")
-	buf := bytes.NewBufferString("")
-	for _, segment := range segments {
-		if !nextIsInCodeBlock {
+	result := processSegments(
+		s,
+		"```\n",
+		func(segment string) string {
 			segment = ConvertMultiLineText(segment, true)
 			segment = EscapeIllegalCharacters(segment, settings)
-			buf.WriteString(segment)
-			nextIsInCodeBlock = true
-		} else {
-			buf.WriteString("<code><pre>")
-			buf.WriteString(strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
-			buf.WriteString("</pre></code>")
-			nextIsInCodeBlock = false
-		}
-	}
-
-	return buf.String()
+			return segment
+		},
+		func(segment string) string {
+			segment = fmt.Sprintf("<code><pre>%s</pre></code>", strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
+			return segment
+		},
+	)
+	return result
 }
 
 // ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
 func ConvertMultiLineText(s string, convertDoubleSpaces bool) string {
-
 	// Convert double newlines to <br><br>.
 	s = strings.Replace(
 		strings.TrimSpace(s),
@@ -124,11 +111,21 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 	s = strings.Replace(s, "|", "\\|", -1)
 
 	if settings.EscapeCharacters {
-		// Escape underscore
-		s = strings.Replace(s, "_", "\\_", -1)
-
-		// Escape asterisk
-		s = strings.Replace(s, "*", "\\*", -1)
+		s = processSegments(
+			s,
+			"`",
+			func(segment string) string {
+				// Escape underscore
+				segment = strings.Replace(segment, "_", "\\_", -1)
+				// Escape asterisk
+				segment = strings.Replace(segment, "*", "\\*", -1)
+				return segment
+			},
+			func(segment string) string {
+				segment = fmt.Sprintf("`%s`", segment)
+				return segment
+			},
+		)
 	}
 
 	return s
@@ -160,4 +157,24 @@ func PrintFencedCodeBlock(code string, language string) (string, bool) {
 		return fmt.Sprintf("\n\n```%s\n%s\n```\n", language, code), true
 	}
 	return fmt.Sprintf("`%s`", code), false
+}
+
+func processSegments(s string, prefix string, normalFn func(segment string) string, codeFn func(segment string) string) string {
+	// Isolate blocks of code. Dont escape anything inside them
+	nextIsInCodeBlock := strings.HasPrefix(s, prefix)
+	segments := strings.Split(s, prefix)
+	buffer := bytes.NewBufferString("")
+	for _, segment := range segments {
+		if len(segment) == 0 {
+			continue
+		}
+		if !nextIsInCodeBlock {
+			segment = normalFn(segment)
+		} else {
+			segment = codeFn(segment)
+		}
+		buffer.WriteString(segment)
+		nextIsInCodeBlock = !nextIsInCodeBlock
+	}
+	return buffer.String()
 }
