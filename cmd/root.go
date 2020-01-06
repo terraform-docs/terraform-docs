@@ -36,7 +36,7 @@ var rootCmd = &cobra.Command{
 		settings.ShowColor = !nocolor
 		settings.SortByName = !nosort
 		settings.ShowRequired = !norequired
-		settings.EscapeMarkdown = !noescape
+		settings.EscapeCharacters = !noescape
 	},
 }
 
@@ -54,6 +54,8 @@ func init() {
 	markdownCmd.PersistentFlags().IntVar(&settings.MarkdownIndent, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
 
 	prettyCmd.PersistentFlags().BoolVar(new(bool), "no-color", false, "do not colorize printed result")
+
+	jsonCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

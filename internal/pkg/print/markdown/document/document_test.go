@@ -182,16 +182,16 @@ func TestDocumentOnlyOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentEscapeMarkdown(t *testing.T) {
+func TestDocumentEscapeCharacters(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
-		EscapeMarkdown: true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
+		EscapeCharacters: true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}
 
-	module, expected, err := testutil.GetExpected("document-EscapeMarkdown")
+	module, expected, err := testutil.GetExpected("document-EscapeCharacters")
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
