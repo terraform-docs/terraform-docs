@@ -92,12 +92,12 @@
   "providers": [
     {
       "name": "aws",
-      "version": "\u003e= 2.15.0"
+      "version": ">= 2.15.0"
     },
     {
       "name": "aws",
       "alias": "ident",
-      "version": "\u003e= 2.15.0"
+      "version": ">= 2.15.0"
     },
     {
       "name": "null"

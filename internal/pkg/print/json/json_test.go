@@ -163,3 +163,21 @@ func TestJsonOnlyOutputs(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
+
+func TestJsonEscapeCharacters(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		EscapeCharacters: true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+	}
+
+	module, expected, err := testutil.GetExpected("json-EscapeCharacters")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}

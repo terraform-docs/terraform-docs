@@ -32,7 +32,7 @@ func Sanitize(markdown string) string {
 
 // SanitizeName escapes underscore character which have special meaning in Markdown.
 func SanitizeName(name string, settings *print.Settings) string {
-	if settings.EscapeMarkdown {
+	if settings.EscapeCharacters {
 		// Escape underscore
 		name = strings.Replace(name, "_", "\\_", -1)
 	}
@@ -123,7 +123,7 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 	// Escape pipe
 	s = strings.Replace(s, "|", "\\|", -1)
 
-	if settings.EscapeMarkdown {
+	if settings.EscapeCharacters {
 		// Escape underscore
 		s = strings.Replace(s, "_", "\\_", -1)
 

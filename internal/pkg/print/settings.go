@@ -6,9 +6,9 @@ type Settings struct {
 	// scope: Global
 	AggregateTypeDefaults bool
 
-	// EscapeMarkdown escapes special Markdown characters (such as | _ * and etc) (default: true)
+	// EscapeCharacters escapes special characters (such as | _ * in Markdown and > < in JSON) (default: true)
 	// scope: Markdown
-	EscapeMarkdown bool
+	EscapeCharacters bool
 
 	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5] (default: 2)
 	// scope: Markdown
@@ -47,7 +47,7 @@ type Settings struct {
 func NewSettings() *Settings {
 	return &Settings{
 		AggregateTypeDefaults: false,
-		EscapeMarkdown:        true,
+		EscapeCharacters:      true,
 		MarkdownIndent:        2,
 		ShowColor:             true,
 		ShowInputs:            true,
