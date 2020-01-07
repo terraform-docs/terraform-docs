@@ -25,14 +25,14 @@ default     = [
 [90mIt includes v1 | v2 | v3[0m
 
 [36minput.input_with_underscores[0m (required)
-[90mn/a[0m
+[90mA variable with underscores.[0m
 
 [36minput.list-1[0m ([
   "a",
   "b",
   "c"
 ])
-[90mn/a[0m
+[90mIt's list number one.[0m
 
 [36minput.list-2[0m (required)
 [90mIt's list number two.[0m
@@ -65,7 +65,7 @@ It spans over multiple lines.[0m
   "b": 2,
   "c": 3
 })
-[90mn/a[0m
+[90mIt's map number one.[0m
 
 [36minput.map-2[0m (required)
 [90mIt's map number two.[0m
@@ -74,7 +74,7 @@ It spans over multiple lines.[0m
 [90mn/a[0m
 
 [36minput.string-1[0m ("bar")
-[90mn/a[0m
+[90mIt's string number one.[0m
 
 [36minput.string-2[0m (required)
 [90mIt's string number two.[0m
@@ -91,7 +91,7 @@ It spans over multiple lines.[0m
 [90mterraform 0.12 only[0m
 
 [36moutput.output-1[0m
-[90mn/a[0m
+[90mIt's output number one.[0m
 
 [36moutput.output-2[0m
 [90mIt's output number two.[0m

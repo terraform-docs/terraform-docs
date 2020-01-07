@@ -14,11 +14,13 @@
     },
     {
       "name": "input_with_underscores",
-      "type": "any"
+      "type": "any",
+      "description": "A variable with underscores."
     },
     {
       "name": "list-1",
       "type": "list",
+      "description": "It's list number one.",
       "default": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]"
     },
     {
@@ -40,6 +42,7 @@
     {
       "name": "map-1",
       "type": "map",
+      "description": "It's map number one.",
       "default": "{\n  \"a\": 1,\n  \"b\": 2,\n  \"c\": 3\n}"
     },
     {
@@ -55,6 +58,7 @@
     {
       "name": "string-1",
       "type": "string",
+      "description": "It's string number one.",
       "default": "\"bar\""
     },
     {
@@ -78,7 +82,8 @@
       "description": "terraform 0.12 only"
     },
     {
-      "name": "output-1"
+      "name": "output-1",
+      "description": "It's output number one."
     },
     {
       "name": "output-2",

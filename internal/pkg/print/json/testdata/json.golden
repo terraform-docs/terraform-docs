@@ -17,6 +17,7 @@
     {
       "name": "string-1",
       "type": "string",
+      "description": "It's string number one.",
       "default": "\"bar\""
     },
     {
@@ -32,6 +33,7 @@
     {
       "name": "map-1",
       "type": "map",
+      "description": "It's map number one.",
       "default": "{\n  \"a\": 1,\n  \"b\": 2,\n  \"c\": 3\n}"
     },
     {
@@ -47,11 +49,13 @@
     {
       "name": "list-1",
       "type": "list",
+      "description": "It's list number one.",
       "default": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]"
     },
     {
       "name": "input_with_underscores",
-      "type": "any"
+      "type": "any",
+      "description": "A variable with underscores."
     },
     {
       "name": "input-with-pipe",
@@ -82,7 +86,8 @@
       "description": "It's output number two."
     },
     {
-      "name": "output-1"
+      "name": "output-1",
+      "description": "It's output number one."
     },
     {
       "name": "output-0.12",
