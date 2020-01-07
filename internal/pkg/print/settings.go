@@ -2,10 +2,6 @@ package print
 
 // Settings represents all settings
 type Settings struct {
-	// AggregateTypeDefaults print default values of aggregate types (default: false)
-	// scope: Global
-	AggregateTypeDefaults bool
-
 	// EscapeCharacters escapes special characters (such as | _ * in Markdown and > < in JSON) (default: true)
 	// scope: Markdown
 	EscapeCharacters bool
@@ -46,15 +42,14 @@ type Settings struct {
 //NewSettings returns new instance of Settings
 func NewSettings() *Settings {
 	return &Settings{
-		AggregateTypeDefaults: false,
-		EscapeCharacters:      true,
-		MarkdownIndent:        2,
-		ShowColor:             true,
-		ShowInputs:            true,
-		ShowOutputs:           true,
-		ShowProviders:         true,
-		ShowRequired:          true,
-		SortByName:            true,
-		SortInputsByRequired:  false,
+		EscapeCharacters:     true,
+		MarkdownIndent:       2,
+		ShowColor:            true,
+		ShowInputs:           true,
+		ShowOutputs:          true,
+		ShowProviders:        true,
+		ShowRequired:         true,
+		SortByName:           true,
+		SortInputsByRequired: false,
 	}
 }
