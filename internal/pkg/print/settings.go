@@ -34,22 +34,22 @@ type Settings struct {
 	// scope: Global
 	SortByName bool
 
-	// SortInputsByRequired sort inputs by name and prints required inputs first (default: false)
+	// SortByRequired sort items (inputs, providers) by name and prints required ones first (default: false)
 	// scope: Global
-	SortInputsByRequired bool
+	SortByRequired bool
 }
 
 //NewSettings returns new instance of Settings
 func NewSettings() *Settings {
 	return &Settings{
-		EscapeCharacters:     true,
-		MarkdownIndent:       2,
-		ShowColor:            true,
-		ShowInputs:           true,
-		ShowOutputs:          true,
-		ShowProviders:        true,
-		ShowRequired:         true,
-		SortByName:           true,
-		SortInputsByRequired: false,
+		EscapeCharacters: true,
+		MarkdownIndent:   2,
+		ShowColor:        true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequired:     true,
+		SortByName:       true,
+		SortByRequired:   false,
 	}
 }
