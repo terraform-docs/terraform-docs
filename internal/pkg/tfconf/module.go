@@ -39,7 +39,7 @@ func (m *Module) Sort(settings *print.Settings) {
 	}
 
 	if settings.SortByName {
-		if settings.SortInputsByRequired {
+		if settings.SortByRequired {
 			sort.Sort(inputsSortedByRequired(m.Inputs))
 			sort.Sort(inputsSortedByRequired(m.RequiredInputs))
 			sort.Sort(inputsSortedByRequired(m.OptionalInputs))

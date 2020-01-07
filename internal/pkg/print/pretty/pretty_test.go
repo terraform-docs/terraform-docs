@@ -48,12 +48,12 @@ func TestPrettySortByName(t *testing.T) {
 func TestPrettySortByRequired(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
-		SortByName:           true,
-		SortInputsByRequired: true,
-		ShowProviders:        true,
-		ShowInputs:           true,
-		ShowOutputs:          true,
-		ShowColor:            true,
+		SortByName:     true,
+		SortByRequired: true,
+		ShowProviders:  true,
+		ShowInputs:     true,
+		ShowOutputs:    true,
+		ShowColor:      true,
 	}
 
 	module, expected, err := testutil.GetExpected("pretty-SortByRequired")

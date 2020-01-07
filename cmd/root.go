@@ -46,8 +46,14 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-outputs", false, "do not show outputs information")
 
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of inputs and outputs")
-	rootCmd.PersistentFlags().BoolVar(&settings.SortInputsByRequired, "sort-inputs-by-required", false, "sort inputs by name and prints required inputs first")
+	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first")
+
+	//-----------------------------
+	// deprecated - will be removed
+	//-----------------------------
+	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-inputs-by-required", false, "[deprecated] use '--sort-by-required' instead")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "with-aggregate-type-defaults", false, "[deprecated] print default values of aggregate types")
+	//-----------------------------
 
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "omit \"Required\" column when generating Markdown")
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")

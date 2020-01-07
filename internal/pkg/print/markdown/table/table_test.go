@@ -64,11 +64,11 @@ func TestTableSortByName(t *testing.T) {
 func TestTableSortByRequired(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
-		SortByName:           true,
-		SortInputsByRequired: true,
-		ShowProviders:        true,
-		ShowInputs:           true,
-		ShowOutputs:          true,
+		SortByName:     true,
+		SortByRequired: true,
+		ShowProviders:  true,
+		ShowInputs:     true,
+		ShowOutputs:    true,
 	}
 
 	module, expected, err := testutil.GetExpected("table-SortByRequired")
