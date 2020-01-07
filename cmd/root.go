@@ -41,11 +41,11 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVar(new(bool), "no-providers", false, "do not show providers information")
-	rootCmd.PersistentFlags().BoolVar(new(bool), "no-inputs", false, "do not show inputs information")
-	rootCmd.PersistentFlags().BoolVar(new(bool), "no-outputs", false, "do not show outputs information")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-providers", false, "do not show providers")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-inputs", false, "do not show inputs")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-outputs", false, "do not show outputs")
 
-	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "omit sorted rendering of inputs and outputs")
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "do no sort items")
 	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first")
 
 	//-----------------------------
@@ -55,7 +55,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(new(bool), "with-aggregate-type-defaults", false, "[deprecated] print default values of aggregate types")
 	//-----------------------------
 
-	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "omit \"Required\" column when generating Markdown")
+	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "do not show \"Required\" column or section")
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
 	markdownCmd.PersistentFlags().IntVar(&settings.MarkdownIndent, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
 
