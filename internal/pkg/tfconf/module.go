@@ -100,10 +100,15 @@ func CreateModule(path string) (*Module, error) {
 			}
 		}
 
+		inputDescription := input.Description
+		if inputDescription == "" {
+			inputDescription = readComment(input.Pos.Filename, input.Pos.Line-1)
+		}
+
 		i := &Input{
 			Name:        input.Name,
 			Type:        inputType,
-			Description: input.Description,
+			Description: inputDescription,
 			Default:     defaultValue,
 			Position: Position{
 				Filename: input.Pos.Filename,
@@ -121,9 +126,13 @@ func CreateModule(path string) (*Module, error) {
 
 	var outputs = make([]*Output, 0, len(mod.Outputs))
 	for _, output := range mod.Outputs {
+		outputDescription := output.Description
+		if outputDescription == "" {
+			outputDescription = readComment(output.Pos.Filename, output.Pos.Line-1)
+		}
 		outputs = append(outputs, &Output{
 			Name:        output.Name,
-			Description: output.Description,
+			Description: outputDescription,
 			Position: Position{
 				Filename: output.Pos.Filename,
 				Line:     output.Pos.Line,

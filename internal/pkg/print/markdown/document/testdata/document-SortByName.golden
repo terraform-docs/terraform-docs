@@ -44,7 +44,7 @@ Default: `"v1"`
 
 ### input_with_underscores
 
-Description: n/a
+Description: A variable with underscores.
 
 Type: `any`
 
@@ -52,7 +52,7 @@ Default: n/a
 
 ### list-1
 
-Description: n/a
+Description: It's list number one.
 
 Type: `list`
 
@@ -123,7 +123,7 @@ Default:
 
 ### map-1
 
-Description: n/a
+Description: It's map number one.
 
 Type: `map`
 
@@ -155,7 +155,7 @@ Default: `{}`
 
 ### string-1
 
-Description: n/a
+Description: It's string number one.
 
 Type: `string`
 
@@ -195,7 +195,7 @@ Description: terraform 0.12 only
 
 ### output-1
 
-Description: n/a
+Description: It's output number one.
 
 ### output-2
 

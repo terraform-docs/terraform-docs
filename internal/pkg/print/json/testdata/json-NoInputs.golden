@@ -10,7 +10,8 @@
       "description": "It's output number two."
     },
     {
-      "name": "output-1"
+      "name": "output-1",
+      "description": "It's output number one."
     },
     {
       "name": "output-0.12",

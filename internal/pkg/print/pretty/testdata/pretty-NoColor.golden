@@ -20,7 +20,7 @@ input.string-2 (required)
 It's string number two.
 
 input.string-1 ("bar")
-n/a
+It's string number one.
 
 input.map-3 ({})
 n/a
@@ -33,7 +33,7 @@ input.map-1 ({
   "b": 2,
   "c": 3
 })
-n/a
+It's map number one.
 
 input.list-3 ([])
 n/a
@@ -46,10 +46,10 @@ input.list-1 ([
   "b",
   "c"
 ])
-n/a
+It's list number one.
 
 input.input_with_underscores (required)
-n/a
+A variable with underscores.
 
 input.input-with-pipe ("v1")
 It includes v1 | v2 | v3
@@ -94,7 +94,7 @@ output.output-2
 It's output number two.
 
 output.output-1
-n/a
+It's output number one.
 
 output.output-0.12
 terraform 0.12 only

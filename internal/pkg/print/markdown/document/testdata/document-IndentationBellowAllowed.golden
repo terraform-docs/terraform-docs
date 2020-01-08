@@ -40,7 +40,7 @@ Default: n/a
 
 ### string-1
 
-Description: n/a
+Description: It's string number one.
 
 Type: `string`
 
@@ -64,7 +64,7 @@ Default: n/a
 
 ### map-1
 
-Description: n/a
+Description: It's map number one.
 
 Type: `map`
 
@@ -96,7 +96,7 @@ Default: n/a
 
 ### list-1
 
-Description: n/a
+Description: It's list number one.
 
 Type: `list`
 
@@ -112,7 +112,7 @@ Default:
 
 ### input_with_underscores
 
-Description: n/a
+Description: A variable with underscores.
 
 Type: `any`
 
@@ -199,7 +199,7 @@ Description: It's output number two.
 
 ### output-1
 
-Description: n/a
+Description: It's output number one.
 
 ### output-0.12
 
