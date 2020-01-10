@@ -60,6 +60,9 @@ func getDescription(description string) string {
 }
 
 func printHeader(buffer *bytes.Buffer, header string, settings *print.Settings) {
+	if len(header) == 0 {
+		return
+	}
 	buffer.WriteString("\n\n")
 
 	for _, line := range strings.Split(header, "\n") {

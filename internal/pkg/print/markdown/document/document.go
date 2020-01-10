@@ -120,6 +120,9 @@ func printInputsAll(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *prin
 }
 
 func printHeader(buffer *bytes.Buffer, header string, settings *print.Settings) {
+	if len(header) == 0 {
+		return
+	}
 	buffer.WriteString(fmt.Sprintf("%s", markdown.SanitizeItemForDocument(header, settings)))
 	buffer.WriteString("\n\n")
 }
