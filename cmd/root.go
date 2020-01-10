@@ -20,6 +20,7 @@ var rootCmd = &cobra.Command{
 	Long:    "A utility to generate documentation from Terraform modules in various output formats",
 	Version: version.Version(),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		noheader, _ := cmd.Flags().GetBool("no-header")
 		noproviders, _ := cmd.Flags().GetBool("no-providers")
 		noinputs, _ := cmd.Flags().GetBool("no-inputs")
 		nooutputs, _ := cmd.Flags().GetBool("no-outputs")
@@ -29,6 +30,7 @@ var rootCmd = &cobra.Command{
 		norequired, _ := cmd.Flags().GetBool("no-required")
 		noescape, _ := cmd.Flags().GetBool("no-escape")
 
+		settings.ShowHeader = !noheader
 		settings.ShowProviders = !noproviders
 		settings.ShowInputs = !noinputs
 		settings.ShowOutputs = !nooutputs
@@ -41,6 +43,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-header", false, "do not show module header")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-providers", false, "do not show providers")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-inputs", false, "do not show inputs")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-outputs", false, "do not show outputs")

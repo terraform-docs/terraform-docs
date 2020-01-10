@@ -15,6 +15,9 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
+	if settings.ShowHeader {
+		printHeader(&buffer, module.Header, settings)
+	}
 	if settings.ShowProviders {
 		printProviders(&buffer, module.Providers, settings)
 	}
@@ -54,6 +57,26 @@ func getDescription(description string) string {
 	}
 
 	return result
+}
+
+func printHeader(buffer *bytes.Buffer, header string, settings *print.Settings) {
+	buffer.WriteString("\n\n")
+
+	for _, line := range strings.Split(header, "\n") {
+		var format string
+		if settings.ShowColor {
+			format = "\033[90m%s\033[0m\n"
+		} else {
+			format = "%s\n"
+		}
+		buffer.WriteString(
+			fmt.Sprintf(
+				format,
+				line,
+			),
+		)
+	}
+	buffer.WriteString("\n")
 }
 
 func printProviders(buffer *bytes.Buffer, providers []*tfconf.Provider, settings *print.Settings) {

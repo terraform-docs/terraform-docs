@@ -19,11 +19,15 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	module.Sort(settings)
 
 	copy := &tfconf.Module{
+		Header:    "",
 		Providers: make([]*tfconf.Provider, 0),
 		Inputs:    make([]*tfconf.Input, 0),
 		Outputs:   make([]*tfconf.Output, 0),
 	}
 
+	if settings.ShowHeader {
+		copy.Header = module.Header
+	}
 	if settings.ShowProviders {
 		copy.Providers = module.Providers
 	}

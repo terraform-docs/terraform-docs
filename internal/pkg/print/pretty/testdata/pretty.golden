@@ -1,5 +1,24 @@
 
 
+[90mUsage:[0m
+[90m[0m
+[90mmodule "foo" {[0m
+[90m  source = "github.com/foo/bar"[0m
+[90m[0m
+[90m  id   = "1234567890"[0m
+[90m  name = "baz"[0m
+[90m[0m
+[90m  zones = ["us-east-1", "us-west-1"][0m
+[90m[0m
+[90m  tags = {[0m
+[90m    Name         = "baz"[0m
+[90m    Created-By   = "first.last@email.com"[0m
+[90m    Date-Created = "20180101"[0m
+[90m  }[0m
+[90m}[0m
+
+
+
 [36mprovider.tls[0m
 
 [36mprovider.aws[0m (>= 2.15.0)

@@ -11,6 +11,7 @@ import (
 func TestTable(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -29,6 +30,7 @@ func TestTableWithRequired(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		ShowRequired:  true,
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -47,6 +49,7 @@ func TestTableSortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		SortByName:    true,
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -66,6 +69,7 @@ func TestTableSortByRequired(t *testing.T) {
 	settings := &print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,
@@ -80,9 +84,28 @@ func TestTableSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestTableNoHeader(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowHeader:    false,
+		ShowProviders: true,
+		ShowInputs:    true,
+		ShowOutputs:   true,
+	}
+
+	module, expected, err := testutil.GetExpected("table-NoHeader")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestTableNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -100,6 +123,7 @@ func TestTableNoProviders(t *testing.T) {
 func TestTableNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   true,
@@ -117,6 +141,7 @@ func TestTableNoInputs(t *testing.T) {
 func TestTableNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   false,
@@ -131,9 +156,28 @@ func TestTableNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestTableOnlyHeader(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowHeader:    true,
+		ShowProviders: false,
+		ShowInputs:    false,
+		ShowOutputs:   false,
+	}
+
+	module, expected, err := testutil.GetExpected("table-OnlyHeader")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestTableOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   false,
@@ -151,6 +195,7 @@ func TestTableOnlyProviders(t *testing.T) {
 func TestTableOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   false,
@@ -168,6 +213,7 @@ func TestTableOnlyInputs(t *testing.T) {
 func TestTableOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   true,
@@ -186,6 +232,7 @@ func TestTableEscapeCharacters(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		EscapeCharacters: true,
+		ShowHeader:       true,
 		ShowProviders:    true,
 		ShowInputs:       true,
 		ShowOutputs:      true,
@@ -204,6 +251,7 @@ func TestTableIndentationBellowAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 0,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,
@@ -222,6 +270,7 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 10,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,
@@ -240,6 +289,7 @@ func TestTableIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 4,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,

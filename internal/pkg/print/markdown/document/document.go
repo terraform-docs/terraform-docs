@@ -15,6 +15,9 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 
 	module.Sort(settings)
 
+	if settings.ShowHeader {
+		printHeader(&buffer, module.Header, settings)
+	}
 	if settings.ShowProviders {
 		printProviders(&buffer, module.Providers, settings)
 	}
@@ -114,6 +117,11 @@ func printInputsAll(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *prin
 	for _, input := range inputs {
 		printInput(buffer, input, settings)
 	}
+}
+
+func printHeader(buffer *bytes.Buffer, header string, settings *print.Settings) {
+	buffer.WriteString(fmt.Sprintf("%s", markdown.SanitizeItemForDocument(header, settings)))
+	buffer.WriteString("\n\n")
 }
 
 func printProviders(buffer *bytes.Buffer, providers []*tfconf.Provider, settings *print.Settings) {
