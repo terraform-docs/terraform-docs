@@ -1,20 +1,3 @@
-Usage:
-
-module "foo" {
-  source = "github.com/foo/bar"
-
-  id   = "1234567890"
-  name = "baz"
-
-  zones = ["us-east-1", "us-west-1"]
-
-  tags = {
-    Name         = "baz"
-    Created-By   = "first.last@email.com"
-    Date-Created = "20180101"
-  }
-}
-
 ## Providers
 
 The following providers are used by this module:
@@ -201,3 +184,23 @@ Default:
   "name": "hello"
 }
 ```
+
+## Outputs
+
+The following outputs are exported:
+
+### unquoted
+
+Description: It's unquoted output.
+
+### output-2
+
+Description: It's output number two.
+
+### output-1
+
+Description: It's output number one.
+
+### output-0.12
+
+Description: terraform 0.12 only

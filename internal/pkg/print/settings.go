@@ -14,6 +14,10 @@ type Settings struct {
 	// scope: Pretty
 	ShowColor bool
 
+	// ShowHeader show "Header" module information (default: true)
+	// scope: Global
+	ShowHeader bool
+
 	// ShowInputs show "Inputs" information (default: true)
 	// scope: Global
 	ShowInputs bool
@@ -45,6 +49,7 @@ func NewSettings() *Settings {
 		EscapeCharacters: true,
 		MarkdownIndent:   2,
 		ShowColor:        true,
+		ShowHeader:       true,
 		ShowInputs:       true,
 		ShowOutputs:      true,
 		ShowProviders:    true,

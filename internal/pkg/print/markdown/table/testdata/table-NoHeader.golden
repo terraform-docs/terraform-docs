@@ -1,21 +1,4 @@
-Usage:
-
-module "foo" {
-  source = "github.com/foo/bar"
-
-  id   = "1234567890"
-  name = "baz"
-
-  zones = ["us-east-1", "us-west-1"]
-
-  tags = {
-    Name         = "baz"
-    Created-By   = "first.last@email.com"
-    Date-Created = "20180101"
-  }
-}
-
-#### Providers
+## Providers
 
 | Name | Version |
 |------|---------|
@@ -24,7 +7,7 @@ module "foo" {
 | aws.ident | >= 2.15.0 |
 | null | n/a |
 
-#### Inputs
+## Inputs
 
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
@@ -43,7 +26,7 @@ module "foo" {
 | input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<code><pre>default     = [<br>  "machine rack01:neptune"<br>]<br></pre></code> | `list` | <code><pre>[<br>  "name rack:location"<br>]<br></pre></code> |
 | long_type | This description is itself markdown.<br><br>It spans over multiple lines. | <code><pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })<br></pre></code> | <code><pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}<br></pre></code> |
 
-#### Outputs
+## Outputs
 
 | Name | Description |
 |------|-------------|

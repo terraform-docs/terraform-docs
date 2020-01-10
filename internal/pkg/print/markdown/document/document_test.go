@@ -11,6 +11,7 @@ import (
 func TestDocument(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -28,6 +29,7 @@ func TestDocument(t *testing.T) {
 func TestDocumentWithRequired(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowRequired:  true,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -47,6 +49,7 @@ func TestDocumentSortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		SortByName:    true,
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -66,6 +69,7 @@ func TestDocumentSortByRequired(t *testing.T) {
 	settings := &print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,
@@ -80,9 +84,28 @@ func TestDocumentSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestDocumentNoHeader(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowHeader:    false,
+		ShowProviders: true,
+		ShowInputs:    true,
+		ShowOutputs:   true,
+	}
+
+	module, expected, err := testutil.GetExpected("document-NoHeader")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestDocumentNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -100,6 +123,7 @@ func TestDocumentNoProviders(t *testing.T) {
 func TestDocumentNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   true,
@@ -117,6 +141,7 @@ func TestDocumentNoInputs(t *testing.T) {
 func TestDocumentNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   false,
@@ -131,9 +156,28 @@ func TestDocumentNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestDocumentOnlyHeader(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowHeader:    true,
+		ShowProviders: false,
+		ShowInputs:    false,
+		ShowOutputs:   false,
+	}
+
+	module, expected, err := testutil.GetExpected("document-OnlyHeader")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestDocumentOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   false,
@@ -151,6 +195,7 @@ func TestDocumentOnlyProviders(t *testing.T) {
 func TestDocumentOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   false,
@@ -168,6 +213,7 @@ func TestDocumentOnlyInputs(t *testing.T) {
 func TestDocumentOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   true,
@@ -186,6 +232,7 @@ func TestDocumentEscapeCharacters(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		EscapeCharacters: true,
+		ShowHeader:       true,
 		ShowProviders:    true,
 		ShowInputs:       true,
 		ShowOutputs:      true,
@@ -204,6 +251,7 @@ func TestDocumentIndentationBellowAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 0,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,
@@ -222,6 +270,7 @@ func TestDocumentIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 10,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,
@@ -240,6 +289,7 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		MarkdownIndent: 4,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,

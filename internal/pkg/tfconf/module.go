@@ -13,6 +13,7 @@ import (
 
 // Module represents a Terraform mod.
 type Module struct {
+	Header         string      `json:"header"`
 	Inputs         []*Input    `json:"inputs"`
 	Outputs        []*Output   `json:"outputs"`
 	Providers      []*Provider `json:"providers"`
@@ -65,6 +66,8 @@ func (m *Module) Sort(settings *print.Settings) {
 // outputs dircoverd from provided 'path' containing Terraform config
 func CreateModule(path string) (*Module, error) {
 	mod := loadModule(path)
+
+	header := readHeader(path)
 
 	var inputs = make([]*Input, 0, len(mod.Variables))
 	var requiredInputs = make([]*Input, 0, len(mod.Variables))
@@ -147,6 +150,7 @@ func CreateModule(path string) (*Module, error) {
 	}
 
 	module := &Module{
+		Header:         header,
 		Inputs:         inputs,
 		Outputs:        outputs,
 		Providers:      providers,

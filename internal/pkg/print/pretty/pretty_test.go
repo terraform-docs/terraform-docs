@@ -11,6 +11,7 @@ import (
 func TestPretty(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -30,6 +31,7 @@ func TestPrettySortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		SortByName:    true,
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -50,6 +52,7 @@ func TestPrettySortByRequired(t *testing.T) {
 	settings := &print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
+		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
 		ShowOutputs:    true,
@@ -65,9 +68,29 @@ func TestPrettySortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestPrettyNoHeader(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowProviders: false,
+		ShowHeader:    false,
+		ShowInputs:    true,
+		ShowOutputs:   true,
+		ShowColor:     true,
+	}
+
+	module, expected, err := testutil.GetExpected("pretty-NoHeader")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestPrettyNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   true,
@@ -86,6 +109,7 @@ func TestPrettyNoProviders(t *testing.T) {
 func TestPrettyNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   true,
@@ -104,6 +128,7 @@ func TestPrettyNoInputs(t *testing.T) {
 func TestPrettyNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   false,
@@ -119,9 +144,29 @@ func TestPrettyNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestPrettyOnlyHeader(t *testing.T) {
+	assert := assert.New(t)
+	settings := &print.Settings{
+		ShowHeader:    true,
+		ShowProviders: false,
+		ShowInputs:    false,
+		ShowOutputs:   false,
+		ShowColor:     true,
+	}
+
+	module, expected, err := testutil.GetExpected("pretty-OnlyHeader")
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestPrettyOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   false,
@@ -140,6 +185,7 @@ func TestPrettyOnlyProviders(t *testing.T) {
 func TestPrettyOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   false,
@@ -158,6 +204,7 @@ func TestPrettyOnlyInputs(t *testing.T) {
 func TestPrettyOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   true,
@@ -176,6 +223,7 @@ func TestPrettyOnlyOutputs(t *testing.T) {
 func TestPrettyNoColor(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
