@@ -3,6 +3,8 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 ### Bug Fixes
+- Read leading module header from main.tf ([#154](https://github.com/segmentio/terraform-docs/issues/154))
+- Read leading comment lines if description is not provided ([#151](https://github.com/segmentio/terraform-docs/issues/151))
 - Reimplement '--no-sort' to be compatible with Terraform 0.12 configuration ([#141](https://github.com/segmentio/terraform-docs/issues/141))
 
 ### Code Refactoring
@@ -23,6 +25,8 @@
 - Support Terraform 0.12.x configuration ([#113](https://github.com/segmentio/terraform-docs/issues/113))
 
 ### BREAKING CHANGE
+
+- In the JSON format respone, module "Comment" has been renamed to module `header`.
 
 - For simplicity we've decided to
 deprecated the old `--sort-inputs-by-required` flag
