@@ -30,6 +30,7 @@ terraform-docs json [PATH] [flags]
       --output-values               inject output values into outputs
       --output-values-from string   inject output values from file into outputs
       --sort-by-required            sort items by name and print required ones first
+      --sort-by-type                sort items by type of them
 ```
 
 ### Example

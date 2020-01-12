@@ -57,6 +57,10 @@ type Settings struct {
 	// SortByRequired sort items (inputs, providers) by name and prints required ones first (default: false)
 	// scope: Global
 	SortByRequired bool
+
+	// SortByType sort items (inputs, outputs) by type alphabetically (default: false)
+	// scope: Global
+	SortByType bool
 }
 
 //NewSettings returns new instance of Settings
@@ -76,5 +80,6 @@ func NewSettings() *Settings {
 		ShowRequirements: true,
 		SortByName:       true,
 		SortByRequired:   false,
+		SortByType:       false,
 	}
 }

@@ -81,6 +81,32 @@ func TestJsonSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestJsonSortByType(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		SortByType: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("json", "json-SortByType")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().With(&module.Options{
+		SortBy: &module.SortBy{
+			Type: true,
+		},
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewJSON(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestJsonNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{

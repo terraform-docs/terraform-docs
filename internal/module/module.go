@@ -270,7 +270,11 @@ func loadComments(filename string, lineNum int) string {
 }
 
 func sortItems(tfmodule *tfconf.Module, sortby *SortBy) {
-	if sortby.Name {
+	if sortby.Type {
+		sort.Sort(inputsSortedByType(tfmodule.Inputs))
+		sort.Sort(inputsSortedByType(tfmodule.RequiredInputs))
+		sort.Sort(inputsSortedByType(tfmodule.OptionalInputs))
+	} else if sortby.Name {
 		if sortby.Required {
 			sort.Sort(inputsSortedByRequired(tfmodule.Inputs))
 			sort.Sort(inputsSortedByRequired(tfmodule.RequiredInputs))
@@ -286,13 +290,13 @@ func sortItems(tfmodule *tfconf.Module, sortby *SortBy) {
 		sort.Sort(inputsSortedByPosition(tfmodule.OptionalInputs))
 	}
 
-	if sortby.Name {
+	if sortby.Name || sortby.Type {
 		sort.Sort(outputsSortedByName(tfmodule.Outputs))
 	} else {
 		sort.Sort(outputsSortedByPosition(tfmodule.Outputs))
 	}
 
-	if sortby.Name {
+	if sortby.Name || sortby.Type {
 		sort.Sort(providersSortedByName(tfmodule.Providers))
 	} else {
 		sort.Sort(providersSortedByPosition(tfmodule.Providers))
