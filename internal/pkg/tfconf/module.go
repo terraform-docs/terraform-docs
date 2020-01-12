@@ -11,7 +11,11 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 )
 
-// Module represents a Terraform mod.
+// Module represents a Terraform mod. It consists of
+// - Header    ('header' json key):    Module header found in shape of multi line comments at the beginning of 'main.tf'
+// - Inputs    ('inputs' json key):    List of input 'variables' extracted from the Terraform module .tf files
+// - Outputs   ('outputs' json key):   List of 'outputs' extracted from Terraform module .tf files
+// - Providers ('providers' json key): List of 'providers' extracted from resources used in Terraform module
 type Module struct {
 	Header         string      `json:"header"`
 	Inputs         []*Input    `json:"inputs"`
