@@ -2,7 +2,10 @@
 
 [90mUsage:[0m
 [90m[0m
-[90mmodule "foo" {[0m
+[90mExample of 'foo_bar' module in `foo_bar.tf`.[0m
+[90m[0m
+[90m```hcl[0m
+[90mmodule "foo_bar" {[0m
 [90m  source = "github.com/foo/bar"[0m
 [90m[0m
 [90m  id   = "1234567890"[0m
@@ -16,6 +19,7 @@
 [90m    Date-Created = "20180101"[0m
 [90m  }[0m
 [90m}[0m
+[90m```[0m
 
 
 
@@ -93,6 +97,9 @@ default     = [
 [90mThis description is itself markdown.
 
 It spans over multiple lines.[0m
+
+[36minput.no-escape-default-value[0m ("VALUE_WITH_UNDERSCORE")
+[90mThe description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.[0m
 
 
 

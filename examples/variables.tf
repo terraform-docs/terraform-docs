@@ -100,3 +100,8 @@ This description is itself markdown.
 It spans over multiple lines.
 EOF
 }
+
+variable "no-escape-default-value" {
+  description = "The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'."
+  default     = "VALUE_WITH_UNDERSCORE"
+}

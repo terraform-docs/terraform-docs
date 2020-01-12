@@ -130,6 +130,7 @@ Default: `"v1"`
 
 Description: This is a complicated one. We need a newline.  
 And an example in a code block
+
 ```
 default     = [
   "machine rack01:neptune"
@@ -184,6 +185,14 @@ Default:
   "name": "hello"
 }
 ```
+
+### no-escape-default-value
+
+Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
+
+Type: `string`
+
+Default: `"VALUE_WITH_UNDERSCORE"`
 
 ## Outputs
 

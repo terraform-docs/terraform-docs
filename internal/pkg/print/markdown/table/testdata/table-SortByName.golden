@@ -1,6 +1,9 @@
 Usage:
 
-module "foo" {
+Example of 'foo_bar' module in `foo_bar.tf`.
+
+```hcl
+module "foo_bar" {
   source = "github.com/foo/bar"
 
   id   = "1234567890"
@@ -14,6 +17,7 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
+```
 
 ## Providers
 
@@ -38,6 +42,7 @@ module "foo" {
 | map-1 | It's map number one. | `map` | <code><pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}<br></pre></code> |
 | map-2 | It's map number two. | `map` | n/a |
 | map-3 | n/a | `map` | `{}` |
+| no-escape-default-value | The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` |
 | string-1 | It's string number one. | `string` | `"bar"` |
 | string-2 | It's string number two. | `string` | n/a |
 | string-3 | n/a | `string` | `""` |

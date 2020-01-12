@@ -1,7 +1,10 @@
 /**
  * Usage:
  *
- * module "foo" {
+ * Example of 'foo_bar' module in `foo_bar.tf`.
+ *
+ * ```hcl
+ * module "foo_bar" {
  *   source = "github.com/foo/bar"
  *
  *   id   = "1234567890"
@@ -15,6 +18,7 @@
  *     Date-Created = "20180101"
  *   }
  * }
+ * ```
  */
 
 resource "tls_private_key" "baz" {}

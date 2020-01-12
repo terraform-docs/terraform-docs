@@ -1,6 +1,9 @@
 Usage:
 
-module "foo" {
+Example of 'foo_bar' module in `foo_bar.tf`.
+
+```hcl
+module "foo_bar" {
   source = "github.com/foo/bar"
 
   id   = "1234567890"
@@ -14,6 +17,7 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
+```
 
 ## Providers
 
@@ -42,6 +46,7 @@ module "foo" {
 | input-with-pipe | It includes v1 \| v2 \| v3 | `string` | `"v1"` |
 | input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<code><pre>default     = [<br>  "machine rack01:neptune"<br>]<br></pre></code> | `list` | <code><pre>[<br>  "name rack:location"<br>]<br></pre></code> |
 | long_type | This description is itself markdown.<br><br>It spans over multiple lines. | <code><pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })<br></pre></code> | <code><pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}<br></pre></code> |
+| no-escape-default-value | The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` |
 
 ## Outputs
 

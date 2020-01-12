@@ -2,7 +2,10 @@
 
 Usage:
 
-module "foo" {
+Example of 'foo_bar' module in `foo_bar.tf`.
+
+```hcl
+module "foo_bar" {
   source = "github.com/foo/bar"
 
   id   = "1234567890"
@@ -16,6 +19,7 @@ module "foo" {
     Date-Created = "20180101"
   }
 }
+```
 
 
 
@@ -103,6 +107,9 @@ input.long_type ({
 This description is itself markdown.
 
 It spans over multiple lines.
+
+input.no-escape-default-value ("VALUE_WITH_UNDERSCORE")
+The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
 
 
 
