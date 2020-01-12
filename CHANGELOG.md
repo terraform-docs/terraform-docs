@@ -3,12 +3,16 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 ### Bug Fixes
+- Do not escape strings inside code blocks ([#155](https://github.com/segmentio/terraform-docs/issues/155))
 - Read leading module header from main.tf ([#154](https://github.com/segmentio/terraform-docs/issues/154))
 - Read leading comment lines if description is not provided ([#151](https://github.com/segmentio/terraform-docs/issues/151))
 - Reimplement '--no-sort' to be compatible with Terraform 0.12 configuration ([#141](https://github.com/segmentio/terraform-docs/issues/141))
 
 ### Code Refactoring
 - Move doc.Doc to tfconf.Module ([#136](https://github.com/segmentio/terraform-docs/issues/136))
+
+### Documentation
+- Update Module internal documentaion
 
 ### Enhancements
 - Rename flag to '--sort-by-required' ([#150](https://github.com/segmentio/terraform-docs/issues/150))
@@ -25,6 +29,11 @@
 - Support Terraform 0.12.x configuration ([#113](https://github.com/segmentio/terraform-docs/issues/113))
 
 ### BREAKING CHANGE
+
+- In the JSON format response, list of "Inputs"
+has been renamed to `inputs`.
+- In the JSON format response, list of "Outputs" has been renamed
+to `outputs`.
 
 - In the JSON format respone, module "Comment" has been renamed to module `header`.
 
