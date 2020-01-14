@@ -83,13 +83,13 @@ func CreateModule(path string) (*Module, error) {
 			inputType = "any"
 		}
 
-		var defaultValue string
+		var defaultValue *string = new(string)
 		if input.Default != nil {
 			marshaled, err := json.MarshalIndent(input.Default, "", "  ")
 			if err != nil {
 				return nil, err
 			}
-			defaultValue = string(marshaled)
+			*defaultValue = string(marshaled)
 
 			if inputType == "any" {
 				switch xType := fmt.Sprintf("%T", input.Default); xType {
@@ -105,6 +105,8 @@ func CreateModule(path string) (*Module, error) {
 					inputType = "map"
 				}
 			}
+		} else {
+			defaultValue = nil
 		}
 
 		inputDescription := input.Description

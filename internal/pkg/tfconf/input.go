@@ -3,15 +3,15 @@ package tfconf
 // Input represents a Terraform input.
 type Input struct {
 	Name        string   `json:"name"`
-	Type        string   `json:"type,omitempty"`
-	Description string   `json:"description,omitempty"`
-	Default     string   `json:"default,omitempty"`
+	Type        string   `json:"type"`
+	Description string   `json:"description"`
+	Default     *string  `json:"default"`
 	Position    Position `json:"-"`
 }
 
 // HasDefault indicates if a Terraform variable has a default value set.
 func (i *Input) HasDefault() bool {
-	return len(i.Default) > 0
+	return i.Default != nil
 }
 
 type inputsSortedByName []*Input

@@ -43,7 +43,7 @@ func getInputDefaultValue(input *tfconf.Input, settings *print.Settings) string 
 	var result = "required"
 
 	if input.HasDefault() {
-		result = input.Default
+		result = *input.Default
 	}
 
 	return result
