@@ -83,7 +83,7 @@ func CreateModule(path string) (*Module, error) {
 			inputType = "any"
 		}
 
-		var defaultValue *string = new(string)
+		var defaultValue = new(string)
 		if input.Default != nil {
 			marshaled, err := json.MarshalIndent(input.Default, "", "  ")
 			if err != nil {
