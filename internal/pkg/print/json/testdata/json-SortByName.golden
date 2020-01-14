@@ -16,7 +16,8 @@
     {
       "name": "input_with_underscores",
       "type": "any",
-      "description": "A variable with underscores."
+      "description": "A variable with underscores.",
+      "default": null
     },
     {
       "name": "list-1",
@@ -27,11 +28,13 @@
     {
       "name": "list-2",
       "type": "list",
-      "description": "It's list number two."
+      "description": "It's list number two.",
+      "default": null
     },
     {
       "name": "list-3",
       "type": "list",
+      "description": "",
       "default": "[]"
     },
     {
@@ -49,11 +52,13 @@
     {
       "name": "map-2",
       "type": "map",
-      "description": "It's map number two."
+      "description": "It's map number two.",
+      "default": null
     },
     {
       "name": "map-3",
       "type": "map",
+      "description": "",
       "default": "{}"
     },
     {
@@ -71,16 +76,20 @@
     {
       "name": "string-2",
       "type": "string",
-      "description": "It's string number two."
+      "description": "It's string number two.",
+      "default": null
     },
     {
       "name": "string-3",
       "type": "string",
+      "description": "",
       "default": "\"\""
     },
     {
       "name": "unquoted",
-      "type": "any"
+      "type": "any",
+      "description": "",
+      "default": null
     }
   ],
   "outputs": [

@@ -48,7 +48,7 @@ func getInputValue(input *tfconf.Input) string {
 	var result = "n/a"
 
 	if input.HasDefault() {
-		result, _ = markdown.PrintFencedCodeBlock(input.Default, "")
+		result, _ = markdown.PrintFencedCodeBlock(*input.Default, "")
 	}
 	return result
 }

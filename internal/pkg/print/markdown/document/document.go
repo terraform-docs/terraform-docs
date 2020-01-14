@@ -54,7 +54,7 @@ func getInputValue(input *tfconf.Input) string {
 	var extraline = false
 
 	if input.HasDefault() {
-		if result, extraline = markdown.PrintFencedCodeBlock(input.Default, "json"); !extraline {
+		if result, extraline = markdown.PrintFencedCodeBlock(*input.Default, "json"); !extraline {
 			result += "\n"
 		}
 	}
