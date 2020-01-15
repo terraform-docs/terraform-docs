@@ -8,7 +8,7 @@ import (
 
 var jsonCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
-	Use:   "json [PATH...]",
+	Use:   "json [PATH]",
 	Short: "Generate a JSON of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
 		doPrint(args, func(module *tfconf.Module) (string, error) {
