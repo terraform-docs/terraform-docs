@@ -8,7 +8,7 @@ import (
 
 var prettyCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
-	Use:   "pretty [PATH...]",
+	Use:   "pretty [PATH]",
 	Short: "Generate a colorized pretty of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
 		doPrint(args, func(module *tfconf.Module) (string, error) {

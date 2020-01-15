@@ -9,7 +9,7 @@ import (
 
 var markdownCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
-	Use:     "markdown [PATH...]",
+	Use:     "markdown [PATH]",
 	Aliases: []string{"md"},
 	Short:   "Generate Markdown of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -21,7 +21,7 @@ var markdownCmd = &cobra.Command{
 
 var mdTableCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
-	Use:     "table [PATH...]",
+	Use:     "table [PATH]",
 	Aliases: []string{"tbl"},
 	Short:   "Generate Markdown tables of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -33,7 +33,7 @@ var mdTableCmd = &cobra.Command{
 
 var mdDocumentCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
-	Use:     "document [PATH...]",
+	Use:     "document [PATH]",
 	Aliases: []string{"doc"},
 	Short:   "Generate Markdown document of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
