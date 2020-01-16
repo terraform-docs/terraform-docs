@@ -4,10 +4,13 @@
   "outputs": [],
   "providers": [
     {
-      "name": "tls"
+      "name": "tls",
+      "alias": null,
+      "version": null
     },
     {
       "name": "aws",
+      "alias": null,
       "version": ">= 2.15.0"
     },
     {
@@ -16,7 +19,9 @@
       "version": ">= 2.15.0"
     },
     {
-      "name": "null"
+      "name": "null",
+      "alias": null,
+      "version": null
     }
   ]
 }
