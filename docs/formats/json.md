@@ -70,7 +70,7 @@ generates the following output:
     {
       "name": "list-3",
       "type": "list",
-      "description": "",
+      "description": null,
       "default": "[]"
     },
     {
@@ -94,7 +94,7 @@ generates the following output:
     {
       "name": "map-3",
       "type": "map",
-      "description": "",
+      "description": null,
       "default": "{}"
     },
     {
@@ -118,13 +118,13 @@ generates the following output:
     {
       "name": "string-3",
       "type": "string",
-      "description": "",
+      "description": null,
       "default": "\"\""
     },
     {
       "name": "unquoted",
       "type": "any",
-      "description": "",
+      "description": null,
       "default": null
     }
   ],
@@ -149,6 +149,7 @@ generates the following output:
   "providers": [
     {
       "name": "aws",
+      "alias": null,
       "version": "\u003e= 2.15.0"
     },
     {
@@ -157,10 +158,14 @@ generates the following output:
       "version": "\u003e= 2.15.0"
     },
     {
-      "name": "null"
+      "name": "null",
+      "alias": null,
+      "version": null
     },
     {
-      "name": "tls"
+      "name": "tls",
+      "alias": null,
+      "version": null
     }
   ]
 }
