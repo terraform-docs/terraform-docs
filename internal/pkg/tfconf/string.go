@@ -6,7 +6,7 @@ import (
 )
 
 // String represents a 'string' value which
-// JSON marshalled to `null` when empty
+// JSON marshaled to `null` when empty
 type String string
 
 // MarshalJSON custom marshal function which
