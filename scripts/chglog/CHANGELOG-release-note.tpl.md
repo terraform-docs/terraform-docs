@@ -2,12 +2,14 @@
 
 {{ range .Versions }}
 {{ if .CommitGroups -}}
-{{ range .CommitGroups -}}
+{{ range .CommitGroups }}
 ### {{ .Title }}
 {{ range .Commits -}}
+{{ if not (contains .Subject "<code>") -}}
 - {{ if .Scope }}**{{ .Scope }}:** {{ end }}{{ if .Subject }}{{ .Subject }}{{ else }}{{ .Header }}{{ end }}
-{{ end }}
 {{ end -}}
+{{ end -}}
+{{ end }}
 {{ else }}
 {{ range .Commits -}}
 - {{ if .Scope }}**{{ .Scope }}:** {{ end }}{{ if .Subject }}{{ .Subject }}{{ else }}{{ .Header }}{{ end }}

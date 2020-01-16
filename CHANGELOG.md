@@ -2,9 +2,9 @@
 
 <a name="unreleased"></a>
 ## [Unreleased]
+
 ### Bug Fixes
 - Show empty JSON properties, as 'null' for all types ([#166](https://github.com/segmentio/terraform-docs/issues/166))
-- Do not wrap multiline blocks in table with <code> ([#164](https://github.com/segmentio/terraform-docs/issues/164))
 - Show all JSON properties, empty or null ([#160](https://github.com/segmentio/terraform-docs/issues/160))
 - Do not escape strings inside code blocks ([#155](https://github.com/segmentio/terraform-docs/issues/155))
 - Read leading module header from main.tf ([#154](https://github.com/segmentio/terraform-docs/issues/154))
