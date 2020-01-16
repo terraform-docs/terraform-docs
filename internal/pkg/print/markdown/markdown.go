@@ -77,7 +77,7 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 			return segment
 		},
 		func(segment string) string {
-			segment = fmt.Sprintf("<code><pre>%s</pre></code>", strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
+			segment = fmt.Sprintf("<pre>%s</pre>", strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
 			return segment
 		},
 	)
