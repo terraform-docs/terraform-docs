@@ -14,10 +14,10 @@ github.com/google/go-cmp/cmp/internal/value
 github.com/hashicorp/hcl
 github.com/hashicorp/hcl/hcl/ast
 github.com/hashicorp/hcl/hcl/parser
-github.com/hashicorp/hcl/hcl/token
-github.com/hashicorp/hcl/json/parser
 github.com/hashicorp/hcl/hcl/scanner
 github.com/hashicorp/hcl/hcl/strconv
+github.com/hashicorp/hcl/hcl/token
+github.com/hashicorp/hcl/json/parser
 github.com/hashicorp/hcl/json/scanner
 github.com/hashicorp/hcl/json/token
 # github.com/hashicorp/hcl/v2 v2.0.0
@@ -42,15 +42,15 @@ github.com/spf13/pflag
 # github.com/stretchr/testify v1.4.0
 github.com/stretchr/testify/assert
 # github.com/zclconf/go-cty v1.1.0
-github.com/zclconf/go-cty/cty/gocty
-github.com/zclconf/go-cty/cty/json
 github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
 github.com/zclconf/go-cty/cty/function
 github.com/zclconf/go-cty/cty/function/stdlib
+github.com/zclconf/go-cty/cty/gocty
+github.com/zclconf/go-cty/cty/json
 github.com/zclconf/go-cty/cty/set
 # golang.org/x/text v0.3.2
-golang.org/x/text/unicode/norm
 golang.org/x/text/transform
+golang.org/x/text/unicode/norm
 # gopkg.in/yaml.v2 v2.2.2
 gopkg.in/yaml.v2
