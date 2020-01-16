@@ -3,6 +3,9 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 ### Bug Fixes
+- Show empty JSON properties, as 'null' for all types ([#166](https://github.com/segmentio/terraform-docs/issues/166))
+- Do not wrap multiline blocks in table with <code> ([#164](https://github.com/segmentio/terraform-docs/issues/164))
+- Show all JSON properties, empty or null ([#160](https://github.com/segmentio/terraform-docs/issues/160))
 - Do not escape strings inside code blocks ([#155](https://github.com/segmentio/terraform-docs/issues/155))
 - Read leading module header from main.tf ([#154](https://github.com/segmentio/terraform-docs/issues/154))
 - Read leading comment lines if description is not provided ([#151](https://github.com/segmentio/terraform-docs/issues/151))
@@ -12,6 +15,7 @@
 - Move doc.Doc to tfconf.Module ([#136](https://github.com/segmentio/terraform-docs/issues/136))
 
 ### Documentation
+- Deprecate accepting files as commands param ([#163](https://github.com/segmentio/terraform-docs/issues/163))
 - Update Module internal documentaion
 
 ### Enhancements
@@ -29,6 +33,10 @@
 - Support Terraform 0.12.x configuration ([#113](https://github.com/segmentio/terraform-docs/issues/113))
 
 ### BREAKING CHANGE
+
+- With Terraform 0.12 ability to generate
+output from file has been deprecated in favor of from folder
+which contains one or more `.tf` files.
 
 - In the JSON format response, list of "Inputs"
 has been renamed to `inputs`.
