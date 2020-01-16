@@ -83,13 +83,13 @@ func CreateModule(path string) (*Module, error) {
 			inputType = "any"
 		}
 
-		var defaultValue = new(string)
+		var defaultValue string
 		if input.Default != nil {
 			marshaled, err := json.MarshalIndent(input.Default, "", "  ")
 			if err != nil {
 				return nil, err
 			}
-			*defaultValue = string(marshaled)
+			defaultValue = string(marshaled)
 
 			if inputType == "any" {
 				switch xType := fmt.Sprintf("%T", input.Default); xType {
@@ -105,8 +105,6 @@ func CreateModule(path string) (*Module, error) {
 					inputType = "map"
 				}
 			}
-		} else {
-			defaultValue = nil
 		}
 
 		inputDescription := input.Description
@@ -116,9 +114,9 @@ func CreateModule(path string) (*Module, error) {
 
 		i := &Input{
 			Name:        input.Name,
-			Type:        inputType,
-			Description: inputDescription,
-			Default:     defaultValue,
+			Type:        String(inputType),
+			Description: String(inputDescription),
+			Default:     String(defaultValue),
 			Position: Position{
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,
@@ -141,7 +139,7 @@ func CreateModule(path string) (*Module, error) {
 		}
 		outputs = append(outputs, &Output{
 			Name:        output.Name,
-			Description: outputDescription,
+			Description: String(outputDescription),
 			Position: Position{
 				Filename: output.Pos.Filename,
 				Line:     output.Pos.Line,
@@ -179,14 +177,14 @@ func loadProviders(requiredProviders map[string]*tfconfig.ProviderRequirement, r
 	for _, resource := range resources {
 		for _, r := range resource {
 			var version = ""
-			if requiredVersion, ok := requiredProviders[r.Provider.Name]; ok {
+			if requiredVersion, ok := requiredProviders[r.Provider.Name]; ok && len(requiredVersion.VersionConstraints) > 0 {
 				version = strings.Join(requiredVersion.VersionConstraints, " ")
 			}
 			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
 			providers[key] = &Provider{
 				Name:    r.Provider.Name,
-				Alias:   r.Provider.Alias,
-				Version: version,
+				Alias:   String(r.Provider.Alias),
+				Version: String(version),
 				Position: Position{
 					Filename: r.Pos.Filename,
 					Line:     r.Pos.Line,

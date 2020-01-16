@@ -4,13 +4,13 @@
     {
       "name": "unquoted",
       "type": "any",
-      "description": "",
+      "description": null,
       "default": null
     },
     {
       "name": "string-3",
       "type": "string",
-      "description": "",
+      "description": null,
       "default": "\"\""
     },
     {
@@ -28,7 +28,7 @@
     {
       "name": "map-3",
       "type": "map",
-      "description": "",
+      "description": null,
       "default": "{}"
     },
     {
@@ -46,7 +46,7 @@
     {
       "name": "list-3",
       "type": "list",
-      "description": "",
+      "description": null,
       "default": "[]"
     },
     {

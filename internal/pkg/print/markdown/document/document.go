@@ -43,7 +43,7 @@ func getInputType(input *tfconf.Input) string {
 	var result = ""
 	var extraline = false
 
-	if result, extraline = markdown.PrintFencedCodeBlock(input.Type, "hcl"); !extraline {
+	if result, extraline = markdown.PrintFencedCodeBlock(string(input.Type), "hcl"); !extraline {
 		result += "\n"
 	}
 	return result
@@ -54,7 +54,7 @@ func getInputValue(input *tfconf.Input) string {
 	var extraline = false
 
 	if input.HasDefault() {
-		if result, extraline = markdown.PrintFencedCodeBlock(*input.Default, "json"); !extraline {
+		if result, extraline = markdown.PrintFencedCodeBlock(string(input.Default), "json"); !extraline {
 			result += "\n"
 		}
 	}
@@ -64,7 +64,7 @@ func getInputValue(input *tfconf.Input) string {
 func printInput(buffer *bytes.Buffer, input *tfconf.Input, settings *print.Settings) {
 	buffer.WriteString("\n")
 	buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(input.Name, settings)))
-	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeItemForDocument(input.Description, settings)))
+	buffer.WriteString(fmt.Sprintf("Description: %s\n\n", markdown.SanitizeItemForDocument(string(input.Description), settings)))
 	buffer.WriteString(fmt.Sprintf("Type: %s", getInputType(input)))
 
 	// Don't print defaults for required inputs when we're already explicit about it being required
@@ -167,6 +167,6 @@ func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *prin
 	for _, output := range outputs {
 		buffer.WriteString("\n")
 		buffer.WriteString(fmt.Sprintf("%s %s\n\n", markdown.GenerateIndentation(1, settings), markdown.SanitizeName(output.Name, settings)))
-		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.SanitizeItemForDocument(output.Description, settings)))
+		buffer.WriteString(fmt.Sprintf("Description: %s\n", markdown.SanitizeItemForDocument(string(output.Description), settings)))
 	}
 }

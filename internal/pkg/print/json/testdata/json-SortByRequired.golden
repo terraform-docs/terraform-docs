@@ -28,7 +28,7 @@
     {
       "name": "unquoted",
       "type": "any",
-      "description": "",
+      "description": null,
       "default": null
     },
     {
@@ -52,7 +52,7 @@
     {
       "name": "list-3",
       "type": "list",
-      "description": "",
+      "description": null,
       "default": "[]"
     },
     {
@@ -70,7 +70,7 @@
     {
       "name": "map-3",
       "type": "map",
-      "description": "",
+      "description": null,
       "default": "{}"
     },
     {
@@ -88,7 +88,7 @@
     {
       "name": "string-3",
       "type": "string",
-      "description": "",
+      "description": null,
       "default": "\"\""
     }
   ],
@@ -113,6 +113,7 @@
   "providers": [
     {
       "name": "aws",
+      "alias": null,
       "version": ">= 2.15.0"
     },
     {
@@ -121,10 +122,14 @@
       "version": ">= 2.15.0"
     },
     {
-      "name": "null"
+      "name": "null",
+      "alias": null,
+      "version": null
     },
     {
-      "name": "tls"
+      "name": "tls",
+      "alias": null,
+      "version": null
     }
   ]
 }
