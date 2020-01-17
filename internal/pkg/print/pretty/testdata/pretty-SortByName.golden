@@ -111,6 +111,9 @@ It spans over multiple lines.[0m
 [36minput.unquoted[0m (required)
 [90mn/a[0m
 
+[36minput.with-url[0m ("")
+[90mThe description contains url. https://www.domain.com/foo/bar_baz.html[0m
+
 
 
 [36moutput.output-0.12[0m

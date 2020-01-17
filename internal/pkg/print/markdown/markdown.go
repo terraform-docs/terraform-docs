@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
+
+	"mvdan.cc/xurls/v2"
 )
 
 // Sanitize cleans a Markdown document to soothe linters.
@@ -54,6 +56,7 @@ func SanitizeItemForDocument(s string, settings *print.Settings) string {
 		func(segment string) string {
 			segment = ConvertMultiLineText(segment, false)
 			segment = EscapeIllegalCharacters(segment, settings)
+			segment = NormalizeURLs(segment, settings)
 			segment = fmt.Sprintf("%s\n", segment)
 			return segment
 		},
@@ -77,6 +80,7 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 		func(segment string) string {
 			segment = ConvertMultiLineText(segment, true)
 			segment = EscapeIllegalCharacters(segment, settings)
+			segment = NormalizeURLs(segment, settings)
 			return segment
 		},
 		func(segment string) string {
@@ -136,6 +140,21 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 		)
 	}
 
+	return s
+}
+
+// NormalizeURLs runs after escape function and normalizes URL back
+// to the original state. For example any underscore in the URL which
+// got escaped by 'EscapeIllegalCharacters' will be reverted back.
+func NormalizeURLs(s string, settings *print.Settings) string {
+	if settings.EscapeCharacters {
+		if urls := xurls.Strict().FindAllString(s, -1); len(urls) > 0 {
+			for _, url := range urls {
+				normalized := strings.Replace(url, "\\", "", -1)
+				s = strings.Replace(s, url, normalized, -1)
+			}
+		}
+	}
 	return s
 }
 

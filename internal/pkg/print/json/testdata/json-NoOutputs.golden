@@ -90,6 +90,12 @@
       "type": "string",
       "description": "The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.",
       "default": "\"VALUE_WITH_UNDERSCORE\""
+    },
+    {
+      "name": "with-url",
+      "type": "string",
+      "description": "The description contains url. https://www.domain.com/foo/bar_baz.html",
+      "default": "\"\""
     }
   ],
   "outputs": [],

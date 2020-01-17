@@ -144,6 +144,9 @@ generates the following output:
     input.unquoted (required)
     n/a
 
+    input.with-url ("")
+    The description contains url. https://www.domain.com/foo/bar_baz.html
+
 
 
     output.output-0.12

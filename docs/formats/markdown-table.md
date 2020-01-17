@@ -87,6 +87,7 @@ generates the following output:
     | string-2 | It's string number two. | `string` | n/a | yes |
     | string-3 | n/a | `string` | `""` | no |
     | unquoted | n/a | `any` | n/a | yes |
+    | with-url | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` | no |
 
     ## Outputs
 
