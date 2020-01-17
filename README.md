@@ -21,7 +21,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="off" go get github.com/segmentio/terraform-docs@v0.7.0
+GO111MODULE="off" go get github.com/segmentio/terraform-docs@v0.8.0
 ```
 
 If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
@@ -41,7 +41,7 @@ $(go env GOPATH)/src/github.com/segmentio/terraform-docs/bin/$(uname | tr '[:upp
 Stable binaries are also available on the [releases](https://github.com/segmentio/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.7.0/terraform-docs-$(uname)-amd64
+curl -Lo ./terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.8.0/terraform-docs-$(uname)-amd64
 chmod +x ./terraform-docs
 mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
