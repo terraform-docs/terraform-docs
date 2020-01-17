@@ -4,6 +4,8 @@
 ## [Unreleased]
 
 ### Bug Fixes
+- Do not escape any characters of a URL ([#170](https://github.com/segmentio/terraform-docs/issues/170))
+- Add double space at the end of multi-lines paragraph ([#169](https://github.com/segmentio/terraform-docs/issues/169))
 - Show empty JSON properties, as 'null' for all types ([#166](https://github.com/segmentio/terraform-docs/issues/166))
 - Show all JSON properties, empty or null ([#160](https://github.com/segmentio/terraform-docs/issues/160))
 - Do not escape strings inside code blocks ([#155](https://github.com/segmentio/terraform-docs/issues/155))
@@ -15,6 +17,7 @@
 - Move doc.Doc to tfconf.Module ([#136](https://github.com/segmentio/terraform-docs/issues/136))
 
 ### Documentation
+- Initial commit of usage documentation ([#162](https://github.com/segmentio/terraform-docs/issues/162))
 - Deprecate accepting files as commands param ([#163](https://github.com/segmentio/terraform-docs/issues/163))
 - Update Module internal documentaion
 
