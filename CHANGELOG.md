@@ -3,6 +3,11 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+
+
+<a name="v0.8.0"></a>
+## [v0.8.0] - 2020-01-17
+
 ### Bug Fixes
 - Do not escape any characters of a URL ([#170](https://github.com/segmentio/terraform-docs/issues/170))
 - Add double space at the end of multi-lines paragraph ([#169](https://github.com/segmentio/terraform-docs/issues/169))
@@ -273,7 +278,8 @@ the second release from now.
 - Initial commit
 
 
-[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.8.0...HEAD
+[v0.8.0]: https://github.com/segmentio/terraform-docs/compare/v0.7.0...v0.8.0
 [v0.7.0]: https://github.com/segmentio/terraform-docs/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/segmentio/terraform-docs/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/segmentio/terraform-docs/compare/v0.4.5...v0.5.0
