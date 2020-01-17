@@ -23,6 +23,9 @@ func Sanitize(markdown string) string {
 	// Preserve double spaces at the end of the line
 	result = regexp.MustCompile(`‡‡(\r?\n)`).ReplaceAllString(result, "  $1")
 
+	// Remove blank line with only double spaces in it
+	result = regexp.MustCompile(`(\r?\n)  (\r?\n)`).ReplaceAllString(result, "$1")
+
 	// Remove multiple consecutive blank lines
 	result = regexp.MustCompile(`(\r?\n){3,}`).ReplaceAllString(result, "$1$1")
 	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "$1")
@@ -93,6 +96,11 @@ func ConvertMultiLineText(s string, convertDoubleSpaces bool) string {
 		"<br><br>",
 		-1,
 	)
+
+	// Convert linebreak followed by another line into space-space-newline
+	// which is a know convention of Markdown for multiline paragprah.
+	s = strings.Replace(s, "\n", "  \n", -1)
+	s = strings.Replace(s, "    \n", "  \n", -1)
 
 	if convertDoubleSpaces {
 		// Convert space-space-newline to <br>
