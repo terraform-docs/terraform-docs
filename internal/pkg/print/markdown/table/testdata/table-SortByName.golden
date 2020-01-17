@@ -47,6 +47,7 @@ module "foo_bar" {
 | string-2 | It's string number two. | `string` | n/a |
 | string-3 | n/a | `string` | `""` |
 | unquoted | n/a | `any` | n/a |
+| with-url | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` |
 
 ## Outputs
 

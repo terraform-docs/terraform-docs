@@ -249,6 +249,14 @@ generates the following output:
 
     Default: `""`
 
+    ### with-url
+
+    Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+
+    Type: `string`
+
+    Default: `""`
+
     ## Outputs
 
     The following outputs are exported:

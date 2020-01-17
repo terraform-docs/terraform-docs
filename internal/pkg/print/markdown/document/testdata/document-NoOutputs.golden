@@ -214,3 +214,11 @@ Description: The description contains `something_with_underscore`. Defaults to '
 Type: `string`
 
 Default: `"VALUE_WITH_UNDERSCORE"`
+
+### with-url
+
+Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+
+Type: `string`
+
+Default: `""`

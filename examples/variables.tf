@@ -105,3 +105,8 @@ variable "no-escape-default-value" {
   description = "The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'."
   default     = "VALUE_WITH_UNDERSCORE"
 }
+
+variable "with-url" {
+  description = "The description contains url. https://www.domain.com/foo/bar_baz.html"
+  default     = ""
+}
