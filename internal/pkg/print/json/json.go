@@ -9,11 +9,6 @@ import (
 	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 )
 
-const (
-	indent string = "  "
-	prefix string = ""
-)
-
 // Print prints a document as json.
 func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	module.Sort(settings)
@@ -41,7 +36,7 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	buffer := new(bytes.Buffer)
 
 	encoder := json.NewEncoder(buffer)
-	encoder.SetIndent(prefix, indent)
+	encoder.SetIndent("", "  ")
 	encoder.SetEscapeHTML(settings.EscapeCharacters)
 
 	err := encoder.Encode(copy)

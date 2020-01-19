@@ -48,7 +48,7 @@ followed by another line of text.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | unquoted | n/a | `any` | n/a | yes |
 | string-3 | n/a | `string` | `""` | no |
 | string-2 | It's string number two. | `string` | n/a | yes |

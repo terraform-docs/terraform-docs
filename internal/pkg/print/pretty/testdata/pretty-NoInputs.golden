@@ -1,42 +1,42 @@
 
 
-[90mUsage:[0m
-[90m[0m
-[90mExample of 'foo_bar' module in `foo_bar.tf`.[0m
-[90m[0m
-[90m- list item 1[0m
-[90m- list item 2[0m
-[90m[0m
-[90mEven inline **formatting** in _here_ is possible.[0m
-[90mand some [link](https://domain.com/)[0m
-[90m[0m
-[90m* list item 3[0m
-[90m* list item 4[0m
-[90m[0m
-[90m```hcl[0m
-[90mmodule "foo_bar" {[0m
-[90m  source = "github.com/foo/bar"[0m
-[90m[0m
-[90m  id   = "1234567890"[0m
-[90m  name = "baz"[0m
-[90m[0m
-[90m  zones = ["us-east-1", "us-west-1"][0m
-[90m[0m
-[90m  tags = {[0m
-[90m    Name         = "baz"[0m
-[90m    Created-By   = "first.last@email.com"[0m
-[90m    Date-Created = "20180101"[0m
-[90m  }[0m
-[90m}[0m
-[90m```[0m
-[90m[0m
-[90mHere is some trailing text after code block,[0m
-[90mfollowed by another line of text.[0m
-[90m[0m
-[90m| Name | Description     |[0m
-[90m|------|-----------------|[0m
-[90m| Foo  | Foo description |[0m
-[90m| Bar  | Bar description |[0m
+[90mUsage:
+
+Example of 'foo_bar' module in `foo_bar.tf`.
+
+- list item 1
+- list item 2
+
+Even inline **formatting** in _here_ is possible.
+and some [link](https://domain.com/)
+
+* list item 3
+* list item 4
+
+```hcl
+module "foo_bar" {
+  source = "github.com/foo/bar"
+
+  id   = "1234567890"
+  name = "baz"
+
+  zones = ["us-east-1", "us-west-1"]
+
+  tags = {
+    Name         = "baz"
+    Created-By   = "first.last@email.com"
+    Date-Created = "20180101"
+  }
+}
+```
+
+Here is some trailing text after code block,
+followed by another line of text.
+
+| Name | Description     |
+|------|-----------------|
+| Foo  | Foo description |
+| Bar  | Bar description |[0m
 
 
 
