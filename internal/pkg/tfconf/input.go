@@ -1,17 +1,30 @@
 package tfconf
 
+import (
+	"encoding/json"
+)
+
 // Input represents a Terraform input.
 type Input struct {
-	Name        string   `json:"name"`
-	Type        String   `json:"type"`
-	Description String   `json:"description"`
-	Default     String   `json:"default"`
-	Position    Position `json:"-"`
+	Name        string      `json:"name"`
+	Type        String      `json:"type"`
+	Description String      `json:"description"`
+	Default     interface{} `json:"default"`
+	Position    Position    `json:"-"`
+}
+
+// ValueOf returns JSON representation of the 'Default' value, which is an 'interface'.
+func ValueOf(v interface{}) string {
+	marshaled, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+	return string(marshaled)
 }
 
 // HasDefault indicates if a Terraform variable has a default value set.
 func (i *Input) HasDefault() bool {
-	return i.Default != ""
+	return i.Default != nil
 }
 
 type inputsSortedByName []*Input

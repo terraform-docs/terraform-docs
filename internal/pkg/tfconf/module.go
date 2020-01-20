@@ -1,7 +1,6 @@
 package tfconf
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"sort"
@@ -81,17 +80,7 @@ func CreateModule(path string) (*Module, error) {
 		inputType := input.Type
 		if input.Type == "" {
 			inputType = "any"
-		}
-
-		var defaultValue string
-		if input.Default != nil {
-			marshaled, err := json.MarshalIndent(input.Default, "", "  ")
-			if err != nil {
-				return nil, err
-			}
-			defaultValue = string(marshaled)
-
-			if inputType == "any" {
+			if input.Default != nil {
 				switch xType := fmt.Sprintf("%T", input.Default); xType {
 				case "string":
 					inputType = "string"
@@ -116,7 +105,7 @@ func CreateModule(path string) (*Module, error) {
 			Name:        input.Name,
 			Type:        String(inputType),
 			Description: String(inputDescription),
-			Default:     String(defaultValue),
+			Default:     input.Default,
 			Position: Position{
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,
