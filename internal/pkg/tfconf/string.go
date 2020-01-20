@@ -9,14 +9,19 @@ import (
 // JSON marshaled to `null` when empty
 type String string
 
+// String returns s as an actual string value
+func (s String) String() string {
+	return string(s)
+}
+
 // MarshalJSON custom marshal function which
 // sets the value to literal `null` when empty
-func (s String) MarshalJSON() ([]byte, error) {
+func (s *String) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
-	if len(string(s)) == 0 {
+	if len(s.String()) == 0 {
 		buf.WriteString(`null`)
 	} else {
-		normalize := string(s)
+		normalize := s.String()
 		normalize = strings.Replace(normalize, "\n", "\\n", -1)
 		normalize = strings.Replace(normalize, "\"", "\\\"", -1)
 		buf.WriteString(`"` + normalize + `"`) // add double quation mark as json format required

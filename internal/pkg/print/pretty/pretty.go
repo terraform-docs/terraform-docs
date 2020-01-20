@@ -43,7 +43,7 @@ func getInputDefaultValue(input *tfconf.Input, settings *print.Settings) string 
 	var result = "required"
 
 	if input.HasDefault() {
-		result = string(input.Default)
+		result = tfconf.ValueOf(input.Default)
 	}
 
 	return result
@@ -117,7 +117,7 @@ func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.S
 				format,
 				input.Name,
 				getInputDefaultValue(input, settings),
-				getDescription(string(input.Description)),
+				getDescription(input.Description.String()),
 			),
 		)
 	}
@@ -137,7 +137,7 @@ func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *prin
 			fmt.Sprintf(
 				format,
 				output.Name,
-				getDescription(string(output.Description)),
+				getDescription(output.Description.String()),
 			),
 		)
 	}

@@ -34,13 +34,13 @@ func Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 func getProviderVersion(provider *tfconf.Provider) string {
 	var result = "n/a"
 	if provider.Version != "" {
-		result = string(provider.Version)
+		result = provider.Version.String()
 	}
 	return result
 }
 
 func getInputType(input *tfconf.Input) string {
-	inputType, _ := markdown.PrintFencedCodeBlock(string(input.Type), "")
+	inputType, _ := markdown.PrintFencedCodeBlock(input.Type.String(), "")
 	return inputType
 }
 
@@ -48,7 +48,7 @@ func getInputValue(input *tfconf.Input) string {
 	var result = "n/a"
 
 	if input.HasDefault() {
-		result, _ = markdown.PrintFencedCodeBlock(string(input.Default), "")
+		result, _ = markdown.PrintFencedCodeBlock(tfconf.ValueOf(input.Default), "")
 	}
 	return result
 }
@@ -120,7 +120,7 @@ func printInputs(buffer *bytes.Buffer, inputs []*tfconf.Input, settings *print.S
 			fmt.Sprintf(
 				"| %s | %s | %s | %s |",
 				markdown.SanitizeName(input.Name, settings),
-				markdown.SanitizeItemForTable(string(input.Description), settings),
+				markdown.SanitizeItemForTable(input.Description.String(), settings),
 				markdown.SanitizeItemForTable(getInputType(input), settings),
 				markdown.SanitizeItemForTable(getInputValue(input), settings),
 			),
@@ -151,7 +151,7 @@ func printOutputs(buffer *bytes.Buffer, outputs []*tfconf.Output, settings *prin
 			fmt.Sprintf(
 				"| %s | %s |\n",
 				markdown.SanitizeName(output.Name, settings),
-				markdown.SanitizeItemForTable(string(output.Description), settings),
+				markdown.SanitizeItemForTable(output.Description.String(), settings),
 			),
 		)
 	}
