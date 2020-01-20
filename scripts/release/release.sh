@@ -42,7 +42,19 @@ if [ $(git describe --tags "v${RELEASE_VERSION}" 2>/dev/null) ]; then
 fi
 
 PWD=$(cd $(dirname "$0") && pwd -P)
-CLOSEST_VERSION=$(git describe --tags --abbrev=0)
+
+# get closest GA tag, ignore alpha, beta and rc tags
+function getClosestVersion() {
+    for t in $(git tag --sort=-creatordate); do
+        tag="$t"
+        if [[ $tag == *"-alpha"* || $tag == *"-beta"* || $tag == *"-rc"* ]]; then
+            continue
+        fi
+        break
+    done
+    echo "$tag"
+}
+CLOSEST_VERSION=$(getClosestVersion)
 
 # Bump the released version in README and version.go
 sed -i -E 's|'${CLOSEST_VERSION}'|v'${RELEASE_VERSION}'|g' README.md
@@ -57,7 +69,7 @@ printf "\033[36m==> %s\033[0m\n" "Push commits for v${RELEASE_VERSION}"
 git push origin master
 
 # Generate Changelog
-make --no-print-directory -f ${PWD}/../../Makefile changelog next="--next-tag v${RELEASE_VERSION}"
+make --no-print-directory -f ${PWD}/../../Makefile changelog NEXT="--next-tag v${RELEASE_VERSION}"
 
 # Tag the release
 printf "\033[36m==> %s\033[0m\n" "Tag release v${RELEASE_VERSION}"
