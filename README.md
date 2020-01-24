@@ -81,19 +81,19 @@ Show help information:
 terraform-docs --help
 ```
 
-Generate JSON from the Terraform configuration in folder `./examples`:
+Generate [JSON](docs/formats/json.md) from the Terraform configuration in folder `./examples`:
 
 ```bash
 terraform-docs json ./examples
 ```
 
-Generate Markdown tables from the Terraform configuration in folder `./examples`:
+Generate [Markdown tables](docs/formats/markdown-table.md) from the Terraform configuration in folder `./examples`:
 
 ```bash
 terraform-docs markdown table ./examples
 ```
 
-Generate a Markdown document from the Terraform configuration in folder `./examples`:
+Generate a [Markdown document](docs/formats/markdown-document.md) from the Terraform configuration in folder `./examples`:
 
 ```bash
 terraform-docs markdown document ./examples
