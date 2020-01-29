@@ -59,6 +59,9 @@ generates the following output:
     }
     ```
 
+    Here is some trailing text after code block,
+    followed by another line of text.
+
     ## Providers
 
     The following providers are used by this module:
@@ -113,7 +116,6 @@ generates the following output:
 
     Description: This is a complicated one. We need a newline.
     And an example in a code block
-
     ```
     default     = [
       "machine rack01:neptune"
