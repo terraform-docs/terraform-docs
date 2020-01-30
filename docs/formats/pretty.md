@@ -37,6 +37,15 @@ generates the following output:
 
     Example of 'foo_bar' module in `foo_bar.tf`.
 
+    - list item 1
+    - list item 2
+
+    Even inline **formatting** in _here_ is possible.
+    and some [link](https://domain.com/)
+
+    * list item 3
+    * list item 4
+
     ```
     module "foo_bar" {
         source = "github.com/foo/bar"
