@@ -54,6 +54,9 @@ generates the following output:
     }
     ```
 
+    Here is some trailing text after code block,
+    followed by another line of text.
+
 
 
     provider.aws (>= 2.15.0)

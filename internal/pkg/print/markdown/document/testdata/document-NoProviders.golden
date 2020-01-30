@@ -19,6 +19,9 @@ module "foo_bar" {
 }
 ```
 
+Here is some trailing text after code block,
+followed by another line of text.
+
 ## Inputs
 
 The following input variables are supported:
@@ -139,7 +142,6 @@ Default: `"v1"`
 
 Description: This is a complicated one. We need a newline.  
 And an example in a code block
-
 ```
 default     = [
   "machine rack01:neptune"

@@ -19,6 +19,9 @@
  *   }
  * }
  * ```
+ *
+ * Here is some trailing text after code block,
+ * followed by another line of text.
  */
 
 resource "tls_private_key" "baz" {}

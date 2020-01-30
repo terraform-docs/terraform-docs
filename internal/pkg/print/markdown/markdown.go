@@ -52,16 +52,19 @@ func SanitizeItemForDocument(s string, settings *print.Settings) string {
 	}
 	result := processSegments(
 		s,
-		"\n```",
+		"```",
 		func(segment string) string {
 			segment = ConvertMultiLineText(segment, false)
 			segment = EscapeIllegalCharacters(segment, settings)
 			segment = NormalizeURLs(segment, settings)
-			segment = fmt.Sprintf("%s\n", segment)
 			return segment
 		},
 		func(segment string) string {
-			segment = fmt.Sprintf("\n```%s\n```", segment)
+			lastbreak := ""
+			if !strings.HasSuffix(segment, "\n") {
+				lastbreak = "\n"
+			}
+			segment = fmt.Sprintf("```%s%s```", segment, lastbreak)
 			return segment
 		},
 	)
@@ -76,7 +79,7 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 	}
 	result := processSegments(
 		s,
-		"```\n",
+		"```",
 		func(segment string) string {
 			segment = ConvertMultiLineText(segment, true)
 			segment = EscapeIllegalCharacters(segment, settings)
@@ -84,7 +87,10 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 			return segment
 		},
 		func(segment string) string {
-			segment = fmt.Sprintf("<pre>%s</pre>", strings.Replace(strings.Replace(segment, "\n", "<br>", -1), "\r", "", -1))
+			segment = strings.TrimSpace(segment)
+			segment = strings.Replace(segment, "\n", "<br>", -1)
+			segment = strings.Replace(segment, "\r", "", -1)
+			segment = fmt.Sprintf("<pre>%s</pre>", segment)
 			return segment
 		},
 	)
@@ -92,21 +98,15 @@ func SanitizeItemForTable(s string, settings *print.Settings) string {
 }
 
 // ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
-func ConvertMultiLineText(s string, convertDoubleSpaces bool) string {
+func ConvertMultiLineText(s string, isTable bool) string {
+	if isTable {
+		s = strings.TrimSpace(s)
+	}
+
 	// Convert double newlines to <br><br>.
-	s = strings.Replace(
-		strings.TrimSpace(s),
-		"\n\n",
-		"<br><br>",
-		-1,
-	)
+	s = strings.Replace(s, "\n\n", "<br><br>", -1)
 
-	// Convert linebreak followed by another line into space-space-newline
-	// which is a know convention of Markdown for multiline paragprah.
-	s = strings.Replace(s, "\n", "  \n", -1)
-	s = strings.Replace(s, "    \n", "  \n", -1)
-
-	if convertDoubleSpaces {
+	if isTable {
 		// Convert space-space-newline to <br>
 		s = strings.Replace(s, "  \n", "<br>", -1)
 
