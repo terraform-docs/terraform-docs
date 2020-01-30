@@ -127,10 +127,17 @@ func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 			s,
 			"`",
 			func(segment string) string {
+				escape := func(char string) {
+					segment = strings.Replace(segment, char+char, "‡‡", -1)
+					segment = strings.Replace(segment, " "+char, " ‡", -1)
+					segment = strings.Replace(segment, char+" ", "‡ ", -1)
+					segment = strings.Replace(segment, char, "\\"+char, -1)
+					segment = strings.Replace(segment, "‡", char, -1)
+				}
 				// Escape underscore
-				segment = strings.Replace(segment, "_", "\\_", -1)
+				escape("_")
 				// Escape asterisk
-				segment = strings.Replace(segment, "*", "\\*", -1)
+				escape("*")
 				return segment
 			},
 			func(segment string) string {

@@ -4,6 +4,15 @@
 [90m[0m
 [90mExample of 'foo_bar' module in `foo_bar.tf`.[0m
 [90m[0m
+[90m- list item 1[0m
+[90m- list item 2[0m
+[90m[0m
+[90mEven inline **formatting** in _here_ is possible.[0m
+[90mand some [link](https://domain.com/)[0m
+[90m[0m
+[90m* list item 3[0m
+[90m* list item 4[0m
+[90m[0m
 [90m```hcl[0m
 [90mmodule "foo_bar" {[0m
 [90m  source = "github.com/foo/bar"[0m
