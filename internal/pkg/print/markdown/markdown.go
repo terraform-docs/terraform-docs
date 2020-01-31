@@ -106,6 +106,14 @@ func ConvertMultiLineText(s string, isTable bool) string {
 	// Convert double newlines to <br><br>.
 	s = strings.Replace(s, "\n\n", "<br><br>", -1)
 
+	// Convert line-break on a non-empty line followed by another line
+	// starting with "alphanumeric" word into space-space-newline
+	// which is a know convention of Markdown for multi-lines paragprah.
+	// This doesn't apply on a markdown list for example, because all the
+	// consecutive lines start with hyphen which is a special character.
+	s = regexp.MustCompile(`(\S*)(\r?\n)(\w+)`).ReplaceAllString(s, "$1  $2$3")
+	s = strings.Replace(s, "    \n", "  \n", -1)
+
 	if isTable {
 		// Convert space-space-newline to <br>
 		s = strings.Replace(s, "  \n", "<br>", -1)
