@@ -33,11 +33,11 @@ GOBUILD     ?= CGO_ENABLED=0 $(GOCMD) build $(MODVENDOR) -ldflags $(GOLDFLAGS)
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
 
 # Binary versions
-GITCHGLOG_VERSION := 0.8.0
-GOLANGCI_VERSION  := v1.18.0
+GITCHGLOG_VERSION := 0.9.1
+GOLANGCI_VERSION  := v1.23.1
 
 .PHONY: all
-all: clean deps lint test build
+all: clean verify checkfmt lint test build
 
 #########################
 ## Development targets ##
