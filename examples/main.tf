@@ -31,6 +31,11 @@
  *
  * Here is some trailing text after code block,
  * followed by another line of text.
+ *
+ * | Name | Description     |
+ * |------|-----------------|
+ * | Foo  | Foo description |
+ * | Bar  | Bar description |
  */
 
 resource "tls_private_key" "baz" {}

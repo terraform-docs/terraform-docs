@@ -71,6 +71,11 @@ generates the following output:
     Here is some trailing text after code block,
     followed by another line of text.
 
+    | Name | Description     |
+    |------|-----------------|
+    | Foo  | Foo description |
+    | Bar  | Bar description |
+
     ## Providers
 
     The following providers are used by this module:
