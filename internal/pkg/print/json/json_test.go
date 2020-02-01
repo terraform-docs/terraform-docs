@@ -11,6 +11,7 @@ import (
 func TestJson(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -30,6 +31,7 @@ func TestJsonSortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		SortByName:    true,
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -50,6 +52,7 @@ func TestJsonSortByRequired(t *testing.T) {
 	settings := &print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
+		EscapePipe:     true,
 		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
@@ -68,6 +71,7 @@ func TestJsonSortByRequired(t *testing.T) {
 func TestJsonNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -86,6 +90,7 @@ func TestJsonNoHeader(t *testing.T) {
 func TestJsonNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
@@ -104,6 +109,7 @@ func TestJsonNoProviders(t *testing.T) {
 func TestJsonNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
@@ -122,6 +128,7 @@ func TestJsonNoInputs(t *testing.T) {
 func TestJsonNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -140,6 +147,7 @@ func TestJsonNoOutputs(t *testing.T) {
 func TestJsonOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    false,
@@ -158,6 +166,7 @@ func TestJsonOnlyHeader(t *testing.T) {
 func TestJsonOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
@@ -176,6 +185,7 @@ func TestJsonOnlyProviders(t *testing.T) {
 func TestJsonOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
@@ -194,6 +204,7 @@ func TestJsonOnlyInputs(t *testing.T) {
 func TestJsonOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
@@ -213,6 +224,7 @@ func TestJsonEscapeCharacters(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		EscapeCharacters: true,
+		EscapePipe:       true,
 		ShowHeader:       true,
 		ShowProviders:    true,
 		ShowInputs:       true,

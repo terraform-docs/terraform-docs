@@ -11,6 +11,7 @@ import (
 func TestPretty(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -31,6 +32,7 @@ func TestPrettySortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
 		SortByName:    true,
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -52,6 +54,7 @@ func TestPrettySortByRequired(t *testing.T) {
 	settings := &print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
+		EscapePipe:     true,
 		ShowHeader:     true,
 		ShowProviders:  true,
 		ShowInputs:     true,
@@ -71,8 +74,9 @@ func TestPrettySortByRequired(t *testing.T) {
 func TestPrettyNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
-		ShowProviders: false,
+		EscapePipe:    true,
 		ShowHeader:    false,
+		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
 		ShowColor:     true,
@@ -90,6 +94,7 @@ func TestPrettyNoHeader(t *testing.T) {
 func TestPrettyNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
@@ -109,6 +114,7 @@ func TestPrettyNoProviders(t *testing.T) {
 func TestPrettyNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
@@ -128,6 +134,7 @@ func TestPrettyNoInputs(t *testing.T) {
 func TestPrettyNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
@@ -147,6 +154,7 @@ func TestPrettyNoOutputs(t *testing.T) {
 func TestPrettyOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    false,
@@ -166,6 +174,7 @@ func TestPrettyOnlyHeader(t *testing.T) {
 func TestPrettyOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
@@ -185,6 +194,7 @@ func TestPrettyOnlyProviders(t *testing.T) {
 func TestPrettyOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
@@ -204,6 +214,7 @@ func TestPrettyOnlyInputs(t *testing.T) {
 func TestPrettyOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
@@ -223,6 +234,7 @@ func TestPrettyOnlyOutputs(t *testing.T) {
 func TestPrettyNoColor(t *testing.T) {
 	assert := assert.New(t)
 	settings := &print.Settings{
+		EscapePipe:    true,
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,

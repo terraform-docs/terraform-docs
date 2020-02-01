@@ -2,9 +2,13 @@ package print
 
 // Settings represents all settings
 type Settings struct {
-	// EscapeCharacters escapes special characters (such as | _ * in Markdown and > < in JSON) (default: true)
+	// EscapeCharacters escapes special characters (such as _ * in Markdown and > < in JSON) (default: true)
 	// scope: Markdown
 	EscapeCharacters bool
+
+	// EscapePipe escapes pipe character in Markdown (default: true)
+	// scope: Markdown
+	EscapePipe bool
 
 	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5] (default: 2)
 	// scope: Markdown
@@ -47,6 +51,7 @@ type Settings struct {
 func NewSettings() *Settings {
 	return &Settings{
 		EscapeCharacters: true,
+		EscapePipe:       true,
 		MarkdownIndent:   2,
 		ShowColor:        true,
 		ShowHeader:       true,

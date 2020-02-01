@@ -64,7 +64,9 @@ func printHeader(buffer *bytes.Buffer, header string, settings *print.Settings) 
 	if len(header) == 0 {
 		return
 	}
+	settings.EscapePipe = false
 	buffer.WriteString(fmt.Sprintf("%s", markdown.SanitizeItemForDocument(header, settings)))
+	settings.EscapePipe = true
 	buffer.WriteString("\n\n")
 }
 

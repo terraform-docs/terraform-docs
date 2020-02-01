@@ -128,7 +128,9 @@ func ConvertMultiLineText(s string, isTable bool) string {
 // EscapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
 func EscapeIllegalCharacters(s string, settings *print.Settings) string {
 	// Escape pipe
-	s = strings.Replace(s, "|", "\\|", -1)
+	if settings.EscapePipe {
+		s = strings.Replace(s, "|", "\\|", -1)
+	}
 
 	if settings.EscapeCharacters {
 		s = processSegments(
