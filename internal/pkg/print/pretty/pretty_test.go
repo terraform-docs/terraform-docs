@@ -10,14 +10,7 @@ import (
 
 func TestPretty(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-		ShowColor:     true,
-	}
+	settings := testutil.Settings().WithSections().WithColor().Build()
 
 	module, expected, err := testutil.GetExpected("pretty")
 	assert.Nil(err)
@@ -30,15 +23,9 @@ func TestPretty(t *testing.T) {
 
 func TestPrettySortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		SortByName:    true,
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-		ShowColor:     true,
-	}
+	settings := testutil.Settings().WithSections().WithColor().With(&print.Settings{
+		SortByName: true,
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-SortByName")
 	assert.Nil(err)
@@ -51,16 +38,10 @@ func TestPrettySortByName(t *testing.T) {
 
 func TestPrettySortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().WithColor().With(&print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-		ShowColor:      true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-SortByRequired")
 	assert.Nil(err)
@@ -73,14 +54,12 @@ func TestPrettySortByRequired(t *testing.T) {
 
 func TestPrettyNoHeader(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-NoHeader")
 	assert.Nil(err)
@@ -93,14 +72,12 @@ func TestPrettyNoHeader(t *testing.T) {
 
 func TestPrettyNoProviders(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   true,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-NoProviders")
 	assert.Nil(err)
@@ -113,14 +90,12 @@ func TestPrettyNoProviders(t *testing.T) {
 
 func TestPrettyNoInputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   true,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-NoInputs")
 	assert.Nil(err)
@@ -133,14 +108,12 @@ func TestPrettyNoInputs(t *testing.T) {
 
 func TestPrettyNoOutputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   false,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-NoOutputs")
 	assert.Nil(err)
@@ -153,14 +126,12 @@ func TestPrettyNoOutputs(t *testing.T) {
 
 func TestPrettyOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   false,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-OnlyHeader")
 	assert.Nil(err)
@@ -173,14 +144,12 @@ func TestPrettyOnlyHeader(t *testing.T) {
 
 func TestPrettyOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   false,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-OnlyProviders")
 	assert.Nil(err)
@@ -193,14 +162,12 @@ func TestPrettyOnlyProviders(t *testing.T) {
 
 func TestPrettyOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   false,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-OnlyInputs")
 	assert.Nil(err)
@@ -213,14 +180,12 @@ func TestPrettyOnlyInputs(t *testing.T) {
 
 func TestPrettyOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().WithColor().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   true,
-		ShowColor:     true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-OnlyOutputs")
 	assert.Nil(err)
@@ -233,14 +198,9 @@ func TestPrettyOnlyOutputs(t *testing.T) {
 
 func TestPrettyNoColor(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-		ShowColor:     false,
-	}
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		ShowColor: false,
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("pretty-NoColor")
 	assert.Nil(err)

@@ -10,13 +10,7 @@ import (
 
 func TestDocument(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-	}
+	settings := testutil.Settings().WithSections().Build()
 
 	module, expected, err := testutil.GetExpected("document")
 	assert.Nil(err)
@@ -29,14 +23,9 @@ func TestDocument(t *testing.T) {
 
 func TestDocumentWithRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowRequired:  true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-	}
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		ShowRequired: true,
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-WithRequired")
 	assert.Nil(err)
@@ -49,14 +38,9 @@ func TestDocumentWithRequired(t *testing.T) {
 
 func TestDocumentSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		SortByName:    true,
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-	}
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		SortByName: true,
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-SortByName")
 	assert.Nil(err)
@@ -69,15 +53,10 @@ func TestDocumentSortByName(t *testing.T) {
 
 func TestDocumentSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-SortByRequired")
 	assert.Nil(err)
@@ -90,13 +69,12 @@ func TestDocumentSortByRequired(t *testing.T) {
 
 func TestDocumentNoHeader(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-NoHeader")
 	assert.Nil(err)
@@ -109,13 +87,12 @@ func TestDocumentNoHeader(t *testing.T) {
 
 func TestDocumentNoProviders(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-NoProviders")
 	assert.Nil(err)
@@ -128,13 +105,12 @@ func TestDocumentNoProviders(t *testing.T) {
 
 func TestDocumentNoInputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-NoInputs")
 	assert.Nil(err)
@@ -147,13 +123,12 @@ func TestDocumentNoInputs(t *testing.T) {
 
 func TestDocumentNoOutputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-NoOutputs")
 	assert.Nil(err)
@@ -166,13 +141,12 @@ func TestDocumentNoOutputs(t *testing.T) {
 
 func TestDocumentOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-OnlyHeader")
 	assert.Nil(err)
@@ -185,13 +159,12 @@ func TestDocumentOnlyHeader(t *testing.T) {
 
 func TestDocumentOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-OnlyProviders")
 	assert.Nil(err)
@@ -204,13 +177,12 @@ func TestDocumentOnlyProviders(t *testing.T) {
 
 func TestDocumentOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-OnlyInputs")
 	assert.Nil(err)
@@ -223,13 +195,12 @@ func TestDocumentOnlyInputs(t *testing.T) {
 
 func TestDocumentOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-OnlyOutputs")
 	assert.Nil(err)
@@ -242,14 +213,9 @@ func TestDocumentOnlyOutputs(t *testing.T) {
 
 func TestDocumentEscapeCharacters(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		EscapeCharacters: true,
-		EscapePipe:       true,
-		ShowHeader:       true,
-		ShowProviders:    true,
-		ShowInputs:       true,
-		ShowOutputs:      true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-EscapeCharacters")
 	assert.Nil(err)
@@ -262,14 +228,9 @@ func TestDocumentEscapeCharacters(t *testing.T) {
 
 func TestDocumentIndentationBellowAllowed(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 0,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-IndentationBellowAllowed")
 	assert.Nil(err)
@@ -282,14 +243,9 @@ func TestDocumentIndentationBellowAllowed(t *testing.T) {
 
 func TestDocumentIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 10,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-IndentationAboveAllowed")
 	assert.Nil(err)
@@ -302,14 +258,9 @@ func TestDocumentIndentationAboveAllowed(t *testing.T) {
 
 func TestDocumentIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 4,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("document-IndentationOfFour")
 	assert.Nil(err)

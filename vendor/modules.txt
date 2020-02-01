@@ -29,6 +29,8 @@ github.com/hashicorp/hcl/v2/hclwrite
 github.com/hashicorp/hcl/v2/json
 # github.com/hashicorp/terraform-config-inspect v0.0.0-20191212124732-c6ae6269b9d7
 github.com/hashicorp/terraform-config-inspect/tfconfig
+# github.com/imdario/mergo v0.3.8
+github.com/imdario/mergo
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
 # github.com/mitchellh/go-wordwrap v1.0.0

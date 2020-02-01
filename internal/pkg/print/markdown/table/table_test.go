@@ -10,13 +10,7 @@ import (
 
 func TestTable(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-	}
+	settings := testutil.Settings().WithSections().Build()
 
 	module, expected, err := testutil.GetExpected("table")
 	assert.Nil(err)
@@ -29,14 +23,9 @@ func TestTable(t *testing.T) {
 
 func TestTableWithRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		ShowRequired:  true,
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-	}
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		ShowRequired: true,
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-WithRequired")
 	assert.Nil(err)
@@ -49,14 +38,9 @@ func TestTableWithRequired(t *testing.T) {
 
 func TestTableSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		SortByName:    true,
-		EscapePipe:    true,
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-	}
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		SortByName: true,
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-SortByName")
 	assert.Nil(err)
@@ -69,15 +53,10 @@ func TestTableSortByName(t *testing.T) {
 
 func TestTableSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-SortByRequired")
 	assert.Nil(err)
@@ -90,13 +69,12 @@ func TestTableSortByRequired(t *testing.T) {
 
 func TestTableNoHeader(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-NoHeader")
 	assert.Nil(err)
@@ -109,13 +87,12 @@ func TestTableNoHeader(t *testing.T) {
 
 func TestTableNoProviders(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-NoProviders")
 	assert.Nil(err)
@@ -128,13 +105,12 @@ func TestTableNoProviders(t *testing.T) {
 
 func TestTableNoInputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-NoInputs")
 	assert.Nil(err)
@@ -147,13 +123,12 @@ func TestTableNoInputs(t *testing.T) {
 
 func TestTableNoOutputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: true,
 		ShowInputs:    true,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-NoOutputs")
 	assert.Nil(err)
@@ -166,13 +141,12 @@ func TestTableNoOutputs(t *testing.T) {
 
 func TestTableOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    true,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-OnlyHeader")
 	assert.Nil(err)
@@ -185,13 +159,12 @@ func TestTableOnlyHeader(t *testing.T) {
 
 func TestTableOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: true,
 		ShowInputs:    false,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-OnlyProviders")
 	assert.Nil(err)
@@ -204,13 +177,12 @@ func TestTableOnlyProviders(t *testing.T) {
 
 func TestTableOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    true,
 		ShowOutputs:   false,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-OnlyInputs")
 	assert.Nil(err)
@@ -223,13 +195,12 @@ func TestTableOnlyInputs(t *testing.T) {
 
 func TestTableOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
-		EscapePipe:    true,
+	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
 		ShowProviders: false,
 		ShowInputs:    false,
 		ShowOutputs:   true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-OnlyOutputs")
 	assert.Nil(err)
@@ -242,14 +213,9 @@ func TestTableOnlyOutputs(t *testing.T) {
 
 func TestTableEscapeCharacters(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		EscapeCharacters: true,
-		EscapePipe:       true,
-		ShowHeader:       true,
-		ShowProviders:    true,
-		ShowInputs:       true,
-		ShowOutputs:      true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-EscapeCharacters")
 	assert.Nil(err)
@@ -262,14 +228,9 @@ func TestTableEscapeCharacters(t *testing.T) {
 
 func TestTableIndentationBellowAllowed(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 0,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-IndentationBellowAllowed")
 	assert.Nil(err)
@@ -282,14 +243,9 @@ func TestTableIndentationBellowAllowed(t *testing.T) {
 
 func TestTableIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 10,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-IndentationAboveAllowed")
 	assert.Nil(err)
@@ -302,14 +258,9 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 
 func TestTableIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
-	settings := &print.Settings{
+	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 4,
-		EscapePipe:     true,
-		ShowHeader:     true,
-		ShowProviders:  true,
-		ShowInputs:     true,
-		ShowOutputs:    true,
-	}
+	}).Build()
 
 	module, expected, err := testutil.GetExpected("table-IndentationOfFour")
 	assert.Nil(err)
