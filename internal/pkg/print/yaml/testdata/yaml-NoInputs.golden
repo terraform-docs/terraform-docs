@@ -1,0 +1,61 @@
+header: |-
+  Usage:
+
+  Example of 'foo_bar' module in `foo_bar.tf`.
+
+  - list item 1
+  - list item 2
+
+  Even inline **formatting** in _here_ is possible.
+  and some [link](https://domain.com/)
+
+  * list item 3
+  * list item 4
+
+  ```hcl
+  module "foo_bar" {
+    source = "github.com/foo/bar"
+
+    id   = "1234567890"
+    name = "baz"
+
+    zones = ["us-east-1", "us-west-1"]
+
+    tags = {
+      Name         = "baz"
+      Created-By   = "first.last@email.com"
+      Date-Created = "20180101"
+    }
+  }
+  ```
+
+  Here is some trailing text after code block,
+  followed by another line of text.
+
+  | Name | Description     |
+  |------|-----------------|
+  | Foo  | Foo description |
+  | Bar  | Bar description |
+inputs: []
+outputs:
+- name: unquoted
+  description: It's unquoted output.
+- name: output-2
+  description: It's output number two.
+- name: output-1
+  description: It's output number one.
+- name: output-0.12
+  description: terraform 0.12 only
+providers:
+- name: tls
+  alias: ""
+  version: ""
+- name: aws
+  alias: ""
+  version: '>= 2.15.0'
+- name: aws
+  alias: ident
+  version: '>= 2.15.0'
+- name: "null"
+  alias: ""
+  version: ""

@@ -6,11 +6,11 @@ import (
 
 // Input represents a Terraform input.
 type Input struct {
-	Name        string      `json:"name"`
-	Type        String      `json:"type"`
-	Description String      `json:"description"`
-	Default     interface{} `json:"default"`
-	Position    Position    `json:"-"`
+	Name        string      `json:"name" yaml:"name"`
+	Type        String      `json:"type" yaml:"type"`
+	Description String      `json:"description" yaml:"description"`
+	Default     interface{} `json:"default" yaml:"default"`
+	Position    Position    `json:"-" yaml:"-"`
 }
 
 // ValueOf returns JSON representation of the 'Default' value, which is an 'interface'.

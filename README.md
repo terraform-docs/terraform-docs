@@ -87,6 +87,12 @@ Generate JSON from the Terraform configuration in folder `./examples`:
 terraform-docs json ./examples
 ```
 
+Generate YAML from the Terraform configuration in folder `./examples`:
+
+```bash
+terraform-docs yaml ./examples
+```
+
 Generate Markdown tables from the Terraform configuration in folder `./examples`:
 
 ```bash
