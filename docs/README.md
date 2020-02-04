@@ -15,6 +15,7 @@ Available Commands:
   markdown    Generate Markdown of inputs and outputs
   pretty      Generate a colorized pretty of inputs and outputs
   version     Print the version number of terraform-docs
+  yaml        Generate a YAML of inputs and outputs
 
 Flags:
   -h, --help                           help for terraform-docs
@@ -40,6 +41,7 @@ The following output formats are available:
   - [Document](/docs/formats/markdown-document.md)
   - [Table](/docs/formats/markdown-table.md)
 - [Pretty](/docs/formats/pretty.md)
+- [YAML](/docs/formats/yaml.md)
 
 ## Terraform Versions
 

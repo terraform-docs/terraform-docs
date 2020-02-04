@@ -54,7 +54,7 @@ github.com/zclconf/go-cty/cty/set
 # golang.org/x/text v0.3.2
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
-# gopkg.in/yaml.v2 v2.2.2
+# gopkg.in/yaml.v2 v2.2.8
 gopkg.in/yaml.v2
 # mvdan.cc/xurls/v2 v2.1.0
 mvdan.cc/xurls/v2

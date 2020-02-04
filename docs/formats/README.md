@@ -7,3 +7,4 @@ The following output formats are available:
   - [Document](/docs/formats/markdown-document.md)
   - [Table](/docs/formats/markdown-table.md)
 - [Pretty](/docs/formats/pretty.md)
+- [YAML](/docs/formats/yaml.md)

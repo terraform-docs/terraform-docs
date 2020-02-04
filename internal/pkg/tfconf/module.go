@@ -16,12 +16,12 @@ import (
 // - Outputs   ('outputs' json key):   List of 'outputs' extracted from Terraform module .tf files
 // - Providers ('providers' json key): List of 'providers' extracted from resources used in Terraform module
 type Module struct {
-	Header         string      `json:"header"`
-	Inputs         []*Input    `json:"inputs"`
-	Outputs        []*Output   `json:"outputs"`
-	Providers      []*Provider `json:"providers"`
-	RequiredInputs []*Input    `json:"-"`
-	OptionalInputs []*Input    `json:"-"`
+	Header         string      `json:"header" yaml:"header"`
+	Inputs         []*Input    `json:"inputs" yaml:"inputs"`
+	Outputs        []*Output   `json:"outputs" yaml:"outputs"`
+	Providers      []*Provider `json:"providers" yaml:"providers"`
+	RequiredInputs []*Input    `json:"-" yaml:"-"`
+	OptionalInputs []*Input    `json:"-" yaml:"-"`
 }
 
 // HasInputs indicates if the document has inputs.

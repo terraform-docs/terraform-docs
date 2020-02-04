@@ -2,9 +2,9 @@ package tfconf
 
 // Output represents a Terraform output.
 type Output struct {
-	Name        string   `json:"name"`
-	Description String   `json:"description"`
-	Position    Position `json:"-"`
+	Name        string   `json:"name" yaml:"name"`
+	Description String   `json:"description" yaml:"description"`
+	Position    Position `json:"-" yaml:"-"`
 }
 
 type outputsSortedByName []*Output
