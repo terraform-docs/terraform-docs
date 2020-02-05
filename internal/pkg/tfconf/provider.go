@@ -12,8 +12,8 @@ type Provider struct {
 	Position Position `json:"-" yaml:"-"`
 }
 
-// GetName returns full name of the provider, with alias if available
-func (p *Provider) GetName() string {
+// FullName returns full name of the provider, with alias if available
+func (p *Provider) FullName() string {
 	if p.Alias != "" {
 		return fmt.Sprintf("%s.%s", p.Name, p.Alias)
 	}
