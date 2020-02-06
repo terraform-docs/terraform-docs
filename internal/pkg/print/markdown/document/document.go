@@ -94,7 +94,10 @@ const (
 				{{ indent 1 }} {{ name .Name }}
 
 				Description: {{ tostring .Description | sanitizeDoc }}
-			{{- end }}
+				{{ if $.Settings.OutputValues }} 
+					Value: {{ .Value | sanitizeDoc }}
+				{{ end }}
+			{{ end }}
 		{{ end }}
 	{{ end -}}
 	`

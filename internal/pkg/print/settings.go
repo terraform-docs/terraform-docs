@@ -14,6 +14,10 @@ type Settings struct {
 	// scope: Markdown
 	MarkdownIndent int
 
+	// OutputValues inject output values from `terraform output --json` into outputs (default: false)
+	// scopt: Global
+	OutputValues bool
+
 	// ShowColor print "colorized" version of result in the terminal (default: true)
 	// scope: Pretty
 	ShowColor bool
@@ -53,6 +57,7 @@ func NewSettings() *Settings {
 		EscapeCharacters: true,
 		EscapePipe:       true,
 		MarkdownIndent:   2,
+		OutputValues:     false,
 		ShowColor:        true,
 		ShowHeader:       true,
 		ShowInputs:       true,

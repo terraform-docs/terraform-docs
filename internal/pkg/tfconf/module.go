@@ -1,7 +1,9 @@
 package tfconf
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"sort"
 	"strings"
@@ -67,7 +69,7 @@ func (m *Module) Sort(settings *print.Settings) {
 
 // CreateModule returns new instance of Module with all the inputs and
 // outputs dircoverd from provided 'path' containing Terraform config
-func CreateModule(path string) (*Module, error) {
+func CreateModule(path string, outputValuesPath string) (*Module, error) {
 	mod := loadModule(path)
 
 	header := readHeader(path)
@@ -120,20 +122,43 @@ func CreateModule(path string) (*Module, error) {
 		}
 	}
 
+	var terraformOutputs map[string]*TerraformOutput
+	if outputValuesPath != "" {
+		byteValue, err := ioutil.ReadFile(outputValuesPath)
+		if err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", outputValuesPath, err)
+		}
+		if err := json.Unmarshal(byteValue, &terraformOutputs); err != nil {
+			return nil, err
+		}
+	}
+
 	var outputs = make([]*Output, 0, len(mod.Outputs))
 	for _, output := range mod.Outputs {
 		outputDescription := output.Description
 		if outputDescription == "" {
 			outputDescription = readComment(output.Pos.Filename, output.Pos.Line-1)
 		}
-		outputs = append(outputs, &Output{
-			Name:        output.Name,
-			Description: String(outputDescription),
-			Position: Position{
-				Filename: output.Pos.Filename,
-				Line:     output.Pos.Line,
-			},
-		})
+		if outputValuesPath != "" {
+			outputs = append(outputs, &Output{
+				Name:        output.Name,
+				Description: String(outputDescription),
+				Value:       terraformOutputs[output.Name].Value,
+				Position: Position{
+					Filename: output.Pos.Filename,
+					Line:     output.Pos.Line,
+				},
+			})
+		} else {
+			outputs = append(outputs, &Output{
+				Name:        output.Name,
+				Description: String(outputDescription),
+				Position: Position{
+					Filename: output.Pos.Filename,
+					Line:     output.Pos.Line,
+				},
+			})
+		}
 	}
 
 	var providerSet = loadProviders(mod.RequiredProviders, mod.ManagedResources, mod.DataResources)

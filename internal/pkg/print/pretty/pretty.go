@@ -53,6 +53,7 @@ const (
 			{{- range . }}
 				{{ printf "output.%s" .Name | colorize "\033[36m" }}
 				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
+				{{ if $.Settings.OutputValues }}{{ .Value | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}{{ end}}
 			{{ end }}
 		{{ end -}}
 	{{ end -}}

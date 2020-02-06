@@ -1,0 +1,23 @@
+{
+    "output-0.12": {
+      "sensitive": false,
+      "type": "string",
+      "value": ""
+    },
+    "output-1": {
+      "sensitive": false,
+      "type": "string",
+      "value": "1"
+    },
+    "output-2": {
+      "sensitive": false,
+      "type": "string",
+      "value": "2"
+    },
+    "unquoted": {
+      "sensitive": false,
+      "type": "string",
+      "value": ""
+    }
+  }
+  
