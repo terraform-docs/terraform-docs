@@ -95,7 +95,7 @@ const (
 
 				Description: {{ tostring .Description | sanitizeDoc }}
 				{{ if $.Settings.OutputValues }} 
-					Value: {{ .Value | sanitizeDoc }}
+					Value: {{ .Value | sanitizeInterface | sanitizeDoc }}
 				{{ end }}
 			{{ end }}
 		{{ end }}

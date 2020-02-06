@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
+	"os/exec"
 	"sort"
 	"strings"
 
@@ -70,7 +72,7 @@ func (m *Module) Sort(settings *print.Settings) {
 }
 
 // CreateModule returns new instance of Module with all the inputs and
-// outputs dircoverd from provided 'path' containing Terraform config
+// outputs discovered from provided 'path' containing Terraform config
 func CreateModule(options *Options) (*Module, error) {
 	mod := loadModule(options.Path)
 
@@ -124,24 +126,35 @@ func CreateModule(options *Options) (*Module, error) {
 		}
 	}
 
-	var terraformOutputs map[string]*TerraformOutput
-	if outputValuesPath != "" {
-		byteValue, err := ioutil.ReadFile(outputValuesPath)
+	options.OutputValuesPath = os.Getenv("FOO")
+	// if OutputValuesPath is empty, set the default and generate the file
+	if options.OutputValues && options.OutputValuesPath == "" {
+		os.Setenv("FOO", "terraform-outputs.json")
+		_, err := exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
 		if err != nil {
-			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", outputValuesPath, err)
+			fmt.Println(fmt.Errorf("encountered an error while running the command 'terraform output --json': %v", err))
+		}
+	}
+
+	var terraformOutputs map[string]*TerraformOutput
+	if options.OutputValues {
+		byteValue, err := ioutil.ReadFile(options.OutputValuesPath)
+		if err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
 		}
 		if err := json.Unmarshal(byteValue, &terraformOutputs); err != nil {
 			return nil, err
 		}
 	}
 
+	// output module
 	var outputs = make([]*Output, 0, len(mod.Outputs))
 	for _, output := range mod.Outputs {
 		outputDescription := output.Description
 		if outputDescription == "" {
 			outputDescription = readComment(output.Pos.Filename, output.Pos.Line-1)
 		}
-		if outputValuesPath != "" {
+		if options.OutputValues {
 			outputs = append(outputs, &Output{
 				Name:        output.Name,
 				Description: String(outputDescription),

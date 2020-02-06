@@ -11,7 +11,6 @@ import (
 )
 
 var settings = print.NewSettings()
-var outputValuesPath string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -36,8 +35,6 @@ var rootCmd = &cobra.Command{
 		settings.ShowInputs = !noinputs
 		settings.ShowOutputs = !nooutputs
 
-		settings.OutputValues = outputValuesPath != ""
-
 		settings.ShowColor = !nocolor
 		settings.SortByName = !nosort
 		settings.ShowRequired = !norequired
@@ -54,7 +51,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "do no sort items")
 	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first")
 
-	rootCmd.PersistentFlags().StringVar(&outputValuesPath, "output-values", "", "inject output values from `terraform output --json` into outputs")
+	rootCmd.PersistentFlags().BoolVar(&settings.OutputValues, "output-values", false, "inject output values into outputs")
 
 	//-----------------------------
 	// deprecated - will be removed
@@ -93,7 +90,8 @@ func FormatterCmds() []*cobra.Command {
 
 func doPrint(path string, fn func(*tfconf.Module) (string, error)) {
 	options := &tfconf.Options{
-		Path: path,
+		Path:         path,
+		OutputValues: settings.OutputValues,
 	}
 	module, err := tfconf.CreateModule(options)
 	if err != nil {
