@@ -6,14 +6,14 @@ import (
 
 // Provider represents a Terraform output.
 type Provider struct {
-	Name     string   `json:"name"`
-	Alias    String   `json:"alias"`
-	Version  String   `json:"version"`
-	Position Position `json:"-"`
+	Name     string   `json:"name" yaml:"name"`
+	Alias    String   `json:"alias" yaml:"alias"`
+	Version  String   `json:"version" yaml:"version"`
+	Position Position `json:"-" yaml:"-"`
 }
 
-// GetName returns full name of the provider, with alias if available
-func (p *Provider) GetName() string {
+// FullName returns full name of the provider, with alias if available
+func (p *Provider) FullName() string {
 	if p.Alias != "" {
 		return fmt.Sprintf("%s.%s", p.Name, p.Alias)
 	}

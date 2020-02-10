@@ -21,7 +21,7 @@ This project is no longer maintained by Segment. Instead, [Martin Etmajer](https
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="off" go get github.com/segmentio/terraform-docs@v0.8.1
+GO111MODULE="off" go get github.com/segmentio/terraform-docs@v0.8.2
 ```
 
 If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
@@ -41,7 +41,7 @@ $(go env GOPATH)/src/github.com/segmentio/terraform-docs/bin/$(uname | tr '[:upp
 Stable binaries are also available on the [releases](https://github.com/segmentio/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.8.1/terraform-docs-v0.8.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.8.2/terraform-docs-v0.8.2-$(uname | tr '[:upper:]' '[:lower:]')-amd64
 chmod +x ./terraform-docs
 mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
@@ -85,6 +85,12 @@ Generate [JSON](docs/formats/json.md) from the Terraform configuration in folder
 
 ```bash
 terraform-docs json ./examples
+```
+
+Generate [YAML](docs/formats/yaml.md) from the Terraform configuration in folder `./examples`:
+
+```bash
+terraform-docs yaml ./examples
 ```
 
 Generate [Markdown tables](docs/formats/markdown-table.md) from the Terraform configuration in folder `./examples`:

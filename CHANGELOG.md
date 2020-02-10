@@ -5,6 +5,16 @@
 
 
 
+<a name="v0.8.2"></a>
+## [v0.8.2] - 2020-02-03
+
+### Bug Fixes
+- Do not escape markdown table inside module header ([#186](https://github.com/segmentio/terraform-docs/issues/186))
+- Add double space only at the end of paragraph lines ([#185](https://github.com/segmentio/terraform-docs/issues/185))
+- Preserve asterisk list in header and fix escaping ([#179](https://github.com/segmentio/terraform-docs/issues/179))
+- Add newline between code block and trailing lines ([#184](https://github.com/segmentio/terraform-docs/issues/184))
+
+
 <a name="v0.8.1"></a>
 ## [v0.8.1] - 2020-01-21
 
@@ -285,7 +295,8 @@ the second release from now.
 - Initial commit
 
 
-[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.8.2...HEAD
+[v0.8.2]: https://github.com/segmentio/terraform-docs/compare/v0.8.1...v0.8.2
 [v0.8.1]: https://github.com/segmentio/terraform-docs/compare/v0.8.0...v0.8.1
 [v0.8.0]: https://github.com/segmentio/terraform-docs/compare/v0.7.0...v0.8.0
 [v0.7.0]: https://github.com/segmentio/terraform-docs/compare/v0.6.0...v0.7.0

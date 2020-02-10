@@ -26,8 +26,10 @@ func readHeader(path string) string {
 			if strings.HasPrefix(line, "/*") || strings.HasPrefix(line, "*/") {
 				return "", false
 			}
+			if line == "*" {
+				return "", true
+			}
 			line = strings.TrimPrefix(line, "* ")
-			line = strings.TrimPrefix(line, "*")
 			return line, true
 		},
 	}

@@ -6,20 +6,25 @@ import (
 
 // Input represents a Terraform input.
 type Input struct {
-	Name        string      `json:"name"`
-	Type        String      `json:"type"`
-	Description String      `json:"description"`
-	Default     interface{} `json:"default"`
-	Position    Position    `json:"-"`
+	Name        string      `json:"name" yaml:"name"`
+	Type        String      `json:"type" yaml:"type"`
+	Description String      `json:"description" yaml:"description"`
+	Default     interface{} `json:"default" yaml:"default"`
+	Position    Position    `json:"-" yaml:"-"`
 }
 
-// ValueOf returns JSON representation of the 'Default' value, which is an 'interface'.
-func ValueOf(v interface{}) string {
-	marshaled, err := json.MarshalIndent(v, "", "  ")
+// Value returns JSON representation of the 'Default' value, which is an 'interface'.
+// If 'Default' is a primitive type, the primitive value of 'Default' will be returned
+// and not the JSON formatted of it.
+func (i *Input) Value() string {
+	marshaled, err := json.MarshalIndent(i.Default, "", "  ")
 	if err != nil {
 		panic(err)
 	}
-	return string(marshaled)
+	if value := string(marshaled); value != "null" {
+		return value
+	}
+	return ""
 }
 
 // HasDefault indicates if a Terraform variable has a default value set.
