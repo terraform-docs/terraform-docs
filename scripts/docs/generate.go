@@ -159,7 +159,10 @@ func printExample(buf *bytes.Buffer, name string) error {
 	buf.WriteString("```\n\n")
 	buf.WriteString("generates the following output:\n\n")
 
-	module, err := tfconf.CreateModule("./examples")
+	options := &tfconf.Options{
+		Path: "./examples",
+	}
+	module, err := tfconf.CreateModule(options)
 	if err != nil {
 		log.Fatal(err)
 	}

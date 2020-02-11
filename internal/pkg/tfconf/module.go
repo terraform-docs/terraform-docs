@@ -22,6 +22,8 @@ type Module struct {
 	Providers      []*Provider `json:"providers" yaml:"providers"`
 	RequiredInputs []*Input    `json:"-" yaml:"-"`
 	OptionalInputs []*Input    `json:"-" yaml:"-"`
+
+	options *Options
 }
 
 // HasInputs indicates if the document has inputs.
@@ -67,10 +69,10 @@ func (m *Module) Sort(settings *print.Settings) {
 
 // CreateModule returns new instance of Module with all the inputs and
 // outputs dircoverd from provided 'path' containing Terraform config
-func CreateModule(path string) (*Module, error) {
-	mod := loadModule(path)
+func CreateModule(options *Options) (*Module, error) {
+	mod := loadModule(options.Path)
 
-	header := readHeader(path)
+	header := readHeader(options.Path)
 
 	var inputs = make([]*Input, 0, len(mod.Variables))
 	var requiredInputs = make([]*Input, 0, len(mod.Variables))
@@ -149,6 +151,8 @@ func CreateModule(path string) (*Module, error) {
 		Providers:      providers,
 		RequiredInputs: requiredInputs,
 		OptionalInputs: optionalInputs,
+
+		options: options,
 	}
 	return module, nil
 }
