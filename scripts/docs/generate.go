@@ -131,6 +131,8 @@ func getPrinter(name string, settings *print.Settings) print.Format {
 		return format.NewTable(settings)
 	case "pretty":
 		return format.NewPretty(settings)
+	case "xml":
+		return format.NewXML(settings)
 	case "yaml":
 		return format.NewYAML(settings)
 	}

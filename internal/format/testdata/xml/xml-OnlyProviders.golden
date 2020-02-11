@@ -1,0 +1,27 @@
+<module>
+  <header></header>
+  <inputs></inputs>
+  <outputs></outputs>
+  <providers>
+    <provider>
+      <name>tls</name>
+      <alias xsi:nil="true"></alias>
+      <version xsi:nil="true"></version>
+    </provider>
+    <provider>
+      <name>aws</name>
+      <alias xsi:nil="true"></alias>
+      <version>&gt;= 2.15.0</version>
+    </provider>
+    <provider>
+      <name>aws</name>
+      <alias>ident</alias>
+      <version>&gt;= 2.15.0</version>
+    </provider>
+    <provider>
+      <name>null</name>
+      <alias xsi:nil="true"></alias>
+      <version xsi:nil="true"></version>
+    </provider>
+  </providers>
+</module>
