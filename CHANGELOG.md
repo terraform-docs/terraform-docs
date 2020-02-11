@@ -3,6 +3,15 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Code Refactoring
+- Add tfconf.Options to load Module with ([#193](https://github.com/segmentio/terraform-docs/issues/193))
+
+### Documentation
+- Auto generate formats document from examples ([#192](https://github.com/segmentio/terraform-docs/issues/192))
+
+### Features
+- Render formatted results with go templates ([#177](https://github.com/segmentio/terraform-docs/issues/177))
+- Add support for YAML renderer ([#189](https://github.com/segmentio/terraform-docs/issues/189))
 
 
 <a name="v0.8.2"></a>
