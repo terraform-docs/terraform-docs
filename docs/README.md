@@ -1,23 +1,14 @@
-# `terraform-docs` Documentations
+# `terraform-docs`
 
-A utility to generate documentation from Terraform modules in various output formats.
+A utility to generate documentation from Terraform modules in various output formats
 
-## Usage
+## Synopsis
 
-```text
-Usage:
-  terraform-docs [command]
+A utility to generate documentation from Terraform modules in various output formats
 
-Available Commands:
-  completion  Generate autocomplete for terraform-docs
-  help        Help about any command
-  json        Generate a JSON of inputs and outputs
-  markdown    Generate Markdown of inputs and outputs
-  pretty      Generate a colorized pretty of inputs and outputs
-  version     Print the version number of terraform-docs
-  yaml        Generate a YAML of inputs and outputs
+## Options
 
-Flags:
+```
   -h, --help                           help for terraform-docs
       --no-header                      do not show module header
       --no-inputs                      do not show inputs
@@ -26,22 +17,17 @@ Flags:
       --no-sort                        do no sort items
       --sort-by-required               sort items by name and print required ones first
       --sort-inputs-by-required        [deprecated] use '--sort-by-required' instead
-      --version                        version for terraform-docs
       --with-aggregate-type-defaults   [deprecated] print default values of aggregate types
-
-Use "terraform-docs [command] --help" for more information about a command.
 ```
 
 ## Output Formats
 
-The following output formats are available:
-
-- [JSON](/docs/formats/json.md)
-- [Markdown](/docs/formats/markdown.md)
-  - [Document](/docs/formats/markdown-document.md)
-  - [Table](/docs/formats/markdown-table.md)
-- [Pretty](/docs/formats/pretty.md)
-- [YAML](/docs/formats/yaml.md)
+* [terraform-docs json](/docs/formats/json.md)	 - Generate JSON of inputs and outputs
+* [terraform-docs markdown](/docs/formats/markdown.md)	 - Generate Markdown of inputs and outputs
+  * [terraform-docs markdown document](/docs/formats/markdown-document.md)	 - Generate Markdown document of inputs and outputs
+  * [terraform-docs markdown table](/docs/formats/markdown-table.md)	 - Generate Markdown tables of inputs and outputs
+* [terraform-docs pretty](/docs/formats/pretty.md)	 - Generate colorized pretty of inputs and outputs
+* [terraform-docs yaml](/docs/formats/yaml.md)	 - Generate YAML of inputs and outputs
 
 ## Terraform Versions
 

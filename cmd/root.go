@@ -73,6 +73,19 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
+// FormatterCmds returns list of available formatter
+// commands (e.g. markdown, json, yaml) and ignores
+// the other commands (e.g. completion, version, help)
+func FormatterCmds() []*cobra.Command {
+	return []*cobra.Command{
+		jsonCmd,
+		prettyCmd,
+		mdDocumentCmd,
+		mdTableCmd,
+		yamlCmd,
+	}
+}
+
 func doPrint(paths []string, fn func(*tfconf.Module) (string, error)) {
 	module, err := tfconf.CreateModule(paths[0])
 	if err != nil {

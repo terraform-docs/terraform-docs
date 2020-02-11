@@ -98,6 +98,11 @@ build-all: clean ## Build binary for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
 	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
 
+.PHONY: docs
+docs: ## Generate document of formatter commands
+	@ $(MAKE) --no-print-directory log-$@
+	$(GORUN) ./scripts/docs/generate.go
+
 #####################
 ## Release targets ##
 #####################

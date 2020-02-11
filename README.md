@@ -1,20 +1,23 @@
-# terraform-docs [![Build Status](https://github.com/segmentio/terraform-docs/workflows/build/badge.svg)](https://github.com/segmentio/terraform-docs/actions) [![GoDoc](https://godoc.org/github.com/segmentio/terraform-docs?status.svg)](https://godoc.org/github.com/segmentio/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/terraform-docs)](https://goreportcard.com/report/github.com/segmentio/terraform-docs)
+# terraform-docs
 
-> **A utility to generate documentation from Terraform modules in various output formats.**
+[![Build Status](https://github.com/segmentio/terraform-docs/workflows/build/badge.svg)](https://github.com/segmentio/terraform-docs/actions) [![GoDoc](https://godoc.org/github.com/segmentio/terraform-docs?status.svg)](https://godoc.org/github.com/segmentio/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/terraform-docs)](https://goreportcard.com/report/github.com/segmentio/terraform-docs) [![License](https://img.shields.io/github/license/segmentio/terraform-docs)](https://github.com/segmentio/terraform-docs/blob/master/LICENSE) [![Latest release](https://img.shields.io/github/v/release/segmentio/terraform-docs)](https://github.com/segmentio/terraform-docs/releases)
 
 ![terraform-docs-teaser](./images/terraform-docs-teaser.png)
 
-## Table of Contents
+## What is terraform-docs
 
-- [Maintenance](#maintenance)
-- [Installation](#installation)
-- [Getting Started](#getting-started)
-- [Development Requirements](#development-requirements)
-- [License](#license)
+A utility to generate documentation from Terraform modules in various output formats.
 
-## Maintenance
+``` bash
+terraform-docs pretty ./my-terraform-module            # generate colorized pretty
+terraform-docs json ./my-terraform-module              # generate json
+terraform-docs yaml ./my-terraform-module              # generate yaml
+terraform-docs markdown ./my-terraform-module          # generate markdown table
+terraform-docs markdown table ./my-terraform-module    # generate markdown table
+terraform-docs markdown document ./my-terraform-module # generate markdown document
+```
 
-This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
+Read the [User Guide](./docs/USER_GUIDE.md) for detailed documentation.
 
 ## Installation
 
@@ -73,43 +76,26 @@ autoload -U compinit && compinit
 
 To make this change permenant, the above commands can be added to your `~/.profile` file.
 
-## Getting Started
+## Documentation
 
-Show help information:
+- **Users**
+  - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-doccs
+- **Developers**
+  - Building: not written yet
+  - Releasing: not written yet
 
-``` bash
-terraform-docs --help
-```
-
-Generate [JSON](docs/formats/json.md) from the Terraform configuration in folder `./examples`:
-
-```bash
-terraform-docs json ./examples
-```
-
-Generate [YAML](docs/formats/yaml.md) from the Terraform configuration in folder `./examples`:
-
-```bash
-terraform-docs yaml ./examples
-```
-
-Generate [Markdown tables](docs/formats/markdown-table.md) from the Terraform configuration in folder `./examples`:
-
-```bash
-terraform-docs markdown table ./examples
-```
-
-Generate a [Markdown document](docs/formats/markdown-document.md) from the Terraform configuration in folder `./examples`:
-
-```bash
-terraform-docs markdown document ./examples
-```
+Visit [./docs](./docs/) for all documentation.
 
 ## Development Requirements
 
-- Go 1.13+
+- [Go](https://golang.org/) 1.13+
+- [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
 - [git-chlog](https://github.com/git-chglog/git-chglog)
 - [golangci-lint](https://github.com/golangci/golangci-lint)
+
+## Maintenance
+
+This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
 
 ## License
 

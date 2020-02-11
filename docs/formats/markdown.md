@@ -1,28 +1,27 @@
-# Markdown
+## terraform-docs markdown
 
-Generate Markdown of inputs and outputs.
+Generate Markdown of inputs and outputs
 
-## Usage
+### Synopsis
 
-```text
-Usage:
-  terraform-docs markdown [PATH] [flags]
-  terraform-docs markdown [command]
+Generate Markdown of inputs and outputs
 
-Aliases:
-  markdown, md
+```
+terraform-docs markdown [PATH] [flags]
+```
 
-Available Commands:
-  document    Generate Markdown document of inputs and outputs
-  table       Generate Markdown tables of inputs and outputs
+### Options
 
-Flags:
+```
   -h, --help          help for markdown
       --indent int    indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --no-escape     do not escape special characters
       --no-required   do not show "Required" column or section
+```
 
-Global Flags:
+### Options inherited from parent commands
+
+```
       --no-header                      do not show module header
       --no-inputs                      do not show inputs
       --no-outputs                     do not show outputs
@@ -31,15 +30,9 @@ Global Flags:
       --sort-by-required               sort items by name and print required ones first
       --sort-inputs-by-required        [deprecated] use '--sort-by-required' instead
       --with-aggregate-type-defaults   [deprecated] print default values of aggregate types
-
-Use "terraform-docs markdown [command] --help" for more information about a command.
 ```
 
-## Markdown Types
+### SEE ALSO
 
-The following Markdown specific output formats are available:
-
-- [Document](/docs/formats/markdown-document.md)
-- [Table](/docs/formats/markdown-table.md)
-
-Note that the default format, if not explicitly defined, is `tables`.
+* [terraform-docs markdown document](markdown-document.md)	 - Generate Markdown document of inputs and outputs
+* [terraform-docs markdown table](markdown-table.md)	 - Generate Markdown tables of inputs and outputs
