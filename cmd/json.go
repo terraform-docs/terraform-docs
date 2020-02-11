@@ -11,7 +11,7 @@ var jsonCmd = &cobra.Command{
 	Use:   "json [PATH]",
 	Short: "Generate JSON of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
-		doPrint(args, func(module *tfconf.Module) (string, error) {
+		doPrint(args[0], func(module *tfconf.Module) (string, error) {
 			return json.Print(module, settings)
 		})
 	},
