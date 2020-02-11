@@ -13,7 +13,7 @@ var markdownCmd = &cobra.Command{
 	Aliases: []string{"md"},
 	Short:   "Generate Markdown of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
-		doPrint(args, func(module *tfconf.Module) (string, error) {
+		doPrint(args[0], func(module *tfconf.Module) (string, error) {
 			return table.Print(module, settings)
 		})
 	},
@@ -25,7 +25,7 @@ var mdTableCmd = &cobra.Command{
 	Aliases: []string{"tbl"},
 	Short:   "Generate Markdown tables of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
-		doPrint(args, func(module *tfconf.Module) (string, error) {
+		doPrint(args[0], func(module *tfconf.Module) (string, error) {
 			return table.Print(module, settings)
 		})
 	},
@@ -37,7 +37,7 @@ var mdDocumentCmd = &cobra.Command{
 	Aliases: []string{"doc"},
 	Short:   "Generate Markdown document of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
-		doPrint(args, func(module *tfconf.Module) (string, error) {
+		doPrint(args[0], func(module *tfconf.Module) (string, error) {
 			return document.Print(module, settings)
 		})
 	},

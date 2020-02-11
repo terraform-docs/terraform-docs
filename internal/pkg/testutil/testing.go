@@ -15,8 +15,10 @@ func GetExpected(goldenFile string) (*tfconf.Module, string, error) {
 	if err != nil {
 		return nil, "", err
 	}
-
-	module, err := tfconf.CreateModule(path, "")
+	options := &tfconf.Options{
+		Path: path,
+	}
+	module, err := tfconf.CreateModule(options)
 	if err != nil {
 		return nil, "", err
 	}

@@ -11,7 +11,7 @@ var yamlCmd = &cobra.Command{
 	Use:   "yaml [PATH]",
 	Short: "Generate YAML of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
-		doPrint(args, func(module *tfconf.Module) (string, error) {
+		doPrint(args[0], func(module *tfconf.Module) (string, error) {
 			return yaml.Print(module, settings)
 		})
 	},

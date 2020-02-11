@@ -11,7 +11,7 @@ var prettyCmd = &cobra.Command{
 	Use:   "pretty [PATH]",
 	Short: "Generate colorized pretty of inputs and outputs",
 	Run: func(cmd *cobra.Command, args []string) {
-		doPrint(args, func(module *tfconf.Module) (string, error) {
+		doPrint(args[0], func(module *tfconf.Module) (string, error) {
 			return pretty.Print(module, settings)
 		})
 	},
