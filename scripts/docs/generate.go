@@ -11,13 +11,9 @@ import (
 	"time"
 
 	"github.com/segmentio/terraform-docs/cmd"
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/json"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/document"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/markdown/table"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/pretty"
-	"github.com/segmentio/terraform-docs/internal/pkg/print/yaml"
-	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
+	"github.com/segmentio/terraform-docs/internal/format"
+	"github.com/segmentio/terraform-docs/internal/module"
+	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/spf13/cobra"
 )
 
@@ -125,20 +121,18 @@ func printOptions(buf *bytes.Buffer, cmd *cobra.Command, name string) error {
 	return nil
 }
 
-type printer func(*tfconf.Module, *print.Settings) (string, error)
-
-func getPrinter(name string) printer {
+func getPrinter(name string, settings *print.Settings) print.Format {
 	switch strings.Replace(name, "terraform-docs ", "", -1) {
 	case "json":
-		return json.Print
+		return format.NewJSON(settings)
 	case "markdown document":
-		return document.Print
+		return format.NewDocument(settings)
 	case "markdown table":
-		return table.Print
+		return format.NewTable(settings)
 	case "pretty":
-		return pretty.Print
+		return format.NewPretty(settings)
 	case "yaml":
-		return yaml.Print
+		return format.NewYAML(settings)
 	}
 	return nil
 }
@@ -159,20 +153,22 @@ func printExample(buf *bytes.Buffer, name string) error {
 	buf.WriteString("```\n\n")
 	buf.WriteString("generates the following output:\n\n")
 
-	options := &tfconf.Options{
+	settings := print.NewSettings()
+	settings.ShowColor = false
+	options := &module.Options{
 		Path: "./examples",
+		SortBy: &module.SortBy{
+			Name:     settings.SortByName,
+			Required: settings.SortByRequired,
+		},
 	}
-	module, err := tfconf.CreateModule(options)
+	tfmodule, err := module.LoadWithOptions(options)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// fmt.Println(name)
-	if fn := getPrinter(name); fn != nil {
-		settings := print.NewSettings()
-		settings.ShowColor = false
-
-		output, err := fn(module, settings)
+	if printer := getPrinter(name, settings); printer != nil {
+		output, err := printer.Print(tfmodule, settings)
 		if err != nil {
 			return err
 		}

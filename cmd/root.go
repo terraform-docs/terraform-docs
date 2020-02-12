@@ -2,11 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
-	"github.com/segmentio/terraform-docs/internal/pkg/version"
+	"github.com/segmentio/terraform-docs/internal/module"
+	"github.com/segmentio/terraform-docs/internal/version"
+	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/spf13/cobra"
 )
 
@@ -57,14 +56,6 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-inputs-by-required", false, "[deprecated] use '--sort-by-required' instead")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "with-aggregate-type-defaults", false, "[deprecated] print default values of aggregate types")
 	//-----------------------------
-
-	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "do not show \"Required\" column or section")
-	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
-	markdownCmd.PersistentFlags().IntVar(&settings.MarkdownIndent, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
-
-	prettyCmd.PersistentFlags().BoolVar(new(bool), "no-color", false, "do not colorize printed result")
-
-	jsonCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -86,20 +77,22 @@ func FormatterCmds() []*cobra.Command {
 	}
 }
 
-func doPrint(path string, fn func(*tfconf.Module) (string, error)) {
-	options := &tfconf.Options{
+func doPrint(path string, printer print.Format) error {
+	options := &module.Options{
 		Path: path,
+		SortBy: &module.SortBy{
+			Name:     settings.SortByName,
+			Required: settings.SortByRequired,
+		},
 	}
-	module, err := tfconf.CreateModule(options)
+	tfmodule, err := module.LoadWithOptions(options)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-
-	output, err := fn(module)
-
+	output, err := printer.Print(tfmodule, settings)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-
 	fmt.Println(output)
+	return nil
 }
