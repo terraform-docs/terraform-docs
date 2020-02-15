@@ -1,9 +1,5 @@
 package tfconf
 
-import (
-	"encoding/json"
-)
-
 // Output represents a Terraform output.
 type Output struct {
 	Name        string      `json:"name" yaml:"name"`
