@@ -8,7 +8,7 @@ import (
 type Output struct {
 	Name        string      `json:"name" yaml:"name"`
 	Description String      `json:"description" yaml:"description"`
-	Value       interface{} `json:"value" yaml:"value"`
+	Value       interface{} `json:"value,omitempty" yaml:"value,omitempty"`
 	Position    Position    `json:"-" yaml:"-"`
 }
 
