@@ -12,20 +12,6 @@ type Output struct {
 	Position    Position    `json:"-" yaml:"-"`
 }
 
-// GetValue returns JSON representation of the 'Default' value, which is an 'interface'.
-// If 'Default' is a primitive type, the primitive value of 'Default' will be returned
-// and not the JSON formatted of it.
-func (o *Output) GetValue() string {
-	marshaled, err := json.MarshalIndent(o.Value, "", "  ")
-	if err != nil {
-		panic(err)
-	}
-	if v := string(marshaled); v != "null" {
-		return v
-	}
-	return ""
-}
-
 type outputsSortedByName []*Output
 
 func (a outputsSortedByName) Len() int {
