@@ -208,11 +208,13 @@ func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
 	}
 
 	var terraformOutputs map[string]*TerraformOutput
+
 	byteValue, err := ioutil.ReadFile(options.OutputValuesPath)
 	if err != nil {
 		return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
 	}
-	if err := json.Unmarshal(byteValue, &terraformOutputs); err != nil {
+	err = json.Unmarshal(byteValue, &terraformOutputs)
+	if err != nil {
 		return nil, err
 	}
 	return terraformOutputs, err
