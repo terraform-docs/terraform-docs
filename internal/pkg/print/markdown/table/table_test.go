@@ -5,6 +5,7 @@ import (
 
 	"github.com/segmentio/terraform-docs/internal/pkg/print"
 	"github.com/segmentio/terraform-docs/internal/pkg/testutil"
+	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -12,7 +13,10 @@ func TestTable(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	module, expected, err := testutil.GetExpected("table")
+	expected, err := testutil.GetExpected("table")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -27,7 +31,10 @@ func TestTableWithRequired(t *testing.T) {
 		ShowRequired: true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-WithRequired")
+	expected, err := testutil.GetExpected("table-WithRequired")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -42,7 +49,10 @@ func TestTableSortByName(t *testing.T) {
 		SortByName: true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-SortByName")
+	expected, err := testutil.GetExpected("table-SortByName")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -58,7 +68,10 @@ func TestTableSortByRequired(t *testing.T) {
 		SortByRequired: true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-SortByRequired")
+	expected, err := testutil.GetExpected("table-SortByRequired")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -76,7 +89,10 @@ func TestTableNoHeader(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-NoHeader")
+	expected, err := testutil.GetExpected("table-NoHeader")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -94,7 +110,10 @@ func TestTableNoProviders(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-NoProviders")
+	expected, err := testutil.GetExpected("table-NoProviders")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -112,7 +131,10 @@ func TestTableNoInputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-NoInputs")
+	expected, err := testutil.GetExpected("table-NoInputs")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -130,7 +152,10 @@ func TestTableNoOutputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-NoOutputs")
+	expected, err := testutil.GetExpected("table-NoOutputs")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -148,7 +173,10 @@ func TestTableOnlyHeader(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-OnlyHeader")
+	expected, err := testutil.GetExpected("table-OnlyHeader")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -166,7 +194,10 @@ func TestTableOnlyProviders(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-OnlyProviders")
+	expected, err := testutil.GetExpected("table-OnlyProviders")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -184,7 +215,10 @@ func TestTableOnlyInputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-OnlyInputs")
+	expected, err := testutil.GetExpected("table-OnlyInputs")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -202,7 +236,10 @@ func TestTableOnlyOutputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-OnlyOutputs")
+	expected, err := testutil.GetExpected("table-OnlyOutputs")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -217,7 +254,10 @@ func TestTableEscapeCharacters(t *testing.T) {
 		EscapeCharacters: true,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-EscapeCharacters")
+	expected, err := testutil.GetExpected("table-EscapeCharacters")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -232,7 +272,10 @@ func TestTableIndentationBellowAllowed(t *testing.T) {
 		MarkdownIndent: 0,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-IndentationBellowAllowed")
+	expected, err := testutil.GetExpected("table-IndentationBellowAllowed")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -247,7 +290,10 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 		MarkdownIndent: 10,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-IndentationAboveAllowed")
+	expected, err := testutil.GetExpected("table-IndentationAboveAllowed")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
@@ -262,7 +308,30 @@ func TestTableIndentationOfFour(t *testing.T) {
 		MarkdownIndent: 4,
 	}).Build()
 
-	module, expected, err := testutil.GetExpected("table-IndentationOfFour")
+	expected, err := testutil.GetExpected("table-IndentationOfFour")
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(new(tfconf.Options))
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestTableOutputValues(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().Build()
+
+	expected, err := testutil.GetExpected("table-OutputValues")
+	assert.Nil(err)
+
+	options := &tfconf.Options{
+		OutputValues:     true,
+		OutputValuesPath: "/output_values.json",
+	}
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	actual, err := Print(module, settings)
