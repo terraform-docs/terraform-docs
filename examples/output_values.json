@@ -6,18 +6,18 @@
     },
     "output-1": {
       "sensitive": false,
-      "type": "string",
-      "value": "1"
+      "type": "int",
+      "value": 1
     },
     "output-2": {
       "sensitive": false,
-      "type": "string",
-      "value": "2"
+      "type": "array",
+      "value": ["jack", "lola"]
     },
     "unquoted": {
       "sensitive": false,
-      "type": "string",
-      "value": ""
+      "type": "map",
+      "value": {"leon":"cat"}
     }
   }
   
