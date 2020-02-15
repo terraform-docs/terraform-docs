@@ -67,7 +67,7 @@ const (
 			| Name | Description |{{ if $.Settings.OutputValues }} Value |{{ end }}
 			|------|-------------|{{ if $.Settings.OutputValues }}-------|{{ end }}
 			{{- range .Module.Outputs }}
-				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |{{ if $.Settings.OutputValues }} {{ .Value | sanitizeInterface | sanitizeTbl }} | {{ end }}
+				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |{{ if $.Settings.OutputValues }} {{ .Value | sanitizeInterface | sanitizeTbl }} |{{ end }}
 			{{- end }}
 		{{ end }}
 	{{ end -}}

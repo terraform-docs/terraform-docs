@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"os/exec"
 	"sort"
 	"strings"
@@ -126,14 +125,8 @@ func CreateModule(options *Options) (*Module, error) {
 		}
 	}
 
-	options.OutputValuesPath = os.Getenv("FOO")
-	// if OutputValuesPath is empty, set the default and generate the file
-	if options.OutputValues && options.OutputValuesPath == "" {
-		err := os.Setenv("FOO", "terraform-outputs.json")
-		if err != nil {
-			log.Fatal(err)
-		}
-		_, err = exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
+	if options.OutputValues && options.OutputValuesPath == "terraform-outputs.json" {
+		_, err := exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
 		if err != nil {
 			log.Fatal(err)
 		}
