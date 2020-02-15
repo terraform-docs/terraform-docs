@@ -92,7 +92,6 @@ func FormatterCmds() []*cobra.Command {
 
 func doPrint(path string, fn func(*tfconf.Module) (string, error)) {
 	options.Path = path
-	fmt.Println(options)
 	module, err := tfconf.CreateModule(&options)
 	if err != nil {
 		log.Fatal(err)

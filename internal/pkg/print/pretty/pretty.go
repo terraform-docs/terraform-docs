@@ -52,7 +52,7 @@ const (
 			{{- printf "\n" -}}
 			{{- range . }}
 				{{ printf "output.%s" .Name | colorize "\033[36m" }}
-				{{- if $.Settings.OutputValues -}}
+				{{- if $.Module.Options.OutputValues -}}
 					{{- printf " " -}}
 					({{ sanitizeInterface .Value }})
 			{{- end }}

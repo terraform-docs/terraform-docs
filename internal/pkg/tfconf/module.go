@@ -26,7 +26,7 @@ type Module struct {
 	RequiredInputs []*Input    `json:"-" yaml:"-"`
 	OptionalInputs []*Input    `json:"-" yaml:"-"`
 
-	options *Options
+	Options *Options
 }
 
 // HasInputs indicates if the document has inputs.
@@ -125,6 +125,7 @@ func CreateModule(options *Options) (*Module, error) {
 		}
 	}
 
+	// output module's injected output values
 	if options.OutputValues && options.OutputValuesPath == "terraform-outputs.json" {
 		_, err := exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
 		if err != nil {
@@ -145,31 +146,23 @@ func CreateModule(options *Options) (*Module, error) {
 
 	// output module
 	var outputs = make([]*Output, 0, len(mod.Outputs))
-	for _, output := range mod.Outputs {
-		outputDescription := output.Description
+	for _, o := range mod.Outputs {
+		outputDescription := o.Description
 		if outputDescription == "" {
-			outputDescription = readComment(output.Pos.Filename, output.Pos.Line-1)
+			outputDescription = readComment(o.Pos.Filename, o.Pos.Line-1)
+		}
+		output := &Output{
+			Name:        o.Name,
+			Description: String(outputDescription),
+			Position: Position{
+				Filename: o.Pos.Filename,
+				Line:     o.Pos.Line,
+			},
 		}
 		if options.OutputValues {
-			outputs = append(outputs, &Output{
-				Name:        output.Name,
-				Description: String(outputDescription),
-				Value:       terraformOutputs[output.Name].Value,
-				Position: Position{
-					Filename: output.Pos.Filename,
-					Line:     output.Pos.Line,
-				},
-			})
-		} else {
-			outputs = append(outputs, &Output{
-				Name:        output.Name,
-				Description: String(outputDescription),
-				Position: Position{
-					Filename: output.Pos.Filename,
-					Line:     output.Pos.Line,
-				},
-			})
+			output.Value = terraformOutputs[output.Name].Value
 		}
+		outputs = append(outputs, output)
 	}
 
 	var providerSet = loadProviders(mod.RequiredProviders, mod.ManagedResources, mod.DataResources)
@@ -186,7 +179,7 @@ func CreateModule(options *Options) (*Module, error) {
 		RequiredInputs: requiredInputs,
 		OptionalInputs: optionalInputs,
 
-		options: options,
+		Options: options,
 	}
 	return module, nil
 }

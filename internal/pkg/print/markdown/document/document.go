@@ -94,7 +94,7 @@ const (
 				{{ indent 1 }} {{ name .Name }}
 
 				Description: {{ tostring .Description | sanitizeDoc }}
-				{{ if $.Settings.OutputValues }} 
+				{{ if $.Module.Options.OutputValues }} 
 					Value: {{ .Value | sanitizeInterface | sanitizeDoc }}
 				{{ end }}
 			{{ end }}
