@@ -129,10 +129,13 @@ func CreateModule(options *Options) (*Module, error) {
 	options.OutputValuesPath = os.Getenv("FOO")
 	// if OutputValuesPath is empty, set the default and generate the file
 	if options.OutputValues && options.OutputValuesPath == "" {
-		os.Setenv("FOO", "terraform-outputs.json")
-		_, err := exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
+		err := os.Setenv("FOO", "terraform-outputs.json")
 		if err != nil {
-			fmt.Println(fmt.Errorf("encountered an error while running the command 'terraform output --json': %v", err))
+			log.Fatal(err)
+		}
+		_, err = exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
+		if err != nil {
+			log.Fatal(err)
 		}
 	}
 
