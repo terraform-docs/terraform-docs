@@ -124,25 +124,6 @@ func CreateModule(options *Options) (*Module, error) {
 		}
 	}
 
-	// output module's injected output values
-	if options.OutputValues && options.OutputValuesPath == "terraform-outputs.json" {
-		_, err := exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	var terraformOutputs map[string]*TerraformOutput
-	if options.OutputValues {
-		byteValue, err := ioutil.ReadFile(options.OutputValuesPath)
-		if err != nil {
-			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
-		}
-		if err := json.Unmarshal(byteValue, &terraformOutputs); err != nil {
-			return nil, err
-		}
-	}
-
 	// output module
 	var outputs = make([]*Output, 0, len(mod.Outputs))
 	for _, o := range mod.Outputs {
@@ -159,6 +140,10 @@ func CreateModule(options *Options) (*Module, error) {
 			},
 		}
 		if options.OutputValues {
+			terraformOutputs, err := loadOutputValues(options)
+			if err != nil {
+				log.Fatal(err)
+			}
 			output.Value = terraformOutputs[output.Name].Value
 		}
 		outputs = append(outputs, output)
@@ -212,4 +197,23 @@ func loadProviders(requiredProviders map[string]*tfconfig.ProviderRequirement, r
 		}
 	}
 	return providers
+}
+
+func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
+	if options.OutputValuesPath == "terraform-outputs.json" {
+		_, err := exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	var terraformOutputs map[string]*TerraformOutput
+	byteValue, err := ioutil.ReadFile(options.OutputValuesPath)
+	if err != nil {
+		return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
+	}
+	if err := json.Unmarshal(byteValue, &terraformOutputs); err != nil {
+		return nil, err
+	}
+	return terraformOutputs, err
 }
