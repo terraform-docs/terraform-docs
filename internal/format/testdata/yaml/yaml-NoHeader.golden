@@ -2,11 +2,23 @@ header: ""
 inputs:
 - name: unquoted
   type: any
-  description: ""
+  description: null
   default: null
+- name: bool-3
+  type: bool
+  description: null
+  default: true
+- name: bool-2
+  type: bool
+  description: It's bool number two.
+  default: false
+- name: bool-1
+  type: bool
+  description: It's bool number one.
+  default: true
 - name: string-3
   type: string
-  description: ""
+  description: null
   default: ""
 - name: string-2
   type: string
@@ -16,9 +28,25 @@ inputs:
   type: string
   description: It's string number one.
   default: bar
+- name: number-3
+  type: number
+  description: null
+  default: "19"
+- name: number-4
+  type: number
+  description: null
+  default: 15.75
+- name: number-2
+  type: number
+  description: It's number number two.
+  default: null
+- name: number-1
+  type: number
+  description: It's number number one.
+  default: 42
 - name: map-3
   type: map
-  description: ""
+  description: null
   default: {}
 - name: map-2
   type: map
@@ -33,7 +61,7 @@ inputs:
     c: 3
 - name: list-3
   type: list
-  description: ""
+  description: null
   default: []
 - name: list-2
   type: list
@@ -104,14 +132,14 @@ outputs:
   description: terraform 0.12 only
 providers:
 - name: tls
-  alias: ""
-  version: ""
+  alias: null
+  version: null
 - name: aws
-  alias: ""
+  alias: null
   version: '>= 2.15.0'
 - name: aws
   alias: ident
   version: '>= 2.15.0'
 - name: "null"
-  alias: ""
-  version: ""
+  alias: null
+  version: null

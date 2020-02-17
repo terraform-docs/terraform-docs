@@ -3,14 +3,14 @@ inputs: []
 outputs: []
 providers:
 - name: tls
-  alias: ""
-  version: ""
+  alias: null
+  version: null
 - name: aws
-  alias: ""
+  alias: null
   version: '>= 2.15.0'
 - name: aws
   alias: ident
   version: '>= 2.15.0'
 - name: "null"
-  alias: ""
-  version: ""
+  alias: null
+  version: null

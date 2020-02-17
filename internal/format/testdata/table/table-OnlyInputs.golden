@@ -3,9 +3,16 @@
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
 | unquoted | n/a | `any` | n/a |
+| bool-3 | n/a | `bool` | `true` |
+| bool-2 | It's bool number two. | `bool` | `false` |
+| bool-1 | It's bool number one. | `bool` | `true` |
 | string-3 | n/a | `string` | `""` |
 | string-2 | It's string number two. | `string` | n/a |
 | string-1 | It's string number one. | `string` | `"bar"` |
+| number-3 | n/a | `number` | `"19"` |
+| number-4 | n/a | `number` | `15.75` |
+| number-2 | It's number number two. | `number` | n/a |
+| number-1 | It's number number one. | `number` | `42` |
 | map-3 | n/a | `map` | `{}` |
 | map-2 | It's map number two. | `map` | n/a |
 | map-1 | It's map number one. | `map` | <pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}</pre> |

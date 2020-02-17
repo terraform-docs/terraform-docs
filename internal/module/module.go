@@ -85,25 +85,6 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 	var optional = make([]*tfconf.Input, 0, len(tfmodule.Variables))
 
 	for _, input := range tfmodule.Variables {
-		inputType := input.Type
-		if input.Type == "" {
-			inputType = "any"
-			if input.Default != nil {
-				switch xType := fmt.Sprintf("%T", input.Default); xType {
-				case "string":
-					inputType = "string"
-				case "int", "int8", "int16", "int32", "int64", "float32", "float64":
-					inputType = "number"
-				case "bool":
-					inputType = "bool"
-				case "[]interface {}":
-					inputType = "list"
-				case "map[string]interface {}":
-					inputType = "map"
-				}
-			}
-		}
-
 		inputDescription := input.Description
 		if inputDescription == "" {
 			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line-1)
@@ -111,9 +92,9 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 
 		i := &tfconf.Input{
 			Name:        input.Name,
-			Type:        types.String(inputType),
+			Type:        types.TypeOf(input.Type, input.Default),
 			Description: types.String(inputDescription),
-			Default:     input.Default,
+			Default:     types.ValueOf(input.Default),
 			Position: tfconf.Position{
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,
