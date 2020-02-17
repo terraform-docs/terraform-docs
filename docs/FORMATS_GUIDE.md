@@ -36,6 +36,7 @@ A utility to generate documentation from Terraform modules in various output for
 * [terraform-docs tfvars](/docs/formats/tfvars.md)	 - Generate terraform.tfvars of inputs
   * [terraform-docs tfvars hcl](/docs/formats/tfvars-hcl.md)	 - Generate HCL format of terraform.tfvars of inputs
   * [terraform-docs tfvars json](/docs/formats/tfvars-json.md)	 - Generate JSON format of terraform.tfvars of inputs
+* [terraform-docs toml](/docs/formats/toml.md)	 - Generate TOML of inputs and outputs
 * [terraform-docs xml](/docs/formats/xml.md)	 - Generate XML of inputs and outputs
 * [terraform-docs yaml](/docs/formats/yaml.md)	 - Generate YAML of inputs and outputs
 
