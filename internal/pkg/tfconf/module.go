@@ -25,8 +25,6 @@ type Module struct {
 	Providers      []*Provider `json:"providers" yaml:"providers"`
 	RequiredInputs []*Input    `json:"-" yaml:"-"`
 	OptionalInputs []*Input    `json:"-" yaml:"-"`
-
-	options *Options
 }
 
 // HasInputs indicates if the document has inputs.
