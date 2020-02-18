@@ -39,6 +39,6 @@ func (a outputsSortedByPosition) Less(i, j int) bool {
 // TerraformOutput is used for unmarshalling `terraform outputs --json` into
 type TerraformOutput struct {
 	Sensitive bool        `json:"sensitive"`
-	Type      string      `json:"type"`
+	Type      interface{} `json:"type"`
 	Value     interface{} `json:"value"`
 }

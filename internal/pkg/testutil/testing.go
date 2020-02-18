@@ -16,7 +16,10 @@ func GetModule(options *tfconf.Options) (*tfconf.Module, error) {
 		return nil, err
 	}
 	options.Path = path
-	options.OutputValuesPath = path + options.OutputValuesPath
+
+	if options.OutputValues {
+		options.OutputValuesPath = filepath.Join(path, options.OutputValuesPath)
+	}
 
 	module, err := tfconf.CreateModule(options)
 	if err != nil {

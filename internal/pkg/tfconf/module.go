@@ -143,7 +143,12 @@ func CreateModule(options *Options) (*Module, error) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			output.Value = terraformOutputs[output.Name].Value
+
+			if terraformOutputs[output.Name].Sensitive {
+				output.Value = "<sensitive>"
+			} else {
+				output.Value = terraformOutputs[output.Name].Value
+			}
 		}
 		outputs = append(outputs, output)
 	}
