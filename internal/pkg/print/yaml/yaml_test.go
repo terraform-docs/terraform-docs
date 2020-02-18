@@ -241,7 +241,7 @@ func TestYamlOutputValues(t *testing.T) {
 
 	options := &tfconf.Options{
 		OutputValues:     true,
-		OutputValuesPath: "/output_values.json",
+		OutputValuesPath: "output_values.json",
 	}
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
