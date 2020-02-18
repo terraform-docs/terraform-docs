@@ -250,7 +250,9 @@ func TestPrettyNoColor(t *testing.T) {
 
 func TestPrettyOutputValues(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().WithColor().Build()
+	settings := testutil.Settings().WithSections().WithColor().With(&print.Settings{
+		OutputValues: true,
+	}).Build()
 
 	expected, err := testutil.GetExpected("pretty-OutputValues")
 	assert.Nil(err)

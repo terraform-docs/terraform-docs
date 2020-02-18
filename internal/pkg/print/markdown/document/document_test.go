@@ -322,7 +322,9 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 
 func TestDocumentOutputValues(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		OutputValues: true,
+	}).Build()
 
 	expected, err := testutil.GetExpected("document-OutputValues")
 	assert.Nil(err)

@@ -36,6 +36,8 @@ var rootCmd = &cobra.Command{
 		settings.ShowInputs = !noinputs
 		settings.ShowOutputs = !nooutputs
 
+		settings.OutputValues = options.OutputValues
+
 		settings.ShowColor = !nocolor
 		settings.SortByName = !nosort
 		settings.ShowRequired = !norequired

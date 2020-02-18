@@ -322,7 +322,9 @@ func TestTableIndentationOfFour(t *testing.T) {
 
 func TestTableOutputValues(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		OutputValues: true,
+	}).Build()
 
 	expected, err := testutil.GetExpected("table-OutputValues")
 	assert.Nil(err)

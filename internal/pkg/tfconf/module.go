@@ -25,7 +25,8 @@ type Module struct {
 	Providers      []*Provider `json:"providers" yaml:"providers"`
 	RequiredInputs []*Input    `json:"-" yaml:"-"`
 	OptionalInputs []*Input    `json:"-" yaml:"-"`
-	Options        *Options    `json:"-" yaml:"-"`
+
+	options *Options
 }
 
 // HasInputs indicates if the document has inputs.
@@ -162,8 +163,6 @@ func CreateModule(options *Options) (*Module, error) {
 		Providers:      providers,
 		RequiredInputs: requiredInputs,
 		OptionalInputs: optionalInputs,
-
-		Options: options,
 	}
 	return module, nil
 }

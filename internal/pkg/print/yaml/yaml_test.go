@@ -232,7 +232,9 @@ func TestYamlOnlyOutputs(t *testing.T) {
 
 func TestYamlOutputValues(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		OutputValues: true,
+	}).Build()
 
 	expected, err := testutil.GetExpected("yaml-OutputValues")
 	assert.Nil(err)
