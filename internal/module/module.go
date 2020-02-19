@@ -111,8 +111,8 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 
 		i := &tfconf.Input{
 			Name:        input.Name,
-			Type:        types.TFString(inputType),
-			Description: types.TFString(inputDescription),
+			Type:        types.String(inputType),
+			Description: types.String(inputDescription),
 			Default:     input.Default,
 			Position: tfconf.Position{
 				Filename: input.Pos.Filename,
@@ -139,7 +139,7 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) []*tfconf.Output {
 		}
 		output := &tfconf.Output{
 			Name:        o.Name,
-			Description: types.TFString(description),
+			Description: types.String(description),
 			Position: tfconf.Position{
 				Filename: o.Pos.Filename,
 				Line:     o.Pos.Line,
@@ -195,8 +195,8 @@ func loadProviders(tfmodule *tfconfig.Module) []*tfconf.Provider {
 			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
 			discovered[key] = &tfconf.Provider{
 				Name:    r.Provider.Name,
-				Alias:   types.TFString(r.Provider.Alias),
-				Version: types.TFString(version),
+				Alias:   types.String(r.Provider.Alias),
+				Version: types.String(version),
 				Position: tfconf.Position{
 					Filename: r.Pos.Filename,
 					Line:     r.Pos.Line,

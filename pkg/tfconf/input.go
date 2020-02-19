@@ -8,11 +8,11 @@ import (
 
 // Input represents a Terraform input.
 type Input struct {
-	Name        string         `json:"name" yaml:"name"`
-	Type        types.TFString `json:"type" yaml:"type"`
-	Description types.TFString `json:"description" yaml:"description"`
-	Default     interface{}    `json:"default" yaml:"default"`
-	Position    Position       `json:"-" yaml:"-"`
+	Name        string       `json:"name" yaml:"name"`
+	Type        types.String `json:"type" yaml:"type"`
+	Description types.String `json:"description" yaml:"description"`
+	Default     interface{}  `json:"default" yaml:"default"`
+	Position    Position     `json:"-" yaml:"-"`
 }
 
 // Value returns JSON representation of the 'Default' value, which is an 'interface'.

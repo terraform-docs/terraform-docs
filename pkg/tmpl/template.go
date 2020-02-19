@@ -109,7 +109,7 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 			}
 			return f
 		},
-		"tostring": func(s types.TFString) string {
+		"tostring": func(s types.String) string {
 			return string(s)
 		},
 		"trim": func(t string, s string) string {
