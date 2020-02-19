@@ -1,8 +1,11 @@
 package tfconf
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"os/exec"
 	"sort"
 	"strings"
 
@@ -22,8 +25,6 @@ type Module struct {
 	Providers      []*Provider `json:"providers" yaml:"providers"`
 	RequiredInputs []*Input    `json:"-" yaml:"-"`
 	OptionalInputs []*Input    `json:"-" yaml:"-"`
-
-	options *Options
 }
 
 // HasInputs indicates if the document has inputs.
@@ -68,7 +69,7 @@ func (m *Module) Sort(settings *print.Settings) {
 }
 
 // CreateModule returns new instance of Module with all the inputs and
-// outputs dircoverd from provided 'path' containing Terraform config
+// outputs discovered from provided 'path' containing Terraform config
 func CreateModule(options *Options) (*Module, error) {
 	mod := loadModule(options.Path)
 
@@ -122,20 +123,34 @@ func CreateModule(options *Options) (*Module, error) {
 		}
 	}
 
+	// output module
 	var outputs = make([]*Output, 0, len(mod.Outputs))
-	for _, output := range mod.Outputs {
-		outputDescription := output.Description
+	for _, o := range mod.Outputs {
+		outputDescription := o.Description
 		if outputDescription == "" {
-			outputDescription = readComment(output.Pos.Filename, output.Pos.Line-1)
+			outputDescription = readComment(o.Pos.Filename, o.Pos.Line-1)
 		}
-		outputs = append(outputs, &Output{
-			Name:        output.Name,
+		output := &Output{
+			Name:        o.Name,
 			Description: String(outputDescription),
 			Position: Position{
-				Filename: output.Pos.Filename,
-				Line:     output.Pos.Line,
+				Filename: o.Pos.Filename,
+				Line:     o.Pos.Line,
 			},
-		})
+		}
+		if options.OutputValues {
+			terraformOutputs, err := loadOutputValues(options)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			if terraformOutputs[output.Name].Sensitive {
+				output.Value = "<sensitive>"
+			} else {
+				output.Value = terraformOutputs[output.Name].Value
+			}
+		}
+		outputs = append(outputs, output)
 	}
 
 	var providerSet = loadProviders(mod.RequiredProviders, mod.ManagedResources, mod.DataResources)
@@ -151,8 +166,6 @@ func CreateModule(options *Options) (*Module, error) {
 		Providers:      providers,
 		RequiredInputs: requiredInputs,
 		OptionalInputs: optionalInputs,
-
-		options: options,
 	}
 	return module, nil
 }
@@ -186,4 +199,28 @@ func loadProviders(requiredProviders map[string]*tfconfig.ProviderRequirement, r
 		}
 	}
 	return providers
+}
+
+func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
+	var out []byte
+	var err error
+
+	if options.OutputValuesPath == "" {
+		cmd := exec.Command("terraform", "output", "-json")
+		cmd.Dir = options.Path
+		if out, err = cmd.Output(); err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs: %v", err)
+		}
+	} else {
+		if out, err = ioutil.ReadFile(options.OutputValuesPath); err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
+		}
+	}
+
+	var terraformOutputs map[string]*TerraformOutput
+	err = json.Unmarshal(out, &terraformOutputs)
+	if err != nil {
+		return nil, err
+	}
+	return terraformOutputs, err
 }

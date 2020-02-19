@@ -160,6 +160,24 @@ func builtinFuncs(settings *print.Settings) map[string]interface{} {
 		"sanitizeTbl": func(s string) string {
 			return markdown.SanitizeItemForTable(s, settings)
 		},
+		"sanitizeInterface": func(i interface{}) string {
+			var v string
+			switch x := fmt.Sprintf("%T", i); x {
+			case "[]interface {}":
+				v = fmt.Sprintf("%q", i)
+			case "map[string]interface {}":
+				v = fmt.Sprintf("%q", i)
+			case "float64":
+				v = fmt.Sprintf("%g", i)
+			case "int":
+				v = fmt.Sprintf("%d", i)
+			case "string":
+				v = fmt.Sprintf("%#v", i)
+			case "bool":
+				v = fmt.Sprintf("%t", i)
+			}
+			return v
+		},
 	}
 }
 
