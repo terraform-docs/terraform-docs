@@ -1,6 +1,8 @@
 package module
 
 import (
+	"log"
+
 	"github.com/imdario/mergo"
 )
 
@@ -32,7 +34,7 @@ func NewOptions() *Options {
 // With override options with existing Options
 func (o *Options) With(override *Options) *Options {
 	if err := mergo.Merge(o, override); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return o
 }
