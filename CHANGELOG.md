@@ -10,6 +10,7 @@
 - Auto generate formats document from examples ([#192](https://github.com/segmentio/terraform-docs/issues/192))
 
 ### Features
+- Extract and render output values from Terraform ([#191](https://github.com/segmentio/terraform-docs/issues/191))
 - Render formatted results with go templates ([#177](https://github.com/segmentio/terraform-docs/issues/177))
 - Add support for YAML renderer ([#189](https://github.com/segmentio/terraform-docs/issues/189))
 
