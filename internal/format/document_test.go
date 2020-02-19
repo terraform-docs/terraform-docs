@@ -3,6 +3,7 @@ package format
 import (
 	"testing"
 
+	"github.com/segmentio/terraform-docs/internal/module"
 	"github.com/segmentio/terraform-docs/internal/testutil"
 	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/stretchr/testify/assert"
@@ -12,10 +13,11 @@ func TestDocument(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("document")
+	expected, err := testutil.GetExpected("document", "document")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -31,10 +33,11 @@ func TestDocumentWithRequired(t *testing.T) {
 		ShowRequired: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-WithRequired")
+	expected, err := testutil.GetExpected("document", "document-WithRequired")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -50,10 +53,15 @@ func TestDocumentSortByName(t *testing.T) {
 		SortByName: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-SortByName")
+	expected, err := testutil.GetExpected("document", "document-SortByName")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions().With(&module.Options{
+		SortBy: &module.SortBy{
+			Name: true,
+		},
+	})
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -70,10 +78,16 @@ func TestDocumentSortByRequired(t *testing.T) {
 		SortByRequired: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-SortByRequired")
+	expected, err := testutil.GetExpected("document", "document-SortByRequired")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions().With(&module.Options{
+		SortBy: &module.SortBy{
+			Name:     true,
+			Required: true,
+		},
+	})
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -92,10 +106,11 @@ func TestDocumentNoHeader(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-NoHeader")
+	expected, err := testutil.GetExpected("document", "document-NoHeader")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -114,10 +129,11 @@ func TestDocumentNoProviders(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-NoProviders")
+	expected, err := testutil.GetExpected("document", "document-NoProviders")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -136,10 +152,11 @@ func TestDocumentNoInputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-NoInputs")
+	expected, err := testutil.GetExpected("document", "document-NoInputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -158,10 +175,11 @@ func TestDocumentNoOutputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-NoOutputs")
+	expected, err := testutil.GetExpected("document", "document-NoOutputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -180,10 +198,11 @@ func TestDocumentOnlyHeader(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-OnlyHeader")
+	expected, err := testutil.GetExpected("document", "document-OnlyHeader")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -202,10 +221,11 @@ func TestDocumentOnlyProviders(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-OnlyProviders")
+	expected, err := testutil.GetExpected("document", "document-OnlyProviders")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -224,10 +244,11 @@ func TestDocumentOnlyInputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-OnlyInputs")
+	expected, err := testutil.GetExpected("document", "document-OnlyInputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -246,10 +267,11 @@ func TestDocumentOnlyOutputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-OnlyOutputs")
+	expected, err := testutil.GetExpected("document", "document-OnlyOutputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -265,10 +287,11 @@ func TestDocumentEscapeCharacters(t *testing.T) {
 		EscapeCharacters: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-EscapeCharacters")
+	expected, err := testutil.GetExpected("document", "document-EscapeCharacters")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -284,10 +307,11 @@ func TestDocumentIndentationBelowAllowed(t *testing.T) {
 		MarkdownIndent: 0,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-IndentationBelowAllowed")
+	expected, err := testutil.GetExpected("document", "document-IndentationBelowAllowed")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -303,10 +327,11 @@ func TestDocumentIndentationAboveAllowed(t *testing.T) {
 		MarkdownIndent: 10,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-IndentationAboveAllowed")
+	expected, err := testutil.GetExpected("document", "document-IndentationAboveAllowed")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -322,10 +347,11 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 		MarkdownIndent: 4,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-IndentationOfFour")
+	expected, err := testutil.GetExpected("document", "document-IndentationOfFour")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewDocument(settings)
@@ -341,17 +367,18 @@ func TestDocumentOutputValues(t *testing.T) {
 		OutputValues: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document-OutputValues")
+	expected, err := testutil.GetExpected("document", "document-OutputValues")
 	assert.Nil(err)
 
-	options := &tfconf.Options{
+	options := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
-	}
+	})
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	actual, err := Print(module, settings)
+	printer := NewDocument(settings)
+	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)

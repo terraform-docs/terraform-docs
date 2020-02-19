@@ -130,7 +130,7 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 	return inputs, required, optional
 }
 
-func loadOutputs(tfmodule *tfconfig.Module) []*tfconf.Output {
+func loadOutputs(tfmodule *tfconfig.Module, options *Options) []*tfconf.Output {
 	outputs := make([]*tfconf.Output, 0, len(tfmodule.Outputs))
 	for _, o := range tfmodule.Outputs {
 		description := o.Description
@@ -164,7 +164,6 @@ func loadOutputs(tfmodule *tfconfig.Module) []*tfconf.Output {
 func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
 	var out []byte
 	var err error
-
 	if options.OutputValuesPath == "" {
 		cmd := exec.Command("terraform", "output", "-json")
 		cmd.Dir = options.Path
@@ -176,7 +175,6 @@ func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
 			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
 		}
 	}
-
 	var terraformOutputs map[string]*TerraformOutput
 	err = json.Unmarshal(out, &terraformOutputs)
 	if err != nil {

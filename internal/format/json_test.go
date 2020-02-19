@@ -3,6 +3,7 @@ package format
 import (
 	"testing"
 
+	"github.com/segmentio/terraform-docs/internal/module"
 	"github.com/segmentio/terraform-docs/internal/testutil"
 	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/stretchr/testify/assert"
@@ -12,10 +13,11 @@ func TestJson(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("json")
+	expected, err := testutil.GetExpected("json", "json")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -31,10 +33,15 @@ func TestJsonSortByName(t *testing.T) {
 		SortByName: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-SortByName")
+	expected, err := testutil.GetExpected("json", "json-SortByName")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions().With(&module.Options{
+		SortBy: &module.SortBy{
+			Name: true,
+		},
+	})
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -51,10 +58,16 @@ func TestJsonSortByRequired(t *testing.T) {
 		SortByRequired: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-SortByRequired")
+	expected, err := testutil.GetExpected("json", "json-SortByRequired")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions().With(&module.Options{
+		SortBy: &module.SortBy{
+			Name:     true,
+			Required: true,
+		},
+	})
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -73,10 +86,11 @@ func TestJsonNoHeader(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-NoHeader")
+	expected, err := testutil.GetExpected("json", "json-NoHeader")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -95,10 +109,11 @@ func TestJsonNoProviders(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-NoProviders")
+	expected, err := testutil.GetExpected("json", "json-NoProviders")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -117,10 +132,11 @@ func TestJsonNoInputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-NoInputs")
+	expected, err := testutil.GetExpected("json", "json-NoInputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -139,10 +155,11 @@ func TestJsonNoOutputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-NoOutputs")
+	expected, err := testutil.GetExpected("json", "json-NoOutputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -161,10 +178,11 @@ func TestJsonOnlyHeader(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-OnlyHeader")
+	expected, err := testutil.GetExpected("json", "json-OnlyHeader")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -183,10 +201,11 @@ func TestJsonOnlyProviders(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-OnlyProviders")
+	expected, err := testutil.GetExpected("json", "json-OnlyProviders")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -205,10 +224,11 @@ func TestJsonOnlyInputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-OnlyInputs")
+	expected, err := testutil.GetExpected("json", "json-OnlyInputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -227,10 +247,11 @@ func TestJsonOnlyOutputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-OnlyOutputs")
+	expected, err := testutil.GetExpected("json", "json-OnlyOutputs")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewJSON(settings)
@@ -246,13 +267,15 @@ func TestJsonEscapeCharacters(t *testing.T) {
 		EscapeCharacters: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-EscapeCharacters")
+	expected, err := testutil.GetExpected("json", "json-EscapeCharacters")
 	assert.Nil(err)
 
-	module, err := testutil.GetModule(new(tfconf.Options))
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	actual, err := Print(module, settings)
+	printer := NewJSON(settings)
+	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
@@ -263,17 +286,18 @@ func TestJsonOutputValues(t *testing.T) {
 		OutputValues: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("json-OutputValues")
+	expected, err := testutil.GetExpected("json", "json-OutputValues")
 	assert.Nil(err)
 
-	options := &tfconf.Options{
+	options := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
-	}
+	})
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	actual, err := Print(module, settings)
+	printer := NewJSON(settings)
+	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)

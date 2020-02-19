@@ -7,29 +7,19 @@ import (
 	"runtime"
 
 	"github.com/segmentio/terraform-docs/internal/module"
-	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
 )
 
 // GetModule returns 'example' Module
-// func GetModule(options *tfconf.Options) (*tfconf.Module, error) {
-func GetModule(settings *print.Settings) (*tfconf.Module, error) {
+func GetModule(options *module.Options) (*tfconf.Module, error) {
 	path, err := getExampleFolder()
 	if err != nil {
 		return nil, err
 	}
-	options := &module.Options{
-		Path: path,
-		SortBy: &module.SortBy{
-			Name:     settings.SortByName,
-			Required: settings.SortByRequired,
-		},
+	options.Path = path
+	if options.OutputValues {
+		options.OutputValuesPath = filepath.Join(path, options.OutputValuesPath)
 	}
-	// options.Path = path
-
-	// if options.OutputValues {
-	// 	options.OutputValuesPath = filepath.Join(path, options.OutputValuesPath)
-	// }
 	tfmodule, err := module.LoadWithOptions(options)
 	if err != nil {
 		return nil, err
