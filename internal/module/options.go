@@ -9,6 +9,8 @@ type SortBy struct {
 
 // Options contains required options to load a Module from path
 type Options struct {
-	Path   string
-	SortBy *SortBy
+	Path             string
+	SortBy           *SortBy
+	OutputValues     bool
+	OutputValuesPath string
 }

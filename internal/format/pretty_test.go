@@ -12,10 +12,10 @@ func TestPretty(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().WithColor().Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -31,10 +31,10 @@ func TestPrettySortByName(t *testing.T) {
 		SortByName: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-SortByName")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-SortByName")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -51,10 +51,10 @@ func TestPrettySortByRequired(t *testing.T) {
 		SortByRequired: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-SortByRequired")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-SortByRequired")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -73,10 +73,10 @@ func TestPrettyNoHeader(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-NoHeader")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-NoHeader")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -95,10 +95,10 @@ func TestPrettyNoProviders(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-NoProviders")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-NoProviders")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -117,10 +117,10 @@ func TestPrettyNoInputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-NoInputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-NoInputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -139,10 +139,10 @@ func TestPrettyNoOutputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-NoOutputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-NoOutputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -161,10 +161,10 @@ func TestPrettyOnlyHeader(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-OnlyHeader")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-OnlyHeader")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -183,10 +183,10 @@ func TestPrettyOnlyProviders(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-OnlyProviders")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-OnlyProviders")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -205,10 +205,10 @@ func TestPrettyOnlyInputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-OnlyInputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-OnlyInputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -227,10 +227,10 @@ func TestPrettyOnlyOutputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-OnlyOutputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-OnlyOutputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewPretty(settings)
@@ -246,14 +246,35 @@ func TestPrettyNoColor(t *testing.T) {
 		ShowColor: false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("pretty-NoColor")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("pretty", "pretty-NoColor")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
-	printer := NewPretty(settings)
-	actual, err := printer.Print(module, settings)
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestPrettyOutputValues(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().WithColor().With(&print.Settings{
+		OutputValues: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("pretty-OutputValues")
+	assert.Nil(err)
+
+	options := &tfconf.Options{
+		OutputValues:     true,
+		OutputValuesPath: "output_values.json",
+	}
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)

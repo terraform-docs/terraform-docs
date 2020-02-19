@@ -12,10 +12,10 @@ func TestTable(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -31,10 +31,10 @@ func TestTableWithRequired(t *testing.T) {
 		ShowRequired: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-WithRequired")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-WithRequired")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -50,10 +50,10 @@ func TestTableSortByName(t *testing.T) {
 		SortByName: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-SortByName")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-SortByName")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -70,10 +70,10 @@ func TestTableSortByRequired(t *testing.T) {
 		SortByRequired: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-SortByRequired")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-SortByRequired")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -92,10 +92,10 @@ func TestTableNoHeader(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-NoHeader")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-NoHeader")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -114,10 +114,10 @@ func TestTableNoProviders(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-NoProviders")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-NoProviders")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -136,10 +136,10 @@ func TestTableNoInputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-NoInputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-NoInputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -158,10 +158,10 @@ func TestTableNoOutputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-NoOutputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-NoOutputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -180,10 +180,10 @@ func TestTableOnlyHeader(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-OnlyHeader")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-OnlyHeader")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -202,10 +202,10 @@ func TestTableOnlyProviders(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-OnlyProviders")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-OnlyProviders")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -224,10 +224,10 @@ func TestTableOnlyInputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-OnlyInputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-OnlyInputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -246,10 +246,10 @@ func TestTableOnlyOutputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-OnlyOutputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-OnlyOutputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -265,10 +265,10 @@ func TestTableEscapeCharacters(t *testing.T) {
 		EscapeCharacters: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-EscapeCharacters")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-EscapeCharacters")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -284,10 +284,10 @@ func TestTableIndentationBellowAllowed(t *testing.T) {
 		MarkdownIndent: 0,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-IndentationBellowAllowed")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-IndentationBellowAllowed")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -303,10 +303,10 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 		MarkdownIndent: 10,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-IndentationAboveAllowed")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-IndentationAboveAllowed")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewTable(settings)
@@ -322,14 +322,35 @@ func TestTableIndentationOfFour(t *testing.T) {
 		MarkdownIndent: 4,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("table-IndentationOfFour")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("table", "table-IndentationOfFour")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
-	printer := NewTable(settings)
-	actual, err := printer.Print(module, settings)
+	actual, err := Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestTableOutputValues(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		OutputValues: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("table-OutputValues")
+	assert.Nil(err)
+
+	options := &tfconf.Options{
+		OutputValues:     true,
+		OutputValuesPath: "output_values.json",
+	}
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	actual, err := Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)

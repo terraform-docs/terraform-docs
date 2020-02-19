@@ -12,10 +12,10 @@ func TestYaml(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -31,10 +31,10 @@ func TestYamlSortByName(t *testing.T) {
 		SortByName: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-SortByName")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-SortByName")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -51,10 +51,10 @@ func TestYamlSortByRequired(t *testing.T) {
 		SortByRequired: true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-SortByRequired")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-SortByRequired")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -73,10 +73,10 @@ func TestYamlNoHeader(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-NoHeader")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-NoHeader")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -95,10 +95,10 @@ func TestYamlNoProviders(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-NoProviders")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-NoProviders")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -117,10 +117,10 @@ func TestYamlNoInputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-NoInputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-NoInputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -139,10 +139,10 @@ func TestYamlNoOutputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-NoOutputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-NoOutputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -161,10 +161,10 @@ func TestYamlOnlyHeader(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-OnlyHeader")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-OnlyHeader")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -183,10 +183,10 @@ func TestYamlOnlyProviders(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-OnlyProviders")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-OnlyProviders")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -205,10 +205,10 @@ func TestYamlOnlyInputs(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-OnlyInputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-OnlyInputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
 	assert.Nil(err)
 
 	printer := NewYAML(settings)
@@ -227,10 +227,33 @@ func TestYamlOnlyOutputs(t *testing.T) {
 		ShowOutputs:   true,
 	}).Build()
 
-	module, err := testutil.GetModule(settings)
+	expected, err := testutil.GetExpected("yaml-OnlyOutputs")
 	assert.Nil(err)
 
-	expected, err := testutil.GetExpected("yaml", "yaml-OnlyOutputs")
+	module, err := testutil.GetModule(new(tfconf.Options))
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestYamlOutputValues(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		OutputValues: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("yaml-OutputValues")
+	assert.Nil(err)
+
+	options := &tfconf.Options{
+		OutputValues:     true,
+		OutputValuesPath: "output_values.json",
+	}
+	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
 	printer := NewYAML(settings)

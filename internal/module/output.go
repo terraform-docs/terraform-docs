@@ -4,6 +4,13 @@ import (
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
 )
 
+// TerraformOutput is used for unmarshalling `terraform outputs --json` into
+type TerraformOutput struct {
+	Sensitive bool        `json:"sensitive"`
+	Type      interface{} `json:"type"`
+	Value     interface{} `json:"value"`
+}
+
 type outputsSortedByName []*tfconf.Output
 
 func (a outputsSortedByName) Len() int      { return len(a) }

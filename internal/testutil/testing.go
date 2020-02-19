@@ -12,6 +12,7 @@ import (
 )
 
 // GetModule returns 'example' Module
+// func GetModule(options *tfconf.Options) (*tfconf.Module, error) {
 func GetModule(settings *print.Settings) (*tfconf.Module, error) {
 	path, err := getExampleFolder()
 	if err != nil {
@@ -24,6 +25,11 @@ func GetModule(settings *print.Settings) (*tfconf.Module, error) {
 			Required: settings.SortByRequired,
 		},
 	}
+	// options.Path = path
+
+	// if options.OutputValues {
+	// 	options.OutputValuesPath = filepath.Join(path, options.OutputValuesPath)
+	// }
 	tfmodule, err := module.LoadWithOptions(options)
 	if err != nil {
 		return nil, err

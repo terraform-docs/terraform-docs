@@ -8,5 +8,6 @@ import (
 type Output struct {
 	Name        string         `json:"name" yaml:"name"`
 	Description types.TFString `json:"description" yaml:"description"`
+	Value       interface{}    `json:"value,omitempty" yaml:"value,omitempty"`
 	Position    Position       `json:"-" yaml:"-"`
 }

@@ -1,9 +1,11 @@
 package module
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -15,13 +17,13 @@ import (
 )
 
 // LoadWithOptions returns new instance of Module with all the inputs and
-// outputs dircoverd from provided 'path' containing Terraform config
+// outputs discovered from provided 'path' containing Terraform config
 func LoadWithOptions(options *Options) (*tfconf.Module, error) {
 	tfmodule := loadModule(options.Path)
 
 	header := loadHeader(options.Path)
 	inputs, required, optional := loadInputs(tfmodule)
-	outputs := loadOutputs(tfmodule)
+	outputs := loadOutputs(tfmodule, options)
 	providers := loadProviders(tfmodule)
 
 	module := &tfconf.Module{
@@ -130,21 +132,57 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 
 func loadOutputs(tfmodule *tfconfig.Module) []*tfconf.Output {
 	outputs := make([]*tfconf.Output, 0, len(tfmodule.Outputs))
-	for _, output := range tfmodule.Outputs {
-		description := output.Description
+	for _, o := range tfmodule.Outputs {
+		description := o.Description
 		if description == "" {
-			description = loadComments(output.Pos.Filename, output.Pos.Line-1)
+			description = loadComments(o.Pos.Filename, o.Pos.Line-1)
 		}
-		outputs = append(outputs, &tfconf.Output{
-			Name:        output.Name,
+		output := &tfconf.Output{
+			Name:        o.Name,
 			Description: types.TFString(description),
 			Position: tfconf.Position{
-				Filename: output.Pos.Filename,
-				Line:     output.Pos.Line,
+				Filename: o.Pos.Filename,
+				Line:     o.Pos.Line,
 			},
-		})
+		}
+		if options.OutputValues {
+			terraformOutputs, err := loadOutputValues(options)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if terraformOutputs[output.Name].Sensitive {
+				output.Value = "<sensitive>"
+			} else {
+				output.Value = terraformOutputs[output.Name].Value
+			}
+		}
+		outputs = append(outputs, output)
 	}
 	return outputs
+}
+
+func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
+	var out []byte
+	var err error
+
+	if options.OutputValuesPath == "" {
+		cmd := exec.Command("terraform", "output", "-json")
+		cmd.Dir = options.Path
+		if out, err = cmd.Output(); err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs: %v", err)
+		}
+	} else {
+		if out, err = ioutil.ReadFile(options.OutputValuesPath); err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
+		}
+	}
+
+	var terraformOutputs map[string]*TerraformOutput
+	err = json.Unmarshal(out, &terraformOutputs)
+	if err != nil {
+		return nil, err
+	}
+	return terraformOutputs, err
 }
 
 func loadProviders(tfmodule *tfconfig.Module) []*tfconf.Provider {

@@ -10,6 +10,7 @@ import (
 )
 
 var settings = print.NewSettings()
+var options = tfconf.Options{}
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -34,6 +35,8 @@ var rootCmd = &cobra.Command{
 		settings.ShowInputs = !noinputs
 		settings.ShowOutputs = !nooutputs
 
+		settings.OutputValues = options.OutputValues
+
 		settings.ShowColor = !nocolor
 		settings.SortByName = !nosort
 		settings.ShowRequired = !norequired
@@ -49,6 +52,9 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "do no sort items")
 	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first")
+
+	rootCmd.PersistentFlags().BoolVar(&options.OutputValues, "output-values", false, "inject output values into outputs")
+	rootCmd.PersistentFlags().StringVar(&options.OutputValuesPath, "output-values-from", "", "inject output values from file into outputs")
 
 	//-----------------------------
 	// deprecated - will be removed
@@ -78,6 +84,7 @@ func FormatterCmds() []*cobra.Command {
 }
 
 func doPrint(path string, printer print.Format) error {
+	// TODO
 	options := &module.Options{
 		Path: path,
 		SortBy: &module.SortBy{
