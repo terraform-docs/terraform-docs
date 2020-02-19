@@ -53,6 +53,15 @@ provider.null
 input.unquoted (required)
 n/a
 
+input.bool-3 (true)
+n/a
+
+input.bool-2 (false)
+It's bool number two.
+
+input.bool-1 (true)
+It's bool number one.
+
 input.string-3 ("")
 n/a
 
@@ -61,6 +70,18 @@ It's string number two.
 
 input.string-1 ("bar")
 It's string number one.
+
+input.number-3 ("19")
+n/a
+
+input.number-4 (15.75)
+n/a
+
+input.number-2 (required)
+It's number number two.
+
+input.number-1 (42)
+It's number number one.
 
 input.map-3 ({})
 n/a

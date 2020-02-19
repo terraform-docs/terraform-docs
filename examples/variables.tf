@@ -1,5 +1,19 @@
 variable unquoted {}
 
+variable "bool-3" {
+  default = true
+}
+
+variable "bool-2" {
+  description = "It's bool number two."
+  default = false
+}
+
+// It's bool number one.
+variable "bool-1" {
+  default = true
+}
+
 variable "string-3" {
   default = ""
 }
@@ -12,6 +26,26 @@ variable "string-2" {
 // It's string number one.
 variable "string-1" {
   default = "bar"
+}
+
+variable "number-3" {
+  type    = number
+  default = "19"
+}
+
+variable "number-4" {
+  type    = number
+  default = 15.75
+}
+
+variable "number-2" {
+  description = "It's number number two."
+  type        = "number"
+}
+
+// It's number number one.
+variable "number-1" {
+  default = 42
 }
 
 variable "map-3" {

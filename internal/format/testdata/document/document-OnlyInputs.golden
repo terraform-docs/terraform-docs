@@ -10,6 +10,30 @@ Type: `any`
 
 Default: n/a
 
+### bool-3
+
+Description: n/a
+
+Type: `bool`
+
+Default: `true`
+
+### bool-2
+
+Description: It's bool number two.
+
+Type: `bool`
+
+Default: `false`
+
+### bool-1
+
+Description: It's bool number one.
+
+Type: `bool`
+
+Default: `true`
+
 ### string-3
 
 Description: n/a
@@ -33,6 +57,38 @@ Description: It's string number one.
 Type: `string`
 
 Default: `"bar"`
+
+### number-3
+
+Description: n/a
+
+Type: `number`
+
+Default: `"19"`
+
+### number-4
+
+Description: n/a
+
+Type: `number`
+
+Default: `15.75`
+
+### number-2
+
+Description: It's number number two.
+
+Type: `number`
+
+Default: n/a
+
+### number-1
+
+Description: It's number number one.
+
+Type: `number`
+
+Default: `42`
 
 ### map-3
 

@@ -49,14 +49,30 @@ inputs:
   type: map
   description: It's map number two.
   default: null
+- name: number-2
+  type: number
+  description: It's number number two.
+  default: null
 - name: string-2
   type: string
   description: It's string number two.
   default: null
 - name: unquoted
   type: any
-  description: ""
+  description: null
   default: null
+- name: bool-1
+  type: bool
+  description: It's bool number one.
+  default: true
+- name: bool-2
+  type: bool
+  description: It's bool number two.
+  default: false
+- name: bool-3
+  type: bool
+  description: null
+  default: true
 - name: input-with-code-block
   type: list
   description: "This is a complicated one. We need a newline.  \nAnd an example in
@@ -76,7 +92,7 @@ inputs:
   - c
 - name: list-3
   type: list
-  description: ""
+  description: null
   default: []
 - name: long_type
   type: |-
@@ -112,19 +128,31 @@ inputs:
     c: 3
 - name: map-3
   type: map
-  description: ""
+  description: null
   default: {}
 - name: no-escape-default-value
   type: string
   description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
   default: VALUE_WITH_UNDERSCORE
+- name: number-1
+  type: number
+  description: It's number number one.
+  default: 42
+- name: number-3
+  type: number
+  description: null
+  default: "19"
+- name: number-4
+  type: number
+  description: null
+  default: 15.75
 - name: string-1
   type: string
   description: It's string number one.
   default: bar
 - name: string-3
   type: string
-  description: ""
+  description: null
   default: ""
 - name: with-url
   type: string
@@ -141,14 +169,14 @@ outputs:
   description: It's unquoted output.
 providers:
 - name: aws
-  alias: ""
+  alias: null
   version: '>= 2.15.0'
 - name: aws
   alias: ident
   version: '>= 2.15.0'
 - name: "null"
-  alias: ""
-  version: ""
+  alias: null
+  version: null
 - name: tls
-  alias: ""
-  version: ""
+  alias: null
+  version: null

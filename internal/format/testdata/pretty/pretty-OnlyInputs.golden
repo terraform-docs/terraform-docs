@@ -3,6 +3,15 @@
 [36minput.unquoted[0m (required)
 [90mn/a[0m
 
+[36minput.bool-3[0m (true)
+[90mn/a[0m
+
+[36minput.bool-2[0m (false)
+[90mIt's bool number two.[0m
+
+[36minput.bool-1[0m (true)
+[90mIt's bool number one.[0m
+
 [36minput.string-3[0m ("")
 [90mn/a[0m
 
@@ -11,6 +20,18 @@
 
 [36minput.string-1[0m ("bar")
 [90mIt's string number one.[0m
+
+[36minput.number-3[0m ("19")
+[90mn/a[0m
+
+[36minput.number-4[0m (15.75)
+[90mn/a[0m
+
+[36minput.number-2[0m (required)
+[90mIt's number number two.[0m
+
+[36minput.number-1[0m (42)
+[90mIt's number number one.[0m
 
 [36minput.map-3[0m ({})
 [90mn/a[0m
