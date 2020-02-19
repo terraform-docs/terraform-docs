@@ -55,7 +55,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first")
 
 	rootCmd.PersistentFlags().BoolVar(&options.OutputValues, "output-values", false, "inject output values into outputs")
-	rootCmd.PersistentFlags().StringVar(&options.OutputValuesPath, "output-values-from", "terraform-outputs.json", "inject output values from file into outputs")
+	rootCmd.PersistentFlags().StringVar(&options.OutputValuesPath, "output-values-from", "", "inject output values from file into outputs")
 
 	//-----------------------------
 	// deprecated - will be removed

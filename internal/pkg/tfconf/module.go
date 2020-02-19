@@ -202,20 +202,23 @@ func loadProviders(requiredProviders map[string]*tfconfig.ProviderRequirement, r
 }
 
 func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
-	if options.OutputValuesPath == "terraform-outputs.json" {
-		_, err := exec.Command("cd", options.Path, "&&", "terraform", "output", "--json", ">>", options.OutputValuesPath).Output()
-		if err != nil {
-			log.Fatal(err)
+	var out []byte
+	var err error
+
+	if options.OutputValuesPath == "" {
+		cmd := exec.Command("terraform", "output", "-json")
+		cmd.Dir = options.Path
+		if out, err = cmd.Output(); err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs: %v", err)
+		}
+	} else {
+		if out, err = ioutil.ReadFile(options.OutputValuesPath); err != nil {
+			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
 		}
 	}
 
 	var terraformOutputs map[string]*TerraformOutput
-
-	byteValue, err := ioutil.ReadFile(options.OutputValuesPath)
-	if err != nil {
-		return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
-	}
-	err = json.Unmarshal(byteValue, &terraformOutputs)
+	err = json.Unmarshal(out, &terraformOutputs)
 	if err != nil {
 		return nil, err
 	}
