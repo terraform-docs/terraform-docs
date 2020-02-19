@@ -15,6 +15,8 @@ A utility to generate documentation from Terraform modules in various output for
       --no-outputs                     do not show outputs
       --no-providers                   do not show providers
       --no-sort                        do no sort items
+      --output-values                  inject output values into outputs
+      --output-values-from string      inject output values from file into outputs
       --sort-by-required               sort items by name and print required ones first
       --sort-inputs-by-required        [deprecated] use '--sort-by-required' instead
       --with-aggregate-type-defaults   [deprecated] print default values of aggregate types
