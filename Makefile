@@ -24,9 +24,9 @@ GOPKGS      ?= $(shell $(GOCMD) list $(MODVENDOR) ./... | grep -v /vendor)
 MODVENDOR   := -mod=vendor
 
 GOLDFLAGS   :="
-GOLDFLAGS   += -X $(PACKAGE)/internal/pkg/version.version=$(VERSION)
-GOLDFLAGS   += -X $(PACKAGE)/internal/pkg/version.commitHash=$(COMMIT_HASH)
-GOLDFLAGS   += -X $(PACKAGE)/internal/pkg/version.buildDate=$(BUILD_DATE)
+GOLDFLAGS   += -X $(PACKAGE)/internal/version.version=$(VERSION)
+GOLDFLAGS   += -X $(PACKAGE)/internal/version.commitHash=$(COMMIT_HASH)
+GOLDFLAGS   += -X $(PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
 GOLDFLAGS   +="
 
 GOBUILD     ?= CGO_ENABLED=0 $(GOCMD) build $(MODVENDOR) -ldflags $(GOLDFLAGS)
@@ -147,19 +147,27 @@ changelog: ## Generate Changelog
 
 .PHONY: git-chglog
 git-chglog:
+ifeq (, $(shell which git-chglog))
 	curl -sfL https://github.com/git-chglog/git-chglog/releases/download/$(GITCHGLOG_VERSION)/git-chglog_$(shell go env GOOS)_$(shell go env GOARCH) -o $(shell go env GOPATH)/bin/git-chglog && chmod +x $(shell go env GOPATH)/bin/git-chglog
+endif
 
 .PHONY: goimports
 goimports:
+ifeq (, $(shell which goimports))
 	GO111MODULE=off go get -u golang.org/x/tools/cmd/goimports
+endif
 
 .PHONY: golangci
 golangci:
+ifeq (, $(shell which golangci-lint))
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell go env GOPATH)/bin $(GOLANGCI_VERSION)
+endif
 
 .PHONY: gox
 gox:
+ifeq (, $(shell which gox))
 	GO111MODULE=off go get -u github.com/mitchellh/gox
+endif
 
 .PHONY: tools
 tools: ## Install required tools

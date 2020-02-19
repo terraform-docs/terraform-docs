@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/segmentio/terraform-docs/internal/pkg/version"
+	"github.com/segmentio/terraform-docs/internal/version"
 	"github.com/spf13/cobra"
 )
 

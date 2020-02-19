@@ -2,16 +2,15 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 
-	"github.com/segmentio/terraform-docs/internal/pkg/print"
-	"github.com/segmentio/terraform-docs/internal/pkg/tfconf"
-	"github.com/segmentio/terraform-docs/internal/pkg/version"
+	"github.com/segmentio/terraform-docs/internal/module"
+	"github.com/segmentio/terraform-docs/internal/version"
+	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/spf13/cobra"
 )
 
 var settings = print.NewSettings()
-var options = tfconf.Options{}
+var options = module.NewOptions()
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -21,27 +20,19 @@ var rootCmd = &cobra.Command{
 	Long:    "A utility to generate documentation from Terraform modules in various output formats",
 	Version: version.Version(),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		noheader, _ := cmd.Flags().GetBool("no-header")
-		noproviders, _ := cmd.Flags().GetBool("no-providers")
-		noinputs, _ := cmd.Flags().GetBool("no-inputs")
-		nooutputs, _ := cmd.Flags().GetBool("no-outputs")
+		oppositeBool := func(name string) bool {
+			val, _ := cmd.Flags().GetBool(name)
+			return !val
+		}
+		settings.ShowHeader = oppositeBool("no-header")
+		settings.ShowProviders = oppositeBool("no-providers")
+		settings.ShowInputs = oppositeBool("no-inputs")
+		settings.ShowOutputs = oppositeBool("no-outputs")
 
-		nocolor, _ := cmd.Flags().GetBool("no-color")
-		nosort, _ := cmd.Flags().GetBool("no-sort")
-		norequired, _ := cmd.Flags().GetBool("no-required")
-		noescape, _ := cmd.Flags().GetBool("no-escape")
-
-		settings.ShowHeader = !noheader
-		settings.ShowProviders = !noproviders
-		settings.ShowInputs = !noinputs
-		settings.ShowOutputs = !nooutputs
-
-		settings.OutputValues = options.OutputValues
-
-		settings.ShowColor = !nocolor
-		settings.SortByName = !nosort
-		settings.ShowRequired = !norequired
-		settings.EscapeCharacters = !noescape
+		settings.ShowColor = oppositeBool("no-color")
+		settings.SortByName = oppositeBool("no-sort")
+		settings.ShowRequired = oppositeBool("no-required")
+		settings.EscapeCharacters = oppositeBool("no-escape")
 	},
 }
 
@@ -63,14 +54,6 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-inputs-by-required", false, "[deprecated] use '--sort-by-required' instead")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "with-aggregate-type-defaults", false, "[deprecated] print default values of aggregate types")
 	//-----------------------------
-
-	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "do not show \"Required\" column or section")
-	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
-	markdownCmd.PersistentFlags().IntVar(&settings.MarkdownIndent, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
-
-	prettyCmd.PersistentFlags().BoolVar(new(bool), "no-color", false, "do not colorize printed result")
-
-	jsonCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -92,18 +75,22 @@ func FormatterCmds() []*cobra.Command {
 	}
 }
 
-func doPrint(path string, fn func(*tfconf.Module) (string, error)) {
-	options.Path = path
-	module, err := tfconf.CreateModule(&options)
+func doPrint(path string, printer print.Format) error {
+	options.With(&module.Options{
+		Path: path,
+		SortBy: &module.SortBy{
+			Name:     settings.SortByName,
+			Required: settings.SortByRequired,
+		},
+	})
+	tfmodule, err := module.LoadWithOptions(options)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-
-	output, err := fn(module)
-
+	output, err := printer.Print(tfmodule, settings)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-
 	fmt.Println(output)
+	return nil
 }
