@@ -28,20 +28,32 @@ func ValueOf(v interface{}) Default {
 	if v == nil {
 		return new(Nil)
 	}
-	switch xType := fmt.Sprintf("%T", v); xType {
-	case "string":
-		if v.(string) == "" {
+	switch i := v.(type) {
+	case string:
+		if i == "" {
 			return Empty("")
 		}
-		return String(v.(string))
-	case "int", "int8", "int16", "int32", "int64", "float32", "float64":
-		return Number(v.(float64))
-	case "bool":
-		return Bool(v.(bool))
-	case "[]interface {}":
-		return List(v.([]interface{}))
-	case "map[string]interface {}":
-		return Map(v.(map[string]interface{}))
+		return String(i)
+	case float64:
+		return Number(i)
+	case float32:
+		return Number(float64(i))
+	case int64:
+		return Number(float64(i))
+	case int32:
+		return Number(float64(i))
+	case int16:
+		return Number(float64(i))
+	case int8:
+		return Number(float64(i))
+	case int:
+		return Number(float64(i))
+	case bool:
+		return Bool(i)
+	case []interface{}:
+		return List(i)
+	case map[string]interface{}:
+		return Map(i)
 	}
 	return new(Nil)
 }
@@ -54,7 +66,7 @@ func TypeOf(t string, v interface{}) String {
 		return String(t)
 	}
 	if v != nil {
-		switch xType := fmt.Sprintf("%T", v); xType {
+		switch x := fmt.Sprintf("%T", v); x {
 		case "string":
 			return String("string")
 		case "int", "int8", "int16", "int32", "int64", "float32", "float64":
