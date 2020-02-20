@@ -37,7 +37,7 @@ github.com/inconshreveable/mousetrap
 github.com/mitchellh/go-wordwrap
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
-# github.com/spf13/cobra v0.0.5
+# github.com/spf13/cobra v0.0.6
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.3
 github.com/spf13/pflag
