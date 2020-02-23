@@ -4,26 +4,26 @@ import (
 	"testing"
 )
 
-func TestString(t *testing.T) {
-	values := List{"foo", "42", "false", "true"}
+func TestEmpty(t *testing.T) {
+	values := List{""}
 	testPrimitive(t, []testprimitive{
 		{
-			name:   "value not nil and type string",
+			name:   "value empty and type string",
 			values: values,
 			types:  "string",
 			expected: expected{
 				typeName:   "string",
-				valueKind:  "types.String",
+				valueKind:  "types.Empty",
 				hasDefault: true,
 			},
 		},
 		{
-			name:   "value not nil and type empty",
+			name:   "value empty and type empty",
 			values: values,
 			types:  "",
 			expected: expected{
 				typeName:   "string",
-				valueKind:  "types.String",
+				valueKind:  "types.Empty",
 				hasDefault: true,
 			},
 		},

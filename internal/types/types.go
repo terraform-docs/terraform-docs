@@ -2,8 +2,8 @@ package types
 
 import (
 	"bytes"
-	"fmt"
 	"go/types"
+	"reflect"
 	"strings"
 )
 
@@ -28,32 +28,23 @@ func ValueOf(v interface{}) Default {
 	if v == nil {
 		return new(Nil)
 	}
-	switch i := v.(type) {
-	case string:
-		if i == "" {
+	value := reflect.ValueOf(v)
+	switch value.Kind() {
+	case reflect.String:
+		if value.IsZero() {
 			return Empty("")
 		}
-		return String(i)
-	case float64:
-		return Number(i)
-	case float32:
-		return Number(float64(i))
-	case int64:
-		return Number(float64(i))
-	case int32:
-		return Number(float64(i))
-	case int16:
-		return Number(float64(i))
-	case int8:
-		return Number(float64(i))
-	case int:
-		return Number(float64(i))
-	case bool:
-		return Bool(i)
-	case []interface{}:
-		return List(i)
-	case map[string]interface{}:
-		return Map(i)
+		return String(value.String())
+	case reflect.Float32, reflect.Float64:
+		return Number(value.Float())
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return Number(float64(value.Int()))
+	case reflect.Bool:
+		return Bool(value.Bool())
+	case reflect.Slice:
+		return List(value.Interface().([]interface{}))
+	case reflect.Map:
+		return Map(value.Interface().(map[string]interface{}))
 	}
 	return new(Nil)
 }
@@ -66,16 +57,16 @@ func TypeOf(t string, v interface{}) String {
 		return String(t)
 	}
 	if v != nil {
-		switch x := fmt.Sprintf("%T", v); x {
-		case "string":
+		switch reflect.ValueOf(v).Kind() {
+		case reflect.String:
 			return String("string")
-		case "int", "int8", "int16", "int32", "int64", "float32", "float64":
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Float32, reflect.Float64:
 			return String("number")
-		case "bool":
+		case reflect.Bool:
 			return String("bool")
-		case "[]interface {}":
+		case reflect.Slice:
 			return String("list")
-		case "map[string]interface {}":
+		case reflect.Map:
 			return String("map")
 		}
 	}
@@ -114,6 +105,11 @@ func (s String) String() string {
 	return string(s)
 }
 
+// nolint
+func (s String) underlying() string {
+	return string(s)
+}
+
 // HasDefault indicates a Terraform variable has a default value set.
 func (s String) HasDefault() bool {
 	return true
@@ -147,6 +143,11 @@ func (s String) MarshalYAML() (interface{}, error) {
 // marshaled to `""` in JSON and YAML
 type Empty string
 
+// nolint
+func (e Empty) underlying() string {
+	return string(e)
+}
+
 // HasDefault indicates a Terraform variable has a default value set.
 func (e Empty) HasDefault() bool {
 	return true
@@ -162,6 +163,11 @@ func (e Empty) MarshalJSON() ([]byte, error) {
 // marshaled to `null` when emty in JSON and YAML
 type Number float64
 
+// nolint
+func (n Number) underlying() float64 {
+	return float64(n)
+}
+
 // HasDefault indicates a Terraform variable has a default value set.
 func (n Number) HasDefault() bool {
 	return true
@@ -169,6 +175,11 @@ func (n Number) HasDefault() bool {
 
 // Bool represents a 'bool' value
 type Bool bool
+
+// nolint
+func (b Bool) underlying() bool {
+	return bool(b)
+}
 
 // HasDefault indicates a Terraform variable has a default value set.
 func (b Bool) HasDefault() bool {
@@ -178,6 +189,15 @@ func (b Bool) HasDefault() bool {
 // List represents a 'list' of values
 type List []interface{}
 
+// nolint
+func (l List) underlying() []interface{} {
+	r := make([]interface{}, 0)
+	for _, i := range l {
+		r = append(r, i)
+	}
+	return r
+}
+
 // HasDefault indicates a Terraform variable has a default value set.
 func (l List) HasDefault() bool {
 	return true
@@ -185,6 +205,15 @@ func (l List) HasDefault() bool {
 
 // Map represents a 'map' of values
 type Map map[string]interface{}
+
+// nolint
+func (m Map) underlying() map[string]interface{} {
+	r := make(map[string]interface{}, 0)
+	for k, e := range m {
+		r[k] = e
+	}
+	return r
+}
 
 // HasDefault indicates a Terraform variable has a default value set.
 func (m Map) HasDefault() bool {
