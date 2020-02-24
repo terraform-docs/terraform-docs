@@ -75,9 +75,9 @@ followed by another line of text.
 
 ## Outputs
 
-| Name | Description | Value |
-|------|-------------|-------|
-| unquoted | It's unquoted output. | map["leon":"cat"] |
-| output-2 | It's output number two. | ["jack" "lola"] |
-| output-1 | It's output number one. | 1 |
-| output-0.12 | terraform 0.12 only | "" |
+| Name | Description | Value | Sensitive |
+|------|-------------|-------|:---------:|
+| unquoted | It's unquoted output. | <pre>{<br>  "leon": "cat"<br>}</pre> | no |
+| output-2 | It's output number two. | <pre>[<br>  "jack",<br>  "lola"<br>]</pre> | no |
+| output-1 | It's output number one. | `1` | no |
+| output-0.12 | terraform 0.12 only | `<sensitive>` | yes |

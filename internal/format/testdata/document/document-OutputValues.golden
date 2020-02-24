@@ -303,22 +303,43 @@ The following outputs are exported:
 
 Description: It's unquoted output.
 
-Value: map["leon":"cat"]
+Value:
+
+```json
+{
+  "leon": "cat"
+}
+```
+
+Sensitive: no
 
 ### output-2
 
 Description: It's output number two.
 
-Value: ["jack" "lola"]
+Value:
+
+```json
+[
+  "jack",
+  "lola"
+]
+```
+
+Sensitive: no
 
 ### output-1
 
 Description: It's output number one.
 
-Value: 1
+Value: `1`
+
+Sensitive: no
 
 ### output-0.12
 
 Description: terraform 0.12 only
 
-Value: ""
+Value: `<sensitive>`
+
+Sensitive: yes
