@@ -44,6 +44,12 @@ func ValueOf(v interface{}) Value {
 	case reflect.Bool:
 		return Bool(value.Bool())
 	case reflect.Slice:
+		// fmt.Println(reflect.TypeOf(value.Interface()))
+		// t := reflect.TypeOf(value.Interface())
+		// // l := make([]interface{}, 0)
+		// // for i, x := range value.Interface() {
+		// // 	l = append(l, x)
+		// // }
 		return List(value.Interface().([]interface{}))
 	case reflect.Map:
 		return Map(value.Interface().(map[string]interface{}))
@@ -196,8 +202,8 @@ func (b Bool) HasDefault() bool {
 // List represents a 'list' of values
 type List []interface{}
 
-// nolint
-func (l List) underlying() []interface{} {
+// Underlying returns the underlying elements in the form of '[]interface {}'
+func (l List) Underlying() []interface{} {
 	r := make([]interface{}, 0)
 	for _, i := range l {
 		r = append(r, i)
@@ -234,8 +240,8 @@ func (l List) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 // Map represents a 'map' of values
 type Map map[string]interface{}
 
-// nolint
-func (m Map) underlying() map[string]interface{} {
+// Underlying returns the underlying elements in the form of 'map[string]interface {}'
+func (m Map) Underlying() map[string]interface{} {
 	r := make(map[string]interface{}, 0)
 	for k, e := range m {
 		r[k] = e
