@@ -156,7 +156,7 @@ func TestInputValue(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			assert.Equal(tt.expectValue, tt.input.Value())
+			assert.Equal(tt.expectValue, tt.input.GetValue())
 			assert.Equal(tt.expectDefault, tt.input.HasDefault())
 		})
 	}
