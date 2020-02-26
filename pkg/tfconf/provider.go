@@ -8,10 +8,10 @@ import (
 
 // Provider represents a Terraform output.
 type Provider struct {
-	Name     string       `json:"name" yaml:"name"`
-	Alias    types.String `json:"alias" yaml:"alias"`
-	Version  types.String `json:"version" yaml:"version"`
-	Position Position     `json:"-" yaml:"-"`
+	Name     string       `json:"name" xml:"name" yaml:"name"`
+	Alias    types.String `json:"alias" xml:"alias" yaml:"alias"`
+	Version  types.String `json:"version" xml:"version" yaml:"version"`
+	Position Position     `json:"-" xml:"-" yaml:"-"`
 }
 
 // FullName returns full name of the provider, with alias if available

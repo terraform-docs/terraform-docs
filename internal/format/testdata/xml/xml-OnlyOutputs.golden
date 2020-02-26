@@ -1,0 +1,23 @@
+<module>
+  <header></header>
+  <inputs></inputs>
+  <outputs>
+    <output>
+      <name>unquoted</name>
+      <description>It&#39;s unquoted output.</description>
+    </output>
+    <output>
+      <name>output-2</name>
+      <description>It&#39;s output number two.</description>
+    </output>
+    <output>
+      <name>output-1</name>
+      <description>It&#39;s output number one.</description>
+    </output>
+    <output>
+      <name>output-0.12</name>
+      <description>terraform 0.12 only</description>
+    </output>
+  </outputs>
+  <providers></providers>
+</module>

@@ -73,6 +73,7 @@ func FormatterCmds() []*cobra.Command {
 		prettyCmd,
 		mdDocumentCmd,
 		mdTableCmd,
+		xmlCmd,
 		yamlCmd,
 	}
 }

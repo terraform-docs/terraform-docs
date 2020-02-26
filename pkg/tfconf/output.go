@@ -3,27 +3,28 @@ package tfconf
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/xml"
 
 	"github.com/segmentio/terraform-docs/internal/types"
 )
 
 // Output represents a Terraform output.
 type Output struct {
-	Name        string       `json:"name" yaml:"name"`
-	Description types.String `json:"description" yaml:"description"`
-	Value       types.Value  `json:"value,omitempty" yaml:"value,omitempty"`
-	Sensitive   bool         `json:"sensitive,omitempty" yaml:"sensitive,omitempty"`
-	Position    Position     `json:"-" yaml:"-"`
-	ShowValue   bool         `json:"-" yaml:"-"`
+	Name        string       `json:"name" xml:"name" yaml:"name"`
+	Description types.String `json:"description" xml:"description" yaml:"description"`
+	Value       types.Value  `json:"value,omitempty" xml:"value,omitempty" yaml:"value,omitempty"`
+	Sensitive   bool         `json:"sensitive,omitempty" xml:"sensitive,omitempty" yaml:"sensitive,omitempty"`
+	Position    Position     `json:"-" xml:"-" yaml:"-"`
+	ShowValue   bool         `json:"-" xml:"-" yaml:"-"`
 }
 
 type withvalue struct {
-	Name        string       `json:"name" yaml:"name"`
-	Description types.String `json:"description" yaml:"description"`
-	Value       types.Value  `json:"value" yaml:"value"`
-	Sensitive   bool         `json:"sensitive" yaml:"sensitive"`
-	Position    Position     `json:"-" yaml:"-"`
-	ShowValue   bool         `json:"-" yaml:"-"`
+	Name        string       `json:"name" xml:"name" yaml:"name"`
+	Description types.String `json:"description" xml:"description" yaml:"description"`
+	Value       types.Value  `json:"value" xml:"value" yaml:"value"`
+	Sensitive   bool         `json:"sensitive" xml:"sensitive" yaml:"sensitive"`
+	Position    Position     `json:"-" xml:"-" yaml:"-"`
+	ShowValue   bool         `json:"-" xml:"-" yaml:"-"`
 }
 
 // GetValue returns JSON representation of the 'Value', which is an 'interface'.
@@ -65,7 +66,29 @@ func (o *Output) MarshalJSON() ([]byte, error) {
 		return fn(withvalue(*o))
 	}
 	return fn(*o)
+}
 
+// MarshalXML custom xml marshal function to take
+// '--output-values' flag into consideration. It means
+// if the flag is not set Value and Sensitive fields
+// are set to 'omitempty', otherwise if output values
+// are being shown 'omitempty' gets explicitly removed
+// to show even empty and false values.
+func (o *Output) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	fn := func(v interface{}, name string) error {
+		return e.EncodeElement(v, xml.StartElement{Name: xml.Name{Local: name}})
+	}
+	err := e.EncodeToken(start)
+	if err != nil {
+		return err
+	}
+	fn(o.Name, "name")               //nolint: errcheck
+	fn(o.Description, "description") //nolint: errcheck
+	if o.ShowValue {
+		fn(o.Value, "value")         //nolint: errcheck
+		fn(o.Sensitive, "sensitive") //nolint: errcheck
+	}
+	return e.EncodeToken(start.End())
 }
 
 // MarshalYAML custom yaml marshal function to take

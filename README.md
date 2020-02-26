@@ -9,12 +9,13 @@
 A utility to generate documentation from Terraform modules in various output formats.
 
 ``` bash
-terraform-docs pretty ./my-terraform-module            # generate colorized pretty
 terraform-docs json ./my-terraform-module              # generate json
-terraform-docs yaml ./my-terraform-module              # generate yaml
 terraform-docs markdown ./my-terraform-module          # generate markdown table
 terraform-docs markdown table ./my-terraform-module    # generate markdown table
 terraform-docs markdown document ./my-terraform-module # generate markdown document
+terraform-docs pretty ./my-terraform-module            # generate colorized pretty
+terraform-docs xml ./my-terraform-module               # generate xml
+terraform-docs yaml ./my-terraform-module              # generate yaml
 ```
 
 Read the [User Guide](./docs/USER_GUIDE.md) for detailed documentation.
