@@ -77,7 +77,7 @@ const (
 	Type: {{ tostring .Type | type }}
 
 	{{ if or .HasDefault (not isRequired) }}
-		Default: {{ default "n/a" .Value | value }}
+		Default: {{ default "n/a" .GetValue | value }}
 	{{- end }}
 	`
 
@@ -93,8 +93,12 @@ const (
 				{{ indent 1 }} {{ name .Name }}
 
 				Description: {{ tostring .Description | sanitizeDoc }}
-				{{ if $.Settings.OutputValues }} 
-					Value: {{ .Value | sanitizeInterface | sanitizeDoc }}
+
+				{{ if $.Settings.OutputValues }}
+					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
+					Value: {{ value $sensitive | sanitizeDoc }}
+
+					Sensitive: {{ ternary (.Sensitive) "yes" "no" }}
 				{{ end }}
 			{{ end }}
 		{{ end }}

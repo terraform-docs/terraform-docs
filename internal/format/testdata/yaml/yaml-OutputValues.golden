@@ -163,17 +163,21 @@ outputs:
   description: It's unquoted output.
   value:
     leon: cat
+  sensitive: false
 - name: output-2
   description: It's output number two.
   value:
   - jack
   - lola
+  sensitive: false
 - name: output-1
   description: It's output number one.
   value: 1
+  sensitive: false
 - name: output-0.12
   description: terraform 0.12 only
-  value: ""
+  value: <sensitive>
+  sensitive: true
 providers:
 - name: tls
   alias: null

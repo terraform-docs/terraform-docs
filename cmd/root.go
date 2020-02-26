@@ -29,6 +29,8 @@ var rootCmd = &cobra.Command{
 		settings.ShowInputs = oppositeBool("no-inputs")
 		settings.ShowOutputs = oppositeBool("no-outputs")
 
+		settings.OutputValues = options.OutputValues
+
 		settings.ShowColor = oppositeBool("no-color")
 		settings.SortByName = oppositeBool("no-sort")
 		settings.ShowRequired = oppositeBool("no-required")

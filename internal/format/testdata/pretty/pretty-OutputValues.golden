@@ -154,15 +154,20 @@ It spans over multiple lines.[0m
 
 
 
-[36moutput.unquoted[0m (map["leon":"cat"])
+[36moutput.unquoted[0m ({
+  "leon": "cat"
+})
 [90mIt's unquoted output.[0m
 
-[36moutput.output-2[0m (["jack" "lola"])
+[36moutput.output-2[0m ([
+  "jack",
+  "lola"
+])
 [90mIt's output number two.[0m
 
 [36moutput.output-1[0m (1)
 [90mIt's output number one.[0m
 
-[36moutput.output-0.12[0m ("")
+[36moutput.output-0.12[0m (<sensitive>)
 [90mterraform 0.12 only[0m
 

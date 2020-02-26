@@ -113,6 +113,14 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 
 func loadOutputs(tfmodule *tfconfig.Module, options *Options) []*tfconf.Output {
 	outputs := make([]*tfconf.Output, 0, len(tfmodule.Outputs))
+	values := make(map[string]*TerraformOutput, 0)
+	if options.OutputValues {
+		var err error
+		values, err = loadOutputValues(options)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 	for _, o := range tfmodule.Outputs {
 		description := o.Description
 		if description == "" {
@@ -125,16 +133,14 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) []*tfconf.Output {
 				Filename: o.Pos.Filename,
 				Line:     o.Pos.Line,
 			},
+			ShowValue: options.OutputValues,
 		}
 		if options.OutputValues {
-			terraformOutputs, err := loadOutputValues(options)
-			if err != nil {
-				log.Fatal(err)
-			}
-			if terraformOutputs[output.Name].Sensitive {
-				output.Value = "<sensitive>"
+			output.Sensitive = values[output.Name].Sensitive
+			if values[output.Name].Sensitive {
+				output.Value = types.ValueOf(`<sensitive>`)
 			} else {
-				output.Value = terraformOutputs[output.Name].Value
+				output.Value = types.ValueOf(values[output.Name].Value)
 			}
 		}
 		outputs = append(outputs, output)

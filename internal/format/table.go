@@ -39,19 +39,13 @@ const (
 		{{ if not .Module.Inputs }}
 			No input.
 		{{ else }}
-			{{ if not .Settings.ShowRequired }}
-				| Name | Description | Type | Default |
-				|------|-------------|------|---------|
-			{{- else }}
-				| Name | Description | Type | Default | Required |
-				|------|-------------|------|---------|:--------:|
-			{{- end }}
+			| Name | Description | Type | Default |{{ if .Settings.ShowRequired }} Required |{{ end }}
+			|------|-------------|------|---------|{{ if .Settings.ShowRequired }}:--------:|{{ end }}
 			{{- range .Module.Inputs }}
-				{{- if not $.Settings.ShowRequired }}
-					| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .Value | sanitizeTbl }} |
-				{{- else }}
-					| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .Value | sanitizeTbl }} | {{ ternary (.Value) "no" "yes" }} |
-				{{- end }}
+				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .GetValue | sanitizeTbl }} |
+				{{- if $.Settings.ShowRequired -}}
+					{{ printf " " }}{{ ternary (.GetValue) "no" "yes" }} |
+				{{- end -}}
 			{{- end }}
 		{{ end }}
 	{{ end -}}
@@ -63,10 +57,14 @@ const (
 		{{ if not .Module.Outputs }}
 			No output.
 		{{ else }}
-			| Name | Description |{{ if $.Settings.OutputValues }} Value |{{ end }}
-			|------|-------------|{{ if $.Settings.OutputValues }}-------|{{ end }}
+			| Name | Description |{{ if .Settings.OutputValues }} Value | Sensitive |{{ end }}
+			|------|-------------|{{ if .Settings.OutputValues }}-------|:---------:|{{ end }}
 			{{- range .Module.Outputs }}
-				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |{{ if $.Settings.OutputValues }} {{ .Value | sanitizeInterface | sanitizeTbl }} |{{ end }}
+				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |
+				{{- if $.Settings.OutputValues -}}
+					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
+					{{ printf " " }}{{ value $sensitive | sanitizeTbl }} | {{ ternary (.Sensitive) "yes" "no" }} |
+				{{- end -}}
 			{{- end }}
 		{{ end }}
 	{{ end -}}

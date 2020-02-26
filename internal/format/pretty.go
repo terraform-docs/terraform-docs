@@ -38,7 +38,7 @@ const (
 		{{- with .Module.Inputs }}
 			{{- printf "\n" -}}
 			{{- range . }}
-				{{ printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .Value }})
+				{{ printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
 				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
 			{{ end }}
 			{{- printf "\n" -}}
@@ -54,7 +54,7 @@ const (
 				{{ printf "output.%s" .Name | colorize "\033[36m" }}
 				{{- if $.Settings.OutputValues -}}
 					{{- printf " " -}}
-					({{ sanitizeInterface .Value }})
+					({{ ternary .Sensitive "<sensitive>" .GetValue }})
 			{{- end }}
 			{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
 			{{ end }}

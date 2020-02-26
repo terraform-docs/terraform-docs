@@ -1,23 +1,27 @@
 {
     "output-0.12": {
-      "sensitive": false,
-      "type": "string",
-      "value": ""
+        "sensitive": true,
+        "type": "string",
+        "value": "sensitive-content-should-be-hidden"
     },
     "output-1": {
-      "sensitive": false,
-      "type": "int",
-      "value": 1
+        "sensitive": false,
+        "type": "int",
+        "value": 1
     },
     "output-2": {
-      "sensitive": false,
-      "type": "array",
-      "value": ["jack", "lola"]
+        "sensitive": false,
+        "type": "array",
+        "value": [
+            "jack",
+            "lola"
+        ]
     },
     "unquoted": {
-      "sensitive": false,
-      "type": "map",
-      "value": {"leon":"cat"}
+        "sensitive": false,
+        "type": "map",
+        "value": {
+            "leon": "cat"
+        }
     }
-  }
-  
+}

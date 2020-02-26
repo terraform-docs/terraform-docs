@@ -7,8 +7,9 @@ import (
 	"strings"
 )
 
-// Default is a default value of an input
+// Value is a default value of an input or output.
 // it can be of several types:
+//
 // - Nil
 // - String
 // - Empty
@@ -16,15 +17,15 @@ import (
 // - Bool
 // - List
 // - Map
-type Default interface {
+type Value interface {
 	HasDefault() bool
 }
 
 // ValueOf returns actual value of a variable
-// casted to 'Default' interface. This is done
+// casted to 'Value' interface. This is done
 // to be able to attach specific marshaller func
 // to the type (if such a custom function was needed)
-func ValueOf(v interface{}) Default {
+func ValueOf(v interface{}) Value {
 	if v == nil {
 		return new(Nil)
 	}

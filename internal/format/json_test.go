@@ -280,6 +280,7 @@ func TestJsonEscapeCharacters(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
+
 func TestJsonOutputValues(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
