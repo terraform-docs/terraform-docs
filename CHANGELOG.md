@@ -3,13 +3,20 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Bug Fixes
+- Fix type conversion for numbers ([#204](https://github.com/segmentio/terraform-docs/issues/204))
+
 ### Code Refactoring
+- Add Default value types for better marshalling ([#196](https://github.com/segmentio/terraform-docs/issues/196))
+- Introduce Format interface and expose to public pkg ([#195](https://github.com/segmentio/terraform-docs/issues/195))
 - Add tfconf.Options to load Module with ([#193](https://github.com/segmentio/terraform-docs/issues/193))
 
 ### Documentation
 - Auto generate formats document from examples ([#192](https://github.com/segmentio/terraform-docs/issues/192))
 
 ### Features
+- Add support for XML renderer ([#198](https://github.com/segmentio/terraform-docs/issues/198))
+- Show sensitivity of the output value in rendered result ([#207](https://github.com/segmentio/terraform-docs/issues/207))
 - Extract and render output values from Terraform ([#191](https://github.com/segmentio/terraform-docs/issues/191))
 - Render formatted results with go templates ([#177](https://github.com/segmentio/terraform-docs/issues/177))
 - Add support for YAML renderer ([#189](https://github.com/segmentio/terraform-docs/issues/189))
