@@ -28,12 +28,14 @@ func (l *Lines) Extract() ([]string, error) {
 	defer func() {
 		_ = f.Close()
 	}()
+	return l.extract(f)
+}
 
-	bf := bufio.NewReader(f)
+func (l *Lines) extract(r io.Reader) ([]string, error) {
+	bf := bufio.NewReader(r)
 	var lines = make([]string, 0)
-
 	for lnum := 0; ; lnum++ {
-		if l.LineNum != -1 && lnum >= l.LineNum {
+		if l.LineNum != -1 && lnum >= l.LineNum-1 {
 			break
 		}
 		line, err := bf.ReadString('\n')
@@ -44,7 +46,7 @@ func (l *Lines) Extract() ([]string, error) {
 			case 1:
 				return nil, errors.New("only 1 line")
 			default:
-				return nil, fmt.Errorf("only %d lines", lnum)
+				return nil, fmt.Errorf("only %d lines", lnum+1)
 			}
 		}
 		if err != nil {
@@ -60,6 +62,5 @@ func (l *Lines) Extract() ([]string, error) {
 			lines = nil
 		}
 	}
-
 	return lines, nil
 }

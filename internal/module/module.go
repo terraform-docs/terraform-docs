@@ -87,7 +87,7 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 	for _, input := range tfmodule.Variables {
 		inputDescription := input.Description
 		if inputDescription == "" {
-			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line-1)
+			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
 
 		i := &tfconf.Input{
@@ -124,7 +124,7 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) []*tfconf.Output {
 	for _, o := range tfmodule.Outputs {
 		description := o.Description
 		if description == "" {
-			description = loadComments(o.Pos.Filename, o.Pos.Line-1)
+			description = loadComments(o.Pos.Filename, o.Pos.Line)
 		}
 		output := &tfconf.Output{
 			Name:        o.Name,
