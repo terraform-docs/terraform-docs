@@ -1,6 +1,8 @@
 package tfconf
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+)
 
 // Module represents a Terraform module. It consists of
 // - Header    ('header' json key):    Module header found in shape of multi line comments at the beginning of 'main.tf'
