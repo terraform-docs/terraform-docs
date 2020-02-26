@@ -44,12 +44,6 @@ func ValueOf(v interface{}) Value {
 	case reflect.Bool:
 		return Bool(value.Bool())
 	case reflect.Slice:
-		// fmt.Println(reflect.TypeOf(value.Interface()))
-		// t := reflect.TypeOf(value.Interface())
-		// // l := make([]interface{}, 0)
-		// // for i, x := range value.Interface() {
-		// // 	l = append(l, x)
-		// // }
 		return List(value.Interface().([]interface{}))
 	case reflect.Map:
 		return Map(value.Interface().(map[string]interface{}))
