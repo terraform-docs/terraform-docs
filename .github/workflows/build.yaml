@@ -47,7 +47,13 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Run tests
-      run: make test
+      run: make test-coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.txt
 
   build:
     name: Build
