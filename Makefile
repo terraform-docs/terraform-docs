@@ -73,6 +73,11 @@ test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
 	$(GOCMD) test $(MODVENDOR) -v $(GOPKGS)
 
+.PHONY: test-coverage
+test-coverage: ## Run tests with code coverage
+	@ $(MAKE) --no-print-directory log-$@
+	$(GOCMD) test -race -coverprofile=coverage.txt -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
+
 .PHONY: vendor
 vendor: ## Install 'vendor' dependencies
 	@ $(MAKE) --no-print-directory log-$@
