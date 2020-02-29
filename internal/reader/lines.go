@@ -39,18 +39,15 @@ func (l *Lines) extract(r io.Reader) ([]string, error) {
 			break
 		}
 		line, err := bf.ReadString('\n')
-		if err == io.EOF {
+		if err == io.EOF && line == "" {
 			switch lnum {
 			case 0:
 				return nil, errors.New("no lines in file")
 			case 1:
 				return nil, errors.New("only 1 line")
 			default:
-				return nil, fmt.Errorf("only %d lines", lnum+1)
+				return nil, fmt.Errorf("only %d lines", lnum)
 			}
-		}
-		if err != nil {
-			return nil, err
 		}
 		if l.Condition(line) {
 			if extracted, capture := l.Parser(line); capture {

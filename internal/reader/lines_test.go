@@ -1,6 +1,7 @@
 package reader
 
 import (
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -8,6 +9,8 @@ import (
 )
 
 const textEmpty = ``
+
+const textOneLine = `Lorem ipsum dolor sit amet`
 
 const textWithLeadingComment = `
 /**
@@ -61,7 +64,72 @@ nulla pariatur.
 officia deserunt mollit anim id est laborum
 `
 
-func TestReadLines(t *testing.T) {
+func TestReadLinesFromFile(t *testing.T) {
+	tests := []struct {
+		name       string
+		fileName   string
+		lineNumber int
+		expected   string
+		wantError  bool
+	}{
+		{
+			name:       "extract lines from file",
+			fileName:   "testdata/sample.txt",
+			lineNumber: -1,
+			expected:   "Morbi vitae nulla in dui lobortis consectetur. Integer nec tempus felis. Ut quis suscipit risus. Donec lobortis consequat nunc, in efficitur mi maximus ac. Sed id felis posuere, aliquam purus eget, faucibus augue.",
+			wantError:  false,
+		},
+		{
+			name:       "extract lines from file",
+			fileName:   "testdata/sample.txt",
+			lineNumber: 15,
+			expected:   "sed do eiusmod tempor incididunt",
+			wantError:  false,
+		},
+		{
+			name:       "extract lines from file",
+			fileName:   "testdata/noop.txt",
+			lineNumber: -1,
+			expected:   "",
+			wantError:  true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			lines := Lines{
+				FileName: filepath.Join(tt.fileName),
+				LineNum:  tt.lineNumber,
+				Condition: func(line string) bool {
+					line = strings.TrimSpace(line)
+					return strings.HasPrefix(line, "#") || strings.HasPrefix(line, "/*") || strings.HasPrefix(line, "*") || strings.HasPrefix(line, "*/")
+				},
+				Parser: func(line string) (string, bool) {
+					line = strings.TrimSpace(line)
+					if strings.HasPrefix(line, "/*") || strings.HasPrefix(line, "*/") {
+						return "", false
+					}
+					if line == "*" {
+						return "", true
+					}
+					line = strings.TrimPrefix(line, "* ")
+					line = strings.TrimPrefix(line, "#")
+					line = strings.TrimSpace(line)
+					return line, true
+				},
+			}
+			comment, err := lines.Extract()
+			if tt.wantError {
+				assert.NotNil(err)
+			} else {
+				assert.Nil(err)
+				assert.Equal(tt.expected, strings.Join(comment, " "))
+			}
+		})
+	}
+}
+
+func TestReadLinesFromText(t *testing.T) {
 	tests := []struct {
 		name        string
 		textContent string
@@ -85,6 +153,14 @@ func TestReadLines(t *testing.T) {
 			expected:    "",
 			wantError:   true,
 			errorText:   "no lines in file",
+		},
+		{
+			name:        "extract lines from text",
+			textContent: textOneLine,
+			lineNumber:  10,
+			expected:    "",
+			wantError:   true,
+			errorText:   "only 1 line",
 		},
 		{
 			name:        "extract lines from text",
