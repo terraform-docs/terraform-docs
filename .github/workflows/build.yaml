@@ -52,7 +52,15 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        # Currently we're not able to build Codecov report for
+        # PRs originates from the fork. There's an issue to track
+        # this and it seems it should get resolved shortly, until
+        # then we hope for responsiblity in humanity and use plain
+        # text of the token, until further to get rotated.
+        #
+        # https://github.com/codecov/codecov-action/issues/29
+        # token: ${{ secrets.CODECOV_TOKEN }}
+        token: 7e230f41-8fa3-4d91-8ce8-3d77b7b3f1c3
         file: ./coverage.txt
 
   build:
