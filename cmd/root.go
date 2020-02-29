@@ -79,13 +79,16 @@ func FormatterCmds() []*cobra.Command {
 }
 
 func doPrint(path string, printer print.Format) error {
-	options.With(&module.Options{
+	_, err := options.With(&module.Options{
 		Path: path,
 		SortBy: &module.SortBy{
 			Name:     settings.SortByName,
 			Required: settings.SortByRequired,
 		},
 	})
+	if err != nil {
+		return err
+	}
 	tfmodule, err := module.LoadWithOptions(options)
 	if err != nil {
 		return err
