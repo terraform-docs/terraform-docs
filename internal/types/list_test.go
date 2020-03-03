@@ -112,10 +112,13 @@ func TestListMarshalXML(t *testing.T) {
 			var b bytes.Buffer
 			encoder := xml.NewEncoder(&b)
 			start := xml.StartElement{Name: xml.Name{Local: "test"}}
-			err := List(tt.value).MarshalXML(encoder, start)
 
-			encoder.Flush()
+			err := List(tt.value).MarshalXML(encoder, start)
 			assert.Nil(err)
+
+			err = encoder.Flush()
+			assert.Nil(err)
+
 			assert.Equal(tt.expected, b.String())
 		})
 	}

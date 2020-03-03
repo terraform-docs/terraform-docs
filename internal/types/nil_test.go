@@ -111,10 +111,13 @@ func TestNilMarshalXML(t *testing.T) {
 			var b bytes.Buffer
 			encoder := xml.NewEncoder(&b)
 			start := xml.StartElement{Name: xml.Name{Local: "test"}}
-			err := new(Nil).MarshalXML(encoder, start)
 
-			encoder.Flush()
+			err := new(Nil).MarshalXML(encoder, start)
 			assert.Nil(err)
+
+			err = encoder.Flush()
+			assert.Nil(err)
+
 			assert.Equal(tt.expected, b.String())
 		})
 	}
