@@ -10,10 +10,11 @@ LICENSE     := MIT
 PACKAGE     := github.com/$(VENDOR)/$(NAME)
 
 # Build variables
-BUILD_DIR   := bin
-COMMIT_HASH ?= $(shell git rev-parse --short HEAD 2>/dev/null)
-BUILD_DATE  ?= $(shell date +%FT%T%z)
-VERSION     ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
+BUILD_DIR    := bin
+COMMIT_HASH  ?= $(shell git rev-parse --short HEAD 2>/dev/null)
+BUILD_DATE   ?= $(shell date +%FT%T%z)
+VERSION      ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
+COVERAGE_OUT := coverage.txt
 
 # Go variables
 GOCMD       := GO111MODULE=on go
@@ -53,7 +54,7 @@ checkfmt: ## Check formatting of all go files
 .PHONY: clean
 clean: ## Clean workspace
 	@ $(MAKE) --no-print-directory log-$@
-	rm -rf ./$(BUILD_DIR)
+	rm -rf ./$(BUILD_DIR) ./$(COVERAGE_OUT)
 
 .PHONY: deps
 deps: vendor ## Install dependencies
@@ -71,12 +72,7 @@ lint: ## Run linter
 .PHONY: test
 test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) test $(MODVENDOR) -v $(GOPKGS)
-
-.PHONY: test-coverage
-test-coverage: ## Run tests with code coverage
-	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) test -race -coverprofile=coverage.txt -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
+	$(GOCMD) test -race -coverprofile=$(COVERAGE_OUT) -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
 
 .PHONY: vendor
 vendor: ## Install 'vendor' dependencies
