@@ -1,6 +1,6 @@
 module github.com/segmentio/terraform-docs
 
-go 1.13
+go 1.14
 
 require (
 	github.com/hashicorp/terraform-config-inspect v0.0.0-20200210163047-f7d8399e1194
