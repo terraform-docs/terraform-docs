@@ -34,7 +34,7 @@ GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
-GOLANGCI_VERSION  := v1.23.1
+GOLANGCI_VERSION  := v1.23.7
 
 .PHONY: all
 all: clean verify checkfmt lint test build
