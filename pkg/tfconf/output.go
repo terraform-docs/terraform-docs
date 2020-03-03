@@ -31,6 +31,9 @@ type withvalue struct {
 // If 'Value' is a primitive type, the primitive value of 'Value' will be returned
 // and not the JSON formatted of it.
 func (o *Output) GetValue() string {
+	if !o.ShowValue || o.Value == nil {
+		return ""
+	}
 	marshaled, err := json.MarshalIndent(o.Value, "", "  ")
 	if err != nil {
 		panic(err)
@@ -43,6 +46,9 @@ func (o *Output) GetValue() string {
 
 // HasDefault indicates if a Terraform output has a default value set.
 func (o *Output) HasDefault() bool {
+	if !o.ShowValue || o.Value == nil {
+		return false
+	}
 	return o.Value.HasDefault()
 }
 
@@ -65,6 +71,9 @@ func (o *Output) MarshalJSON() ([]byte, error) {
 	if o.ShowValue {
 		return fn(withvalue(*o))
 	}
+	// explicitly make these empty
+	o.Value = nil
+	o.Sensitive = false
 	return fn(*o)
 }
 
@@ -101,5 +110,8 @@ func (o *Output) MarshalYAML() (interface{}, error) {
 	if o.ShowValue {
 		return withvalue(*o), nil
 	}
+	// explicitly make these empty
+	o.Value = nil
+	o.Sensitive = false
 	return o, nil
 }
