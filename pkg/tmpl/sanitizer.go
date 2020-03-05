@@ -43,7 +43,7 @@ func sanitizeItemForDocument(s string, settings *print.Settings) string {
 			return segment
 		},
 	)
-	return strings.Replace(result, "<br>", "\n", -1)
+	return result
 }
 
 // sanitizeItemForTable converts passed 'string' to suitable Markdown representation
@@ -88,13 +88,16 @@ func convertMultiLineText(s string, isTable bool) string {
 	// consecutive lines start with hyphen which is a special character.
 	s = regexp.MustCompile(`(\S*)(\r?\n)(\w+)`).ReplaceAllString(s, "$1  $2$3")
 	s = strings.Replace(s, "    \n", "  \n", -1)
+	s = strings.Replace(s, "<br>  \n", "\n\n", -1)
 
 	if isTable {
 		// Convert space-space-newline to <br>
 		s = strings.Replace(s, "  \n", "<br>", -1)
 
-		// Convert single newline to space.
-		s = strings.Replace(s, "\n", " ", -1)
+		// Convert single newline to <br>.
+		s = strings.Replace(s, "\n", "<br>", -1)
+	} else {
+		s = strings.Replace(s, "<br>", "\n", -1)
 	}
 
 	return s
@@ -104,7 +107,18 @@ func convertMultiLineText(s string, isTable bool) string {
 func escapeIllegalCharacters(s string, settings *print.Settings) string {
 	// Escape pipe
 	if settings.EscapePipe {
-		s = strings.Replace(s, "|", "\\|", -1)
+		s = processSegments(
+			s,
+			"`",
+			func(segment string) string {
+				segment = strings.Replace(segment, "|", "\\|", -1)
+				return segment
+			},
+			func(segment string) string {
+				segment = fmt.Sprintf("`%s`", segment)
+				return segment
+			},
+		)
 	}
 
 	if settings.EscapeCharacters {
