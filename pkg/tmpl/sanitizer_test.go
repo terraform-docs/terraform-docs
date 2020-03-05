@@ -252,7 +252,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			name:     "convert multi-line indentations",
 			filename: "indentations",
 			isTable:  true,
-			expected: "This is is a multline test which works<br><br>Key  <br>  Foo1: blah  <br>  Foo2: blah<br><br>Key2  <br>Foo1: bar1  <br>Foo2: bar2",
+			expected: "This is is a multline test which works<br><br>Key<br>  Foo1: blah<br>  Foo2: blah<br><br>Key2<br>Foo1: bar1<br>Foo2: bar2",
 		},
 	}
 	for _, tt := range tests {

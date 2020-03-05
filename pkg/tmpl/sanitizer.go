@@ -86,7 +86,7 @@ func convertMultiLineText(s string, isTable bool) string {
 	// which is a know convention of Markdown for multi-lines paragprah.
 	// This doesn't apply on a markdown list for example, because all the
 	// consecutive lines start with hyphen which is a special character.
-	s = regexp.MustCompile(`(\S*)(\r?\n)(\w+)`).ReplaceAllString(s, "$1  $2$3")
+	s = regexp.MustCompile(`(\S*)(\r?\n)(\s*)(\w+)`).ReplaceAllString(s, "$1  $2$3$4")
 	s = strings.Replace(s, "    \n", "  \n", -1)
 	s = strings.Replace(s, "<br>  \n", "\n\n", -1)
 
