@@ -11,14 +11,14 @@ func sanitize(markdown string) string {
 	result := markdown
 
 	// Preserve double spaces at the end of the line
-	result = regexp.MustCompile(` {2}(\r?\n)`).ReplaceAllString(result, "‡‡$1")
+	result = regexp.MustCompile(` {2}(\r?\n)`).ReplaceAllString(result, "‡‡‡DOUBLESPACES‡‡‡$1")
 
 	// Remove trailing spaces from the end of lines
 	result = regexp.MustCompile(` +(\r?\n)`).ReplaceAllString(result, "$1")
 	result = regexp.MustCompile(` +$`).ReplaceAllLiteralString(result, "")
 
 	// Preserve double spaces at the end of the line
-	result = regexp.MustCompile(`‡‡(\r?\n)`).ReplaceAllString(result, "  $1")
+	result = regexp.MustCompile(`‡‡‡DOUBLESPACES‡‡‡(\r?\n)`).ReplaceAllString(result, "  $1")
 
 	// Remove blank line with only double spaces in it
 	result = regexp.MustCompile(`(\r?\n)  (\r?\n)`).ReplaceAllString(result, "$1")
