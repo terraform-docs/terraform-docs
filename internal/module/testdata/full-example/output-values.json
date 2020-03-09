@@ -1,0 +1,17 @@
+{
+    "C": {
+        "sensitive": true,
+        "type": "string",
+        "value": "sensitive-c"
+    },
+    "A": {
+        "sensitive": false,
+        "type": "string",
+        "value": "a value"
+    },
+    "B": {
+        "sensitive": false,
+        "type": "string",
+        "value": "b value"
+    }
+}
