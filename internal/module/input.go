@@ -17,17 +17,10 @@ type inputsSortedByRequired []*tfconf.Input
 func (a inputsSortedByRequired) Len() int      { return len(a) }
 func (a inputsSortedByRequired) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 func (a inputsSortedByRequired) Less(i, j int) bool {
-	switch {
-	// i required, j not: i gets priority
-	case !a[i].HasDefault() && a[j].HasDefault():
-		return true
-	// j required, i not: i does not get priority
-	case a[i].HasDefault() && !a[j].HasDefault():
-		return false
-	// Otherwise, sort by name
-	default:
+	if a[i].HasDefault() == a[j].HasDefault() {
 		return a[i].Name < a[j].Name
 	}
+	return !a[i].HasDefault() && a[j].HasDefault()
 }
 
 type inputsSortedByPosition []*tfconf.Input

@@ -94,51 +94,51 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 			}
 			return d
 		},
-		"ternary": func(c interface{}, t string, f string) string {
-			var condition bool
-			switch x := fmt.Sprintf("%T", c); x {
+		"ternary": func(condition interface{}, trueValue string, falseValue string) string {
+			var c bool
+			switch x := fmt.Sprintf("%T", condition); x {
 			case "string":
-				condition = c.(string) != ""
+				c = condition.(string) != ""
 			case "int":
-				condition = c.(int) != 0
+				c = condition.(int) != 0
 			case "bool":
-				condition = c.(bool)
+				c = condition.(bool)
 			}
-			if condition {
-				return t
+			if c {
+				return trueValue
 			}
-			return f
+			return falseValue
 		},
 		"tostring": func(s types.String) string {
 			return string(s)
 		},
-		"trim": func(t string, s string) string {
+		"trim": func(cut string, s string) string {
 			if s != "" {
-				return strings.Trim(s, t)
+				return strings.Trim(s, cut)
 			}
 			return s
 		},
-		"trimLeft": func(t string, s string) string {
+		"trimLeft": func(cut string, s string) string {
 			if s != "" {
-				return strings.TrimLeft(s, t)
+				return strings.TrimLeft(s, cut)
 			}
 			return s
 		},
-		"trimRight": func(t string, s string) string {
+		"trimRight": func(cut string, s string) string {
 			if s != "" {
-				return strings.TrimRight(s, t)
+				return strings.TrimRight(s, cut)
 			}
 			return s
 		},
-		"trimPrefix": func(t string, s string) string {
+		"trimPrefix": func(prefix string, s string) string {
 			if s != "" {
-				return strings.TrimPrefix(s, t)
+				return strings.TrimPrefix(s, prefix)
 			}
 			return s
 		},
-		"trimSuffix": func(t string, s string) string {
+		"trimSuffix": func(suffix string, s string) string {
 			if s != "" {
-				return strings.TrimSuffix(s, t)
+				return strings.TrimSuffix(s, suffix)
 			}
 			return s
 		},
@@ -159,7 +159,10 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 			return sanitizeItemForDocument(s, settings)
 		},
 		"sanitizeTbl": func(s string) string {
-			return sanitizeItemForTable(s, settings)
+			settings.EscapePipe = true
+			s = sanitizeItemForTable(s, settings)
+			settings.EscapePipe = false
+			return s
 		},
 	}
 }

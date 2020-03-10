@@ -1,7 +1,11 @@
 package types
 
 import (
+	"bytes"
+	"encoding/xml"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestString(t *testing.T) {
@@ -28,4 +32,145 @@ func TestString(t *testing.T) {
 			},
 		},
 	})
+}
+
+func TestStringUnderlying(t *testing.T) {
+	tests := []struct {
+		name  string
+		value string
+	}{
+		{
+			name:  "string underlying",
+			value: "foo",
+		},
+		{
+			name:  "string underlying",
+			value: "42",
+		},
+		{
+			name:  "string underlying",
+			value: "false",
+		},
+		{
+			name:  "string underlying",
+			value: "true",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.value, String(tt.value).underlying())
+		})
+	}
+}
+
+func TestStringMarshalJSON(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    string
+		expected string
+	}{
+		{
+			name:     "string marshal JSON",
+			value:    "foo",
+			expected: "\"foo\"",
+		},
+		{
+			name:     "string marshal JSON",
+			value:    "lorem \"ipsum\" dolor",
+			expected: "\"lorem \\\"ipsum\\\" dolor\"",
+		},
+		{
+			name:     "string marshal JSON",
+			value:    "lorem ipsum\ndolor",
+			expected: "\"lorem ipsum\\ndolor\"",
+		},
+		{
+			name:     "string marshal JSON",
+			value:    "",
+			expected: "null",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			actual, err := String(tt.value).MarshalJSON()
+
+			assert.Nil(err)
+			assert.Equal(tt.expected, string(actual))
+		})
+	}
+}
+
+func TestStringMarshalXML(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    string
+		expected string
+	}{
+		{
+			name:     "string marshal XML",
+			value:    "foo",
+			expected: "<test>foo</test>",
+		},
+		{
+			name:     "string marshal XML",
+			value:    "lorem <\"ipsum\"> 'dolor'",
+			expected: "<test>lorem &lt;&#34;ipsum&#34;&gt; &#39;dolor&#39;</test>",
+		},
+		{
+			name:     "string marshal XML",
+			value:    "",
+			expected: "<test xsi:nil=\"true\"></test>",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			var b bytes.Buffer
+			encoder := xml.NewEncoder(&b)
+			start := xml.StartElement{Name: xml.Name{Local: "test"}}
+
+			err := String(tt.value).MarshalXML(encoder, start)
+			assert.Nil(err)
+
+			err = encoder.Flush()
+			assert.Nil(err)
+
+			assert.Equal(tt.expected, b.String())
+		})
+	}
+}
+
+func TestStringMarshalYAML(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    string
+		expected interface{}
+	}{
+		{
+			name:     "string marshal YAML",
+			value:    "foo",
+			expected: String("foo"),
+		},
+		{
+			name:     "string marshal YAML",
+			value:    "lorem ipsum",
+			expected: String("lorem ipsum"),
+		},
+		{
+			name:     "string marshal YAML",
+			value:    "",
+			expected: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			actual, err := String(tt.value).MarshalYAML()
+
+			assert.Nil(err)
+			assert.Equal(tt.expected, actual)
+		})
+	}
 }

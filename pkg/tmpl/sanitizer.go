@@ -29,8 +29,8 @@ func sanitizeItemForDocument(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string) string {
-			segment = convertMultiLineText(segment, false)
 			segment = escapeIllegalCharacters(segment, settings)
+			segment = convertMultiLineText(segment, false)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
@@ -43,7 +43,7 @@ func sanitizeItemForDocument(s string, settings *print.Settings) string {
 			return segment
 		},
 	)
-	return strings.Replace(result, "<br>", "\n", -1)
+	return result
 }
 
 // sanitizeItemForTable converts passed 'string' to suitable Markdown representation
@@ -56,8 +56,8 @@ func sanitizeItemForTable(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string) string {
-			segment = convertMultiLineText(segment, true)
 			segment = escapeIllegalCharacters(segment, settings)
+			segment = convertMultiLineText(segment, true)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
@@ -86,15 +86,18 @@ func convertMultiLineText(s string, isTable bool) string {
 	// which is a know convention of Markdown for multi-lines paragprah.
 	// This doesn't apply on a markdown list for example, because all the
 	// consecutive lines start with hyphen which is a special character.
-	s = regexp.MustCompile(`(\S*)(\r?\n)(\w+)`).ReplaceAllString(s, "$1  $2$3")
+	s = regexp.MustCompile(`(\S*)(\r?\n)(\s*)(\w+)`).ReplaceAllString(s, "$1  $2$3$4")
 	s = strings.Replace(s, "    \n", "  \n", -1)
+	s = strings.Replace(s, "<br>  \n", "\n\n", -1)
 
 	if isTable {
 		// Convert space-space-newline to <br>
 		s = strings.Replace(s, "  \n", "<br>", -1)
 
-		// Convert single newline to space.
-		s = strings.Replace(s, "\n", " ", -1)
+		// Convert single newline to <br>.
+		s = strings.Replace(s, "\n", "<br>", -1)
+	} else {
+		s = strings.Replace(s, "<br>", "\n", -1)
 	}
 
 	return s
@@ -104,7 +107,16 @@ func convertMultiLineText(s string, isTable bool) string {
 func escapeIllegalCharacters(s string, settings *print.Settings) string {
 	// Escape pipe
 	if settings.EscapePipe {
-		s = strings.Replace(s, "|", "\\|", -1)
+		s = processSegments(
+			s,
+			"`",
+			func(segment string) string {
+				return strings.Replace(segment, "|", "\\|", -1)
+			},
+			func(segment string) string {
+				return fmt.Sprintf("`%s`", segment)
+			},
+		)
 	}
 
 	if settings.EscapeCharacters {
@@ -112,18 +124,39 @@ func escapeIllegalCharacters(s string, settings *print.Settings) string {
 			s,
 			"`",
 			func(segment string) string {
-				escape := func(char string) {
-					segment = strings.Replace(segment, char+char, "‡‡", -1)
-					segment = strings.Replace(segment, " "+char, " ‡", -1)
-					segment = strings.Replace(segment, char+" ", "‡ ", -1)
-					segment = strings.Replace(segment, char, "\\"+char, -1)
-					segment = strings.Replace(segment, "‡", char, -1)
-				}
-				// Escape underscore
-				escape("_")
-				// Escape asterisk
-				escape("*")
-				return segment
+				return executePerLine(segment, func(line string) string {
+					escape := func(char string) {
+						c := strings.Replace(char, "*", "\\*", -1)
+						cases := []struct {
+							pattern string
+							index   []int
+						}{
+							{
+								pattern: `^(\s*)(` + c + `+)(\s+)(.*)`,
+								index:   []int{2},
+							},
+							{
+								pattern: `(\s+)(` + c + `+)([^\t\n\f\r ` + c + `])(.*)([^\t\n\f\r ` + c + `])(` + c + `+)(\s+)`,
+								index:   []int{6, 2},
+							},
+						}
+						for _, c := range cases {
+							r := regexp.MustCompile(c.pattern)
+							m := r.FindAllStringSubmatch(line, -1)
+							i := r.FindAllStringSubmatchIndex(line, -1)
+							for j := range m {
+								for _, k := range c.index {
+									line = line[:i[j][k*2]] + strings.Replace(m[j][k], char, "‡‡‡DONTESCAPE‡‡‡", -1) + line[i[j][(k*2)+1]:]
+								}
+							}
+						}
+						line = strings.Replace(line, char, "\\"+char, -1)
+						line = strings.Replace(line, "‡‡‡DONTESCAPE‡‡‡", char, -1)
+					}
+					escape("_") // Escape underscore
+					escape("*") // Escape asterisk
+					return line
+				})
 			},
 			func(segment string) string {
 				segment = fmt.Sprintf("`%s`", segment)
@@ -184,4 +217,12 @@ func processSegments(s string, prefix string, normalFn func(segment string) stri
 		nextIsInCodeBlock = !nextIsInCodeBlock
 	}
 	return buffer.String()
+}
+
+func executePerLine(s string, fn func(string) string) string {
+	lines := strings.Split(s, "\n")
+	for i, l := range lines {
+		lines[i] = fn(l)
+	}
+	return strings.Join(lines, "\n")
 }

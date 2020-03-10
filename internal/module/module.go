@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os/exec"
 	"path/filepath"
 	"sort"
@@ -19,14 +18,36 @@ import (
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
 func LoadWithOptions(options *Options) (*tfconf.Module, error) {
-	tfmodule := loadModule(options.Path)
+	tfmodule, err := loadModule(options.Path)
+	if err != nil {
+		return nil, err
+	}
+	module, err := loadModuleItems(tfmodule, options)
+	if err != nil {
+		return nil, err
+	}
+	sortItems(module, options.SortBy)
+	return module, nil
+}
 
+func loadModule(path string) (*tfconfig.Module, error) {
+	module, diag := tfconfig.LoadModule(path)
+	if diag != nil && diag.HasErrors() {
+		return nil, diag
+	}
+	return module, nil
+}
+
+func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Module, error) {
 	header := loadHeader(options.Path)
 	inputs, required, optional := loadInputs(tfmodule)
-	outputs := loadOutputs(tfmodule, options)
+	outputs, err := loadOutputs(tfmodule, options)
+	if err != nil {
+		return nil, err
+	}
 	providers := loadProviders(tfmodule)
 
-	module := &tfconf.Module{
+	return &tfconf.Module{
 		Header:    header,
 		Inputs:    inputs,
 		Outputs:   outputs,
@@ -34,17 +55,7 @@ func LoadWithOptions(options *Options) (*tfconf.Module, error) {
 
 		RequiredInputs: required,
 		OptionalInputs: optional,
-	}
-	sortItems(module, options.SortBy)
-	return module, nil
-}
-
-func loadModule(path string) *tfconfig.Module {
-	module, diag := tfconfig.LoadModule(path)
-	if diag != nil && diag.HasErrors() {
-		log.Fatal(diag)
-	}
-	return module
+	}, nil
 }
 
 func loadHeader(path string) string {
@@ -87,7 +98,7 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 	for _, input := range tfmodule.Variables {
 		inputDescription := input.Description
 		if inputDescription == "" {
-			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line-1)
+			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
 
 		i := &tfconf.Input{
@@ -111,20 +122,20 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 	return inputs, required, optional
 }
 
-func loadOutputs(tfmodule *tfconfig.Module, options *Options) []*tfconf.Output {
+func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*tfconf.Output, error) {
 	outputs := make([]*tfconf.Output, 0, len(tfmodule.Outputs))
 	values := make(map[string]*TerraformOutput, 0)
 	if options.OutputValues {
 		var err error
 		values, err = loadOutputValues(options)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 	}
 	for _, o := range tfmodule.Outputs {
 		description := o.Description
 		if description == "" {
-			description = loadComments(o.Pos.Filename, o.Pos.Line-1)
+			description = loadComments(o.Pos.Filename, o.Pos.Line)
 		}
 		output := &tfconf.Output{
 			Name:        o.Name,
@@ -145,7 +156,7 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) []*tfconf.Output {
 		}
 		outputs = append(outputs, output)
 	}
-	return outputs
+	return outputs, nil
 }
 
 func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {

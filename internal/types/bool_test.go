@@ -2,6 +2,8 @@ package types
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBool(t *testing.T) {
@@ -28,4 +30,26 @@ func TestBool(t *testing.T) {
 			},
 		},
 	})
+}
+
+func TestBoolUnderlying(t *testing.T) {
+	tests := []struct {
+		name  string
+		value bool
+	}{
+		{
+			name:  "bool underlying",
+			value: true,
+		},
+		{
+			name:  "bool underlying",
+			value: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.value, Bool(tt.value).underlying())
+		})
+	}
 }

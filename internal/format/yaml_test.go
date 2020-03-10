@@ -36,11 +36,13 @@ func TestYamlSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByName")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		SortBy: &module.SortBy{
 			Name: true,
 		},
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -61,12 +63,14 @@ func TestYamlSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByRequired")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		SortBy: &module.SortBy{
 			Name:     true,
 			Required: true,
 		},
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -270,10 +274,12 @@ func TestYamlOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-OutputValues")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 

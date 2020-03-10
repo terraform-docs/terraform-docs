@@ -1,7 +1,11 @@
 package types
 
 import (
+	"bytes"
+	"encoding/xml"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNil(t *testing.T) {
@@ -68,4 +72,74 @@ func TestNil(t *testing.T) {
 			},
 		},
 	})
+}
+
+func TestNilMarshalJSON(t *testing.T) {
+	tests := []struct {
+		name     string
+		expected string
+	}{
+		{
+			name:     "nil marshal JSON",
+			expected: "null",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			actual, err := new(Nil).MarshalJSON()
+
+			assert.Nil(err)
+			assert.Equal(tt.expected, string(actual))
+		})
+	}
+}
+
+func TestNilMarshalXML(t *testing.T) {
+	tests := []struct {
+		name     string
+		expected string
+	}{
+		{
+			name:     "nil marshal XML",
+			expected: "<test xsi:nil=\"true\"></test>",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			var b bytes.Buffer
+			encoder := xml.NewEncoder(&b)
+			start := xml.StartElement{Name: xml.Name{Local: "test"}}
+
+			err := new(Nil).MarshalXML(encoder, start)
+			assert.Nil(err)
+
+			err = encoder.Flush()
+			assert.Nil(err)
+
+			assert.Equal(tt.expected, b.String())
+		})
+	}
+}
+
+func TestNilMarshalYAML(t *testing.T) {
+	tests := []struct {
+		name     string
+		expected interface{}
+	}{
+		{
+			name:     "nil marshal YAML",
+			expected: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			actual, err := new(Nil).MarshalYAML()
+
+			assert.Nil(err)
+			assert.Equal(tt.expected, actual)
+		})
+	}
 }

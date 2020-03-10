@@ -36,11 +36,13 @@ func TestPrettySortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByName")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		SortBy: &module.SortBy{
 			Name: true,
 		},
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -61,12 +63,14 @@ func TestPrettySortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByRequired")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		SortBy: &module.SortBy{
 			Name:     true,
 			Required: true,
 		},
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -290,10 +294,12 @@ func TestPrettyOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-OutputValues")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 

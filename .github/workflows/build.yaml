@@ -47,10 +47,11 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Run tests
-      run: make test-coverage
+      run: make test
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
+      if: always()
       with:
         # Currently we're not able to build Codecov report for
         # PRs originates from the fork. There's an issue to track

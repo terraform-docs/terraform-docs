@@ -2,6 +2,8 @@ package types
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNumber(t *testing.T) {
@@ -28,4 +30,46 @@ func TestNumber(t *testing.T) {
 			},
 		},
 	})
+}
+
+func TestNumberUnderlying(t *testing.T) {
+	tests := []struct {
+		name  string
+		value float64
+	}{
+		{
+			name:  "number underlying",
+			value: float64(int(0)),
+		},
+		{
+			name:  "number underlying",
+			value: float64(int8(42)),
+		},
+		{
+			name:  "number underlying",
+			value: float64(int16(-1200)),
+		},
+		{
+			name:  "number underlying",
+			value: float64(int32(1140085647)),
+		},
+		{
+			name:  "number underlying",
+			value: float64(int64(8922336854775807)),
+		},
+		{
+			name:  "number underlying",
+			value: float64(float32(13.75)),
+		},
+		{
+			name:  "number underlying",
+			value: float64(2317483.64),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.value, Number(tt.value).underlying())
+		})
+	}
 }

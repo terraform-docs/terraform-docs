@@ -57,8 +57,8 @@ func testList(t *testing.T, tests []testlist) {
 			t.Run(tt.name, func(t *testing.T) {
 				assert := assert.New(t)
 
-				actualValue := ValueOf(tv.underlying())
-				actualType := TypeOf(tt.types, tv.underlying())
+				actualValue := ValueOf(tv.Underlying())
+				actualType := TypeOf(tt.types, tv.Underlying())
 
 				assert.Equal(tt.expected.typeName, string(actualType))
 				assert.Equal(tt.expected.valueKind, reflect.TypeOf(actualValue).String())
@@ -74,8 +74,8 @@ func testMap(t *testing.T, tests []testmap) {
 			t.Run(tt.name, func(t *testing.T) {
 				assert := assert.New(t)
 
-				actualValue := ValueOf(tv.underlying())
-				actualType := TypeOf(tt.types, tv.underlying())
+				actualValue := ValueOf(tv.Underlying())
+				actualType := TypeOf(tt.types, tv.Underlying())
 
 				assert.Equal(tt.expected.typeName, string(actualType))
 				assert.Equal(tt.expected.valueKind, reflect.TypeOf(actualValue).String())

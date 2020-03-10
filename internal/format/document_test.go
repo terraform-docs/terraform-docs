@@ -56,11 +56,13 @@ func TestDocumentSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("document", "document-SortByName")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		SortBy: &module.SortBy{
 			Name: true,
 		},
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -81,12 +83,14 @@ func TestDocumentSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("document", "document-SortByRequired")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		SortBy: &module.SortBy{
 			Name:     true,
 			Required: true,
 		},
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -370,10 +374,12 @@ func TestDocumentOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("document", "document-OutputValues")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
