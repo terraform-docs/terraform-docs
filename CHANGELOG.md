@@ -12,7 +12,11 @@
 - Add tfconf.Options to load Module with ([#193](https://github.com/segmentio/terraform-docs/issues/193))
 
 ### Documentation
+- Example git hook to keep module docs up to date ([#214](https://github.com/segmentio/terraform-docs/issues/214))
 - Auto generate formats document from examples ([#192](https://github.com/segmentio/terraform-docs/issues/192))
+
+### Enhancements
+- Add extensive tests coverage for all the packages ([#208](https://github.com/segmentio/terraform-docs/issues/208))
 
 ### Features
 - Add support for XML renderer ([#198](https://github.com/segmentio/terraform-docs/issues/198))
