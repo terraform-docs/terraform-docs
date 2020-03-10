@@ -252,7 +252,6 @@ func TestOutputMarshalXML(t *testing.T) {
 }
 
 func TestOutputMarshalYAML(t *testing.T) {
-	// TODO
 	outputs := sampleOutputs()
 	tests := []struct {
 		name     string
