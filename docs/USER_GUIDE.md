@@ -1,6 +1,8 @@
 # User Guide
 
-TBA
+## Syntax, Usage, and Output Formats
+
+Please refer to [docs/README.md](/docs/README.md) for guidance on output formats, execution syntax, CLI options, etc.
 
 ## Integrating With Your Terraform Repository
 
