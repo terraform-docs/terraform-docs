@@ -389,3 +389,25 @@ func TestTableOutputValues(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
+
+func TestTableHeaderFromFile(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().Build()
+
+	expected, err := testutil.GetExpected("table", "table-HeaderFromFile")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "doc.tf",
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}

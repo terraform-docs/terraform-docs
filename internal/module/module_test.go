@@ -56,29 +56,64 @@ func TestLoadHeader(t *testing.T) {
 	tests := []struct {
 		name     string
 		path     string
+		header   string
 		expected string
+		wantErr  bool
 	}{
+		//TODO
 		{
 			name:     "load module header from path",
 			path:     "full-example",
+			header:   "main.tf",
 			expected: "Example of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n\nEven inline **formatting** in _here_ is possible.\nand some [link](https://domain.com/)",
+			wantErr:  false,
+		},
+		{
+			name:     "load module header from path",
+			path:     "full-example",
+			header:   "doc.tf",
+			expected: "Custom Header:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2",
+			wantErr:  false,
+		},
+		{
+			name:     "load module header from path",
+			path:     "full-example",
+			header:   "non-existent.tf",
+			expected: "",
+			wantErr:  true,
+		},
+		{
+			name:     "load module header from path",
+			path:     "full-example",
+			header:   "",
+			expected: "",
+			wantErr:  true,
 		},
 		{
 			name:     "load module header from path",
 			path:     "empty-header",
+			header:   "",
 			expected: "",
+			wantErr:  true,
 		},
 		{
 			name:     "load module header from path",
 			path:     "non-exist",
+			header:   "",
 			expected: "",
+			wantErr:  true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			actual := loadHeader(filepath.Join("testdata", tt.path))
-			assert.Equal(tt.expected, actual)
+			actual, err := loadHeader(filepath.Join("testdata", tt.path), tt.header)
+			if tt.wantErr {
+				assert.NotNil(err)
+			} else {
+				assert.Nil(err)
+				assert.Equal(tt.expected, actual)
+			}
 		})
 	}
 }

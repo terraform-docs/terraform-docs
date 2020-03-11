@@ -158,7 +158,8 @@ func printExample(buf *bytes.Buffer, name string) error {
 	settings := print.NewSettings()
 	settings.ShowColor = false
 	options := &module.Options{
-		Path: "./examples",
+		Path:           "./examples",
+		HeaderFromFile: "main.tf",
 		SortBy: &module.SortBy{
 			Name:     settings.SortByName,
 			Required: settings.SortByRequired,

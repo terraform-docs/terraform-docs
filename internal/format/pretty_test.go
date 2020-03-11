@@ -309,3 +309,25 @@ func TestPrettyOutputValues(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
+
+func TestPrettyHeaderFromFile(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().Build()
+
+	expected, err := testutil.GetExpected("pretty", "pretty-HeaderFromFile")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "doc.tf",
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewPretty(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
