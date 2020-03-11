@@ -60,7 +60,6 @@ func TestLoadHeader(t *testing.T) {
 		expected string
 		wantErr  bool
 	}{
-		//TODO
 		{
 			name:     "load module header from path",
 			path:     "full-example",

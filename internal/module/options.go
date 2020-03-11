@@ -44,7 +44,8 @@ func (o *Options) With(override *Options) (*Options, error) {
 	return o, nil
 }
 
-// WithOverwrite override options with existing Options
+// WithOverwrite override options with existing Options and overwrites non-empty
+// items in destination
 func (o *Options) WithOverwrite(override *Options) (*Options, error) {
 	if override == nil {
 		return nil, errors.New("cannot use nil as override value")

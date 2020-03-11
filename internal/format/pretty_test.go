@@ -312,7 +312,7 @@ func TestPrettyOutputValues(t *testing.T) {
 
 func TestPrettyHeaderFromFile(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
+	settings := testutil.Settings().WithSections().WithColor().Build()
 
 	expected, err := testutil.GetExpected("pretty", "pretty-HeaderFromFile")
 	assert.Nil(err)

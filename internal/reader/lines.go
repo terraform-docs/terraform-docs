@@ -46,6 +46,9 @@ func (l *Lines) extract(r io.Reader) ([]string, error) {
 			case 1:
 				return nil, errors.New("only 1 line")
 			default:
+				if l.LineNum == -1 {
+					break
+				}
 				return nil, fmt.Errorf("only %d lines", lnum)
 			}
 		}

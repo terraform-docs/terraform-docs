@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestOptionsOverrideWith(t *testing.T) {
+func TestOptionsWith(t *testing.T) {
 	assert := assert.New(t)
 
 	options := NewOptions()
@@ -44,11 +44,64 @@ func TestOptionsOverrideWith(t *testing.T) {
 	assert.NotEqual(options.OutputValues, false)
 }
 
-func TestOptionsOverrideWithNil(t *testing.T) {
+func TestOptionsWithNil(t *testing.T) {
 	assert := assert.New(t)
 	options := NewOptions()
 
 	_, err := options.With(nil)
+
+	assert.NotNil(err)
+}
+
+func TestOptionsWithOverwrite(t *testing.T) {
+	assert := assert.New(t)
+
+	options := NewOptions()
+
+	assert.Equal(options.Path, "")
+	assert.Equal(options.HeaderFromFile, "main.tf")
+	assert.Equal(options.OutputValues, false)
+	assert.Equal(options.OutputValuesPath, "")
+
+	_, err1 := options.With(&Options{
+		Path: "/path/to/foo",
+	})
+	assert.Nil(err1)
+
+	assert.Equal(options.Path, "/path/to/foo")
+	assert.Equal(options.HeaderFromFile, "main.tf")
+	assert.Equal(options.OutputValues, false)
+	assert.Equal(options.OutputValuesPath, "")
+
+	_, err2 := options.WithOverwrite(&Options{
+		HeaderFromFile:   "doc.tf",
+		OutputValues:     true,
+		OutputValuesPath: "/path/to/output/values",
+	})
+	assert.Nil(err2)
+
+	assert.Equal(options.Path, "/path/to/foo")
+	assert.Equal(options.HeaderFromFile, "doc.tf")
+	assert.Equal(options.OutputValues, true)
+	assert.Equal(options.OutputValuesPath, "/path/to/output/values")
+
+	_, err3 := options.WithOverwrite(&Options{
+		Path:         "",
+		OutputValues: false,
+	})
+	assert.Nil(err3)
+
+	assert.NotEqual(options.Path, "")
+	assert.Equal(options.HeaderFromFile, "doc.tf")
+	assert.NotEqual(options.OutputValues, false)
+	assert.Equal(options.OutputValuesPath, "/path/to/output/values")
+}
+
+func TestOptionsWithNilOverwrite(t *testing.T) {
+	assert := assert.New(t)
+	options := NewOptions()
+
+	_, err := options.WithOverwrite(nil)
 
 	assert.NotNil(err)
 }

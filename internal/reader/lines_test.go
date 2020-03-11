@@ -88,6 +88,13 @@ func TestReadLinesFromFile(t *testing.T) {
 		},
 		{
 			name:       "extract lines from file",
+			fileName:   "testdata/no-traling-line.txt",
+			lineNumber: -1,
+			expected:   "Morbi vitae nulla in dui lobortis consectetur. Integer nec tempus felis. Ut quis suscipit risus. Donec lobortis consequat nunc, in efficitur mi maximus ac. Sed id felis posuere, aliquam purus eget, faucibus augue.",
+			wantError:  false,
+		},
+		{
+			name:       "extract lines from file",
 			fileName:   "testdata/noop.txt",
 			lineNumber: -1,
 			expected:   "",
