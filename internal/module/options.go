@@ -16,6 +16,7 @@ type SortBy struct {
 // Options contains required options to load a Module from path
 type Options struct {
 	Path             string
+	HeaderFromFile   string
 	SortBy           *SortBy
 	OutputValues     bool
 	OutputValuesPath string
@@ -25,6 +26,7 @@ type Options struct {
 func NewOptions() *Options {
 	return &Options{
 		Path:             "",
+		HeaderFromFile:   "main.tf",
 		SortBy:           &SortBy{Name: false, Required: false},
 		OutputValues:     false,
 		OutputValuesPath: "",
@@ -37,6 +39,18 @@ func (o *Options) With(override *Options) (*Options, error) {
 		return nil, errors.New("cannot use nil as override value")
 	}
 	if err := mergo.Merge(o, *override); err != nil {
+		return nil, err
+	}
+	return o, nil
+}
+
+// WithOverwrite override options with existing Options and overwrites non-empty
+// items in destination
+func (o *Options) WithOverwrite(override *Options) (*Options, error) {
+	if override == nil {
+		return nil, errors.New("cannot use nil as override value")
+	}
+	if err := mergo.MergeWithOverwrite(o, *override); err != nil {
 		return nil, err
 	}
 	return o, nil
