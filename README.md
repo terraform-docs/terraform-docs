@@ -34,7 +34,7 @@ If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
 brew install terraform-docs
 ```
 
-Windows users can install using [chocolatey](https://www.chocolatey.org):
+Windows users can install using [Chocolatey](https://www.chocolatey.org):
 
 ```
 choco install terraform-docs
