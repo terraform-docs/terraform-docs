@@ -12,6 +12,8 @@
 - Add tfconf.Options to load Module with ([#193](https://github.com/segmentio/terraform-docs/issues/193))
 
 ### Documentation
+- Add installation guide for Windows users ([#218](https://github.com/segmentio/terraform-docs/issues/218))
+- Put reference to usage, cli, etc. in user guide ([#216](https://github.com/segmentio/terraform-docs/issues/216))
 - Example git hook to keep module docs up to date ([#214](https://github.com/segmentio/terraform-docs/issues/214))
 - Auto generate formats document from examples ([#192](https://github.com/segmentio/terraform-docs/issues/192))
 
@@ -19,6 +21,7 @@
 - Add extensive tests coverage for all the packages ([#208](https://github.com/segmentio/terraform-docs/issues/208))
 
 ### Features
+- Add support for fetching the module header from any file ([#217](https://github.com/segmentio/terraform-docs/issues/217))
 - Add support for XML renderer ([#198](https://github.com/segmentio/terraform-docs/issues/198))
 - Show sensitivity of the output value in rendered result ([#207](https://github.com/segmentio/terraform-docs/issues/207))
 - Extract and render output values from Terraform ([#191](https://github.com/segmentio/terraform-docs/issues/191))
