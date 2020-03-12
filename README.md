@@ -25,7 +25,7 @@ Read the [User Guide](./docs/USER_GUIDE.md) for detailed documentation.
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="off" go get github.com/segmentio/terraform-docs@v0.8.2
+GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.8.2
 ```
 
 If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
