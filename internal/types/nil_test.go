@@ -43,7 +43,7 @@ func TestNil(t *testing.T) {
 		},
 		{
 			name:   "value nil and type map",
-			values: nil,
+			values: nils,
 			types:  "map",
 			expected: expected{
 				typeName:   "map",

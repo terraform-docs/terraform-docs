@@ -9,8 +9,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/reader"
+	"github.com/segmentio/terraform-docs/internal/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/types"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
 )
@@ -106,11 +106,16 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
 
+		inputDefault := types.ValueOf(input.Default)
+		if input.Default == nil && !input.Required {
+			inputDefault = new(types.Null)
+		}
+
 		i := &tfconf.Input{
 			Name:        input.Name,
 			Type:        types.TypeOf(input.Type, input.Default),
 			Description: types.String(inputDescription),
-			Default:     types.ValueOf(input.Default),
+			Default:     inputDefault,
 			Position: tfconf.Position{
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,

@@ -15,7 +15,7 @@ func TestInputsSortedByName(t *testing.T) {
 
 	sort.Sort(inputsSortedByName(inputs))
 
-	expected := []string{"a", "b", "c", "d", "e"}
+	expected := []string{"a", "b", "c", "d", "e", "f"}
 	actual := make([]string, len(inputs))
 
 	for k, i := range inputs {
@@ -31,7 +31,7 @@ func TestInputsSortedByRequired(t *testing.T) {
 
 	sort.Sort(inputsSortedByRequired(inputs))
 
-	expected := []string{"b", "d", "a", "c", "e"}
+	expected := []string{"b", "d", "a", "c", "e", "f"}
 	actual := make([]string, len(inputs))
 
 	for k, i := range inputs {
@@ -47,7 +47,7 @@ func TestInputsSortedByPosition(t *testing.T) {
 
 	sort.Sort(inputsSortedByPosition(inputs))
 
-	expected := []string{"a", "d", "e", "b", "c"}
+	expected := []string{"a", "d", "e", "b", "c", "f"}
 	actual := make([]string, len(inputs))
 
 	for k, i := range inputs {
@@ -93,6 +93,13 @@ func sampleInputs() []*tfconf.Input {
 			Description: types.String("description of c"),
 			Default:     types.ValueOf("c"),
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 51},
+		},
+		&tfconf.Input{
+			Name:        "f",
+			Type:        types.String("string"),
+			Description: types.String("description of f"),
+			Default:     new(types.Null),
+			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 59},
 		},
 	}
 }

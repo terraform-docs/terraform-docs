@@ -94,6 +94,10 @@ generates the following output:
       type: bool
       description: null
       default: true
+    - name: bool_default_false
+      type: bool
+      description: null
+      default: false
     - name: input-with-code-block
       type: list
       description: "This is a complicated one. We need a newline.  \nAnd an example in
@@ -121,6 +125,10 @@ generates the following output:
       default: null
     - name: list-3
       type: list
+      description: null
+      default: []
+    - name: list_default_empty
+      type: list(string)
       description: null
       default: []
     - name: long_type
@@ -183,6 +191,14 @@ generates the following output:
       type: number
       description: null
       default: 15.75
+    - name: number_default_zero
+      type: number
+      description: null
+      default: 0
+    - name: object_default_empty
+      type: object({})
+      description: null
+      default: {}
     - name: string-1
       type: string
       description: It's string number one.
@@ -195,6 +211,18 @@ generates the following output:
       type: string
       description: null
       default: ""
+    - name: string_default_empty
+      type: string
+      description: null
+      default: ""
+    - name: string_default_null
+      type: string
+      description: null
+      default: "null"
+    - name: string_no_default
+      type: string
+      description: null
+      default: null
     - name: unquoted
       type: any
       description: null

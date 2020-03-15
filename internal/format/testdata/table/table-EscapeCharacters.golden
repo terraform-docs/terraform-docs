@@ -79,6 +79,13 @@ followed by another line of text.
 | long\_type | This description is itself markdown.<br><br>It spans over multiple lines. | <pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })</pre> | <pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}</pre> |
 | no-escape-default-value | The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` |
 | with-url | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` |
+| string\_default\_empty | n/a | `string` | `""` |
+| string\_default\_null | n/a | `string` | `null` |
+| string\_no\_default | n/a | `string` | n/a |
+| number\_default\_zero | n/a | `number` | `0` |
+| bool\_default\_false | n/a | `bool` | `false` |
+| list\_default\_empty | n/a | `list(string)` | `[]` |
+| object\_default\_empty | n/a | `object({})` | `{}` |
 
 ## Outputs
 

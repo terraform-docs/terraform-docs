@@ -59,7 +59,7 @@ const (
 			{{- range .Module.Inputs }}
 				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .GetValue | sanitizeTbl }} |
 				{{- if $.Settings.ShowRequired -}}
-					{{ printf " " }}{{ ternary (.GetValue) "no" "yes" }} |
+					{{ printf " " }}{{ ternary .Required "yes" "no" }} |
 				{{- end -}}
 			{{- end }}
 		{{ end }}
@@ -78,7 +78,7 @@ const (
 				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |
 				{{- if $.Settings.OutputValues -}}
 					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
-					{{ printf " " }}{{ value $sensitive | sanitizeTbl }} | {{ ternary (.Sensitive) "yes" "no" }} |
+					{{ printf " " }}{{ value $sensitive | sanitizeTbl }} | {{ ternary .Sensitive "yes" "no" }} |
 				{{- end -}}
 			{{- end }}
 		{{ end }}

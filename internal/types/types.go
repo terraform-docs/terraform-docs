@@ -99,13 +99,32 @@ func (n Nil) MarshalYAML() (interface{}, error) {
 	return nil, nil
 }
 
+// Null represents an explicitly value set to 'null' which is marshaled to `"null"` JSON and YAML
+type Null types.Nil
+
+// HasDefault return false for Nil, because there's no value set for the variable
+func (n Null) HasDefault() bool {
+	return true
+}
+
+// MarshalJSON custom marshal function which sets the value to literal `null`
+func (n Null) MarshalJSON() ([]byte, error) {
+	return []byte(`"null"`), nil
+}
+
+// MarshalXML custom marshal function which adds property 'xsi:nil="true"' to a tag
+// of a 'nil' item
+func (n Null) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return e.EncodeElement(`null`, start)
+}
+
+// MarshalYAML custom marshal function which sets the value to `"null"`
+func (n Null) MarshalYAML() (interface{}, error) {
+	return "null", nil
+}
+
 // String represents a 'string' value which is marshaled to `null` when empty for JSON and YAML
 type String string
-
-// String returns s as an actual string value
-func (s String) String() string {
-	return string(s)
-}
 
 // nolint
 func (s String) underlying() string {
@@ -120,10 +139,10 @@ func (s String) HasDefault() bool {
 // MarshalJSON custom marshal function which sets the value to literal `null` when empty
 func (s String) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
-	if len(s.String()) == 0 {
+	if len(string(s)) == 0 {
 		buf.WriteString(`null`)
 	} else {
-		normalize := s.String()
+		normalize := string(s)
 		normalize = strings.Replace(normalize, "\n", "\\n", -1)
 		normalize = strings.Replace(normalize, "\"", "\\\"", -1)
 		buf.WriteString(`"` + normalize + `"`) // add double quation mark as json format required
@@ -143,7 +162,7 @@ func (s String) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 
 // MarshalYAML custom marshal function which sets the value to literal `null` when empty
 func (s String) MarshalYAML() (interface{}, error) {
-	if len(s.String()) == 0 {
+	if len(string(s)) == 0 || string(s) == `""` {
 		return nil, nil
 	}
 	return s, nil

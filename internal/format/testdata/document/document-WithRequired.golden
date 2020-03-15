@@ -96,6 +96,12 @@ Description: A variable with underscores.
 
 Type: `any`
 
+### string_no_default
+
+Description: n/a
+
+Type: `string`
+
 ## Optional Inputs
 
 The following input variables are optional (have default values):
@@ -294,6 +300,54 @@ Description: The description contains url. https://www.domain.com/foo/bar_baz.ht
 Type: `string`
 
 Default: `""`
+
+### string_default_empty
+
+Description: n/a
+
+Type: `string`
+
+Default: `""`
+
+### string_default_null
+
+Description: n/a
+
+Type: `string`
+
+Default: `null`
+
+### number_default_zero
+
+Description: n/a
+
+Type: `number`
+
+Default: `0`
+
+### bool_default_false
+
+Description: n/a
+
+Type: `bool`
+
+Default: `false`
+
+### list_default_empty
+
+Description: n/a
+
+Type: `list(string)`
+
+Default: `[]`
+
+### object_default_empty
+
+Description: n/a
+
+Type: `object({})`
+
+Default: `{}`
 
 ## Outputs
 

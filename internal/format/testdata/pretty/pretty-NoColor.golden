@@ -158,6 +158,27 @@ The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UN
 input.with-url ("")
 The description contains url. https://www.domain.com/foo/bar_baz.html
 
+input.string_default_empty ("")
+n/a
+
+input.string_default_null (null)
+n/a
+
+input.string_no_default (required)
+n/a
+
+input.number_default_zero (0)
+n/a
+
+input.bool_default_false (false)
+n/a
+
+input.list_default_empty ([])
+n/a
+
+input.object_default_empty ({})
+n/a
+
 
 
 output.unquoted

@@ -23,13 +23,22 @@ func (i *Input) GetValue() string {
 	if err != nil {
 		panic(err)
 	}
-	if value := string(marshaled); value != "null" {
-		return value
+	value := string(marshaled)
+	if value == `null` {
+		return "" // types.Nil
 	}
-	return ""
+	if value == `"null"` {
+		return `null` // types.Null
+	}
+	return value // everything else
 }
 
 // HasDefault indicates if a Terraform variable has a default value set.
 func (i *Input) HasDefault() bool {
 	return i.Default.HasDefault()
+}
+
+// Required indicates if a Terraform variable is required.
+func (i *Input) Required() bool {
+	return !i.Default.HasDefault()
 }

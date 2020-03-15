@@ -65,6 +65,12 @@ generates the following output:
           <default>true</default>
         </input>
         <input>
+          <name>bool_default_false</name>
+          <type>bool</type>
+          <description xsi:nil="true"></description>
+          <default>false</default>
+        </input>
+        <input>
           <name>input-with-code-block</name>
           <type>list</type>
           <description>This is a complicated one. We need a newline.  &#xA;And an example in a code block&#xA;```&#xA;default     = [&#xA;  &#34;machine rack01:neptune&#34;&#xA;]&#xA;```&#xA;</description>
@@ -103,6 +109,12 @@ generates the following output:
         <input>
           <name>list-3</name>
           <type>list</type>
+          <description xsi:nil="true"></description>
+          <default></default>
+        </input>
+        <input>
+          <name>list_default_empty</name>
+          <type>list(string)</type>
           <description xsi:nil="true"></description>
           <default></default>
         </input>
@@ -180,6 +192,18 @@ generates the following output:
           <default>15.75</default>
         </input>
         <input>
+          <name>number_default_zero</name>
+          <type>number</type>
+          <description xsi:nil="true"></description>
+          <default>0</default>
+        </input>
+        <input>
+          <name>object_default_empty</name>
+          <type>object({})</type>
+          <description xsi:nil="true"></description>
+          <default></default>
+        </input>
+        <input>
           <name>string-1</name>
           <type>string</type>
           <description>It&#39;s string number one.</description>
@@ -196,6 +220,24 @@ generates the following output:
           <type>string</type>
           <description xsi:nil="true"></description>
           <default></default>
+        </input>
+        <input>
+          <name>string_default_empty</name>
+          <type>string</type>
+          <description xsi:nil="true"></description>
+          <default></default>
+        </input>
+        <input>
+          <name>string_default_null</name>
+          <type>string</type>
+          <description xsi:nil="true"></description>
+          <default>null</default>
+        </input>
+        <input>
+          <name>string_no_default</name>
+          <type>string</type>
+          <description xsi:nil="true"></description>
+          <default xsi:nil="true"></default>
         </input>
         <input>
           <name>unquoted</name>

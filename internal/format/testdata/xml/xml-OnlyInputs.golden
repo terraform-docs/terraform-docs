@@ -164,6 +164,48 @@
       <description>The description contains url. https://www.domain.com/foo/bar_baz.html</description>
       <default></default>
     </input>
+    <input>
+      <name>string_default_empty</name>
+      <type>string</type>
+      <description xsi:nil="true"></description>
+      <default></default>
+    </input>
+    <input>
+      <name>string_default_null</name>
+      <type>string</type>
+      <description xsi:nil="true"></description>
+      <default>null</default>
+    </input>
+    <input>
+      <name>string_no_default</name>
+      <type>string</type>
+      <description xsi:nil="true"></description>
+      <default xsi:nil="true"></default>
+    </input>
+    <input>
+      <name>number_default_zero</name>
+      <type>number</type>
+      <description xsi:nil="true"></description>
+      <default>0</default>
+    </input>
+    <input>
+      <name>bool_default_false</name>
+      <type>bool</type>
+      <description xsi:nil="true"></description>
+      <default>false</default>
+    </input>
+    <input>
+      <name>list_default_empty</name>
+      <type>list(string)</type>
+      <description xsi:nil="true"></description>
+      <default></default>
+    </input>
+    <input>
+      <name>object_default_empty</name>
+      <type>object({})</type>
+      <description xsi:nil="true"></description>
+      <default></default>
+    </input>
   </inputs>
   <outputs></outputs>
   <providers></providers>

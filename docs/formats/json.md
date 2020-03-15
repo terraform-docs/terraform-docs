@@ -66,6 +66,12 @@ generates the following output:
           "default": true
         },
         {
+          "name": "bool_default_false",
+          "type": "bool",
+          "description": null,
+          "default": false
+        },
+        {
           "name": "input-with-code-block",
           "type": "list",
           "description": "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n",
@@ -104,6 +110,12 @@ generates the following output:
         {
           "name": "list-3",
           "type": "list",
+          "description": null,
+          "default": []
+        },
+        {
+          "name": "list_default_empty",
+          "type": "list(string)",
           "description": null,
           "default": []
         },
@@ -181,6 +193,18 @@ generates the following output:
           "default": 15.75
         },
         {
+          "name": "number_default_zero",
+          "type": "number",
+          "description": null,
+          "default": 0
+        },
+        {
+          "name": "object_default_empty",
+          "type": "object({})",
+          "description": null,
+          "default": {}
+        },
+        {
           "name": "string-1",
           "type": "string",
           "description": "It's string number one.",
@@ -197,6 +221,24 @@ generates the following output:
           "type": "string",
           "description": null,
           "default": ""
+        },
+        {
+          "name": "string_default_empty",
+          "type": "string",
+          "description": null,
+          "default": ""
+        },
+        {
+          "name": "string_default_null",
+          "type": "string",
+          "description": null,
+          "default": "null"
+        },
+        {
+          "name": "string_no_default",
+          "type": "string",
+          "description": null,
+          "default": null
         },
         {
           "name": "unquoted",

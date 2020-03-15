@@ -111,6 +111,9 @@ generates the following output:
     input.bool-3 (true)
     n/a
 
+    input.bool_default_false (false)
+    n/a
+
     input.input-with-code-block ([
       "name rack:location"
     ])
@@ -139,6 +142,9 @@ generates the following output:
     It's list number two.
 
     input.list-3 ([])
+    n/a
+
+    input.list_default_empty ([])
     n/a
 
     input.long_type ({
@@ -189,6 +195,12 @@ generates the following output:
     input.number-4 (15.75)
     n/a
 
+    input.number_default_zero (0)
+    n/a
+
+    input.object_default_empty ({})
+    n/a
+
     input.string-1 ("bar")
     It's string number one.
 
@@ -196,6 +208,15 @@ generates the following output:
     It's string number two.
 
     input.string-3 ("")
+    n/a
+
+    input.string_default_empty ("")
+    n/a
+
+    input.string_default_null (null)
+    n/a
+
+    input.string_no_default (required)
     n/a
 
     input.unquoted (required)

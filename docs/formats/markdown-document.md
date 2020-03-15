@@ -138,6 +138,12 @@ generates the following output:
 
     Type: `string`
 
+    ### string\_no\_default
+
+    Description: n/a
+
+    Type: `string`
+
     ### unquoted
 
     Description: n/a
@@ -171,6 +177,14 @@ generates the following output:
     Type: `bool`
 
     Default: `true`
+
+    ### bool\_default\_false
+
+    Description: n/a
+
+    Type: `bool`
+
+    Default: `false`
 
     ### input-with-code-block
 
@@ -221,6 +235,14 @@ generates the following output:
     Description: n/a
 
     Type: `list`
+
+    Default: `[]`
+
+    ### list\_default\_empty
+
+    Description: n/a
+
+    Type: `list(string)`
 
     Default: `[]`
 
@@ -319,6 +341,22 @@ generates the following output:
 
     Default: `15.75`
 
+    ### number\_default\_zero
+
+    Description: n/a
+
+    Type: `number`
+
+    Default: `0`
+
+    ### object\_default\_empty
+
+    Description: n/a
+
+    Type: `object({})`
+
+    Default: `{}`
+
     ### string-1
 
     Description: It's string number one.
@@ -334,6 +372,22 @@ generates the following output:
     Type: `string`
 
     Default: `""`
+
+    ### string\_default\_empty
+
+    Description: n/a
+
+    Type: `string`
+
+    Default: `""`
+
+    ### string\_default\_null
+
+    Description: n/a
+
+    Type: `string`
+
+    Default: `null`
 
     ### with-url
 
