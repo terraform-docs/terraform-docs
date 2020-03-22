@@ -19,12 +19,16 @@ func NewXML(settings *print.Settings) *XML {
 // Print prints a Terraform module as xml.
 func (x *XML) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	copy := &tfconf.Module{
-		Header:    "",
-		Providers: make([]*tfconf.Provider, 0),
-		Inputs:    make([]*tfconf.Input, 0),
-		Outputs:   make([]*tfconf.Output, 0),
+		Requirements: make([]*tfconf.Requirement, 0),
+		Header:       "",
+		Providers:    make([]*tfconf.Provider, 0),
+		Inputs:       make([]*tfconf.Input, 0),
+		Outputs:      make([]*tfconf.Output, 0),
 	}
 
+	if settings.ShowRequirements {
+		copy.Requirements = module.Requirements
+	}
 	if settings.ShowHeader {
 		copy.Header = module.Header
 	}

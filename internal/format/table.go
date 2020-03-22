@@ -18,6 +18,21 @@ const (
 	{{ end -}}
 	`
 
+	tableRequirementsTpl = `
+	{{- if .Settings.ShowRequirements -}}
+		{{ indent 0 }} Requirements
+		{{ if not .Module.Requirements }}
+			No requirements.
+		{{ else }}
+			| Name | Version |
+			|------|---------|
+			{{- range .Module.Requirements }}
+				| {{ name .Name }} | {{ tostring .Version | default "n/a" }} |
+			{{- end }}
+		{{ end }}
+	{{ end -}}
+	`
+
 	tableProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
 		{{ indent 0 }} Providers
@@ -72,6 +87,7 @@ const (
 
 	tableTpl = `
 	{{- template "header" . -}}
+	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
@@ -88,6 +104,9 @@ func NewTable(settings *print.Settings) *Table {
 	tt := tmpl.NewTemplate(&tmpl.Item{
 		Name: "table",
 		Text: tableTpl,
+	}, &tmpl.Item{
+		Name: "requirements",
+		Text: tableRequirementsTpl,
 	}, &tmpl.Item{
 		Name: "header",
 		Text: tableHeaderTpl,

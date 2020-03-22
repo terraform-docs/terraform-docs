@@ -172,3 +172,8 @@ providers:
 - name: "null"
   alias: null
   version: null
+requirements:
+- name: terraform
+  version: '>= 0.12'
+- name: aws
+  version: '>= 2.15.0'

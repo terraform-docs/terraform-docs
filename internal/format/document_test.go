@@ -101,13 +101,38 @@ func TestDocumentSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestDocumentNoRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowRequirements: false,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("document", "document-NoRequirements")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestDocumentNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       false,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-NoHeader")
@@ -127,10 +152,11 @@ func TestDocumentNoHeader(t *testing.T) {
 func TestDocumentNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    false,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-NoProviders")
@@ -150,10 +176,11 @@ func TestDocumentNoProviders(t *testing.T) {
 func TestDocumentNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       false,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-NoInputs")
@@ -173,10 +200,11 @@ func TestDocumentNoInputs(t *testing.T) {
 func TestDocumentNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-NoOutputs")
@@ -193,13 +221,38 @@ func TestDocumentNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestDocumentOnlyRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowRequirements: true,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("document", "document-OnlyRequirements")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestDocumentOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       true,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-OnlyHeader")
@@ -219,10 +272,11 @@ func TestDocumentOnlyHeader(t *testing.T) {
 func TestDocumentOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    true,
+		ShowInputs:       false,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-OnlyProviders")
@@ -242,10 +296,11 @@ func TestDocumentOnlyProviders(t *testing.T) {
 func TestDocumentOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       true,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-OnlyInputs")
@@ -265,10 +320,11 @@ func TestDocumentOnlyInputs(t *testing.T) {
 func TestDocumentOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-OnlyOutputs")

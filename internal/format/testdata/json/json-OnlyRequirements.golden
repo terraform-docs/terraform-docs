@@ -1,0 +1,16 @@
+{
+  "header": "",
+  "inputs": [],
+  "outputs": [],
+  "providers": [],
+  "requirements": [
+    {
+      "name": "terraform",
+      "version": ">= 0.12"
+    },
+    {
+      "name": "aws",
+      "version": ">= 2.15.0"
+    }
+  ]
+}

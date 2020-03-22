@@ -81,13 +81,38 @@ func TestJsonSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestJsonNoRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowRequirements: false,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("json", "json-NoRequirements")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewJSON(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestJsonNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       false,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-NoHeader")
@@ -107,10 +132,11 @@ func TestJsonNoHeader(t *testing.T) {
 func TestJsonNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    false,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-NoProviders")
@@ -130,10 +156,11 @@ func TestJsonNoProviders(t *testing.T) {
 func TestJsonNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       false,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-NoInputs")
@@ -153,10 +180,11 @@ func TestJsonNoInputs(t *testing.T) {
 func TestJsonNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-NoOutputs")
@@ -173,13 +201,38 @@ func TestJsonNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestJsonOnlyRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowRequirements: true,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("json", "json-OnlyRequirements")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewJSON(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestJsonOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       true,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-OnlyHeader")
@@ -199,10 +252,11 @@ func TestJsonOnlyHeader(t *testing.T) {
 func TestJsonOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    true,
+		ShowInputs:       false,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-OnlyProviders")
@@ -222,10 +276,11 @@ func TestJsonOnlyProviders(t *testing.T) {
 func TestJsonOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       true,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-OnlyInputs")
@@ -245,10 +300,11 @@ func TestJsonOnlyInputs(t *testing.T) {
 func TestJsonOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-OnlyOutputs")

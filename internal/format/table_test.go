@@ -101,13 +101,38 @@ func TestTableSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestTableNoRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowRequirements: false,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("table", "table-NoRequirements")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestTableNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       false,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-NoHeader")
@@ -127,10 +152,11 @@ func TestTableNoHeader(t *testing.T) {
 func TestTableNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    false,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-NoProviders")
@@ -150,10 +176,11 @@ func TestTableNoProviders(t *testing.T) {
 func TestTableNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       false,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-NoInputs")
@@ -173,10 +200,11 @@ func TestTableNoInputs(t *testing.T) {
 func TestTableNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-NoOutputs")
@@ -193,13 +221,38 @@ func TestTableNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestTableOnlyRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowRequirements: true,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("table", "table-OnlyRequirements")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestTableOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       true,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-OnlyHeader")
@@ -219,10 +272,11 @@ func TestTableOnlyHeader(t *testing.T) {
 func TestTableOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    true,
+		ShowInputs:       false,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-OnlyProviders")
@@ -242,10 +296,11 @@ func TestTableOnlyProviders(t *testing.T) {
 func TestTableOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       true,
+		ShowOutputs:      false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-OnlyInputs")
@@ -265,10 +320,11 @@ func TestTableOnlyInputs(t *testing.T) {
 func TestTableOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowRequirements: false,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowOutputs:      true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("table", "table-OnlyOutputs")

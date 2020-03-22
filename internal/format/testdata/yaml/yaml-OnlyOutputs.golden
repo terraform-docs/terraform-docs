@@ -10,3 +10,4 @@ outputs:
 - name: output-0.12
   description: terraform 0.12 only
 providers: []
+requirements: []

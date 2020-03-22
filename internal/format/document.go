@@ -18,6 +18,21 @@ const (
 	{{ end -}}
 	`
 
+	documentRequirementsTpl = `
+	{{- if .Settings.ShowRequirements -}}
+		{{ indent 0 }} Requirements
+		{{ if not .Module.Requirements }}
+			No requirements.
+		{{ else }}
+			The following requirements are needed by this module:
+			{{- range .Module.Requirements }}
+				{{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+				- {{ name .Name }}{{ $version }}
+			{{- end }}
+		{{ end }}
+	{{ end -}}
+	`
+
 	documentProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
 		{{ indent 0 }} Providers
@@ -107,6 +122,7 @@ const (
 
 	documentTpl = `
 	{{- template "header" . -}}
+	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
@@ -123,6 +139,9 @@ func NewDocument(settings *print.Settings) *Document {
 	tt := tmpl.NewTemplate(&tmpl.Item{
 		Name: "document",
 		Text: documentTpl,
+	}, &tmpl.Item{
+		Name: "requirements",
+		Text: documentRequirementsTpl,
 	}, &tmpl.Item{
 		Name: "header",
 		Text: documentHeaderTpl,

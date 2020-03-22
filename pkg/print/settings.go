@@ -42,6 +42,10 @@ type Settings struct {
 	// scope: Markdown
 	ShowRequired bool
 
+	// ShowRequirements show "ShowRequirements" section (default: true)
+	// scope: Global
+	ShowRequirements bool
+
 	// SortByName sorted rendering of inputs and outputs (default: true)
 	// scope: Global
 	SortByName bool
@@ -64,6 +68,7 @@ func NewSettings() *Settings {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequired:     true,
+		ShowRequirements: true,
 		SortByName:       true,
 		SortByRequired:   false,
 	}

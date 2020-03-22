@@ -204,5 +204,15 @@
       "alias": null,
       "version": null
     }
+  ],
+  "requirements": [
+    {
+      "name": "terraform",
+      "version": "\u003e= 0.12"
+    },
+    {
+      "name": "aws",
+      "version": "\u003e= 2.15.0"
+    }
   ]
 }

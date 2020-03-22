@@ -42,10 +42,11 @@ func (s *TestSettings) WithColor() *TestSettings {
 // WithSections appends predefined show all sections ShowHeader, ShowProviders, ShowInputs, ShowOutputs to TestSettings
 func (s *TestSettings) WithSections() *TestSettings {
 	sections := &print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowRequirements: true,
+		ShowHeader:       true,
+		ShowProviders:    true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 	}
 	if err := mergo.Merge(sections, s.full); err == nil {
 		s.full = sections

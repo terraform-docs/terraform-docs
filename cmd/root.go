@@ -24,6 +24,7 @@ var rootCmd = &cobra.Command{
 			val, _ := cmd.Flags().GetBool(name)
 			return !val
 		}
+		settings.ShowRequirements = oppositeBool("no-requirements")
 		settings.ShowHeader = oppositeBool("no-header")
 		settings.ShowProviders = oppositeBool("no-providers")
 		settings.ShowInputs = oppositeBool("no-inputs")
@@ -39,6 +40,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolVar(new(bool), "no-requirements", false, "do not show module requirements")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-header", false, "do not show module header")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-providers", false, "do not show providers")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-inputs", false, "do not show inputs")

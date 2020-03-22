@@ -218,4 +218,14 @@
       <version xsi:nil="true"></version>
     </provider>
   </providers>
+  <requirements>
+    <requirement>
+      <name>terraform</name>
+      <version>&gt;= 0.12</version>
+    </requirement>
+    <requirement>
+      <name>aws</name>
+      <version>&gt;= 2.15.0</version>
+    </requirement>
+  </requirements>
 </module>
