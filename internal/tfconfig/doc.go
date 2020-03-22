@@ -18,4 +18,11 @@
 // a result as possible even though the input may not be entirely valid. The
 // intended use-case is high-level analysis and indexing of externally-facing
 // module characteristics, as opposed to validating or even applying the module.
+//
+// Important Note: This is in-project fork of https://github.com/hashicorp/terraform-config-inspect
+// and by no means should be used outside of this project. The reason for bringing
+// the project over internally was that terraform-config-inspect is considered
+// feature-complete and new enhancement pull requests are not accepted and we've
+// decided to bring the project over internally and apply one change that we
+// really depended on in terraform-docs.
 package tfconfig
