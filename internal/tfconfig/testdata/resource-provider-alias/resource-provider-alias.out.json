@@ -1,0 +1,100 @@
+{
+    "path": "testdata/resource-provider-alias",
+    "required_providers": {
+        "aws": {},
+        "notaws": {}
+    },
+    "variables": {},
+    "outputs": {},
+    "managed_resources": {
+        "aws_instance.foo": {
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "foo",
+            "provider": {
+                "name": "aws"
+            },
+            "pos": {
+                "filename": "testdata/resource-provider-alias/alias.tf",
+                "line": 1
+            }
+        },
+        "aws_instance.bar": {
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "bar",
+            "provider": {
+                "name": "notaws"
+            },
+            "pos": {
+                "filename": "testdata/resource-provider-alias/alias.tf",
+                "line": 4
+            }
+        },
+        "aws_instance.deprecated_bar": {
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "deprecated_bar",
+            "provider": {
+                "name": "notaws"
+            },
+            "pos": {
+                "filename": "testdata/resource-provider-alias/alias.tf",
+                "line": 12
+            }
+        },
+        "aws_instance.json_bar": {
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "json_bar",
+            "provider": {
+                "name": "notaws"
+            },
+            "pos": {
+                "filename": "testdata/resource-provider-alias/alias.tf.json",
+                "line": 4
+            }
+        },
+        "aws_instance.baz": {
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "baz",
+            "provider": {
+                "name": "aws",
+                "alias": "aliased"
+            },
+            "pos": {
+                "filename": "testdata/resource-provider-alias/alias.tf",
+                "line": 8
+            }
+        },
+        "aws_instance.deprecated_baz": {
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "deprecated_baz",
+            "provider": {
+                "name": "aws",
+                "alias": "aliased"
+            },
+            "pos": {
+                "filename": "testdata/resource-provider-alias/alias.tf",
+                "line": 16
+            }
+        },
+        "aws_instance.json_baz": {
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "json_baz",
+            "provider": {
+                "name": "aws",
+                "alias": "aliased"
+            },
+            "pos": {
+                "filename": "testdata/resource-provider-alias/alias.tf.json",
+                "line": 7
+            }
+        }
+    },
+    "data_resources": {},
+    "module_calls": {}
+}

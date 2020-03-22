@@ -1,0 +1,112 @@
+{
+    "path": "testdata/variable-types",
+
+    "required_providers": {},
+
+    "variables": {
+        "primitive": {
+            "name": "primitive",
+            "default": null,
+            "required": true,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 1
+            }
+        },
+        "list": {
+            "name": "list",
+            "type": "list(string)",
+            "default": null,
+            "required": true,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 4
+            }
+        },
+        "list_json": {
+            "name": "list_json",
+            "type": "list(string)",
+            "default": null,
+            "required": true,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf.json",
+                "line": 3
+            }
+        },
+        "map": {
+            "name": "map",
+            "type": "map",
+            "default": null,
+            "required": true,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 8
+            }
+        },
+        "string_default_empty": {
+            "name": "string_default_empty",
+            "type": "string",
+            "default": "",
+            "required": false,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 14
+            }
+        },
+        "string_default_null": {
+            "name": "string_default_null",
+            "type": "string",
+            "default": null,
+            "required": false,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 19
+            }
+        },
+        "list_default_empty": {
+            "name": "list_default_empty",
+            "type": "list(string)",
+            "default": [],
+            "required": false,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 24
+            }
+        },
+        "object_default_empty": {
+            "name": "object_default_empty",
+            "type": "object({})",
+            "default": {},
+            "required": false,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 29
+            }
+        },
+        "number_default_zero": {
+            "name": "number_default_zero",
+            "type": "number",
+            "default": 0,
+            "required": false,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 34
+            }
+        },
+        "bool_default_false": {
+            "name": "bool_default_false",
+            "type": "bool",
+            "default": false,
+            "required": false,
+            "pos": {
+                "filename": "testdata/variable-types/variable-types.tf",
+                "line": 39
+            }
+        }
+    },
+    "outputs": {},
+
+    "managed_resources": {},
+    "data_resources": {},
+    "module_calls": {}
+}

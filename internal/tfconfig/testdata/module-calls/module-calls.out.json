@@ -1,0 +1,38 @@
+{
+    "path": "testdata/module-calls",
+
+    "required_providers": {},
+
+    "variables": {},
+    "outputs": {},
+
+    "managed_resources": {},
+    "data_resources": {},
+    "module_calls": {
+        "foo": {
+            "name": "foo",
+            "source": "foo/bar/baz",
+            "version": "1.0.2",
+            "pos": {
+                "filename": "testdata/module-calls/module-calls.tf",
+                "line": 1
+            }
+        },
+        "bar": {
+            "name": "bar",
+            "source": "./child",
+            "pos": {
+                "filename": "testdata/module-calls/module-calls.tf",
+                "line": 8
+            }
+        },
+        "baz": {
+            "name": "baz",
+            "source": "../elsewhere",
+            "pos": {
+                "filename": "testdata/module-calls/module-calls.tf.json",
+                "line": 3
+            }
+        }
+    }
+}

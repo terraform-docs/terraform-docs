@@ -102,6 +102,7 @@ func loadModuleLegacyHCL(dir string) (*Module, Diagnostics) {
 					Type:        block.Type,
 					Description: block.Description,
 					Default:     block.Default,
+					Required:    block.Default == nil,
 					Pos:         sourcePosLegacyHCL(item.Pos(), filename),
 				}
 				if _, exists := mod.Variables[name]; exists {
