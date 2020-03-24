@@ -17,6 +17,7 @@ terraform-docs markdown [PATH] [flags]
       --indent int    indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --no-escape     do not escape special characters
       --no-required   do not show "Required" column or section
+      --no-sensitive  do not show "Sensitive" column or section
 ```
 
 ### Options inherited from parent commands
