@@ -158,6 +158,34 @@ inputs:
   type: string
   description: The description contains url. https://www.domain.com/foo/bar_baz.html
   default: ""
+- name: string_default_empty
+  type: string
+  description: null
+  default: ""
+- name: string_default_null
+  type: string
+  description: null
+  default: "null"
+- name: string_no_default
+  type: string
+  description: null
+  default: null
+- name: number_default_zero
+  type: number
+  description: null
+  default: 0
+- name: bool_default_false
+  type: bool
+  description: null
+  default: false
+- name: list_default_empty
+  type: list(string)
+  description: null
+  default: []
+- name: object_default_empty
+  type: object({})
+  description: null
+  default: {}
 outputs:
 - name: unquoted
   description: It's unquoted output.
