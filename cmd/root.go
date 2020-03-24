@@ -25,6 +25,10 @@ var rootCmd = &cobra.Command{
 			return !val
 		}
 		settings.ShowHeader = oppositeBool("no-header")
+		if !settings.ShowHeader {
+			options.HeaderFromFile = ""
+		}
+
 		settings.ShowInputs = oppositeBool("no-inputs")
 		settings.ShowOutputs = oppositeBool("no-outputs")
 		settings.ShowProviders = oppositeBool("no-providers")

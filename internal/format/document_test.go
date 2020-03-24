@@ -467,3 +467,27 @@ func TestDocumentHeaderFromFile(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
+
+func TestDocumentEmpty(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:    false,
+		ShowProviders: false,
+		ShowInputs:    false,
+		ShowOutputs:   false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("document", "document-Empty")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	options.HeaderFromFile = "" // An empty header file means it will be ignored. --no-header will clear the file name
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}

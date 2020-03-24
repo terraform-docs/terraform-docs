@@ -39,10 +39,18 @@ func loadModule(path string) (*tfconfig.Module, error) {
 }
 
 func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Module, error) {
-	header, err := loadHeader(options.Path, options.HeaderFromFile)
-	if err != nil {
-		return nil, err
+	var (
+		header string
+		err    error
+	)
+
+	if options.HeaderFromFile != "" {
+		header, err = loadHeader(options.Path, options.HeaderFromFile)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	inputs, required, optional := loadInputs(tfmodule)
 	outputs, err := loadOutputs(tfmodule, options)
 	if err != nil {
