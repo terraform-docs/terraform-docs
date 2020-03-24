@@ -42,7 +42,7 @@ type Settings struct {
 	// scope: Markdown
 	ShowRequired bool
 
-	// ShowRequirements show "ShowRequirements" section (default: true)
+	// ShowRequirements show "Requirements" section (default: true)
 	// scope: Global
 	ShowRequirements bool
 

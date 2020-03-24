@@ -140,11 +140,11 @@ func NewDocument(settings *print.Settings) *Document {
 		Name: "document",
 		Text: documentTpl,
 	}, &tmpl.Item{
-		Name: "requirements",
-		Text: documentRequirementsTpl,
-	}, &tmpl.Item{
 		Name: "header",
 		Text: documentHeaderTpl,
+	}, &tmpl.Item{
+		Name: "requirements",
+		Text: documentRequirementsTpl,
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: documentProvidersTpl,

@@ -39,7 +39,6 @@ func loadModule(path string) (*tfconfig.Module, error) {
 }
 
 func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Module, error) {
-	requirements := loadRequirements(tfmodule)
 	header, err := loadHeader(options.Path, options.HeaderFromFile)
 	if err != nil {
 		return nil, err
@@ -50,36 +49,18 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Modul
 		return nil, err
 	}
 	providers := loadProviders(tfmodule)
+	requirements := loadRequirements(tfmodule)
 
 	return &tfconf.Module{
-		Requirements: requirements,
 		Header:       header,
 		Inputs:       inputs,
 		Outputs:      outputs,
 		Providers:    providers,
+		Requirements: requirements,
 
 		RequiredInputs: required,
 		OptionalInputs: optional,
 	}, nil
-}
-
-func loadRequirements(tfmodule *tfconfig.Module) []*tfconf.Requirement {
-	var requirements = make([]*tfconf.Requirement, 0, len(tfmodule.Variables))
-	for _, core := range tfmodule.RequiredCore {
-		requirements = append(requirements, &tfconf.Requirement{
-			Name:    "terraform",
-			Version: types.String(core),
-		})
-	}
-	for name, provider := range tfmodule.RequiredProviders {
-		for _, version := range provider.VersionConstraints {
-			requirements = append(requirements, &tfconf.Requirement{
-				Name:    name,
-				Version: types.String(version),
-			})
-		}
-	}
-	return requirements
 }
 
 func loadHeader(base string, path string) (string, error) {
@@ -231,6 +212,25 @@ func loadProviders(tfmodule *tfconfig.Module) []*tfconf.Provider {
 		providers = append(providers, provider)
 	}
 	return providers
+}
+
+func loadRequirements(tfmodule *tfconfig.Module) []*tfconf.Requirement {
+	var requirements = make([]*tfconf.Requirement, 0, len(tfmodule.Variables))
+	for _, core := range tfmodule.RequiredCore {
+		requirements = append(requirements, &tfconf.Requirement{
+			Name:    "terraform",
+			Version: types.String(core),
+		})
+	}
+	for name, provider := range tfmodule.RequiredProviders {
+		for _, version := range provider.VersionConstraints {
+			requirements = append(requirements, &tfconf.Requirement{
+				Name:    name,
+				Version: types.String(version),
+			})
+		}
+	}
+	return requirements
 }
 
 func loadComments(filename string, lineNum int) string {

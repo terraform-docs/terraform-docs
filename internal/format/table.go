@@ -105,11 +105,11 @@ func NewTable(settings *print.Settings) *Table {
 		Name: "table",
 		Text: tableTpl,
 	}, &tmpl.Item{
-		Name: "requirements",
-		Text: tableRequirementsTpl,
-	}, &tmpl.Item{
 		Name: "header",
 		Text: tableHeaderTpl,
+	}, &tmpl.Item{
+		Name: "requirements",
+		Text: tableRequirementsTpl,
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: tableProvidersTpl,

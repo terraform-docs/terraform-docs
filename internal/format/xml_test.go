@@ -81,38 +81,14 @@ func TestXmlSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestXmlNoRequirements(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: false,
-		ShowHeader:       true,
-		ShowProviders:    true,
-		ShowInputs:       true,
-		ShowOutputs:      true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("xml", "xml-NoRequirements")
-	assert.Nil(err)
-
-	options := module.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewXML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
 func TestXmlNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: true,
 		ShowHeader:       false,
-		ShowProviders:    true,
 		ShowInputs:       true,
 		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoHeader")
@@ -129,38 +105,14 @@ func TestXmlNoHeader(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestXmlNoProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: true,
-		ShowHeader:       true,
-		ShowProviders:    false,
-		ShowInputs:       true,
-		ShowOutputs:      true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("xml", "xml-NoProviders")
-	assert.Nil(err)
-
-	options := module.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewXML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
 func TestXmlNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: true,
 		ShowHeader:       true,
-		ShowProviders:    true,
 		ShowInputs:       false,
 		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoInputs")
@@ -180,11 +132,11 @@ func TestXmlNoInputs(t *testing.T) {
 func TestXmlNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: true,
 		ShowHeader:       true,
-		ShowProviders:    true,
 		ShowInputs:       true,
 		ShowOutputs:      false,
+		ShowProviders:    true,
+		ShowRequirements: true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoOutputs")
@@ -201,17 +153,41 @@ func TestXmlNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestXmlOnlyRequirements(t *testing.T) {
+func TestXmlNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: true,
-		ShowHeader:       false,
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
 		ShowProviders:    false,
-		ShowInputs:       false,
-		ShowOutputs:      false,
+		ShowRequirements: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("xml", "xml-OnlyRequirements")
+	expected, err := testutil.GetExpected("xml", "xml-NoProviders")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewXML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestXmlNoRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("xml", "xml-NoRequirements")
 	assert.Nil(err)
 
 	options := module.NewOptions()
@@ -228,11 +204,11 @@ func TestXmlOnlyRequirements(t *testing.T) {
 func TestXmlOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: false,
 		ShowHeader:       true,
-		ShowProviders:    false,
 		ShowInputs:       false,
 		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyHeader")
@@ -249,38 +225,14 @@ func TestXmlOnlyHeader(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestXmlOnlyProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: false,
-		ShowHeader:       false,
-		ShowProviders:    true,
-		ShowInputs:       false,
-		ShowOutputs:      false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("xml", "xml-OnlyProviders")
-	assert.Nil(err)
-
-	options := module.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewXML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
 func TestXmlOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: false,
 		ShowHeader:       false,
-		ShowProviders:    false,
 		ShowInputs:       true,
 		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyInputs")
@@ -300,14 +252,62 @@ func TestXmlOnlyInputs(t *testing.T) {
 func TestXmlOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowRequirements: false,
 		ShowHeader:       false,
-		ShowProviders:    false,
 		ShowInputs:       false,
 		ShowOutputs:      true,
+		ShowProviders:    false,
+		ShowRequirements: false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyOutputs")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewXML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestXmlOnlyProviders(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    true,
+		ShowRequirements: false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("xml", "xml-OnlyProviders")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewXML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestXmlOnlyRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("xml", "xml-OnlyRequirements")
 	assert.Nil(err)
 
 	options := module.NewOptions()

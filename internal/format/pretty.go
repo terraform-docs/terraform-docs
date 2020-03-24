@@ -95,11 +95,11 @@ func NewPretty(settings *print.Settings) *Pretty {
 		Name: "pretty",
 		Text: prettyTpl,
 	}, &tmpl.Item{
-		Name: "requirements",
-		Text: prettyRequirementsTpl,
-	}, &tmpl.Item{
 		Name: "header",
 		Text: prettyHeaderTpl,
+	}, &tmpl.Item{
+		Name: "requirements",
+		Text: prettyRequirementsTpl,
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: prettyProvidersTpl,
