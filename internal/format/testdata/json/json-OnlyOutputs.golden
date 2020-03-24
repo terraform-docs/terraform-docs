@@ -19,5 +19,6 @@
       "description": "terraform 0.12 only"
     }
   ],
-  "providers": []
+  "providers": [],
+  "requirements": []
 }

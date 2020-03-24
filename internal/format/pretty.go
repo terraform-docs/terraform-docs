@@ -20,6 +20,19 @@ const (
 	{{ end -}}
 	`
 
+	prettyRequirementsTpl = `
+	{{- if .Settings.ShowRequirements -}}
+		{{- with .Module.Requirements }}
+			{{- printf "\n" -}}
+			{{- range . }}
+				{{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+				{{ printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
+			{{ end }}
+			{{- printf "\n" -}}
+		{{ end -}}
+	{{ end -}}
+	`
+
 	prettyProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
 		{{- with .Module.Providers }}
@@ -64,6 +77,7 @@ const (
 
 	prettyTpl = `
 	{{- template "header" . -}}
+	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
@@ -83,6 +97,9 @@ func NewPretty(settings *print.Settings) *Pretty {
 	}, &tmpl.Item{
 		Name: "header",
 		Text: prettyHeaderTpl,
+	}, &tmpl.Item{
+		Name: "requirements",
+		Text: prettyRequirementsTpl,
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: prettyProvidersTpl,

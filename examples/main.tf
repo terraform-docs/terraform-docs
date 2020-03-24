@@ -38,6 +38,13 @@
  * | Bar  | Bar description |
  */
 
+terraform {
+  required_version = ">= 0.12"
+  required_providers {
+    aws = ">= 2.15.0"
+  }
+}
+
 resource "tls_private_key" "baz" {}
 
 data "aws_caller_identity" "current" {
@@ -46,12 +53,6 @@ data "aws_caller_identity" "current" {
 
 data "aws_caller_identity" "ident" {
   provider = "aws.ident"
-}
-
-terraform {
-  required_providers {
-    aws = ">= 2.15.0"
-  }
 }
 
 resource "null_resource" "foo" {}

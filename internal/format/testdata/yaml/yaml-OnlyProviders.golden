@@ -14,3 +14,4 @@ providers:
 - name: "null"
   alias: null
   version: null
+requirements: []

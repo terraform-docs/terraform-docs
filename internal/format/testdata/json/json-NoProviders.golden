@@ -183,5 +183,15 @@
       "description": "terraform 0.12 only"
     }
   ],
-  "providers": []
+  "providers": [],
+  "requirements": [
+    {
+      "name": "terraform",
+      "version": ">= 0.12"
+    },
+    {
+      "name": "aws",
+      "version": ">= 2.15.0"
+    }
+  ]
 }

@@ -15,6 +15,7 @@ A utility to generate documentation from Terraform modules in various output for
       --no-inputs                      do not show inputs
       --no-outputs                     do not show outputs
       --no-providers                   do not show providers
+      --no-requirements                do not show module requirements
       --no-sort                        do no sort items
       --output-values                  inject output values into outputs
       --output-values-from string      inject output values from file into outputs

@@ -20,6 +20,7 @@ func TestLoadModuleWithOptions(t *testing.T) {
 	assert.Equal(true, module.HasInputs())
 	assert.Equal(true, module.HasOutputs())
 	assert.Equal(true, module.HasProviders())
+	assert.Equal(true, module.HasRequirements())
 }
 
 func TestLoadModule(t *testing.T) {

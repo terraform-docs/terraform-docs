@@ -84,10 +84,11 @@ func TestYamlSortByRequired(t *testing.T) {
 func TestYamlNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   true,
+		ShowHeader:       false,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-NoHeader")
@@ -104,36 +105,14 @@ func TestYamlNoHeader(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestYamlNoProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("yaml", "yaml-NoProviders")
-	assert.Nil(err)
-
-	options := module.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewYAML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
 func TestYamlNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowHeader:       true,
+		ShowInputs:       false,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-NoInputs")
@@ -153,10 +132,11 @@ func TestYamlNoInputs(t *testing.T) {
 func TestYamlNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: true,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      false,
+		ShowProviders:    true,
+		ShowRequirements: true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-NoOutputs")
@@ -173,13 +153,62 @@ func TestYamlNoOutputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestYamlNoProviders(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    false,
+		ShowRequirements: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("yaml", "yaml-NoProviders")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestYamlNoRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("yaml", "yaml-NoRequirements")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestYamlOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    true,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowHeader:       true,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyHeader")
@@ -196,36 +225,14 @@ func TestYamlOnlyHeader(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestYamlOnlyProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: true,
-		ShowInputs:    false,
-		ShowOutputs:   false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("yaml", "yaml-OnlyProviders")
-	assert.Nil(err)
-
-	options := module.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewYAML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
 func TestYamlOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    true,
-		ShowOutputs:   false,
+		ShowHeader:       false,
+		ShowInputs:       true,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyInputs")
@@ -245,13 +252,62 @@ func TestYamlOnlyInputs(t *testing.T) {
 func TestYamlOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   true,
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      true,
+		ShowProviders:    false,
+		ShowRequirements: false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyOutputs")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestYamlOnlyProviders(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    true,
+		ShowRequirements: false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("yaml", "yaml-OnlyProviders")
+	assert.Nil(err)
+
+	options := module.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestYamlOnlyRequirements(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("yaml", "yaml-OnlyRequirements")
 	assert.Nil(err)
 
 	options := module.NewOptions()

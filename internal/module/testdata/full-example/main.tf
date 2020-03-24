@@ -8,6 +8,13 @@
  * and some [link](https://domain.com/)
  */
 
+terraform {
+  required_version = ">= 0.12"
+  required_providers {
+    aws = ">= 2.15.0"
+  }
+}
+
 resource "tls_private_key" "baz" {}
 
 data "aws_caller_identity" "current" {

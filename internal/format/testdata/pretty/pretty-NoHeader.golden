@@ -1,5 +1,11 @@
 
 
+[36mrequirement.terraform[0m (>= 0.12)
+
+[36mrequirement.aws[0m (>= 2.15.0)
+
+
+
 [36mprovider.tls[0m
 
 [36mprovider.aws[0m (>= 2.15.0)

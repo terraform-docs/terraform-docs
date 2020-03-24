@@ -24,4 +24,5 @@
       <version xsi:nil="true"></version>
     </provider>
   </providers>
+  <requirements></requirements>
 </module>
