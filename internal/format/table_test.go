@@ -421,7 +421,7 @@ func TestTableIndentationOfFour(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestTableOutputValuesNoSensitivity(t *testing.T) {
+func TestTableOutputValues(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		OutputValues:    true,
@@ -469,7 +469,7 @@ func TestTableHeaderFromFile(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestTableOutputValues(t *testing.T) {
+func TestTableOutputValuesNoSensitivity(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		OutputValues:    true,
@@ -479,10 +479,12 @@ func TestTableOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("table", "table-OutputValuesNoSensitivity")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 

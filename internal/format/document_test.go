@@ -476,17 +476,19 @@ func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
 		ShowSensitivity: false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OutputValuesNoSensitivity")
+	expected, err := testutil.GetExpected("table", "table-OutputValuesNoSensitivity")
 	assert.Nil(err)
 
-	options := module.NewOptions().With(&module.Options{
+	options, err := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
+	assert.Nil(err)
+
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
