@@ -5,11 +5,12 @@ import (
 )
 
 // Module represents a Terraform module. It consists of
-// - Requirements ('header' json key):    List of 'requirements' extracted from the Terraform module .tf files
+//
 // - Header       ('header' json key):    Module header found in shape of multi line comments at the beginning of 'main.tf'
 // - Inputs       ('inputs' json key):    List of input 'variables' extracted from the Terraform module .tf files
 // - Outputs      ('outputs' json key):   List of 'outputs' extracted from Terraform module .tf files
 // - Providers    ('providers' json key): List of 'providers' extracted from resources used in Terraform module
+// - Requirements ('header' json key):    List of 'requirements' extracted from the Terraform module .tf files
 type Module struct {
 	XMLName xml.Name `json:"-" xml:"module" yaml:"-"`
 
@@ -21,11 +22,6 @@ type Module struct {
 
 	RequiredInputs []*Input `json:"-" xml:"-" yaml:"-"`
 	OptionalInputs []*Input `json:"-" xml:"-" yaml:"-"`
-}
-
-// HasRequirements indicates if the module has requirements.
-func (m *Module) HasRequirements() bool {
-	return len(m.Requirements) > 0
 }
 
 // HasHeader indicates if the module has header.
@@ -46,4 +42,9 @@ func (m *Module) HasOutputs() bool {
 // HasProviders indicates if the module has providers.
 func (m *Module) HasProviders() bool {
 	return len(m.Providers) > 0
+}
+
+// HasRequirements indicates if the module has requirements.
+func (m *Module) HasRequirements() bool {
+	return len(m.Requirements) > 0
 }
