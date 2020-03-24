@@ -424,7 +424,8 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 func TestDocumentOutputValues(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		OutputValues: true,
+		OutputValues:    true,
+		ShowSensitivity: true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("document", "document-OutputValues")
@@ -458,6 +459,30 @@ func TestDocumentHeaderFromFile(t *testing.T) {
 	})
 	assert.Nil(err)
 
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		OutputValues:    true,
+		ShowSensitivity: false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("document", "document-OutputValuesNoSensitivity")
+	assert.Nil(err)
+
+	options := module.NewOptions().With(&module.Options{
+		OutputValues:     true,
+		OutputValuesPath: "output_values.json",
+	})
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
