@@ -72,13 +72,16 @@ const (
 		{{ if not .Module.Outputs }}
 			No output.
 		{{ else }}
-			| Name | Description |{{ if .Settings.OutputValues }} Value | Sensitive |{{ end }}
-			|------|-------------|{{ if .Settings.OutputValues }}-------|:---------:|{{ end }}
+			| Name | Description |{{ if .Settings.OutputValues }} Value |{{ if $.Settings.ShowSensitivity }} Sensitive |{{ end }}{{ end }}
+			|------|-------------|{{ if .Settings.OutputValues }}-------|{{ if $.Settings.ShowSensitivity }}:---------:|{{ end }}{{ end }}
 			{{- range .Module.Outputs }}
 				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |
 				{{- if $.Settings.OutputValues -}}
 					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
-					{{ printf " " }}{{ value $sensitive | sanitizeTbl }} | {{ ternary (.Sensitive) "yes" "no" }} |
+					{{ printf " " }}{{ value $sensitive | sanitizeTbl }} |
+					{{- if $.Settings.ShowSensitivity -}} 
+						{{ printf " " }}{{ ternary (.Sensitive) "yes" "no" }} |
+					{{- end -}}
 				{{- end -}}
 			{{- end }}
 		{{ end }}

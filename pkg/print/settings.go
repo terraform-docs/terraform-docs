@@ -42,6 +42,10 @@ type Settings struct {
 	// scope: Markdown
 	ShowRequired bool
 
+	// ShowSensitivity show "Sensitive" column when generating Markdown (default: true)
+	// scope: Markdown
+	ShowSensitivity bool
+
 	// ShowRequirements show "Requirements" section (default: true)
 	// scope: Global
 	ShowRequirements bool
@@ -68,6 +72,7 @@ func NewSettings() *Settings {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequired:     true,
+		ShowSensitivity:  true,
 		ShowRequirements: true,
 		SortByName:       true,
 		SortByRequired:   false,

@@ -36,6 +36,7 @@ var rootCmd = &cobra.Command{
 		settings.SortByName = oppositeBool("no-sort")
 		settings.ShowRequired = oppositeBool("no-required")
 		settings.EscapeCharacters = oppositeBool("no-escape")
+		settings.ShowSensitivity = oppositeBool("no-sensitive")
 	},
 }
 

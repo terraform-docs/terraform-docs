@@ -113,7 +113,9 @@ const (
 					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
 					Value: {{ value $sensitive | sanitizeDoc }}
 
-					Sensitive: {{ ternary (.Sensitive) "yes" "no" }}
+					{{ if $.Settings.ShowSensitivity -}}
+						Sensitive: {{ ternary (.Sensitive) "yes" "no" }}
+					{{- end }}
 				{{ end }}
 			{{ end }}
 		{{ end }}
