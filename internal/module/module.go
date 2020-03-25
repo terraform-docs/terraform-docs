@@ -39,10 +39,11 @@ func loadModule(path string) (*tfconfig.Module, error) {
 }
 
 func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Module, error) {
-	header, err := loadHeader(options.Path, options.HeaderFromFile)
+	header, err := loadHeader(options)
 	if err != nil {
 		return nil, err
 	}
+
 	inputs, required, optional := loadInputs(tfmodule)
 	outputs, err := loadOutputs(tfmodule, options)
 	if err != nil {
@@ -63,8 +64,12 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Modul
 	}, nil
 }
 
-func loadHeader(base string, path string) (string, error) {
-	filename := filepath.Join(base, path)
+func loadHeader(options *Options) (string, error) {
+	if !options.ShowHeader {
+		return "", nil
+	}
+
+	filename := filepath.Join(options.Path, options.HeaderFromFile)
 	_, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return "", err

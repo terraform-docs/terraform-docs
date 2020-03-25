@@ -17,6 +17,7 @@ type SortBy struct {
 type Options struct {
 	Path             string
 	HeaderFromFile   string
+	ShowHeader       bool
 	SortBy           *SortBy
 	OutputValues     bool
 	OutputValuesPath string
@@ -27,6 +28,7 @@ func NewOptions() *Options {
 	return &Options{
 		Path:             "",
 		HeaderFromFile:   "main.tf",
+		ShowHeader:       true,
 		SortBy:           &SortBy{Name: false, Required: false},
 		OutputValues:     false,
 		OutputValuesPath: "",

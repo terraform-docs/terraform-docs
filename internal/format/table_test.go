@@ -494,3 +494,28 @@ func TestTableOutputValuesNoSensitivity(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
+
+func TestTableEmpty(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:    false,
+		ShowProviders: false,
+		ShowInputs:    false,
+		ShowOutputs:   false,
+	}).Build()
+
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "bad.tf",
+	})
+	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal("", actual)
+}
