@@ -504,11 +504,12 @@ func TestDocumentEmpty(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-Empty")
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "bad.tf",
+	})
+	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all
 	assert.Nil(err)
 
-	options := module.NewOptions()
-	options.HeaderFromFile = "" // An empty header file means it will be ignored. --no-header will clear the file name
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -516,5 +517,5 @@ func TestDocumentEmpty(t *testing.T) {
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
-	assert.Equal(expected, actual)
+	assert.Equal("", actual)
 }

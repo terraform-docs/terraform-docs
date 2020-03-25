@@ -107,7 +107,8 @@ func TestLoadHeader(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			actual, err := loadHeader(filepath.Join("testdata", tt.path), tt.header)
+			options := &Options{Path: filepath.Join("testdata", tt.path), HeaderFromFile: tt.header, ShowHeader: true}
+			actual, err := loadHeader(options)
 			if tt.wantErr {
 				assert.NotNil(err)
 			} else {
