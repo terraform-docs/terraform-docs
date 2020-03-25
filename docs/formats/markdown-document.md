@@ -27,6 +27,7 @@ terraform-docs markdown document [PATH] [flags]
       --no-outputs                     do not show outputs
       --no-providers                   do not show providers
       --no-required                    do not show "Required" column or section
+      --no-sensitive                   do not show "Sensitive" column or section
       --no-requirements                do not show module requirements
       --no-sort                        do no sort items
       --output-values                  inject output values into outputs

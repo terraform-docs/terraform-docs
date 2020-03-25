@@ -30,7 +30,7 @@ github.com/hashicorp/hcl/v2/json
 # github.com/hashicorp/terraform-config-inspect v0.0.0-20200210163047-f7d8399e1194
 ## explicit
 github.com/hashicorp/terraform-config-inspect/tfconfig
-# github.com/imdario/mergo v0.3.8
+# github.com/imdario/mergo v0.3.9
 ## explicit
 github.com/imdario/mergo
 # github.com/inconshreveable/mousetrap v1.0.0
