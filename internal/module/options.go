@@ -16,8 +16,8 @@ type SortBy struct {
 // Options contains required options to load a Module from path
 type Options struct {
 	Path             string
-	HeaderFromFile   string
 	ShowHeader       bool
+	HeaderFromFile   string
 	SortBy           *SortBy
 	OutputValues     bool
 	OutputValuesPath string
@@ -27,8 +27,8 @@ type Options struct {
 func NewOptions() *Options {
 	return &Options{
 		Path:             "",
-		HeaderFromFile:   "main.tf",
 		ShowHeader:       true,
+		HeaderFromFile:   "main.tf",
 		SortBy:           &SortBy{Name: false, Required: false},
 		OutputValues:     false,
 		OutputValuesPath: "",
