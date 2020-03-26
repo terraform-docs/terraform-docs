@@ -1,0 +1,39 @@
+## terraform-docs tfvars
+
+Generate terraform.tfvars of inputs
+
+### Synopsis
+
+Generate terraform.tfvars of inputs
+
+```
+terraform-docs tfvars [command]
+```
+
+### Options
+
+```
+  -h, --help          help for markdown
+```
+
+### Options inherited from parent commands
+
+```
+      --header-from string             relative path of a file to read header from (default "main.tf")
+      --no-header                      do not show module header
+      --no-inputs                      do not show inputs
+      --no-outputs                     do not show outputs
+      --no-providers                   do not show providers
+      --no-requirements                do not show module requirements
+      --no-sort                        do no sort items
+      --output-values                  inject output values into outputs
+      --output-values-from string      inject output values from file into outputs
+      --sort-by-required               sort items by name and print required ones first
+      --sort-inputs-by-required        [deprecated] use '--sort-by-required' instead
+      --with-aggregate-type-defaults   [deprecated] print default values of aggregate types
+```
+
+### SEE ALSO
+
+* [terraform-docs tfvars hcl](/docs/formats/tfvars-hcl.md)	 - Generate HCL format of terraform.tfvars of inputs
+* [terraform-docs tfvars json](/docs/formats/tfvars-hcl.md)	 - Generate JSON format of terraform.tfvars of inputs

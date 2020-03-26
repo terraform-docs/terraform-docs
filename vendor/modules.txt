@@ -30,6 +30,9 @@ github.com/hashicorp/hcl/v2/json
 # github.com/hashicorp/terraform-config-inspect v0.0.0-20200210163047-f7d8399e1194
 ## explicit
 github.com/hashicorp/terraform-config-inspect/tfconfig
+# github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0
+## explicit
+github.com/iancoleman/orderedmap
 # github.com/imdario/mergo v0.3.9
 ## explicit
 github.com/imdario/mergo

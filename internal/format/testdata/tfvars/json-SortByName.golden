@@ -1,0 +1,50 @@
+{
+  "bool-1": true,
+  "bool-2": false,
+  "bool-3": true,
+  "input-with-code-block": [
+    "name rack:location"
+  ],
+  "input-with-pipe": "v1",
+  "input_with_underscores": null,
+  "list-1": [
+    "a",
+    "b",
+    "c"
+  ],
+  "list-2": null,
+  "list-3": [],
+  "long_type": {
+    "bar": {
+      "bar": "bar",
+      "foo": "bar"
+    },
+    "buzz": [
+      "fizz",
+      "buzz"
+    ],
+    "fizz": [],
+    "foo": {
+      "bar": "foo",
+      "foo": "foo"
+    },
+    "name": "hello"
+  },
+  "map-1": {
+    "a": 1,
+    "b": 2,
+    "c": 3
+  },
+  "map-2": null,
+  "map-3": {},
+  "no-escape-default-value": "VALUE_WITH_UNDERSCORE",
+  "number-1": 42,
+  "number-2": null,
+  "number-3": "19",
+  "number-4": 15.75,
+  "string-1": "bar",
+  "string-2": null,
+  "string-3": "",
+  "unquoted": null,
+  "with-url": ""
+}

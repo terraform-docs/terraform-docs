@@ -131,6 +131,10 @@ func getPrinter(name string, settings *print.Settings) print.Format {
 		return format.NewTable(settings)
 	case "pretty":
 		return format.NewPretty(settings)
+	case "tfvars hcl":
+		return format.NewTfvarsHCL(settings)
+	case "tfvars json":
+		return format.NewTfvarsJSON(settings)
 	case "xml":
 		return format.NewXML(settings)
 	case "yaml":

@@ -80,6 +80,8 @@ func FormatterCmds() []*cobra.Command {
 		prettyCmd,
 		mdDocumentCmd,
 		mdTableCmd,
+		tfvarsHCLCmd,
+		tfvarsJSONCmd,
 		xmlCmd,
 		yamlCmd,
 	}
