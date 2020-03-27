@@ -105,30 +105,6 @@ func (n Nil) MarshalYAML() (interface{}, error) {
 	return nil, nil
 }
 
-// Null represents an explicitly value set to 'null' which is marshaled to `"null"` JSON and YAML
-type Null types.Nil
-
-// HasDefault return false for Nil, because there's no value set for the variable
-func (n Null) HasDefault() bool {
-	return true
-}
-
-// MarshalJSON custom marshal function which sets the value to literal `null`
-func (n Null) MarshalJSON() ([]byte, error) {
-	return []byte(`"null"`), nil
-}
-
-// MarshalXML custom marshal function which adds property 'xsi:nil="true"' to a tag
-// of a 'nil' item
-func (n Null) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	return e.EncodeElement(`null`, start)
-}
-
-// MarshalYAML custom marshal function which sets the value to `"null"`
-func (n Null) MarshalYAML() (interface{}, error) {
-	return "null", nil
-}
-
 // String represents a 'string' value which is marshaled to `null` when empty for JSON and YAML
 type String string
 

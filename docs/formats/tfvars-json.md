@@ -47,6 +47,7 @@ generates the following output:
       "bool-1": true,
       "bool-2": false,
       "bool-3": true,
+      "bool_default_false": false,
       "input-with-code-block": [
         "name rack:location"
       ],
@@ -59,6 +60,7 @@ generates the following output:
       ],
       "list-2": null,
       "list-3": [],
+      "list_default_empty": [],
       "long_type": {
         "bar": {
           "bar": "bar",
@@ -87,9 +89,14 @@ generates the following output:
       "number-2": null,
       "number-3": "19",
       "number-4": 15.75,
+      "number_default_zero": 0,
+      "object_default_empty": {},
       "string-1": "bar",
       "string-2": null,
       "string-3": "",
+      "string_default_empty": "",
+      "string_default_null": "null",
+      "string_no_default": null,
       "unquoted": null,
       "with-url": ""
     }

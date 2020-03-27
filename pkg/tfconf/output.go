@@ -42,9 +42,6 @@ func (o *Output) GetValue() string {
 	if value == `null` {
 		return "" // types.Nil
 	}
-	if value == `"null"` {
-		return `null` // types.Null
-	}
 	return value // everything else
 }
 

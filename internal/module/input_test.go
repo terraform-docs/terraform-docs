@@ -64,6 +64,7 @@ func sampleInputs() []*tfconf.Input {
 			Type:        types.String(""),
 			Description: types.String("description of e"),
 			Default:     types.ValueOf(true),
+			Required:    false,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 35},
 		},
 		&tfconf.Input{
@@ -71,6 +72,7 @@ func sampleInputs() []*tfconf.Input {
 			Type:        types.String("string"),
 			Description: types.String(""),
 			Default:     types.ValueOf("a"),
+			Required:    false,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 10},
 		},
 		&tfconf.Input{
@@ -78,6 +80,7 @@ func sampleInputs() []*tfconf.Input {
 			Type:        types.String("string"),
 			Description: types.String("description for d"),
 			Default:     types.ValueOf(nil),
+			Required:    true,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 23},
 		},
 		&tfconf.Input{
@@ -85,6 +88,7 @@ func sampleInputs() []*tfconf.Input {
 			Type:        types.String("number"),
 			Description: types.String("description of b"),
 			Default:     types.ValueOf(nil),
+			Required:    true,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 42},
 		},
 		&tfconf.Input{
@@ -92,13 +96,15 @@ func sampleInputs() []*tfconf.Input {
 			Type:        types.String("list"),
 			Description: types.String("description of c"),
 			Default:     types.ValueOf("c"),
+			Required:    false,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 51},
 		},
 		&tfconf.Input{
 			Name:        "f",
 			Type:        types.String("string"),
 			Description: types.String("description of f"),
-			Default:     new(types.Null),
+			Default:     types.ValueOf(nil),
+			Required:    false,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 59},
 		},
 	}

@@ -111,16 +111,12 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
 
-		inputDefault := types.ValueOf(input.Default)
-		if input.Default == nil && !input.Required {
-			inputDefault = new(types.Null)
-		}
-
 		i := &tfconf.Input{
 			Name:        input.Name,
 			Type:        types.TypeOf(input.Type, input.Default),
 			Description: types.String(inputDescription),
-			Default:     inputDefault,
+			Default:     types.ValueOf(input.Default),
+			Required:    input.Required,
 			Position: tfconf.Position{
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,

@@ -15,7 +15,7 @@ const (
 	tfvarsHCLTpl = `
 	{{- if .Module.Inputs -}}
 		{{- range $i, $k := .Module.Inputs -}}
-			{{ align $k.Name $i }} = {{ default "\"\"" $k.GetValue }}
+			{{ align $k.Name $i }} = {{ value $k.GetValue }}
 		{{ end -}}
 	{{- end -}}
 	`
@@ -38,6 +38,12 @@ func NewTfvarsHCL(settings *print.Settings) *TfvarsHCL {
 	tt.CustomFunc(template.FuncMap{
 		"align": func(s string, i int) string {
 			return fmt.Sprintf("%-*s", padding[i], s)
+		},
+		"value": func(s string) string {
+			if s == "" || s == "null" {
+				return "\"\""
+			}
+			return s
 		},
 	})
 	return &TfvarsHCL{

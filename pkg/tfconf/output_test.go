@@ -87,8 +87,8 @@ func TestOutputValue(t *testing.T) {
 		{
 			name:          "output Value and HasDefault",
 			output:        outputs[11],
-			expectValue:   "null",
-			expectDefault: true,
+			expectValue:   "",
+			expectDefault: false,
 		},
 	}
 	for _, tt := range tests {
@@ -166,7 +166,7 @@ func TestOutputMarshalJSON(t *testing.T) {
 		{
 			name:     "output marshal JSON",
 			output:   outputs[11],
-			expected: "{\"name\":\"output\",\"description\":\"description\",\"value\":\"null\",\"sensitive\":false}\n",
+			expected: "{\"name\":\"output\",\"description\":\"description\",\"value\":null,\"sensitive\":false}\n",
 		},
 	}
 	for _, tt := range tests {
@@ -245,7 +245,7 @@ func TestOutputMarshalXML(t *testing.T) {
 		{
 			name:     "output marshal XML",
 			output:   outputs[11],
-			expected: "<output><name>output</name><description>description</description><value>null</value><sensitive>false</sensitive></output>",
+			expected: "<output><name>output</name><description>description</description><value xsi:nil=\"true\"></value><sensitive>false</sensitive></output>",
 		},
 	}
 	for _, tt := range tests {
@@ -440,7 +440,7 @@ func sampleOutputs() []Output {
 		{
 			Name:        name,
 			Description: description,
-			Value:       new(types.Null),
+			Value:       types.ValueOf(nil),
 			Sensitive:   false,
 			Position:    position,
 			ShowValue:   true,
