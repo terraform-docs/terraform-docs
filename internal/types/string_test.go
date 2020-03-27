@@ -60,6 +60,11 @@ func TestStringLength(t *testing.T) {
 			value:    "true",
 			expected: 4,
 		},
+		{
+			name:     "string length",
+			value:    "",
+			expected: 0,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

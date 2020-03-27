@@ -65,6 +65,11 @@ func TestListLength(t *testing.T) {
 			value:    List{10, float64(1000), int8(42)},
 			expected: 3,
 		},
+		{
+			name:     "list length",
+			value:    List{},
+			expected: 0,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
