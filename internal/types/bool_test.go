@@ -32,6 +32,31 @@ func TestBool(t *testing.T) {
 	})
 }
 
+func TestBoolLength(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    bool
+		expected int
+	}{
+		{
+			name:     "bool length",
+			value:    true,
+			expected: 0,
+		},
+		{
+			name:     "bool length",
+			value:    false,
+			expected: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, Bool(tt.value).Length())
+		})
+	}
+}
+
 func TestBoolUnderlying(t *testing.T) {
 	tests := []struct {
 		name  string
