@@ -47,7 +47,7 @@ func NewTfvarsHCL(settings *print.Settings) *TfvarsHCL {
 
 // Print prints a Terraform module as Terraform tfvars HCL document.
 func (h *TfvarsHCL) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
-	align(module.Inputs)
+	alignments(module.Inputs)
 	rendered, err := h.template.Render(module)
 	if err != nil {
 		return "", err
@@ -55,7 +55,7 @@ func (h *TfvarsHCL) Print(module *tfconf.Module, settings *print.Settings) (stri
 	return strings.TrimSuffix(sanitize(rendered), "\n"), nil
 }
 
-func align(inputs []*tfconf.Input) {
+func alignments(inputs []*tfconf.Input) {
 	padding = make([]int, len(inputs))
 	maxlen := 0
 	index := 0
