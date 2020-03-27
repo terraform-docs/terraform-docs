@@ -1,12 +1,12 @@
 input_with_underscores = ""
-list-2 = ""
-map-2 = ""
-number-2 = ""
-string-2 = ""
-unquoted = ""
-bool-1 = true
-bool-2 = false
-bool-3 = true
+list-2                 = ""
+map-2                  = ""
+number-2               = ""
+string-2               = ""
+unquoted               = ""
+bool-1                 = true
+bool-2                 = false
+bool-3                 = true
 input-with-code-block = [
   "name rack:location"
 ]
@@ -38,11 +38,11 @@ map-1 = {
   "b": 2,
   "c": 3
 }
-map-3 = {}
+map-3                   = {}
 no-escape-default-value = "VALUE_WITH_UNDERSCORE"
-number-1 = 42
-number-3 = "19"
-number-4 = 15.75
-string-1 = "bar"
-string-3 = ""
-with-url = ""
+number-1                = 42
+number-3                = "19"
+number-4                = 15.75
+string-1                = "bar"
+string-3                = ""
+with-url                = ""

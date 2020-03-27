@@ -34,6 +34,41 @@ func TestString(t *testing.T) {
 	})
 }
 
+func TestStringLength(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    string
+		expected int
+	}{
+		{
+			name:     "string length",
+			value:    "foo",
+			expected: 3,
+		},
+		{
+			name:     "string length",
+			value:    "42",
+			expected: 2,
+		},
+		{
+			name:     "string length",
+			value:    "false",
+			expected: 5,
+		},
+		{
+			name:     "string length",
+			value:    "true",
+			expected: 4,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, String(tt.value).Length())
+		})
+	}
+}
+
 func TestStringUnderlying(t *testing.T) {
 	tests := []struct {
 		name  string
