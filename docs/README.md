@@ -31,6 +31,9 @@ A utility to generate documentation from Terraform modules in various output for
   * [terraform-docs markdown document](/docs/formats/markdown-document.md)	 - Generate Markdown document of inputs and outputs
   * [terraform-docs markdown table](/docs/formats/markdown-table.md)	 - Generate Markdown tables of inputs and outputs
 * [terraform-docs pretty](/docs/formats/pretty.md)	 - Generate colorized pretty of inputs and outputs
+* [terraform-docs tfvars](/docs/formats/tfvars.md)	 - Generate terraform.tfvars of inputs
+  * [terraform-docs tfvars hcl](/docs/formats/tfvars-hcl.md)	 - Generate HCL format of terraform.tfvars of inputs
+  * [terraform-docs tfvars json](/docs/formats/tfvars-hcl.md)	 - Generate JSON format of terraform.tfvars of inputs
 * [terraform-docs xml](/docs/formats/xml.md)	 - Generate XML of inputs and outputs
 * [terraform-docs yaml](/docs/formats/yaml.md)	 - Generate YAML of inputs and outputs
 

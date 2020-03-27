@@ -68,6 +68,51 @@ func TestMap(t *testing.T) {
 	}
 }
 
+func TestMapLength(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    map[string]interface{}
+		expected int
+	}{
+		{
+			name: "map length",
+			value: Map{
+				"a": 1,
+				"b": 2,
+				"c": 3,
+			},
+			expected: 3,
+		},
+		{
+			name: "map length",
+			value: Map{
+				"name": "hello",
+				"foo": map[string]string{
+					"foo": "foo",
+					"bar": "foo",
+				},
+				"bar": map[string]string{
+					"foo": "bar",
+					"bar": "bar",
+				},
+				"buzz": []string{"fizz", "buzz"},
+			},
+			expected: 4,
+		},
+		{
+			name:     "map length",
+			value:    Map{},
+			expected: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, Map(tt.value).Length())
+		})
+	}
+}
+
 func TestMapUnderlying(t *testing.T) {
 	tests := []struct {
 		name  string

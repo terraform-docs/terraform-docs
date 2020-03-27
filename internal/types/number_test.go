@@ -32,6 +32,56 @@ func TestNumber(t *testing.T) {
 	})
 }
 
+func TestNumberLength(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    float64
+		expected int
+	}{
+		{
+			name:     "number length",
+			value:    float64(int(0)),
+			expected: 0,
+		},
+		{
+			name:     "number length",
+			value:    float64(int8(42)),
+			expected: 0,
+		},
+		{
+			name:     "number length",
+			value:    float64(int16(-1200)),
+			expected: 0,
+		},
+		{
+			name:     "number length",
+			value:    float64(int32(1140085647)),
+			expected: 0,
+		},
+		{
+			name:     "number length",
+			value:    float64(int64(8922336854775807)),
+			expected: 0,
+		},
+		{
+			name:     "number length",
+			value:    float64(float32(13.75)),
+			expected: 0,
+		},
+		{
+			name:     "number length",
+			value:    float64(2317483.64),
+			expected: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, Number(tt.value).Length())
+		})
+	}
+}
+
 func TestNumberUnderlying(t *testing.T) {
 	tests := []struct {
 		name  string

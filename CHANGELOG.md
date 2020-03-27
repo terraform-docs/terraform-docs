@@ -21,6 +21,8 @@
 - Add extensive tests coverage for all the packages ([#208](https://github.com/segmentio/terraform-docs/issues/208))
 
 ### Features
+- Allow hiding the "Sensitive" column in markdown ([#223](https://github.com/segmentio/terraform-docs/issues/223))
+- Add section for module requirements ([#222](https://github.com/segmentio/terraform-docs/issues/222))
 - Add support for fetching the module header from any file ([#217](https://github.com/segmentio/terraform-docs/issues/217))
 - Add support for XML renderer ([#198](https://github.com/segmentio/terraform-docs/issues/198))
 - Show sensitivity of the output value in rendered result ([#207](https://github.com/segmentio/terraform-docs/issues/207))

@@ -1,0 +1,48 @@
+unquoted = ""
+bool-3   = true
+bool-2   = false
+bool-1   = true
+string-3 = ""
+string-2 = ""
+string-1 = "bar"
+number-3 = "19"
+number-4 = 15.75
+number-2 = ""
+number-1 = 42
+map-3    = {}
+map-2    = ""
+map-1 = {
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+list-3 = []
+list-2 = ""
+list-1 = [
+  "a",
+  "b",
+  "c"
+]
+input_with_underscores = ""
+input-with-pipe        = "v1"
+input-with-code-block = [
+  "name rack:location"
+]
+long_type = {
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+no-escape-default-value = "VALUE_WITH_UNDERSCORE"
+with-url                = ""

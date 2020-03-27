@@ -21,6 +21,7 @@ import (
 // - Map
 type Value interface {
 	HasDefault() bool
+	Length() int
 }
 
 // ValueOf returns actual value of a variable casted to 'Default' interface.
@@ -82,6 +83,11 @@ func (n Nil) HasDefault() bool {
 	return false
 }
 
+// Length returns the length of underlying item
+func (n Nil) Length() int {
+	return 0
+}
+
 // MarshalJSON custom marshal function which sets the value to literal `null`
 func (n Nil) MarshalJSON() ([]byte, error) {
 	return []byte(`null`), nil
@@ -136,6 +142,11 @@ func (s String) HasDefault() bool {
 	return true
 }
 
+// Length returns the length of underlying item
+func (s String) Length() int {
+	return len(s.underlying())
+}
+
 // MarshalJSON custom marshal function which sets the value to literal `null` when empty
 func (s String) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
@@ -181,6 +192,11 @@ func (e Empty) HasDefault() bool {
 	return true
 }
 
+// Length returns the length of underlying item
+func (e Empty) Length() int {
+	return len(e.underlying())
+}
+
 // MarshalJSON custom marshal function which sets the value to `""`
 func (e Empty) MarshalJSON() ([]byte, error) {
 	return []byte(`""`), nil
@@ -199,6 +215,11 @@ func (n Number) HasDefault() bool {
 	return true
 }
 
+// Length returns the length of underlying item
+func (n Number) Length() int {
+	return 0
+}
+
 // Bool represents a 'bool' value
 type Bool bool
 
@@ -210,6 +231,11 @@ func (b Bool) underlying() bool {
 // HasDefault indicates a Terraform variable has a default value set.
 func (b Bool) HasDefault() bool {
 	return true
+}
+
+// Length returns the length of underlying item
+func (b Bool) Length() int {
+	return 0
 }
 
 // List represents a 'list' of values
@@ -227,6 +253,11 @@ func (l List) Underlying() []interface{} {
 // HasDefault indicates a Terraform variable has a default value set.
 func (l List) HasDefault() bool {
 	return true
+}
+
+// Length returns the length of underlying item
+func (l List) Length() int {
+	return len(l)
 }
 
 type xmllistentry struct {
@@ -265,6 +296,11 @@ func (m Map) Underlying() map[string]interface{} {
 // HasDefault indicates a Terraform variable has a default value set.
 func (m Map) HasDefault() bool {
 	return true
+}
+
+// Length returns the length of underlying item
+func (m Map) Length() int {
+	return len(m)
 }
 
 type xmlmapentry struct {

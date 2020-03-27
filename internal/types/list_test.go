@@ -54,6 +54,46 @@ func TestList(t *testing.T) {
 	}
 }
 
+func TestListLength(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    []interface{}
+		expected int
+	}{
+		{
+			name:     "list length",
+			value:    List{"foo", "bar", "baz"},
+			expected: 3,
+		},
+		{
+			name:     "list length",
+			value:    List{"1", "2", "3"},
+			expected: 3,
+		},
+		{
+			name:     "list length",
+			value:    List{true, false, true},
+			expected: 3,
+		},
+		{
+			name:     "list length",
+			value:    List{10, float64(1000), int8(42)},
+			expected: 3,
+		},
+		{
+			name:     "list length",
+			value:    List{},
+			expected: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, List(tt.value).Length())
+		})
+	}
+}
+
 func TestListUnderlying(t *testing.T) {
 	tests := []struct {
 		name  string

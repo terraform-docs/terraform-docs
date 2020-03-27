@@ -32,6 +32,26 @@ func TestEmpty(t *testing.T) {
 	})
 }
 
+func TestEmptyLength(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    string
+		expected int
+	}{
+		{
+			name:     "empty length",
+			value:    "",
+			expected: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, Empty(tt.value).Length())
+		})
+	}
+}
+
 func TestEmptyUnderlying(t *testing.T) {
 	tests := []struct {
 		name  string
