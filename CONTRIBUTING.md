@@ -21,7 +21,7 @@ Before contributing a new feature, please discuss its suitability with the proje
 
 Pull requests have to meet the following requirements:
 
-1. **Tests**: Code changes need to be tested with code and tests being located in the same folder (see packages [doc](https://github.com/segmentio/terraform-docs/tree/master/doc/) and [print](https://github.com/segmentio/terraform-docs/tree/master/print/) for examples). Make sure that your tests pass using `make test`.
+1. **Tests**: Code changes need to be tested with code and tests being located in the same folder (see packages [format](https://github.com/segmentio/terraform-docs/tree/master/internal/format/) for example). Make sure that your tests pass using `make test`.
 
 2. **Documentation**: Pull requests need to update the [Formats Guide](/docs/FORMATS_GUIDE.md) and if need be the main [README](README.md) together with the code change. You can generate the format guides by using `make docs`.
 
