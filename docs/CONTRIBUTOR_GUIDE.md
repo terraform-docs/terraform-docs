@@ -1,3 +1,0 @@
-# Contributor Guide
-
-TBA

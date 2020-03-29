@@ -12,7 +12,6 @@ import (
 var settings = print.NewSettings()
 var options = module.NewOptions()
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Args:    cobra.NoArgs,
 	Use:     "terraform-docs",
@@ -71,20 +70,9 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-// FormatterCmds returns list of available formatter
-// commands (e.g. markdown, json, yaml) and ignores
-// the other commands (e.g. completion, version, help)
-func FormatterCmds() []*cobra.Command {
-	return []*cobra.Command{
-		jsonCmd,
-		prettyCmd,
-		mdDocumentCmd,
-		mdTableCmd,
-		tfvarsHCLCmd,
-		tfvarsJSONCmd,
-		xmlCmd,
-		yamlCmd,
-	}
+// RootCmd represents the base command when called without any subcommands
+func RootCmd() *cobra.Command {
+	return rootCmd
 }
 
 func doPrint(path string, printer print.Format) error {
