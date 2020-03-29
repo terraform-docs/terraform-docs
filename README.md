@@ -20,7 +20,7 @@ terraform-docs xml ./my-terraform-module               # generate xml
 terraform-docs yaml ./my-terraform-module              # generate yaml
 ```
 
-Read the [User Guide](./docs/USER_GUIDE.md) for detailed documentation.
+Read the [User Guide](./docs/USER_GUIDE.md) and [Formats Guide](./docs/FORMATS_GUIDE.md) for detailed documentation.
 
 ## Installation
 
@@ -38,7 +38,7 @@ brew install terraform-docs
 
 Windows users can install using [Chocolatey](https://www.chocolatey.org):
 
-```
+``` bash
 choco install terraform-docs
 ```
 
@@ -89,6 +89,7 @@ To make this change permenant, the above commands can be added to your `~/.profi
 
 - **Users**
   - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-doccs
+  - Read the [Formats Guide](./docs/FORMATS_GUIDE.md) to learn about different output formats of terraform-doccs
 - **Developers**
   - Building: not written yet
   - Releasing: not written yet
