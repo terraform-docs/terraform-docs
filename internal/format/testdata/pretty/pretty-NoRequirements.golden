@@ -152,6 +152,27 @@ It spans over multiple lines.[0m
 [36minput.with-url[0m ("")
 [90mThe description contains url. https://www.domain.com/foo/bar_baz.html[0m
 
+[36minput.string_default_empty[0m ("")
+[90mn/a[0m
+
+[36minput.string_default_null[0m (null)
+[90mn/a[0m
+
+[36minput.string_no_default[0m (required)
+[90mn/a[0m
+
+[36minput.number_default_zero[0m (0)
+[90mn/a[0m
+
+[36minput.bool_default_false[0m (false)
+[90mn/a[0m
+
+[36minput.list_default_empty[0m ([])
+[90mn/a[0m
+
+[36minput.object_default_empty[0m ({})
+[90mn/a[0m
+
 
 
 [36moutput.unquoted[0m

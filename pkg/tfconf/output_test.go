@@ -84,6 +84,12 @@ func TestOutputValue(t *testing.T) {
 			expectValue:   "{}",
 			expectDefault: true,
 		},
+		{
+			name:          "output Value and HasDefault",
+			output:        outputs[11],
+			expectValue:   "",
+			expectDefault: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -156,6 +162,11 @@ func TestOutputMarshalJSON(t *testing.T) {
 			name:     "output marshal JSON",
 			output:   outputs[10],
 			expected: "{\"name\":\"output\",\"description\":\"description\",\"value\":{},\"sensitive\":false}\n",
+		},
+		{
+			name:     "output marshal JSON",
+			output:   outputs[11],
+			expected: "{\"name\":\"output\",\"description\":\"description\",\"value\":null,\"sensitive\":false}\n",
 		},
 	}
 	for _, tt := range tests {
@@ -230,6 +241,11 @@ func TestOutputMarshalXML(t *testing.T) {
 			name:     "output marshal XML",
 			output:   outputs[10],
 			expected: "<output><name>output</name><description>description</description><value></value><sensitive>false</sensitive></output>",
+		},
+		{
+			name:     "output marshal XML",
+			output:   outputs[11],
+			expected: "<output><name>output</name><description>description</description><value xsi:nil=\"true\"></value><sensitive>false</sensitive></output>",
 		},
 	}
 	for _, tt := range tests {
@@ -311,6 +327,11 @@ func TestOutputMarshalYAML(t *testing.T) {
 		{
 			name:     "output marshal JSON",
 			output:   outputs[10],
+			expected: "tfconf.withvalue",
+		},
+		{
+			name:     "output marshal JSON",
+			output:   outputs[11],
 			expected: "tfconf.withvalue",
 		},
 	}
@@ -412,6 +433,14 @@ func sampleOutputs() []Output {
 			Name:        name,
 			Description: description,
 			Value:       types.ValueOf(types.Map{}.Underlying()),
+			Sensitive:   false,
+			Position:    position,
+			ShowValue:   true,
+		},
+		{
+			Name:        name,
+			Description: description,
+			Value:       types.ValueOf(nil),
 			Sensitive:   false,
 			Position:    position,
 			ShowValue:   true,

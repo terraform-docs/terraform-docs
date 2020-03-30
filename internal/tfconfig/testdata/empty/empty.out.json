@@ -1,0 +1,12 @@
+{
+    "path": "testdata/empty",
+
+    "required_providers": {},
+
+    "variables": {},
+    "outputs": {},
+
+    "managed_resources": {},
+    "data_resources": {},
+    "module_calls": {}
+}

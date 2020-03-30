@@ -38,10 +38,11 @@ func (o *Output) GetValue() string {
 	if err != nil {
 		panic(err)
 	}
-	if value := string(marshaled); value != "null" {
-		return value
+	value := string(marshaled)
+	if value == `null` {
+		return "" // types.Nil
 	}
-	return ""
+	return value // everything else
 }
 
 // HasDefault indicates if a Terraform output has a default value set.
@@ -71,9 +72,8 @@ func (o *Output) MarshalJSON() ([]byte, error) {
 	if o.ShowValue {
 		return fn(withvalue(*o))
 	}
-	// explicitly make these empty
-	o.Value = nil
-	o.Sensitive = false
+	o.Value = nil       // explicitly make empty
+	o.Sensitive = false // explicitly make empty
 	return fn(*o)
 }
 
@@ -110,8 +110,7 @@ func (o *Output) MarshalYAML() (interface{}, error) {
 	if o.ShowValue {
 		return withvalue(*o), nil
 	}
-	// explicitly make these empty
-	o.Value = nil
-	o.Sensitive = false
+	o.Value = nil       // explicitly make empty
+	o.Sensitive = false // explicitly make empty
 	return o, nil
 }

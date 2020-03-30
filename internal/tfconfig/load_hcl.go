@@ -149,6 +149,8 @@ func loadModule(dir string) (*Module, Diagnostics) {
 						}
 						v.Default = def
 					}
+				} else {
+					v.Required = true
 				}
 
 			case "output":

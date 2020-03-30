@@ -9,8 +9,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/reader"
+	"github.com/segmentio/terraform-docs/internal/tfconfig"
 	"github.com/segmentio/terraform-docs/internal/types"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
 )
@@ -116,6 +116,7 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 			Type:        types.TypeOf(input.Type, input.Default),
 			Description: types.String(inputDescription),
 			Default:     types.ValueOf(input.Default),
+			Required:    input.Required,
 			Position: tfconf.Position{
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,

@@ -3,6 +3,7 @@ package types
 import (
 	"bytes"
 	"encoding/xml"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,7 @@ func TestList(t *testing.T) {
 		List{true, false, true},
 		List{10, float64(1000), int8(42)},
 	}
-	testList(t, []testlist{
+	tests := []testlist{
 		{
 			name:   "value not nil and type list",
 			values: values,
@@ -36,7 +37,21 @@ func TestList(t *testing.T) {
 				hasDefault: true,
 			},
 		},
-	})
+	}
+	for _, tt := range tests {
+		for _, tv := range tt.values {
+			t.Run(tt.name, func(t *testing.T) {
+				assert := assert.New(t)
+
+				actualValue := ValueOf(tv.Underlying())
+				actualType := TypeOf(tt.types, tv.Underlying())
+
+				assert.Equal(tt.expected.typeName, string(actualType))
+				assert.Equal(tt.expected.valueKind, reflect.TypeOf(actualValue).String())
+				assert.Equal(tt.expected.hasDefault, actualValue.HasDefault())
+			})
+		}
+	}
 }
 
 func TestListLength(t *testing.T) {

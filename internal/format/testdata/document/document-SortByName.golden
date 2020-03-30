@@ -84,6 +84,14 @@ Type: `bool`
 
 Default: `true`
 
+### bool_default_false
+
+Description: n/a
+
+Type: `bool`
+
+Default: `false`
+
 ### input-with-code-block
 
 Description: This is a complicated one. We need a newline.  
@@ -149,6 +157,14 @@ Default: n/a
 Description: n/a
 
 Type: `list`
+
+Default: `[]`
+
+### list_default_empty
+
+Description: n/a
+
+Type: `list(string)`
 
 Default: `[]`
 
@@ -263,6 +279,22 @@ Type: `number`
 
 Default: `15.75`
 
+### number_default_zero
+
+Description: n/a
+
+Type: `number`
+
+Default: `0`
+
+### object_default_empty
+
+Description: n/a
+
+Type: `object({})`
+
+Default: `{}`
+
 ### string-1
 
 Description: It's string number one.
@@ -286,6 +318,30 @@ Description: n/a
 Type: `string`
 
 Default: `""`
+
+### string_default_empty
+
+Description: n/a
+
+Type: `string`
+
+Default: `""`
+
+### string_default_null
+
+Description: n/a
+
+Type: `string`
+
+Default: `null`
+
+### string_no_default
+
+Description: n/a
+
+Type: `string`
+
+Default: n/a
 
 ### unquoted
 

@@ -108,11 +108,6 @@ func (n Nil) MarshalYAML() (interface{}, error) {
 // String represents a 'string' value which is marshaled to `null` when empty for JSON and YAML
 type String string
 
-// String returns s as an actual string value
-func (s String) String() string {
-	return string(s)
-}
-
 // nolint
 func (s String) underlying() string {
 	return string(s)
@@ -131,10 +126,10 @@ func (s String) Length() int {
 // MarshalJSON custom marshal function which sets the value to literal `null` when empty
 func (s String) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
-	if len(s.String()) == 0 {
+	if len(string(s)) == 0 {
 		buf.WriteString(`null`)
 	} else {
-		normalize := s.String()
+		normalize := string(s)
 		normalize = strings.Replace(normalize, "\n", "\\n", -1)
 		normalize = strings.Replace(normalize, "\"", "\\\"", -1)
 		buf.WriteString(`"` + normalize + `"`) // add double quation mark as json format required
@@ -154,7 +149,7 @@ func (s String) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 
 // MarshalYAML custom marshal function which sets the value to literal `null` when empty
 func (s String) MarshalYAML() (interface{}, error) {
-	if len(s.String()) == 0 {
+	if len(string(s)) == 0 || string(s) == `""` {
 		return nil, nil
 	}
 	return s, nil

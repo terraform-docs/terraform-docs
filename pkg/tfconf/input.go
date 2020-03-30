@@ -12,6 +12,7 @@ type Input struct {
 	Type        types.String `json:"type" xml:"type" yaml:"type"`
 	Description types.String `json:"description" xml:"description" yaml:"description"`
 	Default     types.Value  `json:"default" xml:"default" yaml:"default"`
+	Required    bool         `json:"required" xml:"required" yaml:"required"`
 	Position    Position     `json:"-" xml:"-" yaml:"-"`
 }
 
@@ -23,13 +24,17 @@ func (i *Input) GetValue() string {
 	if err != nil {
 		panic(err)
 	}
-	if value := string(marshaled); value != "null" {
-		return value
+	value := string(marshaled)
+	if value == `null` {
+		if i.Required {
+			return ""
+		}
+		return `null` // explicit 'null' value
 	}
-	return ""
+	return value // everything else
 }
 
 // HasDefault indicates if a Terraform variable has a default value set.
 func (i *Input) HasDefault() bool {
-	return i.Default.HasDefault()
+	return i.Default.HasDefault() || !i.Required
 }

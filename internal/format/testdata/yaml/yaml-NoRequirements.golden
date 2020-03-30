@@ -41,54 +41,67 @@ inputs:
   type: any
   description: null
   default: null
+  required: true
 - name: bool-3
   type: bool
   description: null
   default: true
+  required: false
 - name: bool-2
   type: bool
   description: It's bool number two.
   default: false
+  required: false
 - name: bool-1
   type: bool
   description: It's bool number one.
   default: true
+  required: false
 - name: string-3
   type: string
   description: null
   default: ""
+  required: false
 - name: string-2
   type: string
   description: It's string number two.
   default: null
+  required: true
 - name: string-1
   type: string
   description: It's string number one.
   default: bar
+  required: false
 - name: number-3
   type: number
   description: null
   default: "19"
+  required: false
 - name: number-4
   type: number
   description: null
   default: 15.75
+  required: false
 - name: number-2
   type: number
   description: It's number number two.
   default: null
+  required: true
 - name: number-1
   type: number
   description: It's number number one.
   default: 42
+  required: false
 - name: map-3
   type: map
   description: null
   default: {}
+  required: false
 - name: map-2
   type: map
   description: It's map number two.
   default: null
+  required: true
 - name: map-1
   type: map
   description: It's map number one.
@@ -96,14 +109,17 @@ inputs:
     a: 1
     b: 2
     c: 3
+  required: false
 - name: list-3
   type: list
   description: null
   default: []
+  required: false
 - name: list-2
   type: list
   description: It's list number two.
   default: null
+  required: true
 - name: list-1
   type: list
   description: It's list number one.
@@ -111,20 +127,24 @@ inputs:
   - a
   - b
   - c
+  required: false
 - name: input_with_underscores
   type: any
   description: A variable with underscores.
   default: null
+  required: true
 - name: input-with-pipe
   type: string
   description: It includes v1 | v2 | v3
   default: v1
+  required: false
 - name: input-with-code-block
   type: list
   description: "This is a complicated one. We need a newline.  \nAnd an example in
     a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n"
   default:
   - name rack:location
+  required: false
 - name: long_type
   type: |-
     object({
@@ -150,14 +170,52 @@ inputs:
       bar: foo
       foo: foo
     name: hello
+  required: false
 - name: no-escape-default-value
   type: string
   description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
   default: VALUE_WITH_UNDERSCORE
+  required: false
 - name: with-url
   type: string
   description: The description contains url. https://www.domain.com/foo/bar_baz.html
   default: ""
+  required: false
+- name: string_default_empty
+  type: string
+  description: null
+  default: ""
+  required: false
+- name: string_default_null
+  type: string
+  description: null
+  default: null
+  required: false
+- name: string_no_default
+  type: string
+  description: null
+  default: null
+  required: true
+- name: number_default_zero
+  type: number
+  description: null
+  default: 0
+  required: false
+- name: bool_default_false
+  type: bool
+  description: null
+  default: false
+  required: false
+- name: list_default_empty
+  type: list(string)
+  description: null
+  default: []
+  required: false
+- name: object_default_empty
+  type: object({})
+  description: null
+  default: {}
+  required: false
 outputs:
 - name: unquoted
   description: It's unquoted output.

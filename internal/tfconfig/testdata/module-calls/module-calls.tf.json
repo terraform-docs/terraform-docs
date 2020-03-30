@@ -1,0 +1,8 @@
+{
+    "module": {
+        "baz": {
+            "source": "../elsewhere",
+            "unused": 12
+        }
+    }
+}

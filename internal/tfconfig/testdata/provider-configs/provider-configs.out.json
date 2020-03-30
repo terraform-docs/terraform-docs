@@ -1,0 +1,35 @@
+{
+    "path": "testdata/provider-configs",
+    "required_providers": {
+        "foo": {},
+        "bar": {
+            "version_constraints": [
+                "1.0.0",
+                "1.1.0"
+            ]
+        },
+        "baz": {
+            "version_constraints": [
+                "2.0.0"
+            ]
+        }
+    },
+    "variables": {},
+    "outputs": {},
+    "managed_resources": {
+        "bar_bar.bar": {
+            "mode": "managed",
+            "type": "bar_bar",
+            "name": "bar",
+            "provider": {
+                "name": "bar"
+            },
+            "pos": {
+                "filename": "testdata/provider-configs/provider-configs.tf",
+                "line": 10
+            }
+        }
+    },
+    "data_resources": {},
+    "module_calls": {}
+}

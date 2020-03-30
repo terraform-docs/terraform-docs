@@ -23,3 +23,8 @@ variable "C" {
 variable "F" {
   description = "F description"
 }
+
+variable "G" {
+  description = "G description"
+  default     = null
+}

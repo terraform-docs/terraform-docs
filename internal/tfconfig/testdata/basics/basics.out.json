@@ -1,0 +1,72 @@
+{
+  "path": "testdata/basics",
+  "required_providers": {
+    "null": {}
+  },
+  "variables": {
+    "A": {
+      "name": "A",
+      "default": "A default",
+      "required": false,
+      "pos": {
+        "filename": "testdata/basics/basics.tf",
+        "line": 1
+      }
+    },
+    "B": {
+      "name": "B",
+      "description": "The B variable",
+      "default": null,
+      "required": true,
+      "pos": {
+        "filename": "testdata/basics/basics.tf",
+        "line": 5
+      }
+    }
+  },
+  "outputs": {
+    "A": {
+      "name": "A",
+      "pos": {
+        "filename": "testdata/basics/basics.tf",
+        "line": 9
+      }
+    },
+    "B": {
+      "name": "B",
+      "description": "I am B",
+      "pos": {
+        "filename": "testdata/basics/basics.tf",
+        "line": 13
+      }
+    }
+  },
+  "managed_resources": {
+    "null_resource.A": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "A",
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "testdata/basics/basics.tf",
+        "line": 18
+      }
+    },
+    "null_resource.B": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "B",
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "testdata/basics/basics.tf",
+        "line": 19
+      }
+    }
+  },
+  "data_resources": {},
+  "module_calls": {}
+}

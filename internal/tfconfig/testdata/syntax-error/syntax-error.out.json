@@ -1,0 +1,24 @@
+{
+    "path": "testdata/syntax-error",
+
+    "required_providers": {},
+
+    "variables": {},
+    "outputs": {},
+
+    "managed_resources": {},
+    "data_resources": {},
+    "module_calls": {},
+
+    "diagnostics": [
+        {
+            "severity": "error",
+            "summary": "Argument or block definition required",
+            "detail": "An argument or block definition is required here.",
+            "pos": {
+                "filename": "testdata/syntax-error/syntax-error.tf",
+                "line": 1
+            }
+        }
+    ]
+}

@@ -3,6 +3,7 @@ package types
 import (
 	"bytes"
 	"encoding/xml"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -29,7 +30,7 @@ func TestMap(t *testing.T) {
 		},
 		{},
 	}
-	testMap(t, []testmap{
+	tests := []testmap{
 		{
 			name:   "value not nil and type map",
 			values: values,
@@ -50,7 +51,21 @@ func TestMap(t *testing.T) {
 				hasDefault: true,
 			},
 		},
-	})
+	}
+	for _, tt := range tests {
+		for _, tv := range tt.values {
+			t.Run(tt.name, func(t *testing.T) {
+				assert := assert.New(t)
+
+				actualValue := ValueOf(tv.Underlying())
+				actualType := TypeOf(tt.types, tv.Underlying())
+
+				assert.Equal(tt.expected.typeName, string(actualType))
+				assert.Equal(tt.expected.valueKind, reflect.TypeOf(actualValue).String())
+				assert.Equal(tt.expected.hasDefault, actualValue.HasDefault())
+			})
+		}
+	}
 }
 
 func TestMapLength(t *testing.T) {

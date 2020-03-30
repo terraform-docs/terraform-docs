@@ -303,6 +303,62 @@ Type: `string`
 
 Default: `""`
 
+### string_default_empty
+
+Description: n/a
+
+Type: `string`
+
+Default: `""`
+
+### string_default_null
+
+Description: n/a
+
+Type: `string`
+
+Default: `null`
+
+### string_no_default
+
+Description: n/a
+
+Type: `string`
+
+Default: n/a
+
+### number_default_zero
+
+Description: n/a
+
+Type: `number`
+
+Default: `0`
+
+### bool_default_false
+
+Description: n/a
+
+Type: `bool`
+
+Default: `false`
+
+### list_default_empty
+
+Description: n/a
+
+Type: `list(string)`
+
+Default: `[]`
+
+### object_default_empty
+
+Description: n/a
+
+Type: `object({})`
+
+Default: `{}`
+
 ## Outputs
 
 The following outputs are exported:

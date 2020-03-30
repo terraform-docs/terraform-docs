@@ -1,0 +1,94 @@
+{
+  "path": "testdata/overrides",
+  "required_providers": {
+    "null": {}
+  },
+  "variables": {
+    "A": {
+      "name": "A",
+      "description": "The A variable OVERRIDDEN",
+      "default": null,
+      "required": true,
+      "pos": {
+        "filename": "testdata/overrides/overrides_override.tf",
+        "line": 1
+      }
+    },
+    "B": {
+      "name": "B",
+      "description": "The B variable",
+      "default": null,
+      "required": true,
+      "pos": {
+        "filename": "testdata/overrides/overrides.tf",
+        "line": 5
+      }
+    },
+    "C": {
+      "name": "C",
+      "description": "An entirely new variable C",
+      "default": null,
+      "required": true,
+      "pos": {
+        "filename": "testdata/overrides/overrides_override.tf",
+        "line": 5
+      }
+    }
+  },
+  "outputs": {
+    "A": {
+      "name": "A",
+      "description": "I am an overridden output!",
+      "pos": {
+        "filename": "testdata/overrides/overrides_override.tf",
+        "line": 9
+      }
+    },
+    "B": {
+      "name": "B",
+      "description": "I am B",
+      "pos": {
+        "filename": "testdata/overrides/overrides.tf",
+        "line": 13
+      }
+    }
+  },
+  "managed_resources": {
+    "null_resource.A": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "A",
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "testdata/overrides/overrides.tf",
+        "line": 18
+      }
+    },
+    "null_resource.B": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "B",
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "testdata/overrides/overrides.tf",
+        "line": 19
+      }
+    }
+  },
+  "data_resources": {},
+  "module_calls": {
+    "foo": {
+      "name": "foo",
+      "source": "foo/bar/baz",
+      "version": "1.0.2_override",
+      "pos": {
+        "filename": "testdata/overrides/overrides_override.tf",
+        "line": 14
+      }
+    }
+  }
+}

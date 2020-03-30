@@ -1,0 +1,7 @@
+{
+    "variable": {
+        "list_json": {
+            "type": "list(string)"
+        }
+    }
+}
