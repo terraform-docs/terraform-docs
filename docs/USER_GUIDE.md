@@ -1,8 +1,12 @@
 # User Guide
 
+## Terraform Versions
+
+Support for Terraform `v0.12.x` has been added in `terraform-docs` version `v0.8.0`. Note that you can still generate output of module configuration which is not compatible with Terraform v0.12 with terraform-docs `v0.8.0` and future releases.
+
 ## Syntax, Usage, and Output Formats
 
-Please refer to [docs/README.md](/docs/README.md) for guidance on output formats, execution syntax, CLI options, etc.
+Please refer to [Formats Guide](/docs/FORMATS_GUIDE.md) for guidance on output formats, execution syntax, CLI options, etc.
 
 ## Generate terraform.tfvars
 
