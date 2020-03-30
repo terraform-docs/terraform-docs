@@ -1,6 +1,7 @@
 header = ""
 inputs = []
 providers = []
+requirements = []
 
 [[outputs]]
   name = "unquoted"

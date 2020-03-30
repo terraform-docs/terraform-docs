@@ -1,0 +1,12 @@
+header = ""
+inputs = []
+outputs = []
+providers = []
+
+[[requirements]]
+  Name = "terraform"
+  Version = ">= 0.12"
+
+[[requirements]]
+  Name = "aws"
+  Version = ">= 2.15.0"

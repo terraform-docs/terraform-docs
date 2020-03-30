@@ -1,6 +1,7 @@
 header = ""
 inputs = []
 outputs = []
+requirements = []
 
 [[providers]]
   name = "tls"
