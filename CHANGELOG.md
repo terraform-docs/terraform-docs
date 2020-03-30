@@ -4,6 +4,8 @@
 ## [Unreleased]
 
 ### Bug Fixes
+- Mark variables not required if default set to null ([#221](https://github.com/segmentio/terraform-docs/issues/221))
+- --no-header should not attempt reading main.tf file ([#224](https://github.com/segmentio/terraform-docs/issues/224))
 - Fix type conversion for numbers ([#204](https://github.com/segmentio/terraform-docs/issues/204))
 
 ### Code Refactoring
@@ -12,6 +14,7 @@
 - Add tfconf.Options to load Module with ([#193](https://github.com/segmentio/terraform-docs/issues/193))
 
 ### Documentation
+- Enhance automatic document generation ([#227](https://github.com/segmentio/terraform-docs/issues/227))
 - Add installation guide for Windows users ([#218](https://github.com/segmentio/terraform-docs/issues/218))
 - Put reference to usage, cli, etc. in user guide ([#216](https://github.com/segmentio/terraform-docs/issues/216))
 - Example git hook to keep module docs up to date ([#214](https://github.com/segmentio/terraform-docs/issues/214))
@@ -21,6 +24,7 @@
 - Add extensive tests coverage for all the packages ([#208](https://github.com/segmentio/terraform-docs/issues/208))
 
 ### Features
+- Add support for tfvars hcl and json commands ([#226](https://github.com/segmentio/terraform-docs/issues/226))
 - Allow hiding the "Sensitive" column in markdown ([#223](https://github.com/segmentio/terraform-docs/issues/223))
 - Add section for module requirements ([#222](https://github.com/segmentio/terraform-docs/issues/222))
 - Add support for fetching the module header from any file ([#217](https://github.com/segmentio/terraform-docs/issues/217))
