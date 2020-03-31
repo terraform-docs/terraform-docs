@@ -3,6 +3,11 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+
+
+<a name="v0.9.0"></a>
+## [v0.9.0] - 2020-03-31
+
 ### Bug Fixes
 - Mark variables not required if default set to null ([#221](https://github.com/segmentio/terraform-docs/issues/221))
 - --no-header should not attempt reading main.tf file ([#224](https://github.com/segmentio/terraform-docs/issues/224))
@@ -325,7 +330,8 @@ the second release from now.
 - Initial commit
 
 
-[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.8.2...HEAD
+[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.9.0...HEAD
+[v0.9.0]: https://github.com/segmentio/terraform-docs/compare/v0.8.2...v0.9.0
 [v0.8.2]: https://github.com/segmentio/terraform-docs/compare/v0.8.1...v0.8.2
 [v0.8.1]: https://github.com/segmentio/terraform-docs/compare/v0.8.0...v0.8.1
 [v0.8.0]: https://github.com/segmentio/terraform-docs/compare/v0.7.0...v0.8.0
