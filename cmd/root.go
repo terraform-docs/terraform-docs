@@ -59,13 +59,6 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolVar(&options.OutputValues, "output-values", false, "inject output values into outputs")
 	rootCmd.PersistentFlags().StringVar(&options.OutputValuesPath, "output-values-from", "", "inject output values from file into outputs")
-
-	//-----------------------------
-	// deprecated - will be removed
-	//-----------------------------
-	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-inputs-by-required", false, "[deprecated] use '--sort-by-required' instead")
-	rootCmd.PersistentFlags().BoolVar(new(bool), "with-aggregate-type-defaults", false, "[deprecated] print default values of aggregate types")
-	//-----------------------------
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
