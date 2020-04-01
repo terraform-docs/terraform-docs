@@ -15,6 +15,8 @@ esse cillum dolore eu fugiat nulla pariatur.[0m
 
 [36mrequirement.aws[0m (>= 2.15.0)
 
+[36mrequirement.random[0m (>= 2.2.0)
+
 
 
 [36mprovider.tls[0m

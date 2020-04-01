@@ -44,6 +44,8 @@ The following requirements are needed by this module:
 
 - aws (>= 2.15.0)
 
+- random (>= 2.2.0)
+
 ## Inputs
 
 The following input variables are supported:

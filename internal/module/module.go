@@ -221,15 +221,20 @@ func loadProviders(tfmodule *tfconfig.Module) []*tfconf.Provider {
 }
 
 func loadRequirements(tfmodule *tfconfig.Module) []*tfconf.Requirement {
-	var requirements = make([]*tfconf.Requirement, 0, len(tfmodule.Variables))
+	var requirements = make([]*tfconf.Requirement, 0)
 	for _, core := range tfmodule.RequiredCore {
 		requirements = append(requirements, &tfconf.Requirement{
 			Name:    "terraform",
 			Version: types.String(core),
 		})
 	}
-	for name, provider := range tfmodule.RequiredProviders {
-		for _, version := range provider.VersionConstraints {
+	names := make([]string, 0, len(tfmodule.RequiredProviders))
+	for n := range tfmodule.RequiredProviders {
+		names = append(names, n)
+	}
+	sort.Strings(names)
+	for _, name := range names {
+		for _, version := range tfmodule.RequiredProviders[name].VersionConstraints {
 			requirements = append(requirements, &tfconf.Requirement{
 				Name:    name,
 				Version: types.String(version),
@@ -263,12 +268,6 @@ func loadComments(filename string, lineNum int) string {
 
 func sortItems(tfmodule *tfconf.Module, sortby *SortBy) {
 	if sortby.Name {
-		sort.Sort(providersSortedByName(tfmodule.Providers))
-	} else {
-		sort.Sort(providersSortedByPosition(tfmodule.Providers))
-	}
-
-	if sortby.Name {
 		if sortby.Required {
 			sort.Sort(inputsSortedByRequired(tfmodule.Inputs))
 			sort.Sort(inputsSortedByRequired(tfmodule.RequiredInputs))
@@ -288,5 +287,11 @@ func sortItems(tfmodule *tfconf.Module, sortby *SortBy) {
 		sort.Sort(outputsSortedByName(tfmodule.Outputs))
 	} else {
 		sort.Sort(outputsSortedByPosition(tfmodule.Outputs))
+	}
+
+	if sortby.Name {
+		sort.Sort(providersSortedByName(tfmodule.Providers))
+	} else {
+		sort.Sort(providersSortedByPosition(tfmodule.Providers))
 	}
 }

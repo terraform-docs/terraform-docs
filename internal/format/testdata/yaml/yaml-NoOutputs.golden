@@ -235,3 +235,5 @@ requirements:
   version: '>= 0.12'
 - name: aws
   version: '>= 2.15.0'
+- name: random
+  version: '>= 2.2.0'
