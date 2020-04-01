@@ -285,6 +285,10 @@
     {
       "name": "aws",
       "version": "\u003e= 2.15.0"
+    },
+    {
+      "name": "random",
+      "version": "\u003e= 2.2.0"
     }
   ]
 }

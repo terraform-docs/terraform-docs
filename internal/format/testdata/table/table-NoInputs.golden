@@ -42,6 +42,7 @@ followed by another line of text.
 |------|---------|
 | terraform | >= 0.12 |
 | aws | >= 2.15.0 |
+| random | >= 2.2.0 |
 
 ## Providers
 

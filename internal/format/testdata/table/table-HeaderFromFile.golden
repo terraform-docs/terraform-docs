@@ -13,6 +13,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 |------|---------|
 | terraform | >= 0.12 |
 | aws | >= 2.15.0 |
+| random | >= 2.2.0 |
 
 ## Providers
 

@@ -44,6 +44,8 @@ followed by another line of text.
 
 [36mrequirement.aws[0m (>= 2.15.0)
 
+[36mrequirement.random[0m (>= 2.2.0)
+
 
 
 [36mprovider.aws[0m (>= 2.15.0)
