@@ -1,6 +1,8 @@
 # terraform-config-inspect
 
-This repository contains a helper library for extracting high-level metadata
+**Note:** This package is in-project (sligtly modified) fork of [`terraform-config-inspect`](https://github.com/hashicorp/terraform-config-inspect/).
+
+This package contains a helper library for extracting high-level metadata
 about Terraform modules from their source code. It processes only a subset
 of the information Terraform itself would process, and in return it's able
 to be broadly compatible with modules written for many different versions of
