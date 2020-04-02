@@ -13,11 +13,13 @@ var settings = print.NewSettings()
 var options = module.NewOptions()
 
 var rootCmd = &cobra.Command{
-	Args:    cobra.NoArgs,
-	Use:     "terraform-docs",
-	Short:   "A utility to generate documentation from Terraform modules in various output formats",
-	Long:    "A utility to generate documentation from Terraform modules in various output formats",
-	Version: version.Version(),
+	Args:          cobra.NoArgs,
+	Use:           "terraform-docs",
+	Short:         "A utility to generate documentation from Terraform modules in various output formats",
+	Long:          "A utility to generate documentation from Terraform modules in various output formats",
+	Version:       version.Version(),
+	SilenceUsage:  true,
+	SilenceErrors: true,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		oppositeBool := func(name string) bool {
 			val, _ := cmd.Flags().GetBool(name)
@@ -67,7 +69,10 @@ func init() {
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() error {
-	return rootCmd.Execute()
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Printf("Error: %s\n", err.Error())
+	}
+	return nil
 }
 
 // RootCmd represents the base command when called without any subcommands
