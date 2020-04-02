@@ -72,7 +72,10 @@ func loadHeader(options *Options) (string, error) {
 	filename := filepath.Join(options.Path, options.HeaderFromFile)
 	_, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return "", err
+		if options.HeaderFromFile != "main.tf" {
+			return "", err // user explicitly asked for a file which doesn't exist
+		}
+		return "", nil // absorb the error to not break workflow of users who don't have 'main.tf at all
 	}
 	lines := reader.Lines{
 		FileName: filename,
