@@ -5,6 +5,14 @@
 
 
 
+<a name="v0.9.1"></a>
+## [v0.9.1] - 2020-04-02
+
+### Bug Fixes
+- Don't crash when reading header if 'main.tf' not found ([#235](https://github.com/segmentio/terraform-docs/issues/235))
+- Make sure requirements section is sorted ([#233](https://github.com/segmentio/terraform-docs/issues/233))
+
+
 <a name="v0.9.0"></a>
 ## [v0.9.0] - 2020-03-31
 
@@ -330,7 +338,8 @@ the second release from now.
 - Initial commit
 
 
-[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/segmentio/terraform-docs/compare/v0.9.1...HEAD
+[v0.9.1]: https://github.com/segmentio/terraform-docs/compare/v0.9.0...v0.9.1
 [v0.9.0]: https://github.com/segmentio/terraform-docs/compare/v0.8.2...v0.9.0
 [v0.8.2]: https://github.com/segmentio/terraform-docs/compare/v0.8.1...v0.8.2
 [v0.8.1]: https://github.com/segmentio/terraform-docs/compare/v0.8.0...v0.8.1
