@@ -10,7 +10,7 @@ require (
 	github.com/imdario/mergo v0.3.9
 	github.com/spf13/cobra v0.0.7
 	github.com/stretchr/testify v1.5.1
-	github.com/zclconf/go-cty v1.3.1
+	github.com/zclconf/go-cty v1.4.0
 	gopkg.in/yaml.v2 v2.2.8
 	mvdan.cc/xurls/v2 v2.1.0
 )

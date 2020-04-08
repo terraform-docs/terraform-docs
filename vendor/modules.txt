@@ -2,6 +2,8 @@
 github.com/agext/levenshtein
 # github.com/apparentlymart/go-textseg v1.0.0
 github.com/apparentlymart/go-textseg/textseg
+# github.com/apparentlymart/go-textseg/v12 v12.0.0
+github.com/apparentlymart/go-textseg/v12/textseg
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
 # github.com/go-test/deep v1.0.5
@@ -53,7 +55,7 @@ github.com/spf13/pflag
 # github.com/stretchr/testify v1.5.1
 ## explicit
 github.com/stretchr/testify/assert
-# github.com/zclconf/go-cty v1.3.1
+# github.com/zclconf/go-cty v1.4.0
 ## explicit
 github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
