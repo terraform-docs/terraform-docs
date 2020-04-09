@@ -41,3 +41,15 @@ func printFencedCodeBlock(code string, language string) (string, bool) {
 	}
 	return fmt.Sprintf("`%s`", code), false
 }
+
+// printFencedAsciidocCodeBlock prints codes in fences, it automatically detects if
+// the input 'code' contains '\n' it will use multi line fence, otherwise it
+// wraps the 'code' inside single-tick block.
+// If the fenced is multi-line it also appens an extra '\n` at the end and
+// returns true accordingly, otherwise returns false for non-carriage return.
+func printFencedAsciidocCodeBlock(code string, language string) (string, bool) {
+	if strings.Contains(code, "\n") {
+		return fmt.Sprintf("\n[source,%s]\n----\n%s\n----\n", language, code), true
+	}
+	return fmt.Sprintf("`%s`", code), false
+}

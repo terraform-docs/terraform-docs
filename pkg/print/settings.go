@@ -14,6 +14,10 @@ type Settings struct {
 	// scope: Markdown
 	MarkdownIndent int
 
+	// AsciidocIndent control the indentation of AsciiDoc headers [available: 1, 2, 3, 4, 5] (default: 2)
+	// scope: Asciidoc
+	AsciidocIndent int
+
 	// OutputValues ailrghaekrgj
 	// scope: Global
 	OutputValues bool
@@ -65,6 +69,7 @@ func NewSettings() *Settings {
 		EscapeCharacters: true,
 		EscapePipe:       true,
 		MarkdownIndent:   2,
+		AsciidocIndent:   2,
 		OutputValues:     false,
 		ShowColor:        true,
 		ShowHeader:       true,

@@ -1,0 +1,9 @@
+== Requirements
+
+The following requirements are needed by this module:
+
+- terraform (>= 0.12)
+
+- aws (>= 2.15.0)
+
+- random (>= 2.2.0)

@@ -146,6 +146,9 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 		"indent": func(l int) string {
 			return generateIndentation(l, settings)
 		},
+		"indentAsciidoc": func(l int) string {
+			return generateAsciidocIndentation(l, settings)
+		},
 		"name": func(n string) string {
 			return sanitizeName(n, settings)
 		},
@@ -161,6 +164,12 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 		"sanitizeTbl": func(s string) string {
 			settings.EscapePipe = true
 			s = sanitizeItemForTable(s, settings)
+			settings.EscapePipe = false
+			return s
+		},
+		"sanitizeAsciidocTbl": func(s string) string {
+			settings.EscapePipe = true
+			s = sanitizeItemForAsciidocTable(s, settings)
 			settings.EscapePipe = false
 			return s
 		},
