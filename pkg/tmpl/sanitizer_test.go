@@ -187,6 +187,49 @@ func TestSanitizeItemForTable(t *testing.T) {
 	}
 }
 
+func TestSanitizeItemForAsciidocTable(t *testing.T) {
+	tests := []struct {
+		name        string
+		filename    string
+		escapeChars bool
+		escapePipe  bool
+	}{
+		{
+			name:        "sanitize table item empty",
+			filename:    "empty",
+			escapeChars: false,
+		},
+		{
+			name:        "sanitize table item complex",
+			filename:    "complex",
+			escapeChars: false,
+		},
+		{
+			name:        "sanitize table item codeblock",
+			filename:    "codeblock",
+			escapeChars: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			settings := testutil.Settings().With(&print.Settings{
+				EscapeCharacters: tt.escapeChars,
+			}).Build()
+
+			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
+			assert.Nil(err)
+
+			actual := sanitizeItemForAsciidocTable(string(bytes), settings)
+
+			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".asciidoc.expected"))
+			assert.Nil(err)
+
+			assert.Equal(string(expected), actual)
+		})
+	}
+}
+
 func TestConvertMultiLineText(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -519,6 +562,56 @@ func TestGenerateIndentation(t *testing.T) {
 				MarkdownIndent: tt.base,
 			}).Build()
 			actual := generateIndentation(tt.extra, settings)
+
+			assert.Equal(tt.expected, actual)
+		})
+	}
+}
+
+func TestGenerateAsciidocIndentation(t *testing.T) {
+	tests := []struct {
+		name     string
+		base     int
+		extra    int
+		expected string
+	}{
+		{
+			name:     "generate indentation",
+			base:     2,
+			extra:    1,
+			expected: "===",
+		},
+		{
+			name:     "generate indentation",
+			extra:    2,
+			expected: "====",
+		},
+		{
+			name:     "generate indentation",
+			base:     4,
+			extra:    3,
+			expected: "=======",
+		},
+		{
+			name:     "generate indentation",
+			base:     0,
+			extra:    0,
+			expected: "==",
+		},
+		{
+			name:     "generate indentation",
+			base:     6,
+			extra:    1,
+			expected: "===",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			settings := testutil.Settings().With(&print.Settings{
+				AsciidocIndent: tt.base,
+			}).Build()
+			actual := generateAsciidocIndentation(tt.extra, settings)
 
 			assert.Equal(tt.expected, actual)
 		})
