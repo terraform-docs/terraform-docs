@@ -9,51 +9,51 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDocument(t *testing.T) {
+func TestTable(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("document", "document")
+	expected, err := testutil.GetExpected("markdown", "table")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentWithRequired(t *testing.T) {
+func TestTableWithRequired(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		ShowRequired: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-WithRequired")
+	expected, err := testutil.GetExpected("markdown", "table-WithRequired")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentSortByName(t *testing.T) {
+func TestTableSortByName(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		SortByName: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-SortByName")
+	expected, err := testutil.GetExpected("markdown", "table-SortByName")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().With(&module.Options{
@@ -66,21 +66,21 @@ func TestDocumentSortByName(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentSortByRequired(t *testing.T) {
+func TestTableSortByRequired(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		SortByName:     true,
 		SortByRequired: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-SortByRequired")
+	expected, err := testutil.GetExpected("markdown", "table-SortByRequired")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().With(&module.Options{
@@ -94,14 +94,14 @@ func TestDocumentSortByRequired(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentNoHeader(t *testing.T) {
+func TestTableNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
@@ -111,21 +111,21 @@ func TestDocumentNoHeader(t *testing.T) {
 		ShowRequirements: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-NoHeader")
+	expected, err := testutil.GetExpected("markdown", "table-NoHeader")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentNoInputs(t *testing.T) {
+func TestTableNoInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
@@ -135,21 +135,21 @@ func TestDocumentNoInputs(t *testing.T) {
 		ShowRequirements: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-NoInputs")
+	expected, err := testutil.GetExpected("markdown", "table-NoInputs")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentNoOutputs(t *testing.T) {
+func TestTableNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
@@ -159,21 +159,21 @@ func TestDocumentNoOutputs(t *testing.T) {
 		ShowRequirements: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-NoOutputs")
+	expected, err := testutil.GetExpected("markdown", "table-NoOutputs")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentNoProviders(t *testing.T) {
+func TestTableNoProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
@@ -183,21 +183,21 @@ func TestDocumentNoProviders(t *testing.T) {
 		ShowRequirements: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-NoProviders")
+	expected, err := testutil.GetExpected("markdown", "table-NoProviders")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentNoRequirements(t *testing.T) {
+func TestTableNoRequirements(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
@@ -207,21 +207,21 @@ func TestDocumentNoRequirements(t *testing.T) {
 		ShowRequirements: false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-NoRequirements")
+	expected, err := testutil.GetExpected("markdown", "table-NoRequirements")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentOnlyHeader(t *testing.T) {
+func TestTableOnlyHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
@@ -231,21 +231,21 @@ func TestDocumentOnlyHeader(t *testing.T) {
 		ShowRequirements: false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OnlyHeader")
+	expected, err := testutil.GetExpected("markdown", "table-OnlyHeader")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentOnlyInputs(t *testing.T) {
+func TestTableOnlyInputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
@@ -255,21 +255,21 @@ func TestDocumentOnlyInputs(t *testing.T) {
 		ShowRequirements: false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OnlyInputs")
+	expected, err := testutil.GetExpected("markdown", "table-OnlyInputs")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentOnlyOutputs(t *testing.T) {
+func TestTableOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
@@ -279,21 +279,21 @@ func TestDocumentOnlyOutputs(t *testing.T) {
 		ShowRequirements: false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OnlyOutputs")
+	expected, err := testutil.GetExpected("markdown", "table-OnlyOutputs")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentOnlyProviders(t *testing.T) {
+func TestTableOnlyProviders(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
@@ -303,21 +303,21 @@ func TestDocumentOnlyProviders(t *testing.T) {
 		ShowRequirements: false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OnlyProviders")
+	expected, err := testutil.GetExpected("markdown", "table-OnlyProviders")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentOnlyRequirements(t *testing.T) {
+func TestTableOnlyRequirements(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
@@ -327,108 +327,108 @@ func TestDocumentOnlyRequirements(t *testing.T) {
 		ShowRequirements: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OnlyRequirements")
+	expected, err := testutil.GetExpected("markdown", "table-OnlyRequirements")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentEscapeCharacters(t *testing.T) {
+func TestTableEscapeCharacters(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		EscapeCharacters: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-EscapeCharacters")
+	expected, err := testutil.GetExpected("markdown", "table-EscapeCharacters")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentIndentationBelowAllowed(t *testing.T) {
+func TestTableIndentationBelowAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 0,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-IndentationBelowAllowed")
+	expected, err := testutil.GetExpected("markdown", "table-IndentationBelowAllowed")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentIndentationAboveAllowed(t *testing.T) {
+func TestTableIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 10,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-IndentationAboveAllowed")
+	expected, err := testutil.GetExpected("markdown", "table-IndentationAboveAllowed")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentIndentationOfFour(t *testing.T) {
+func TestTableIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		MarkdownIndent: 4,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-IndentationOfFour")
+	expected, err := testutil.GetExpected("markdown", "table-IndentationOfFour")
 	assert.Nil(err)
 
 	options := module.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentOutputValues(t *testing.T) {
+func TestTableOutputValues(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		OutputValues:    true,
 		ShowSensitivity: true,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OutputValues")
+	expected, err := testutil.GetExpected("markdown", "table-OutputValues")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().With(&module.Options{
@@ -440,18 +440,18 @@ func TestDocumentOutputValues(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentHeaderFromFile(t *testing.T) {
+func TestTableHeaderFromFile(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("document", "document-HeaderFromFile")
+	expected, err := testutil.GetExpected("markdown", "table-HeaderFromFile")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().WithOverwrite(&module.Options{
@@ -462,21 +462,21 @@ func TestDocumentHeaderFromFile(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
+func TestTableOutputValuesNoSensitivity(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
 		OutputValues:    true,
 		ShowSensitivity: false,
 	}).Build()
 
-	expected, err := testutil.GetExpected("document", "document-OutputValuesNoSensitivity")
+	expected, err := testutil.GetExpected("markdown", "table-OutputValuesNoSensitivity")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().With(&module.Options{
@@ -488,14 +488,14 @@ func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
 	assert.Equal(expected, actual)
 }
 
-func TestDocumentEmpty(t *testing.T) {
+func TestTableEmpty(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:    false,
@@ -513,7 +513,7 @@ func TestDocumentEmpty(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
