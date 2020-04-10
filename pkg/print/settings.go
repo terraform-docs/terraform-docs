@@ -2,6 +2,10 @@ package print
 
 // Settings represents all settings
 type Settings struct {
+	// AsciidocIndent control the indentation of AsciiDoc headers [available: 1, 2, 3, 4, 5] (default: 2)
+	// scope: Asciidoc
+	AsciidocIndent int
+
 	// EscapeCharacters escapes special characters (such as _ * in Markdown and > < in JSON) (default: true)
 	// scope: Markdown
 	EscapeCharacters bool
@@ -13,10 +17,6 @@ type Settings struct {
 	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5] (default: 2)
 	// scope: Markdown
 	MarkdownIndent int
-
-	// AsciidocIndent control the indentation of AsciiDoc headers [available: 1, 2, 3, 4, 5] (default: 2)
-	// scope: Asciidoc
-	AsciidocIndent int
 
 	// OutputValues ailrghaekrgj
 	// scope: Global

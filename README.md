@@ -9,6 +9,9 @@
 A utility to generate documentation from Terraform modules in various output formats.
 
 ``` bash
+terraform-docs asciidoc ./my-terraform-module          # generate asciidoc table
+terraform-docs asciidoc table ./my-terraform-module    # generate asciidoc table
+terraform-docs asciidoc document ./my-terraform-module # generate asciidoc document
 terraform-docs json ./my-terraform-module              # generate json
 terraform-docs markdown ./my-terraform-module          # generate markdown table
 terraform-docs markdown table ./my-terraform-module    # generate markdown table
@@ -18,9 +21,6 @@ terraform-docs tfvars hcl ./my-terraform-module        # generate hcl format of 
 terraform-docs tfvars json ./my-terraform-module       # generate json format of terraform.tfvars
 terraform-docs xml ./my-terraform-module               # generate xml
 terraform-docs yaml ./my-terraform-module              # generate yaml
-terraform-docs asciidoc ./my-terraform-module          # generate asciidoc table
-terraform-docs asciidoc table ./my-terraform-module    # generate asciidoc table
-terraform-docs asciidoc document ./my-terraform-module # generate asciidoc document
 ```
 
 Read the [User Guide](./docs/USER_GUIDE.md) and [Formats Guide](./docs/FORMATS_GUIDE.md) for detailed documentation.
