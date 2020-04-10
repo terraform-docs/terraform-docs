@@ -307,7 +307,7 @@ func TestBuiltinFunc(t *testing.T) {
 		{
 			name:       "template builtin functions indent",
 			funcName:   "indent",
-			funcArgs:   []string{`0`},
+			funcArgs:   []string{`0`, `"#"`},
 			escapeChar: true,
 			escapePipe: true,
 			expected:   "##",
@@ -315,7 +315,7 @@ func TestBuiltinFunc(t *testing.T) {
 		{
 			name:       "template builtin functions indent",
 			funcName:   "indent",
-			funcArgs:   []string{`1`},
+			funcArgs:   []string{`1`, `"#"`},
 			escapeChar: true,
 			escapePipe: true,
 			expected:   "###",
@@ -323,7 +323,7 @@ func TestBuiltinFunc(t *testing.T) {
 		{
 			name:       "template builtin functions indent",
 			funcName:   "indent",
-			funcArgs:   []string{`2`},
+			funcArgs:   []string{`2`, `"#"`},
 			escapeChar: true,
 			escapePipe: true,
 			expected:   "####",
@@ -331,7 +331,7 @@ func TestBuiltinFunc(t *testing.T) {
 		{
 			name:       "template builtin functions indent",
 			funcName:   "indent",
-			funcArgs:   []string{`3`},
+			funcArgs:   []string{`3`, `"#"`},
 			escapeChar: true,
 			escapePipe: true,
 			expected:   "#####",

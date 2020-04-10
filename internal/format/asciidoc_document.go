@@ -20,7 +20,7 @@ const (
 
 	asciidocDocumentRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
-		{{ indentAsciidoc 0 }} Requirements
+		{{ indent 0 "=" }} Requirements
 		{{ if not .Module.Requirements }}
 			No requirements.
 		{{ else }}
@@ -35,7 +35,7 @@ const (
 
 	asciidocDocumentProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
-		{{ indentAsciidoc 0 }} Providers
+		{{ indent 0 "=" }} Providers
 		{{ if not .Module.Providers }}
 			No provider.
 		{{ else }}
@@ -51,7 +51,7 @@ const (
 	asciidocDocumentInputsTpl = `
 	{{- if .Settings.ShowInputs -}}
 		{{- if .Settings.ShowRequired -}}
-			{{ indentAsciidoc 0 }} Required Inputs
+			{{ indent 0 "=" }} Required Inputs
 			{{ if not .Module.RequiredInputs }}
 				No required input.
 			{{ else }}
@@ -60,7 +60,7 @@ const (
 					{{ template "input" . }}
 				{{- end }}
 			{{- end }}
-			{{ indentAsciidoc 0 }} Optional Inputs
+			{{ indent 0 "=" }} Optional Inputs
 			{{ if not .Module.OptionalInputs }}
 				No optional input.
 			{{ else }}
@@ -70,7 +70,7 @@ const (
 				{{- end }}
 			{{ end }}
 		{{ else -}}
-			{{ indentAsciidoc 0 }} Inputs
+			{{ indent 0 "=" }} Inputs
 			{{ if not .Module.Inputs }}
 				No input.
 			{{ else }}
@@ -85,7 +85,7 @@ const (
 
 	asciidocDocumentInputTpl = `
 	{{ printf "\n" }}
-	{{ indentAsciidoc 1 }} {{ name .Name }}
+	{{ indent 1 "=" }} {{ name .Name }}
 
 	Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -98,14 +98,14 @@ const (
 
 	asciidocDocumentOutputsTpl = `
 	{{- if .Settings.ShowOutputs -}}
-		{{ indentAsciidoc 0 }} Outputs
+		{{ indent 0 "=" }} Outputs
 		{{ if not .Module.Outputs }}
 			No output.
 		{{ else }}
 			The following outputs are exported:
 			{{- range .Module.Outputs }}
 
-				{{ indentAsciidoc 1 }} {{ name .Name }}
+				{{ indent 1 "=" }} {{ name .Name }}
 
 				Description: {{ tostring .Description | sanitizeDoc }}
 

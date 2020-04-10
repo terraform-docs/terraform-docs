@@ -344,7 +344,7 @@ func TestAsciidocTableOnlyRequirements(t *testing.T) {
 func TestAsciidocTableIndentationBelowAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		MarkdownIndent: 0,
+		IndentLevel: 0,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-IndentationBelowAllowed")
@@ -364,7 +364,7 @@ func TestAsciidocTableIndentationBelowAllowed(t *testing.T) {
 func TestAsciidocTableIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		MarkdownIndent: 10,
+		IndentLevel: 10,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-IndentationAboveAllowed")
@@ -384,7 +384,7 @@ func TestAsciidocTableIndentationAboveAllowed(t *testing.T) {
 func TestAsciidocTableIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		AsciidocIndent: 4,
+		IndentLevel: 4,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-IndentationOfFour")

@@ -344,7 +344,7 @@ func TestAsciidocDocumentOnlyRequirements(t *testing.T) {
 func TestAsciidocDocumentIndentationBelowAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		AsciidocIndent: 0,
+		IndentLevel: 0,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-IndentationBelowAllowed")
@@ -364,7 +364,7 @@ func TestAsciidocDocumentIndentationBelowAllowed(t *testing.T) {
 func TestAsciidocDocumentIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		AsciidocIndent: 10,
+		IndentLevel: 10,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-IndentationAboveAllowed")
@@ -384,7 +384,7 @@ func TestAsciidocDocumentIndentationAboveAllowed(t *testing.T) {
 func TestAsciidocDocumentIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		AsciidocIndent: 4,
+		IndentLevel: 4,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-IndentationOfFour")

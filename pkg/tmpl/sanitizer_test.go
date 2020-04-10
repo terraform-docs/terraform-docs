@@ -559,59 +559,9 @@ func TestGenerateIndentation(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			settings := testutil.Settings().With(&print.Settings{
-				MarkdownIndent: tt.base,
+				IndentLevel: tt.base,
 			}).Build()
-			actual := generateIndentation(tt.extra, settings)
-
-			assert.Equal(tt.expected, actual)
-		})
-	}
-}
-
-func TestGenerateAsciidocIndentation(t *testing.T) {
-	tests := []struct {
-		name     string
-		base     int
-		extra    int
-		expected string
-	}{
-		{
-			name:     "generate indentation",
-			base:     2,
-			extra:    1,
-			expected: "===",
-		},
-		{
-			name:     "generate indentation",
-			extra:    2,
-			expected: "====",
-		},
-		{
-			name:     "generate indentation",
-			base:     4,
-			extra:    3,
-			expected: "=======",
-		},
-		{
-			name:     "generate indentation",
-			base:     0,
-			extra:    0,
-			expected: "==",
-		},
-		{
-			name:     "generate indentation",
-			base:     6,
-			extra:    1,
-			expected: "===",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
-				AsciidocIndent: tt.base,
-			}).Build()
-			actual := generateAsciidocIndentation(tt.extra, settings)
+			actual := generateIndentation(tt.extra, settings, "#")
 
 			assert.Equal(tt.expected, actual)
 		})

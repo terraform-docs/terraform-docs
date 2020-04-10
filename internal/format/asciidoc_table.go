@@ -20,7 +20,7 @@ const (
 
 	asciidocTableRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
-		{{ indentAsciidoc 0 }} Requirements
+		{{ indent 0 "=" }} Requirements
 		{{ if not .Module.Requirements }}
 			No requirements.
 		{{ else }}
@@ -37,7 +37,7 @@ const (
 
 	asciidocTableProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
-		{{ indentAsciidoc 0 }} Providers
+		{{ indent 0 "=" }} Providers
 		{{ if not .Module.Providers }}
 			No provider.
 		{{ else }}
@@ -54,7 +54,7 @@ const (
 
 	asciidocTableInputsTpl = `
 	{{- if .Settings.ShowInputs -}}
-		{{ indentAsciidoc 0 }} Inputs
+		{{ indent 0 "=" }} Inputs
 		{{ if not .Module.Inputs }}
 			No input.
 		{{ else }}
@@ -76,7 +76,7 @@ const (
 
 	asciidocTableOutputsTpl = `
 	{{- if .Settings.ShowOutputs -}}
-		{{ indentAsciidoc 0 }} Outputs
+		{{ indent 0 "=" }} Outputs
 		{{ if not .Module.Outputs }}
 			No output.
 		{{ else }}

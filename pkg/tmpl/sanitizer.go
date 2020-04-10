@@ -205,34 +205,18 @@ func normalizeURLs(s string, settings *print.Settings) string {
 	return s
 }
 
-// generateIndentation generates indentation of Markdown headers
-// with base level of provided 'settings.MarkdownIndent' plus any
+// generateIndentation generates indentation of Markdown and AsciiDoc headers
+// with base level of provided 'settings.IndentLevel' plus any
 // extra level needed for subsection (e.g. 'Required Inputs' which
 // is a subsection of 'Inputs' section)
-func generateIndentation(extra int, settings *print.Settings) string {
-	var base = settings.MarkdownIndent
+func generateIndentation(extra int, settings *print.Settings, char string) string {
+	var base = settings.IndentLevel
 	if base < 1 || base > 5 {
 		base = 2
 	}
 	var indent string
 	for i := 0; i < base+extra; i++ {
-		indent += "#"
-	}
-	return indent
-}
-
-// generateAsciidocIndentation generates indentation of AsciiDoc headers
-// with base level of provided 'settings.AsciidocIndent' plus any
-// extra level needed for subsection (e.g. 'Required Inputs' which
-// is a subsection of 'Inputs' section)
-func generateAsciidocIndentation(extra int, settings *print.Settings) string {
-	var base = settings.AsciidocIndent
-	if base < 1 || base > 5 {
-		base = 2
-	}
-	var indent string
-	for i := 0; i < base+extra; i++ {
-		indent += "="
+		indent += char
 	}
 	return indent
 }

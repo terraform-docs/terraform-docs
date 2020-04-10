@@ -47,7 +47,7 @@ var asciidocDocumentCmd = &cobra.Command{
 func init() {
 	asciidocCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "do not show \"Required\" column or section")
 	asciidocCmd.PersistentFlags().BoolVar(new(bool), "no-sensitive", false, "do not show \"Sensitive\" column or section")
-	asciidocCmd.PersistentFlags().IntVar(&settings.AsciidocIndent, "indent", 2, "indention level of AsciiDoc sections [1, 2, 3, 4, 5]")
+	asciidocCmd.PersistentFlags().IntVar(&settings.IndentLevel, "indent", 2, "indention level of AsciiDoc sections [1, 2, 3, 4, 5]")
 
 	asciidocCmd.AddCommand(asciidocTableCmd)
 	asciidocCmd.AddCommand(asciidocDocumentCmd)
