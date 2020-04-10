@@ -38,7 +38,7 @@ followed by another line of text.
 
 == Requirements
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Version
 |terraform |>= 0.12
@@ -48,7 +48,7 @@ followed by another line of text.
 
 == Providers
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Version
 |tls |n/a
@@ -59,7 +59,7 @@ followed by another line of text.
 
 == Inputs
 
-[cols="a,a,a,a,",options="header",]
+[cols="a,a,a,a",options="header",]
 |===
 |Name |Description |Type |Default
 |unquoted

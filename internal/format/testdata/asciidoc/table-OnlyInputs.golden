@@ -1,6 +1,6 @@
 == Inputs
 
-[cols="a,a,a,a,",options="header",]
+[cols="a,a,a,a",options="header",]
 |===
 |Name |Description |Type |Default
 |unquoted

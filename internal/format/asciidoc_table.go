@@ -24,7 +24,7 @@ const (
 		{{ if not .Module.Requirements }}
 			No requirements.
 		{{ else }}
-			[cols=",",options="header",]
+			[cols="a,a",options="header",]
 			|===
 			|Name |Version
 			{{- range .Module.Requirements }}
@@ -41,7 +41,7 @@ const (
 		{{ if not .Module.Providers }}
 			No provider.
 		{{ else }}
-			[cols=",",options="header",]
+			[cols="a,a",options="header",]
 			|===
 			|Name |Version
 			{{- range .Module.Providers }}
@@ -58,7 +58,7 @@ const (
 		{{ if not .Module.Inputs }}
 			No input.
 		{{ else }}
-			[cols="a,a,a,a,{{ if .Settings.ShowRequired }}a,{{ end }}",options="header",]
+			[cols="a,a,a,a{{ if .Settings.ShowRequired }},a{{ end }}",options="header",]
 			|===
 			|Name |Description |Type |Default {{ if .Settings.ShowRequired }}|Required {{ end }}
 			{{- range .Module.Inputs }}
@@ -80,7 +80,7 @@ const (
 		{{ if not .Module.Outputs }}
 			No output.
 		{{ else }}
-			[cols=",{{ if .Settings.OutputValues }},{{ if $.Settings.ShowSensitivity }},{{ end }}{{ end }}",options="header",]
+			[cols="a,a{{ if .Settings.OutputValues }},a{{ if $.Settings.ShowSensitivity }},a{{ end }}{{ end }}",options="header",]
 			|===
 			|Name |Description {{ if .Settings.OutputValues }}|Value {{ if $.Settings.ShowSensitivity }}|Sensitive {{ end }}{{ end }}
 			{{- range .Module.Outputs }}

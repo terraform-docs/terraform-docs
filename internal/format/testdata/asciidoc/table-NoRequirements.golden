@@ -38,7 +38,7 @@ followed by another line of text.
 
 == Providers
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Version
 |tls |n/a
@@ -49,7 +49,7 @@ followed by another line of text.
 
 == Inputs
 
-[cols="a,a,a,a,",options="header",]
+[cols="a,a,a,a",options="header",]
 |===
 |Name |Description |Type |Default
 |unquoted
@@ -275,7 +275,7 @@ object({
 
 == Outputs
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Description
 |unquoted |It's unquoted output.

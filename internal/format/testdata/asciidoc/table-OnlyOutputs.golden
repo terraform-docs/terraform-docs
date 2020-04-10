@@ -1,6 +1,6 @@
 == Outputs
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Description
 |unquoted |It's unquoted output.

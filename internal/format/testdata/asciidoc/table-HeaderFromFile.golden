@@ -9,7 +9,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 
 == Requirements
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Version
 |terraform |>= 0.12
@@ -19,7 +19,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 
 == Providers
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Version
 |tls |n/a
@@ -30,7 +30,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 
 == Inputs
 
-[cols="a,a,a,a,",options="header",]
+[cols="a,a,a,a",options="header",]
 |===
 |Name |Description |Type |Default
 |unquoted
@@ -256,7 +256,7 @@ object({
 
 == Outputs
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Description
 |unquoted |It's unquoted output.

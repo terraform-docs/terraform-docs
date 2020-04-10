@@ -1,6 +1,6 @@
 == Requirements
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Version
 |terraform |>= 0.12
@@ -10,7 +10,7 @@
 
 == Providers
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Version
 |tls |n/a
@@ -21,7 +21,7 @@
 
 == Inputs
 
-[cols="a,a,a,a,",options="header",]
+[cols="a,a,a,a",options="header",]
 |===
 |Name |Description |Type |Default
 |unquoted
@@ -247,7 +247,7 @@ object({
 
 == Outputs
 
-[cols=",",options="header",]
+[cols="a,a",options="header",]
 |===
 |Name |Description
 |unquoted |It's unquoted output.
