@@ -129,28 +129,6 @@ func printOptions(buf *bytes.Buffer, cmd *cobra.Command, name string) error {
 	return nil
 }
 
-func getPrinter(name string, settings *print.Settings) print.Format {
-	switch strings.Replace(name, "terraform-docs ", "", -1) {
-	case "json":
-		return format.NewJSON(settings)
-	case "markdown document":
-		return format.NewDocument(settings)
-	case "markdown table":
-		return format.NewTable(settings)
-	case "pretty":
-		return format.NewPretty(settings)
-	case "tfvars hcl":
-		return format.NewTfvarsHCL(settings)
-	case "tfvars json":
-		return format.NewTfvarsJSON(settings)
-	case "xml":
-		return format.NewXML(settings)
-	case "yaml":
-		return format.NewYAML(settings)
-	}
-	return nil
-}
-
 func getFlags(name string) string {
 	switch strings.Replace(name, "terraform-docs ", "", -1) {
 	case "pretty":
@@ -179,25 +157,27 @@ func printExample(buf *bytes.Buffer, name string) error {
 		},
 	}
 
-	if printer := getPrinter(name, settings); printer != nil {
-		tfmodule, err := module.LoadWithOptions(options)
-		if err != nil {
-			log.Fatal(err)
-		}
-		output, err := printer.Print(tfmodule, settings)
-		if err != nil {
-			return err
-		}
-		segments := strings.Split(output, "\n")
-		for _, s := range segments {
-			if s == "" {
-				buf.WriteString("\n")
-			} else {
-				buf.WriteString(fmt.Sprintf("    %s\n", s))
-			}
+	name = strings.Replace(name, "terraform-docs ", "", -1)
+	printer, err := format.Factory(name, settings)
+	if err != nil {
+		return err
+	}
+	tfmodule, err := module.LoadWithOptions(options)
+	if err != nil {
+		log.Fatal(err)
+	}
+	output, err := printer.Print(tfmodule, settings)
+	if err != nil {
+		return err
+	}
+	segments := strings.Split(output, "\n")
+	for _, s := range segments {
+		if s == "" {
+			buf.WriteString("\n")
+		} else {
+			buf.WriteString(fmt.Sprintf("    %s\n", s))
 		}
 	}
-
 	buf.WriteString("\n\n")
 	return nil
 }
