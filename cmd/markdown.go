@@ -1,47 +1,34 @@
 package cmd
 
 import (
-	"github.com/segmentio/terraform-docs/internal/format"
 	"github.com/spf13/cobra"
 )
 
 var markdownCmd = &cobra.Command{
-	Args:    cobra.ExactArgs(1),
-	Use:     "markdown [PATH]",
-	Aliases: []string{"md"},
-	Short:   "Generate Markdown of inputs and outputs",
-	Annotations: map[string]string{
-		"kind": "formatter",
-	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return doPrint(args[0], format.NewTable(settings))
-	},
+	Args:        cobra.ExactArgs(1),
+	Use:         "markdown [PATH]",
+	Aliases:     []string{"md"},
+	Short:       "Generate Markdown of inputs and outputs",
+	Annotations: formatAnnotations("markdown"),
+	RunE:        formatRunE,
 }
 
 var markdownTableCmd = &cobra.Command{
-	Args:    cobra.ExactArgs(1),
-	Use:     "table [PATH]",
-	Aliases: []string{"tbl"},
-	Short:   "Generate Markdown tables of inputs and outputs",
-	Annotations: map[string]string{
-		"kind": "formatter",
-	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return doPrint(args[0], format.NewTable(settings))
-	},
+	Args:        cobra.ExactArgs(1),
+	Use:         "table [PATH]",
+	Aliases:     []string{"tbl"},
+	Short:       "Generate Markdown tables of inputs and outputs",
+	Annotations: formatAnnotations("markdown table"),
+	RunE:        formatRunE,
 }
 
 var markdownDocumentCmd = &cobra.Command{
-	Args:    cobra.ExactArgs(1),
-	Use:     "document [PATH]",
-	Aliases: []string{"doc"},
-	Short:   "Generate Markdown document of inputs and outputs",
-	Annotations: map[string]string{
-		"kind": "formatter",
-	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return doPrint(args[0], format.NewDocument(settings))
-	},
+	Args:        cobra.ExactArgs(1),
+	Use:         "document [PATH]",
+	Aliases:     []string{"doc"},
+	Short:       "Generate Markdown document of inputs and outputs",
+	Annotations: formatAnnotations("markdown document"),
+	RunE:        formatRunE,
 }
 
 func init() {

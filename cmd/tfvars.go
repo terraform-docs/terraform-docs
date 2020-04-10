@@ -1,41 +1,30 @@
 package cmd
 
 import (
-	"github.com/segmentio/terraform-docs/internal/format"
 	"github.com/spf13/cobra"
 )
 
 var tfvarsCmd = &cobra.Command{
-	Args:  cobra.ExactArgs(1),
-	Use:   "tfvars [PATH]",
-	Short: "Generate terraform.tfvars of inputs",
-	Annotations: map[string]string{
-		"kind": "formatter",
-	},
+	Args:        cobra.ExactArgs(1),
+	Use:         "tfvars [PATH]",
+	Short:       "Generate terraform.tfvars of inputs",
+	Annotations: formatAnnotations("tfvars"),
 }
 
 var tfvarsHCLCmd = &cobra.Command{
-	Args:  cobra.ExactArgs(1),
-	Use:   "hcl [PATH]",
-	Short: "Generate HCL format of terraform.tfvars of inputs",
-	Annotations: map[string]string{
-		"kind": "formatter",
-	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return doPrint(args[0], format.NewTfvarsHCL(settings))
-	},
+	Args:        cobra.ExactArgs(1),
+	Use:         "hcl [PATH]",
+	Short:       "Generate HCL format of terraform.tfvars of inputs",
+	Annotations: formatAnnotations("tfvars hcl"),
+	RunE:        formatRunE,
 }
 
 var tfvarsJSONCmd = &cobra.Command{
-	Args:  cobra.ExactArgs(1),
-	Use:   "json [PATH]",
-	Short: "Generate JSON format of terraform.tfvars of inputs",
-	Annotations: map[string]string{
-		"kind": "formatter",
-	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return doPrint(args[0], format.NewTfvarsJSON(settings))
-	},
+	Args:        cobra.ExactArgs(1),
+	Use:         "json [PATH]",
+	Short:       "Generate JSON format of terraform.tfvars of inputs",
+	Annotations: formatAnnotations("tfvars json"),
+	RunE:        formatRunE,
 }
 
 func init() {

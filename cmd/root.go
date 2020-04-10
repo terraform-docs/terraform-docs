@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/segmentio/terraform-docs/internal/format"
 	"github.com/segmentio/terraform-docs/internal/module"
 	"github.com/segmentio/terraform-docs/internal/version"
 	"github.com/segmentio/terraform-docs/pkg/print"
@@ -80,9 +82,14 @@ func RootCmd() *cobra.Command {
 	return rootCmd
 }
 
-func doPrint(path string, printer print.Format) error {
-	_, err := options.With(&module.Options{
-		Path: path,
+var formatRunE = func(cmd *cobra.Command, args []string) error {
+	name := strings.Replace(cmd.CommandPath(), "terraform-docs ", "", -1)
+	printer, err := format.Factory(name, settings)
+	if err != nil {
+		return err
+	}
+	_, err = options.With(&module.Options{
+		Path: args[0],
 		SortBy: &module.SortBy{
 			Name:     settings.SortByName,
 			Required: settings.SortByRequired,
@@ -101,4 +108,13 @@ func doPrint(path string, printer print.Format) error {
 	}
 	fmt.Println(output)
 	return nil
+}
+
+var formatAnnotations = func(cmd string) map[string]string {
+	annotations := make(map[string]string)
+	for _, s := range strings.Split(cmd, " ") {
+		annotations["command"] = s
+	}
+	annotations["kind"] = "formatter"
+	return annotations
 }
