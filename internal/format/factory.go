@@ -12,6 +12,12 @@ import (
 // function.
 func Factory(name string, settings *print.Settings) (print.Format, error) {
 	switch name {
+	case "asciidoc":
+		return NewAsciidocTable(settings), nil
+	case "asciidoc document":
+		return NewAsciidocDocument(settings), nil
+	case "asciidoc table":
+		return NewAsciidocTable(settings), nil
 	case "json":
 		return NewJSON(settings), nil
 	case "markdown":

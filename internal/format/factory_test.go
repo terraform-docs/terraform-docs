@@ -17,6 +17,24 @@ func TestFormatFactory(t *testing.T) {
 	}{
 		{
 			name:     "format factory from name",
+			format:   "asciidoc",
+			expected: "*format.AsciidocTable",
+			wantErr:  false,
+		},
+		{
+			name:     "format factory from name",
+			format:   "asciidoc document",
+			expected: "*format.AsciidocDocument",
+			wantErr:  false,
+		},
+		{
+			name:     "format factory from name",
+			format:   "asciidoc table",
+			expected: "*format.AsciidocTable",
+			wantErr:  false,
+		},
+		{
+			name:     "format factory from name",
 			format:   "json",
 			expected: "*format.JSON",
 			wantErr:  false,
