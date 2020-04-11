@@ -11,7 +11,6 @@ and some [link](https://domain.com/)
 * list item 3
 * list item 4
 
-
 [source]
 ----
 module "foo_bar" {

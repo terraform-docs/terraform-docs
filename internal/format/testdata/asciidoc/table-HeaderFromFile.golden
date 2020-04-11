@@ -9,7 +9,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 
 == Requirements
 
-[cols="a,a",options="header",]
+[cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
 |terraform |>= 0.12
@@ -19,7 +19,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 
 == Providers
 
-[cols="a,a",options="header",]
+[cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
 |tls |n/a
@@ -30,7 +30,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 
 == Inputs
 
-[cols="a,a,a,a",options="header",]
+[cols="a,a,a,a",options="header,autowidth"]
 |===
 |Name |Description |Type |Default
 |unquoted
@@ -149,7 +149,6 @@ esse cillum dolore eu fugiat nulla pariatur.
 |input-with-code-block
 |This is a complicated one. We need a newline.  
 And an example in a code block
-
 [source]
 ----
 default     = [
@@ -256,7 +255,7 @@ object({
 
 == Outputs
 
-[cols="a,a",options="header",]
+[cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
 |unquoted |It's unquoted output.

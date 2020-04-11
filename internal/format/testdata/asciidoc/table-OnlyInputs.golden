@@ -1,6 +1,6 @@
 == Inputs
 
-[cols="a,a,a,a",options="header",]
+[cols="a,a,a,a",options="header,autowidth"]
 |===
 |Name |Description |Type |Default
 |unquoted
@@ -119,7 +119,6 @@
 |input-with-code-block
 |This is a complicated one. We need a newline.  
 And an example in a code block
-
 [source]
 ----
 default     = [

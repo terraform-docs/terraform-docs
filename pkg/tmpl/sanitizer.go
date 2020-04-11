@@ -87,7 +87,7 @@ func sanitizeItemForAsciidocTable(s string, settings *print.Settings) string {
 		},
 		func(segment string) string {
 			segment = strings.TrimSpace(segment)
-			segment = fmt.Sprintf("\n[source]\n----\n%s\n----", segment)
+			segment = fmt.Sprintf("[source]\n----\n%s\n----", segment)
 			return segment
 		},
 	)

@@ -1,6 +1,6 @@
 == Requirements
 
-[cols="a,a",options="header",]
+[cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
 |terraform |>= 0.12

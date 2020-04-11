@@ -38,7 +38,7 @@ followed by another line of text.
 
 == Requirements
 
-[cols="a,a",options="header",]
+[cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
 |terraform |>= 0.12
@@ -48,7 +48,7 @@ followed by another line of text.
 
 == Providers
 
-[cols="a,a",options="header",]
+[cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
 |tls |n/a
@@ -59,7 +59,7 @@ followed by another line of text.
 
 == Outputs
 
-[cols="a,a",options="header",]
+[cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
 |unquoted |It's unquoted output.
