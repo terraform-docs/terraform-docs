@@ -143,7 +143,7 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 			return s
 		},
 		"indent": func(l int, char string) string {
-			return generateIndentation(l, settings, char)
+			return generateIndentation(l, char, settings)
 		},
 		"name": func(n string) string {
 			return sanitizeName(n, settings)

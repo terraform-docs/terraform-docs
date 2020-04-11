@@ -209,7 +209,7 @@ func normalizeURLs(s string, settings *print.Settings) string {
 // with base level of provided 'settings.IndentLevel' plus any
 // extra level needed for subsection (e.g. 'Required Inputs' which
 // is a subsection of 'Inputs' section)
-func generateIndentation(extra int, settings *print.Settings, char string) string {
+func generateIndentation(extra int, char string, settings *print.Settings) string {
 	var base = settings.IndentLevel
 	if base < 1 || base > 5 {
 		base = 2

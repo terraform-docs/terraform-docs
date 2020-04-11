@@ -561,7 +561,7 @@ func TestGenerateIndentation(t *testing.T) {
 			settings := testutil.Settings().With(&print.Settings{
 				IndentLevel: tt.base,
 			}).Build()
-			actual := generateIndentation(tt.extra, settings, "#")
+			actual := generateIndentation(tt.extra, "#", settings)
 
 			assert.Equal(tt.expected, actual)
 		})
