@@ -7,7 +7,7 @@ import (
 var asciidocCmd = &cobra.Command{
 	Args:        cobra.ExactArgs(1),
 	Use:         "asciidoc [PATH]",
-	Aliases:     []string{"ad"},
+	Aliases:     []string{"adoc"},
 	Short:       "Generate AsciiDoc of inputs and outputs",
 	Annotations: formatAnnotations("asciidoc"),
 	RunE:        formatRunE,
