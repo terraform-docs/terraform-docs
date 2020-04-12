@@ -60,15 +60,14 @@ const (
 		{{ else }}
 			[cols="a,a,a,a{{ if .Settings.ShowRequired }},a{{ end }}",options="header,autowidth"]
 			|===
-			|Name |Description |Type |Default {{ if .Settings.ShowRequired }}|Required {{ end }}
+			|Name |Description |Type |Default{{ if .Settings.ShowRequired }} |Required{{ end }}
 			{{- range .Module.Inputs }}
 				|{{ .Name }}
 				|{{ tostring .Description | sanitizeAsciidocTbl }}
 				|{{ tostring .Type | type | sanitizeAsciidocTbl }}
 				|{{ value .GetValue | sanitizeAsciidocTbl }}
 				{{ if $.Settings.ShowRequired }}|{{ ternary .Required "yes" "no" }}{{ end }}
-				{{ printf " " }}
-			{{- end }}
+			{{ end }}
 			|===
 		{{ end }}
 	{{ end -}}
@@ -82,14 +81,14 @@ const (
 		{{ else }}
 			[cols="a,a{{ if .Settings.OutputValues }},a{{ if $.Settings.ShowSensitivity }},a{{ end }}{{ end }}",options="header,autowidth"]
 			|===
-			|Name |Description {{ if .Settings.OutputValues }}|Value {{ if $.Settings.ShowSensitivity }}|Sensitive {{ end }}{{ end }}
+			|Name |Description{{ if .Settings.OutputValues }} |Value{{ if $.Settings.ShowSensitivity }} |Sensitive{{ end }}{{ end }}
 			{{- range .Module.Outputs }}
-				|{{ .Name }} |{{ tostring .Description | sanitizeAsciidocTbl }}{{ printf " " }}
+				|{{ .Name }} |{{ tostring .Description | sanitizeAsciidocTbl }}
 				{{- if $.Settings.OutputValues -}}
 					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
-					|{{ value $sensitive }}{{ printf " " }}
+					{{ printf " " }}|{{ value $sensitive }}
 					{{- if $.Settings.ShowSensitivity -}}
-						|{{ ternary .Sensitive "yes" "no" }}{{ printf " " }}
+						{{ printf " " }}|{{ ternary .Sensitive "yes" "no" }}
 					{{- end -}}
 				{{- end -}}
 			{{- end }}
