@@ -72,6 +72,28 @@ func sanitizeItemForTable(s string, settings *print.Settings) string {
 	return result
 }
 
+// sanitizeItemForAsciidocTable converts passed 'string' to suitable AsciiDoc representation
+// for a table. (including line-break, illegal characters, code blocks etc)
+func sanitizeItemForAsciidocTable(s string, settings *print.Settings) string {
+	if s == "" {
+		return "n/a"
+	}
+	result := processSegments(
+		s,
+		"```",
+		func(segment string) string {
+			segment = escapeIllegalCharacters(segment, settings)
+			return segment
+		},
+		func(segment string) string {
+			segment = strings.TrimSpace(segment)
+			segment = fmt.Sprintf("[source]\n----\n%s\n----", segment)
+			return segment
+		},
+	)
+	return result
+}
+
 // convertMultiLineText converts a multi-line text into a suitable Markdown representation.
 func convertMultiLineText(s string, isTable bool) string {
 	if isTable {
@@ -183,18 +205,21 @@ func normalizeURLs(s string, settings *print.Settings) string {
 	return s
 }
 
-// generateIndentation generates indentation of Markdown headers
-// with base level of provided 'settings.MarkdownIndent' plus any
+// generateIndentation generates indentation of Markdown and AsciiDoc headers
+// with base level of provided 'settings.IndentLevel' plus any
 // extra level needed for subsection (e.g. 'Required Inputs' which
 // is a subsection of 'Inputs' section)
-func generateIndentation(extra int, settings *print.Settings) string {
-	var base = settings.MarkdownIndent
+func generateIndentation(extra int, char string, settings *print.Settings) string {
+	if char == "" {
+		return ""
+	}
+	var base = settings.IndentLevel
 	if base < 1 || base > 5 {
 		base = 2
 	}
 	var indent string
 	for i := 0; i < base+extra; i++ {
-		indent += "#"
+		indent += char
 	}
 	return indent
 }

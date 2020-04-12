@@ -187,6 +187,49 @@ func TestSanitizeItemForTable(t *testing.T) {
 	}
 }
 
+func TestSanitizeItemForAsciidocTable(t *testing.T) {
+	tests := []struct {
+		name        string
+		filename    string
+		escapeChars bool
+		escapePipe  bool
+	}{
+		{
+			name:        "sanitize table item empty",
+			filename:    "empty",
+			escapeChars: false,
+		},
+		{
+			name:        "sanitize table item complex",
+			filename:    "complex",
+			escapeChars: false,
+		},
+		{
+			name:        "sanitize table item codeblock",
+			filename:    "codeblock",
+			escapeChars: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			settings := testutil.Settings().With(&print.Settings{
+				EscapeCharacters: tt.escapeChars,
+			}).Build()
+
+			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
+			assert.Nil(err)
+
+			actual := sanitizeItemForAsciidocTable(string(bytes), settings)
+
+			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".asciidoc.expected"))
+			assert.Nil(err)
+
+			assert.Equal(string(expected), actual)
+		})
+	}
+}
+
 func TestConvertMultiLineText(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -516,9 +559,9 @@ func TestGenerateIndentation(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			settings := testutil.Settings().With(&print.Settings{
-				MarkdownIndent: tt.base,
+				IndentLevel: tt.base,
 			}).Build()
-			actual := generateIndentation(tt.extra, settings)
+			actual := generateIndentation(tt.extra, "#", settings)
 
 			assert.Equal(tt.expected, actual)
 		})

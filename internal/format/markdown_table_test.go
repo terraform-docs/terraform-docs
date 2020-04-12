@@ -364,7 +364,7 @@ func TestTableEscapeCharacters(t *testing.T) {
 func TestTableIndentationBelowAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		MarkdownIndent: 0,
+		IndentLevel: 0,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-IndentationBelowAllowed")
@@ -384,7 +384,7 @@ func TestTableIndentationBelowAllowed(t *testing.T) {
 func TestTableIndentationAboveAllowed(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		MarkdownIndent: 10,
+		IndentLevel: 10,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-IndentationAboveAllowed")
@@ -404,7 +404,7 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 func TestTableIndentationOfFour(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().With(&print.Settings{
-		MarkdownIndent: 4,
+		IndentLevel: 4,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-IndentationOfFour")

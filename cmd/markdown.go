@@ -35,7 +35,7 @@ func init() {
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "do not show \"Required\" column or section")
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-sensitive", false, "do not show \"Sensitive\" column or section")
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
-	markdownCmd.PersistentFlags().IntVar(&settings.MarkdownIndent, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
+	markdownCmd.PersistentFlags().IntVar(&settings.IndentLevel, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
 
 	markdownCmd.AddCommand(markdownTableCmd)
 	markdownCmd.AddCommand(markdownDocumentCmd)

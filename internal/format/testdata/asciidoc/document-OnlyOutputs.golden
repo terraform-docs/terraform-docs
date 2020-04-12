@@ -1,0 +1,19 @@
+== Outputs
+
+The following outputs are exported:
+
+=== unquoted
+
+Description: It's unquoted output.
+
+=== output-2
+
+Description: It's output number two.
+
+=== output-1
+
+Description: It's output number one.
+
+=== output-0.12
+
+Description: terraform 0.12 only

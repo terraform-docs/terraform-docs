@@ -20,7 +20,7 @@ const (
 
 	tableRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
-		{{ indent 0 }} Requirements
+		{{ indent 0 "#" }} Requirements
 		{{ if not .Module.Requirements }}
 			No requirements.
 		{{ else }}
@@ -35,7 +35,7 @@ const (
 
 	tableProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
-		{{ indent 0 }} Providers
+		{{ indent 0 "#" }} Providers
 		{{ if not .Module.Providers }}
 			No provider.
 		{{ else }}
@@ -50,7 +50,7 @@ const (
 
 	tableInputsTpl = `
 	{{- if .Settings.ShowInputs -}}
-		{{ indent 0 }} Inputs
+		{{ indent 0 "#" }} Inputs
 		{{ if not .Module.Inputs }}
 			No input.
 		{{ else }}
@@ -68,7 +68,7 @@ const (
 
 	tableOutputsTpl = `
 	{{- if .Settings.ShowOutputs -}}
-		{{ indent 0 }} Outputs
+		{{ indent 0 "#" }} Outputs
 		{{ if not .Module.Outputs }}
 			No output.
 		{{ else }}
@@ -79,7 +79,7 @@ const (
 				{{- if $.Settings.OutputValues -}}
 					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
 					{{ printf " " }}{{ value $sensitive | sanitizeTbl }} |
-					{{- if $.Settings.ShowSensitivity -}} 
+					{{- if $.Settings.ShowSensitivity -}}
 						{{ printf " " }}{{ ternary .Sensitive "yes" "no" }} |
 					{{- end -}}
 				{{- end -}}

@@ -10,9 +10,9 @@ type Settings struct {
 	// scope: Markdown
 	EscapePipe bool
 
-	// MarkdownIndent control the indentation of Markdown headers [available: 1, 2, 3, 4, 5] (default: 2)
-	// scope: Markdown
-	MarkdownIndent int
+	// IndentLevel control the indentation of AsciiDoc and Markdown headers [available: 1, 2, 3, 4, 5] (default: 2)
+	// scope: Asciidoc, Markdown
+	IndentLevel int
 
 	// OutputValues ailrghaekrgj
 	// scope: Global
@@ -64,7 +64,7 @@ func NewSettings() *Settings {
 	return &Settings{
 		EscapeCharacters: true,
 		EscapePipe:       true,
-		MarkdownIndent:   2,
+		IndentLevel:      2,
 		OutputValues:     false,
 		ShowColor:        true,
 		ShowHeader:       true,
