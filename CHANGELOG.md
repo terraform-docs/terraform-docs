@@ -3,6 +3,12 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Code Refactoring
+- Add factory function to return format types ([#243](https://github.com/segmentio/terraform-docs/issues/243))
+- Reorganize markdown format tests ([#244](https://github.com/segmentio/terraform-docs/issues/244))
+
+### Features
+- Add support for AsciiDoc renderer ([#241](https://github.com/segmentio/terraform-docs/issues/241))
 
 
 <a name="v0.9.1"></a>
