@@ -43,31 +43,31 @@ func TestOutputsSortedByPosition(t *testing.T) {
 
 func sampleOutputs() []*tfconf.Output {
 	return []*tfconf.Output{
-		&tfconf.Output{
+		{
 			Name:        "a",
 			Description: types.String("description of a"),
 			Value:       nil,
 			Position:    tfconf.Position{Filename: "foo/outputs.tf", Line: 25},
 		},
-		&tfconf.Output{
+		{
 			Name:        "d",
 			Description: types.String("description of d"),
 			Value:       nil,
 			Position:    tfconf.Position{Filename: "foo/outputs.tf", Line: 10},
 		},
-		&tfconf.Output{
+		{
 			Name:        "e",
 			Description: types.String("description of e"),
 			Value:       nil,
 			Position:    tfconf.Position{Filename: "foo/outputs.tf", Line: 33},
 		},
-		&tfconf.Output{
+		{
 			Name:        "b",
 			Description: types.String("description of b"),
 			Value:       nil,
 			Position:    tfconf.Position{Filename: "foo/outputs.tf", Line: 39},
 		},
-		&tfconf.Output{
+		{
 			Name:        "c",
 			Description: types.String("description of c"),
 			Value:       nil,

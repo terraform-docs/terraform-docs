@@ -37,10 +37,10 @@ func TestTemplateRender(t *testing.T) {
 		{
 			name: "template render with custom functions",
 			items: []*Item{
-				&Item{
+				{
 					Name: "all",
 					Text: `{{- template "section" . -}}`,
-				}, &Item{
+				}, {
 					Name: "section",
 					Text: sectionTpl,
 				},

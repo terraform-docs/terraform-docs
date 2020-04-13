@@ -43,43 +43,43 @@ func TestProvidersSortedByPosition(t *testing.T) {
 
 func sampleProviders() []*tfconf.Provider {
 	return []*tfconf.Provider{
-		&tfconf.Provider{
+		{
 			Name:     "d",
 			Alias:    types.String(""),
 			Version:  types.String("1.3.2"),
 			Position: tfconf.Position{Filename: "foo/main.tf", Line: 21},
 		},
-		&tfconf.Provider{
+		{
 			Name:     "d",
 			Alias:    types.String("a"),
 			Version:  types.String("> 1.x"),
 			Position: tfconf.Position{Filename: "foo/main.tf", Line: 25},
 		},
-		&tfconf.Provider{
+		{
 			Name:     "b",
 			Alias:    types.String(""),
 			Version:  types.String("= 2.1.0"),
 			Position: tfconf.Position{Filename: "foo/main.tf", Line: 13},
 		},
-		&tfconf.Provider{
+		{
 			Name:     "a",
 			Alias:    types.String(""),
 			Version:  types.String(""),
 			Position: tfconf.Position{Filename: "foo/main.tf", Line: 39},
 		},
-		&tfconf.Provider{
+		{
 			Name:     "c",
 			Alias:    types.String(""),
 			Version:  types.String("~> 0.5.0"),
 			Position: tfconf.Position{Filename: "foo/main.tf", Line: 53},
 		},
-		&tfconf.Provider{
+		{
 			Name:     "e",
 			Alias:    types.String(""),
 			Version:  types.String(""),
 			Position: tfconf.Position{Filename: "foo/main.tf", Line: 47},
 		},
-		&tfconf.Provider{
+		{
 			Name:     "e",
 			Alias:    types.String("a"),
 			Version:  types.String("> 1.0"),

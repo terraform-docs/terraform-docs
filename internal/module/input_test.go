@@ -59,7 +59,7 @@ func TestInputsSortedByPosition(t *testing.T) {
 
 func sampleInputs() []*tfconf.Input {
 	return []*tfconf.Input{
-		&tfconf.Input{
+		{
 			Name:        "e",
 			Type:        types.String(""),
 			Description: types.String("description of e"),
@@ -67,7 +67,7 @@ func sampleInputs() []*tfconf.Input {
 			Required:    false,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 35},
 		},
-		&tfconf.Input{
+		{
 			Name:        "a",
 			Type:        types.String("string"),
 			Description: types.String(""),
@@ -75,7 +75,7 @@ func sampleInputs() []*tfconf.Input {
 			Required:    false,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 10},
 		},
-		&tfconf.Input{
+		{
 			Name:        "d",
 			Type:        types.String("string"),
 			Description: types.String("description for d"),
@@ -83,7 +83,7 @@ func sampleInputs() []*tfconf.Input {
 			Required:    true,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 23},
 		},
-		&tfconf.Input{
+		{
 			Name:        "b",
 			Type:        types.String("number"),
 			Description: types.String("description of b"),
@@ -91,7 +91,7 @@ func sampleInputs() []*tfconf.Input {
 			Required:    true,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 42},
 		},
-		&tfconf.Input{
+		{
 			Name:        "c",
 			Type:        types.String("list"),
 			Description: types.String("description of c"),
@@ -99,7 +99,7 @@ func sampleInputs() []*tfconf.Input {
 			Required:    false,
 			Position:    tfconf.Position{Filename: "foo/variables.tf", Line: 51},
 		},
-		&tfconf.Input{
+		{
 			Name:        "f",
 			Type:        types.String("string"),
 			Description: types.String("description of f"),

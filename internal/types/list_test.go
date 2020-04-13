@@ -11,10 +11,10 @@ import (
 
 func TestList(t *testing.T) {
 	values := []List{
-		List{"foo", "bar", "baz"},
-		List{"1", "2", "3"},
-		List{true, false, true},
-		List{10, float64(1000), int8(42)},
+		{"foo", "bar", "baz"},
+		{"1", "2", "3"},
+		{true, false, true},
+		{10, float64(1000), int8(42)},
 	}
 	tests := []testlist{
 		{
