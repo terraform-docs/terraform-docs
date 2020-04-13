@@ -392,7 +392,7 @@ func TestSortItems(t *testing.T) {
 		{
 			name: "sort module items",
 			path: "full-example",
-			sort: &SortBy{Name: false, Required: false},
+			sort: &SortBy{Name: false, Required: false, Type: false},
 			expected: expected{
 				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
 				required:  []string{"A", "F"},
@@ -404,7 +404,7 @@ func TestSortItems(t *testing.T) {
 		{
 			name: "sort module items",
 			path: "full-example",
-			sort: &SortBy{Name: true, Required: false},
+			sort: &SortBy{Name: true, Required: false, Type: false},
 			expected: expected{
 				inputs:    []string{"A", "B", "C", "D", "E", "F", "G"},
 				required:  []string{"A", "F"},
@@ -416,7 +416,7 @@ func TestSortItems(t *testing.T) {
 		{
 			name: "sort module items",
 			path: "full-example",
-			sort: &SortBy{Name: false, Required: true},
+			sort: &SortBy{Name: false, Required: true, Type: false},
 			expected: expected{
 				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
 				required:  []string{"A", "F"},
@@ -428,11 +428,59 @@ func TestSortItems(t *testing.T) {
 		{
 			name: "sort module items",
 			path: "full-example",
-			sort: &SortBy{Name: true, Required: true},
+			sort: &SortBy{Name: false, Required: false, Type: true},
+			expected: expected{
+				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
+				required:  []string{"A", "F"},
+				optional:  []string{"G", "B", "C", "D", "E"},
+				outputs:   []string{"A", "B", "C"},
+				providers: []string{"aws", "null", "tls"},
+			},
+		},
+		{
+			name: "sort module items",
+			path: "full-example",
+			sort: &SortBy{Name: true, Required: true, Type: false},
 			expected: expected{
 				inputs:    []string{"A", "F", "B", "C", "D", "E", "G"},
 				required:  []string{"A", "F"},
 				optional:  []string{"B", "C", "D", "E", "G"},
+				outputs:   []string{"A", "B", "C"},
+				providers: []string{"aws", "null", "tls"},
+			},
+		},
+		{
+			name: "sort module items",
+			path: "full-example",
+			sort: &SortBy{Name: true, Required: false, Type: true},
+			expected: expected{
+				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
+				required:  []string{"A", "F"},
+				optional:  []string{"G", "B", "C", "D", "E"},
+				outputs:   []string{"A", "B", "C"},
+				providers: []string{"aws", "null", "tls"},
+			},
+		},
+		{
+			name: "sort module items",
+			path: "full-example",
+			sort: &SortBy{Name: false, Required: true, Type: true},
+			expected: expected{
+				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
+				required:  []string{"A", "F"},
+				optional:  []string{"G", "B", "C", "D", "E"},
+				outputs:   []string{"A", "B", "C"},
+				providers: []string{"aws", "null", "tls"},
+			},
+		},
+		{
+			name: "sort module items",
+			path: "full-example",
+			sort: &SortBy{Name: true, Required: true, Type: true},
+			expected: expected{
+				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
+				required:  []string{"A", "F"},
+				optional:  []string{"G", "B", "C", "D", "E"},
 				outputs:   []string{"A", "B", "C"},
 				providers: []string{"aws", "null", "tls"},
 			},
