@@ -4,11 +4,18 @@
 ## [Unreleased]
 
 ### Code Refactoring
+- Remove deprecated flags ([#229](https://github.com/segmentio/terraform-docs/issues/229))
 - Add factory function to return format types ([#243](https://github.com/segmentio/terraform-docs/issues/243))
 - Reorganize markdown format tests ([#244](https://github.com/segmentio/terraform-docs/issues/244))
 
 ### Features
 - Add support for AsciiDoc renderer ([#241](https://github.com/segmentio/terraform-docs/issues/241))
+
+### BREAKING CHANGE
+
+- Flags `--with-aggregate-type-defaults` and
+`--sort-inputs-by-required` were marked as deprecated in v0.8.2
+and now are removed.
 
 
 <a name="v0.9.1"></a>
