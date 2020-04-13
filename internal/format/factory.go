@@ -32,6 +32,8 @@ func Factory(name string, settings *print.Settings) (print.Format, error) {
 		return NewTfvarsHCL(settings), nil
 	case "tfvars json":
 		return NewTfvarsJSON(settings), nil
+	case "toml":
+		return NewTOML(settings), nil
 	case "xml":
 		return NewXML(settings), nil
 	case "yaml":

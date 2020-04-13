@@ -77,6 +77,12 @@ func TestFormatFactory(t *testing.T) {
 		},
 		{
 			name:     "format factory from name",
+			format:   "toml",
+			expected: "*format.TOML",
+			wantErr:  false,
+		},
+		{
+			name:     "format factory from name",
 			format:   "xml",
 			expected: "*format.XML",
 			wantErr:  false,
