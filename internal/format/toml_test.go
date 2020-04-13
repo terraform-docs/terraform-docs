@@ -81,6 +81,32 @@ func TestTomlSortByRequired(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestTomlSortByType(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().With(&print.Settings{
+		SortByType: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("toml", "toml-SortByType")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().With(&module.Options{
+		SortBy: &module.SortBy{
+			Type: true,
+		},
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTOML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestTomlNoHeader(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
@@ -333,6 +359,28 @@ func TestTomlOutputValues(t *testing.T) {
 	options, err := module.NewOptions().With(&module.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTOML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestTomlHeaderFromFile(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().Build()
+
+	expected, err := testutil.GetExpected("toml", "toml-HeaderFromFile")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "doc.tf",
 	})
 	assert.Nil(err)
 

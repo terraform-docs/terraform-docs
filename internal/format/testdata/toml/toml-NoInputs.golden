@@ -44,3 +44,7 @@ inputs = []
 [[requirements]]
   Name = "aws"
   Version = ">= 2.15.0"
+
+[[requirements]]
+  Name = "random"
+  Version = ">= 2.2.0"

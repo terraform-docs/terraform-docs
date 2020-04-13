@@ -271,3 +271,7 @@ header = "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 
 [[requirements]]
   Name = "aws"
   Version = ">= 2.15.0"
+
+[[requirements]]
+  Name = "random"
+  Version = ">= 2.2.0"
