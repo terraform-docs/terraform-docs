@@ -1,0 +1,57 @@
+{
+  "input_with_underscores": null,
+  "unquoted": null,
+  "bool-1": true,
+  "bool-2": false,
+  "bool-3": true,
+  "bool_default_false": false,
+  "input-with-code-block": [
+    "name rack:location"
+  ],
+  "list-1": [
+    "a",
+    "b",
+    "c"
+  ],
+  "list-2": null,
+  "list-3": [],
+  "list_default_empty": [],
+  "map-1": {
+    "a": 1,
+    "b": 2,
+    "c": 3
+  },
+  "map-2": null,
+  "map-3": {},
+  "number-1": 42,
+  "number-2": null,
+  "number-3": "19",
+  "number-4": 15.75,
+  "number_default_zero": 0,
+  "long_type": {
+    "bar": {
+      "bar": "bar",
+      "foo": "bar"
+    },
+    "buzz": [
+      "fizz",
+      "buzz"
+    ],
+    "fizz": [],
+    "foo": {
+      "bar": "foo",
+      "foo": "foo"
+    },
+    "name": "hello"
+  },
+  "object_default_empty": {},
+  "input-with-pipe": "v1",
+  "no-escape-default-value": "VALUE_WITH_UNDERSCORE",
+  "string-1": "bar",
+  "string-2": null,
+  "string-3": "",
+  "string_default_empty": "",
+  "string_default_null": null,
+  "string_no_default": null,
+  "with-url": ""
+}

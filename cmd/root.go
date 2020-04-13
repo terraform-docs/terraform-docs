@@ -54,6 +54,7 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "do no sort items")
 	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first")
+	rootCmd.PersistentFlags().BoolVar(&settings.SortByType, "sort-by-type", false, "sort items by type of them")
 
 	rootCmd.PersistentFlags().StringVar(&options.HeaderFromFile, "header-from", "main.tf", "relative path of a file to read header from")
 
@@ -86,6 +87,7 @@ var formatRunE = func(cmd *cobra.Command, args []string) error {
 		SortBy: &module.SortBy{
 			Name:     settings.SortByName,
 			Required: settings.SortByRequired,
+			Type:     settings.SortByType,
 		},
 	})
 	if err != nil {

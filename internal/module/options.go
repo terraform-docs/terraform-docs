@@ -11,6 +11,7 @@ import (
 type SortBy struct {
 	Name     bool
 	Required bool
+	Type     bool
 }
 
 // Options contains required options to load a Module from path
@@ -29,7 +30,7 @@ func NewOptions() *Options {
 		Path:             "",
 		ShowHeader:       true,
 		HeaderFromFile:   "main.tf",
-		SortBy:           &SortBy{Name: false, Required: false},
+		SortBy:           &SortBy{Name: false, Required: false, Type: false},
 		OutputValues:     false,
 		OutputValuesPath: "",
 	}
