@@ -13,16 +13,16 @@ type TerraformOutput struct {
 
 type outputsSortedByName []*tfconf.Output
 
-func (on outputsSortedByName) Len() int      { return len(on) }
-func (on outputsSortedByName) Swap(i, j int) { on[i], on[j] = on[j], on[i] }
-func (on outputsSortedByName) Less(i, j int) bool {
-	return on[i].Name < on[j].Name
+func (a outputsSortedByName) Len() int      { return len(a) }
+func (a outputsSortedByName) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a outputsSortedByName) Less(i, j int) bool {
+	return a[i].Name < a[j].Name
 }
 
 type outputsSortedByPosition []*tfconf.Output
 
-func (op outputsSortedByPosition) Len() int      { return len(op) }
-func (op outputsSortedByPosition) Swap(i, j int) { op[i], op[j] = op[j], op[i] }
-func (op outputsSortedByPosition) Less(i, j int) bool {
-	return op[i].Position.Filename < op[j].Position.Filename || op[i].Position.Line < op[j].Position.Line
+func (a outputsSortedByPosition) Len() int      { return len(a) }
+func (a outputsSortedByPosition) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a outputsSortedByPosition) Less(i, j int) bool {
+	return a[i].Position.Filename < a[j].Position.Filename || a[i].Position.Line < a[j].Position.Line
 }
