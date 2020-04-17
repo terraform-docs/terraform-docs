@@ -68,6 +68,6 @@ golang.org/x/text/unicode/norm
 # gopkg.in/yaml.v2 v2.2.8
 ## explicit
 gopkg.in/yaml.v2
-# mvdan.cc/xurls/v2 v2.1.0
+# mvdan.cc/xurls/v2 v2.2.0
 ## explicit
 mvdan.cc/xurls/v2
