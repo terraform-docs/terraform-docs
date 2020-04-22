@@ -1,5 +1,9 @@
 # go-test/deep Changelog
 
+## v1.0.6 released 2020-04-21
+
+* Added `NilMapsAreEmpty` variable which causes a nil map to equal an empty map (PR #43) (@yalegko)
+
 ## v1.0.5 released 2020-01-16
 
 * Added `NilSlicesAreEmpty` variable which causes a nil slice to be equal to an empty slice (PR #27) (@Anaminus)
