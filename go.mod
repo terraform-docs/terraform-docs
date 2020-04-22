@@ -3,7 +3,7 @@ module github.com/segmentio/terraform-docs
 go 1.14
 
 require (
-	github.com/go-test/deep v1.0.5
+	github.com/go-test/deep v1.0.6
 	github.com/hashicorp/hcl v1.0.0
 	github.com/hashicorp/hcl/v2 v2.4.0
 	github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0
