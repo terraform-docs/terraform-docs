@@ -53,6 +53,118 @@ func TestLoadModule(t *testing.T) {
 	}
 }
 
+func TestGetFileFormat(t *testing.T) {
+	tests := []struct {
+		name     string
+		filename string
+		expected string
+	}{
+		{
+			name:     "get file format",
+			filename: "main.tf",
+			expected: ".tf",
+		},
+		{
+			name:     "get file format",
+			filename: "main.file.tf",
+			expected: ".tf",
+		},
+		{
+			name:     "get file format",
+			filename: "main_file.tf",
+			expected: ".tf",
+		},
+		{
+			name:     "get file format",
+			filename: "main.file_tf",
+			expected: ".file_tf",
+		},
+		{
+			name:     "get file format",
+			filename: "main_file_tf",
+			expected: "",
+		},
+		{
+			name:     "get file format",
+			filename: "",
+			expected: "",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			actual := getFileFormat(tt.filename)
+			assert.Equal(tt.expected, actual)
+		})
+	}
+}
+
+func TestIsFileFormatSupported(t *testing.T) {
+	tests := []struct {
+		name     string
+		filename string
+		expected bool
+		wantErr  bool
+		errText  string
+	}{
+		{
+			name:     "is file format supported",
+			filename: "main.adoc",
+			expected: true,
+			wantErr:  false,
+			errText:  "",
+		},
+		{
+			name:     "is file format supported",
+			filename: "main.md",
+			expected: true,
+			wantErr:  false,
+			errText:  "",
+		},
+		{
+			name:     "is file format supported",
+			filename: "main.tf",
+			expected: true,
+			wantErr:  false,
+			errText:  "",
+		},
+		{
+			name:     "is file format supported",
+			filename: "main.txt",
+			expected: true,
+			wantErr:  false,
+			errText:  "",
+		},
+		{
+			name:     "is file format supported",
+			filename: "main.doc",
+			expected: false,
+			wantErr:  true,
+			errText:  "only .adoc, .md, .tf and .txt formats are supported to read header from",
+		},
+		{
+			name:     "is file format supported",
+			filename: "",
+			expected: false,
+			wantErr:  true,
+			errText:  "--header-from value is missing",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			actual, err := isFileFormatSupported(tt.filename)
+			if tt.wantErr {
+				assert.NotNil(err)
+				assert.Equal(tt.errText, err.Error())
+			} else {
+				assert.Nil(err)
+				assert.Equal(tt.expected, actual)
+			}
+		})
+	}
+}
+
 func TestLoadHeader(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -60,6 +172,7 @@ func TestLoadHeader(t *testing.T) {
 		header   string
 		expected string
 		wantErr  bool
+		errText  string
 	}{
 		{
 			name:     "load module header from path",
@@ -67,6 +180,7 @@ func TestLoadHeader(t *testing.T) {
 			header:   "main.tf",
 			expected: "Example of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n\nEven inline **formatting** in _here_ is possible.\nand some [link](https://domain.com/)",
 			wantErr:  false,
+			errText:  "",
 		},
 		{
 			name:     "load module header from path",
@@ -74,6 +188,7 @@ func TestLoadHeader(t *testing.T) {
 			header:   "doc.tf",
 			expected: "Custom Header:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2",
 			wantErr:  false,
+			errText:  "",
 		},
 		{
 			name:     "load module header from path",
@@ -81,6 +196,23 @@ func TestLoadHeader(t *testing.T) {
 			header:   "doc.md",
 			expected: "# Custom Header\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n",
 			wantErr:  false,
+			errText:  "",
+		},
+		{
+			name:     "load module header from path",
+			path:     "full-example",
+			header:   "doc.adoc",
+			expected: "= Custom Header\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n",
+			wantErr:  false,
+			errText:  "",
+		},
+		{
+			name:     "load module header from path",
+			path:     "full-example",
+			header:   "doc.txt",
+			expected: "# Custom Header\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n",
+			wantErr:  false,
+			errText:  "",
 		},
 		{
 			name:     "load module header from path",
@@ -88,6 +220,7 @@ func TestLoadHeader(t *testing.T) {
 			header:   "main.tf",
 			expected: "",
 			wantErr:  false,
+			errText:  "",
 		},
 		{
 			name:     "load module header from path",
@@ -95,6 +228,15 @@ func TestLoadHeader(t *testing.T) {
 			header:   "non-existent.tf",
 			expected: "",
 			wantErr:  true,
+			errText:  "stat testdata/full-example/non-existent.tf: no such file or directory",
+		},
+		{
+			name:     "load module header from path",
+			path:     "full-example",
+			header:   "wrong-formate.docx",
+			expected: "",
+			wantErr:  true,
+			errText:  "only .adoc, .md, .tf and .txt formats are supported to read header from",
 		},
 		{
 			name:     "load module header from path",
@@ -102,6 +244,7 @@ func TestLoadHeader(t *testing.T) {
 			header:   "",
 			expected: "",
 			wantErr:  true,
+			errText:  "--header-from value is missing",
 		},
 		{
 			name:     "load module header from path",
@@ -109,6 +252,7 @@ func TestLoadHeader(t *testing.T) {
 			header:   "",
 			expected: "",
 			wantErr:  true,
+			errText:  "--header-from value is missing",
 		},
 		{
 			name:     "load module header from path",
@@ -116,6 +260,7 @@ func TestLoadHeader(t *testing.T) {
 			header:   "",
 			expected: "",
 			wantErr:  true,
+			errText:  "--header-from value is missing",
 		},
 	}
 	for _, tt := range tests {
@@ -125,6 +270,7 @@ func TestLoadHeader(t *testing.T) {
 			actual, err := loadHeader(options)
 			if tt.wantErr {
 				assert.NotNil(err)
+				assert.Equal(tt.errText, err.Error())
 			} else {
 				assert.Nil(err)
 				assert.Equal(tt.expected, actual)

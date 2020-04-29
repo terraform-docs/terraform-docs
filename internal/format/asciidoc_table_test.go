@@ -453,48 +453,56 @@ func TestAsciidocTableOutputValues(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestAsciidocTableHeaderFromTFFile(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
+func TestAsciidocTableHeaderFromFile(t *testing.T) {
+	tests := []struct {
+		name   string
+		golden string
+		file   string
+	}{
+		{
+			name:   "load module header from .adoc",
+			golden: "table-HeaderFromADOCFile",
+			file:   "doc.adoc",
+		},
+		{
+			name:   "load module header from .md",
+			golden: "table-HeaderFromMDFile",
+			file:   "doc.md",
+		},
+		{
+			name:   "load module header from .tf",
+			golden: "table-HeaderFromTFFile",
+			file:   "doc.tf",
+		},
+		{
+			name:   "load module header from .txt",
+			golden: "table-HeaderFromTXTFile",
+			file:   "doc.txt",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("asciidoc", "table-HeaderFromTFFile")
-	assert.Nil(err)
+			expected, err := testutil.GetExpected("asciidoc", tt.golden)
+			assert.Nil(err)
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
-		HeaderFromFile: "doc.tf",
-	})
-	assert.Nil(err)
+			options, err := module.NewOptions().WithOverwrite(&module.Options{
+				HeaderFromFile: tt.file,
+			})
+			assert.Nil(err)
 
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
+			module, err := testutil.GetModule(options)
+			assert.Nil(err)
 
-	printer := NewAsciidocTable(settings)
-	actual, err := printer.Print(module, settings)
+			printer := NewAsciidocTable(settings)
+			actual, err := printer.Print(module, settings)
 
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocTableHeaderFromMDFile(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "table-HeaderFromMDFile")
-	assert.Nil(err)
-
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
-		HeaderFromFile: "doc.md",
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocTable(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
+			assert.Nil(err)
+			assert.Equal(expected, actual)
+		})
+	}
 }
 
 func TestAsciidocTableOutputValuesNoSensitivity(t *testing.T) {
