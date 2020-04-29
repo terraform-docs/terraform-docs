@@ -9,7 +9,7 @@ A utility to generate documentation from Terraform modules in various output for
 ### Options
 
 ```
-      --header-from string          relative path of a file to read header from (.adoc, .md, .tf or .txt) (default "main.tf")
+      --header-from string          relative path of a file to read header from (default "main.tf")
   -h, --help                        help for terraform-docs
       --no-header                   do not show module header
       --no-inputs                   do not show inputs

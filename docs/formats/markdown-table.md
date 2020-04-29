@@ -19,7 +19,7 @@ terraform-docs markdown table [PATH] [flags]
 ### Options inherited from parent commands
 
 ```
-      --header-from string          relative path of a file to read header from (.adoc, .md, .tf or .txt) (default "main.tf")
+      --header-from string          relative path of a file to read header from (default "main.tf")
       --indent int                  indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --no-escape                   do not escape special characters
       --no-header                   do not show module header

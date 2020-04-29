@@ -19,7 +19,7 @@ terraform-docs yaml [PATH] [flags]
 ### Options inherited from parent commands
 
 ```
-      --header-from string          relative path of a file to read header from (.adoc, .md, .tf or .txt) (default "main.tf")
+      --header-from string          relative path of a file to read header from (default "main.tf")
       --no-header                   do not show module header
       --no-inputs                   do not show inputs
       --no-outputs                  do not show outputs

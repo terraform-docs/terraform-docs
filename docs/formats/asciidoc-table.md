@@ -19,7 +19,7 @@ terraform-docs asciidoc table [PATH] [flags]
 ### Options inherited from parent commands
 
 ```
-      --header-from string          relative path of a file to read header from (.adoc, .md, .tf or .txt) (default "main.tf")
+      --header-from string          relative path of a file to read header from (default "main.tf")
       --indent int                  indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
       --no-header                   do not show module header
       --no-inputs                   do not show inputs
