@@ -15,7 +15,7 @@ Generate terraform.tfvars of inputs
 ### Options inherited from parent commands
 
 ```
-      --header-from string          relative path of a file to read header from (.tf or .md is supported) (default "main.tf")
+      --header-from string          relative path of a file to read header from (.tf or .md) (default "main.tf")
       --no-header                   do not show module header
       --no-inputs                   do not show inputs
       --no-outputs                  do not show outputs
