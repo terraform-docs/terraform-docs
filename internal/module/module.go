@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
@@ -68,14 +69,22 @@ func loadHeader(options *Options) (string, error) {
 	if !options.ShowHeader {
 		return "", nil
 	}
-
+	if !strings.HasSuffix(options.HeaderFromFile, ".tf") && !strings.HasSuffix(options.HeaderFromFile, ".md") {
+		return "", fmt.Errorf("only .tf and .md formats are supported to read header from")
+	}
 	filename := filepath.Join(options.Path, options.HeaderFromFile)
-	_, err := ioutil.ReadFile(filename)
-	if err != nil {
+	if info, err := os.Stat(filename); os.IsNotExist(err) || info.IsDir() {
 		if options.HeaderFromFile != "main.tf" {
 			return "", err // user explicitly asked for a file which doesn't exist
 		}
 		return "", nil // absorb the error to not break workflow of users who don't have 'main.tf at all
+	}
+	if strings.HasSuffix(filename, ".md") {
+		content, err := ioutil.ReadFile(filename)
+		if err != nil {
+			return "", err
+		}
+		return string(content), nil
 	}
 	lines := reader.Lines{
 		FileName: filename,

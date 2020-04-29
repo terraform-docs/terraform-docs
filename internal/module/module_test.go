@@ -77,6 +77,13 @@ func TestLoadHeader(t *testing.T) {
 		},
 		{
 			name:     "load module header from path",
+			path:     "full-example",
+			header:   "doc.md",
+			expected: "# Custom Header\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n",
+			wantErr:  false,
+		},
+		{
+			name:     "load module header from path",
 			path:     "no-inputs",
 			header:   "main.tf",
 			expected: "",

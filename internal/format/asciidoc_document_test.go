@@ -453,15 +453,37 @@ func TestAsciidocDocumentOutputValues(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestAsciidocDocumentHeaderFromFile(t *testing.T) {
+func TestAsciidocDocumentHeaderFromTFFile(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("asciidoc", "document-HeaderFromFile")
+	expected, err := testutil.GetExpected("asciidoc", "document-HeaderFromTFFile")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().WithOverwrite(&module.Options{
 		HeaderFromFile: "doc.tf",
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewAsciidocDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestAsciidocDocumentHeaderFromMDFile(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().Build()
+
+	expected, err := testutil.GetExpected("asciidoc", "document-HeaderFromMDFile")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "doc.md",
 	})
 	assert.Nil(err)
 

@@ -372,15 +372,37 @@ func TestYamlOutputValues(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestYamlHeaderFromFile(t *testing.T) {
+func TestYamlHeaderFromTFFile(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("yaml", "yaml-HeaderFromFile")
+	expected, err := testutil.GetExpected("yaml", "yaml-HeaderFromTFFile")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().WithOverwrite(&module.Options{
 		HeaderFromFile: "doc.tf",
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestYamlHeaderFromMDFile(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().Build()
+
+	expected, err := testutil.GetExpected("yaml", "yaml-HeaderFromMDFile")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "doc.md",
 	})
 	assert.Nil(err)
 

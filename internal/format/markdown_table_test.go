@@ -473,15 +473,37 @@ func TestTableOutputValues(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
-func TestTableHeaderFromFile(t *testing.T) {
+func TestTableHeaderFromTFFile(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("markdown", "table-HeaderFromFile")
+	expected, err := testutil.GetExpected("markdown", "table-HeaderFromTFFile")
 	assert.Nil(err)
 
 	options, err := module.NewOptions().WithOverwrite(&module.Options{
 		HeaderFromFile: "doc.tf",
+	})
+	assert.Nil(err)
+
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestTableHeaderFromMDFile(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().WithSections().Build()
+
+	expected, err := testutil.GetExpected("markdown", "table-HeaderFromMDFile")
+	assert.Nil(err)
+
+	options, err := module.NewOptions().WithOverwrite(&module.Options{
+		HeaderFromFile: "doc.md",
 	})
 	assert.Nil(err)
 
