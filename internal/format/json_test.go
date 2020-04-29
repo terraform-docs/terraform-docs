@@ -393,25 +393,55 @@ func TestJsonOutputValues(t *testing.T) {
 }
 
 func TestJsonHeaderFromFile(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
+	tests := []struct {
+		name   string
+		golden string
+		file   string
+	}{
+		{
+			name:   "load module header from .adoc",
+			golden: "json-HeaderFromADOCFile",
+			file:   "doc.adoc",
+		},
+		{
+			name:   "load module header from .md",
+			golden: "json-HeaderFromMDFile",
+			file:   "doc.md",
+		},
+		{
+			name:   "load module header from .tf",
+			golden: "json-HeaderFromTFFile",
+			file:   "doc.tf",
+		},
+		{
+			name:   "load module header from .txt",
+			golden: "json-HeaderFromTXTFile",
+			file:   "doc.txt",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			settings := testutil.Settings().WithSections().Build()
 
-	expected, err := testutil.GetExpected("json", "json-HeaderFromFile")
-	assert.Nil(err)
+			expected, err := testutil.GetExpected("json", tt.golden)
+			assert.Nil(err)
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
-		HeaderFromFile: "doc.tf",
-	})
-	assert.Nil(err)
+			options, err := module.NewOptions().WithOverwrite(&module.Options{
+				HeaderFromFile: tt.file,
+			})
+			assert.Nil(err)
 
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
+			module, err := testutil.GetModule(options)
+			assert.Nil(err)
 
-	printer := NewJSON(settings)
-	actual, err := printer.Print(module, settings)
+			printer := NewJSON(settings)
+			actual, err := printer.Print(module, settings)
 
-	assert.Nil(err)
-	assert.Equal(expected, actual)
+			assert.Nil(err)
+			assert.Equal(expected, actual)
+		})
+	}
 }
 
 func TestJsonEmpty(t *testing.T) {

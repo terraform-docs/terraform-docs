@@ -1,0 +1,353 @@
+# This header comes from a custom Text file
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit,  
+sed do eiusmod tempor incididunt ut labore et dolore magna  
+aliqua. Ut enim ad minim veniam, quis nostrud exercitation  
+ullamco laboris nisi ut aliquip ex ea commodo consequat.  
+Duis aute irure dolor in reprehenderit in voluptate velit  
+esse cillum dolore eu fugiat nulla pariatur.
+
+== Requirements
+
+The following requirements are needed by this module:
+
+- terraform (>= 0.12)
+
+- aws (>= 2.15.0)
+
+- random (>= 2.2.0)
+
+== Providers
+
+The following providers are used by this module:
+
+- tls
+
+- aws (>= 2.15.0)
+
+- aws.ident (>= 2.15.0)
+
+- null
+
+== Inputs
+
+The following input variables are supported:
+
+=== unquoted
+
+Description: n/a
+
+Type: `any`
+
+Default: n/a
+
+=== bool-3
+
+Description: n/a
+
+Type: `bool`
+
+Default: `true`
+
+=== bool-2
+
+Description: It's bool number two.
+
+Type: `bool`
+
+Default: `false`
+
+=== bool-1
+
+Description: It's bool number one.
+
+Type: `bool`
+
+Default: `true`
+
+=== string-3
+
+Description: n/a
+
+Type: `string`
+
+Default: `""`
+
+=== string-2
+
+Description: It's string number two.
+
+Type: `string`
+
+Default: n/a
+
+=== string-1
+
+Description: It's string number one.
+
+Type: `string`
+
+Default: `"bar"`
+
+=== number-3
+
+Description: n/a
+
+Type: `number`
+
+Default: `"19"`
+
+=== number-4
+
+Description: n/a
+
+Type: `number`
+
+Default: `15.75`
+
+=== number-2
+
+Description: It's number number two.
+
+Type: `number`
+
+Default: n/a
+
+=== number-1
+
+Description: It's number number one.
+
+Type: `number`
+
+Default: `42`
+
+=== map-3
+
+Description: n/a
+
+Type: `map`
+
+Default: `{}`
+
+=== map-2
+
+Description: It's map number two.
+
+Type: `map`
+
+Default: n/a
+
+=== map-1
+
+Description: It's map number one.
+
+Type: `map`
+
+Default:
+[source,json]
+----
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+----
+
+=== list-3
+
+Description: n/a
+
+Type: `list`
+
+Default: `[]`
+
+=== list-2
+
+Description: It's list number two.
+
+Type: `list`
+
+Default: n/a
+
+=== list-1
+
+Description: It's list number one.
+
+Type: `list`
+
+Default:
+[source,json]
+----
+[
+  "a",
+  "b",
+  "c"
+]
+----
+
+=== input_with_underscores
+
+Description: A variable with underscores.
+
+Type: `any`
+
+Default: n/a
+
+=== input-with-pipe
+
+Description: It includes v1 \| v2 \| v3
+
+Type: `string`
+
+Default: `"v1"`
+
+=== input-with-code-block
+
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+
+Type: `list`
+
+Default:
+[source,json]
+----
+[
+  "name rack:location"
+]
+----
+
+=== long_type
+
+Description: This description is itself markdown.
+
+It spans over multiple lines.
+
+Type:
+[source,hcl]
+----
+object({
+    name = string,
+    foo  = object({ foo = string, bar = string }),
+    bar  = object({ foo = string, bar = string }),
+    fizz = list(string),
+    buzz = list(string)
+  })
+----
+
+Default:
+[source,json]
+----
+{
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+----
+
+=== no-escape-default-value
+
+Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
+
+Type: `string`
+
+Default: `"VALUE_WITH_UNDERSCORE"`
+
+=== with-url
+
+Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+
+Type: `string`
+
+Default: `""`
+
+=== string_default_empty
+
+Description: n/a
+
+Type: `string`
+
+Default: `""`
+
+=== string_default_null
+
+Description: n/a
+
+Type: `string`
+
+Default: `null`
+
+=== string_no_default
+
+Description: n/a
+
+Type: `string`
+
+Default: n/a
+
+=== number_default_zero
+
+Description: n/a
+
+Type: `number`
+
+Default: `0`
+
+=== bool_default_false
+
+Description: n/a
+
+Type: `bool`
+
+Default: `false`
+
+=== list_default_empty
+
+Description: n/a
+
+Type: `list(string)`
+
+Default: `[]`
+
+=== object_default_empty
+
+Description: n/a
+
+Type: `object({})`
+
+Default: `{}`
+
+== Outputs
+
+The following outputs are exported:
+
+=== unquoted
+
+Description: It's unquoted output.
+
+=== output-2
+
+Description: It's output number two.
+
+=== output-1
+
+Description: It's output number one.
+
+=== output-0.12
+
+Description: terraform 0.12 only

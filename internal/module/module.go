@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
@@ -64,18 +65,47 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Modul
 	}, nil
 }
 
+func getFileFormat(filename string) string {
+	if filename == "" {
+		return ""
+	}
+	last := strings.LastIndex(filename, ".")
+	if last == -1 {
+		return ""
+	}
+	return filename[last:]
+}
+func isFileFormatSupported(filename string) (bool, error) {
+	if filename == "" {
+		return false, fmt.Errorf("--header-from value is missing")
+	}
+	switch getFileFormat(filename) {
+	case ".adoc", ".md", ".tf", ".txt":
+		return true, nil
+	}
+	return false, fmt.Errorf("only .adoc, .md, .tf and .txt formats are supported to read header from")
+}
+
 func loadHeader(options *Options) (string, error) {
 	if !options.ShowHeader {
 		return "", nil
 	}
-
+	if ok, err := isFileFormatSupported(options.HeaderFromFile); !ok {
+		return "", err
+	}
 	filename := filepath.Join(options.Path, options.HeaderFromFile)
-	_, err := ioutil.ReadFile(filename)
-	if err != nil {
+	if info, err := os.Stat(filename); os.IsNotExist(err) || info.IsDir() {
 		if options.HeaderFromFile != "main.tf" {
 			return "", err // user explicitly asked for a file which doesn't exist
 		}
 		return "", nil // absorb the error to not break workflow of users who don't have 'main.tf at all
+	}
+	if getFileFormat(options.HeaderFromFile) != ".tf" {
+		content, err := ioutil.ReadFile(filename)
+		if err != nil {
+			return "", err
+		}
+		return string(content), nil
 	}
 	lines := reader.Lines{
 		FileName: filename,
