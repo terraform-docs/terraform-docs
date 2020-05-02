@@ -104,4 +104,4 @@ jobs:
         # https://github.com/codecov/codecov-action/issues/29
         # token: ${{ secrets.CODECOV_TOKEN }}
         token: 7e230f41-8fa3-4d91-8ce8-3d77b7b3f1c3
-        file: ./coverage.txt
+        file: ./coverage.out
