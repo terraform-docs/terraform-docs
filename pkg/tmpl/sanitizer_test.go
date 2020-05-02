@@ -149,7 +149,6 @@ func TestSanitizeItemForTable(t *testing.T) {
 		name        string
 		filename    string
 		escapeChars bool
-		escapePipe  bool
 	}{
 		{
 			name:        "sanitize table item empty",
@@ -192,7 +191,6 @@ func TestSanitizeItemForAsciidocTable(t *testing.T) {
 		name        string
 		filename    string
 		escapeChars bool
-		escapePipe  bool
 	}{
 		{
 			name:        "sanitize table item empty",

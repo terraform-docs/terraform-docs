@@ -38,6 +38,7 @@ func LoadModule(dir string) (*Module, Diagnostics) {
 // This allows the caller to decide how to handle directories that do not have tf files.
 func IsModuleDir(dir string) bool {
 	primaryPaths, _ := dirFiles(dir)
+	//lint:ignore S1008 ignored because we pulled this from upstream
 	if len(primaryPaths) == 0 {
 		return false
 	}
