@@ -168,7 +168,7 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 
 func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*tfconf.Output, error) {
 	outputs := make([]*tfconf.Output, 0, len(tfmodule.Outputs))
-	values := make(map[string]*TerraformOutput, 0)
+	values := make(map[string]*TerraformOutput)
 	if options.OutputValues {
 		var err error
 		values, err = loadOutputValues(options)

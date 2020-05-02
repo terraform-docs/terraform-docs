@@ -16,6 +16,7 @@ type SourcePos struct {
 	Line     int    `json:"line"`
 }
 
+//lint:ignore U1000 ignored because we pulled this from upstream
 func sourcePos(filename string, line int) SourcePos {
 	return SourcePos{
 		Filename: filename,

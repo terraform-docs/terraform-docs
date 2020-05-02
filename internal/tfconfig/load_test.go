@@ -49,6 +49,7 @@ func TestLoadModule(t *testing.T) {
 				t.Fatalf("failed to parse the actual result (!?): %s", err)
 			}
 
+			//lint:ignore S1031 ignored because we pulled this from upstream
 			if diff := deep.Equal(got, want); diff != nil {
 				for _, problem := range diff {
 					t.Errorf("%s", problem)

@@ -1,7 +1,6 @@
 run:
   deadline: 5m
   tests: true
-  modules-download-mode: vendor
   skip-dirs:
     - internal/tfconfig
 

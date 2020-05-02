@@ -262,7 +262,7 @@ type Map map[string]interface{}
 
 // Underlying returns the underlying elements in the form of 'map[string]interface {}'
 func (m Map) Underlying() map[string]interface{} {
-	r := make(map[string]interface{}, 0)
+	r := make(map[string]interface{})
 	for k, e := range m {
 		r[k] = e
 	}
