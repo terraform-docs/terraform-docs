@@ -17,12 +17,10 @@ VERSION      ?= $(shell git describe --tags --exact-match 2>/dev/null || git des
 COVERAGE_OUT := coverage.out
 
 # Go variables
-GOCMD       := GO111MODULE=on go
 GOOS        ?= $(shell go env GOOS)
 GOARCH      ?= $(shell go env GOARCH)
 GOFILES     ?= $(shell find . -type f -name '*.go' -not -path "./vendor/*")
-GOPKGS      ?= $(shell $(GOCMD) list $(MODVENDOR) ./... | grep -v /vendor)
-MODVENDOR   := -mod=vendor
+GOPKGS      ?= $(shell go list ./... | grep -v /vendor)
 
 GOLDFLAGS   :="
 GOLDFLAGS   += -X $(PACKAGE)/internal/version.version=$(VERSION)
@@ -30,8 +28,8 @@ GOLDFLAGS   += -X $(PACKAGE)/internal/version.commitHash=$(COMMIT_HASH)
 GOLDFLAGS   += -X $(PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
 GOLDFLAGS   +="
 
-GOBUILD     ?= CGO_ENABLED=0 $(GOCMD) build $(MODVENDOR) -ldflags $(GOLDFLAGS)
-GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
+GOBUILD     ?= CGO_ENABLED=0 go build -ldflags $(GOLDFLAGS)
+GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
@@ -56,9 +54,6 @@ clean: ## Clean workspace
 	@ $(MAKE) --no-print-directory log-$@
 	rm -rf ./$(BUILD_DIR) ./$(COVERAGE_OUT)
 
-.PHONY: deps
-deps: vendor ## Install dependencies
-
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
@@ -67,22 +62,27 @@ fmt: ## Format all go files
 .PHONY: lint
 lint: ## Run linter
 	@ $(MAKE) --no-print-directory log-$@
-	GO111MODULE=on golangci-lint run ./...
+	golangci-lint run ./...
+
+.PHONY: staticcheck
+staticcheck: ## Run staticcheck
+	@ $(MAKE) --no-print-directory log-$@
+	go run honnef.co/go/tools/cmd/staticcheck -- ./...
 
 .PHONY: test
 test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) test -race -coverprofile=$(COVERAGE_OUT) -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
-
-.PHONY: vendor
-vendor: ## Install 'vendor' dependencies
-	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) mod vendor
+	go test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v $(GOPKGS)
 
 .PHONY: verify
 verify: ## Verify 'vendor' dependencies
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) mod verify
+	go mod verify
+
+# removed and gitignoreed 'vendor/', not needed anymore #
+.PHONY: vendor deps
+vendor:
+deps:
 
 ###################
 ## Build targets ##

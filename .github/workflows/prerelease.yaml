@@ -7,8 +7,8 @@ on:
 
 jobs:
   prerelease:
-    name: Pre-Release
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
     - name: Set up Go 1.14.x
       uses: actions/setup-go@v1
