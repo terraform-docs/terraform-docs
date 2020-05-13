@@ -152,7 +152,7 @@ func (s String) MarshalYAML() (interface{}, error) {
 	if len(string(s)) == 0 || string(s) == `""` {
 		return nil, nil
 	}
-	return s, nil
+	return string(s), nil
 }
 
 // Empty represents an empty 'string' which is marshaled to `""` in JSON and YAML
