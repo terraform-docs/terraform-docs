@@ -38,31 +38,31 @@ header: |-
   | Bar  | Bar description |
 inputs: []
 outputs:
-- name: unquoted
-  description: It's unquoted output.
-- name: output-2
-  description: It's output number two.
-- name: output-1
-  description: It's output number one.
-- name: output-0.12
-  description: terraform 0.12 only
+  - name: unquoted
+    description: It's unquoted output.
+  - name: output-2
+    description: It's output number two.
+  - name: output-1
+    description: It's output number one.
+  - name: output-0.12
+    description: terraform 0.12 only
 providers:
-- name: tls
-  alias: null
-  version: null
-- name: aws
-  alias: null
-  version: '>= 2.15.0'
-- name: aws
-  alias: ident
-  version: '>= 2.15.0'
-- name: "null"
-  alias: null
-  version: null
+  - name: tls
+    alias: null
+    version: null
+  - name: aws
+    alias: null
+    version: '>= 2.15.0'
+  - name: aws
+    alias: ident
+    version: '>= 2.15.0'
+  - name: "null"
+    alias: null
+    version: null
 requirements:
-- name: terraform
-  version: '>= 0.12'
-- name: aws
-  version: '>= 2.15.0'
-- name: random
-  version: '>= 2.2.0'
+  - name: terraform
+    version: '>= 0.12'
+  - name: aws
+    version: '>= 2.15.0'
+  - name: random
+    version: '>= 2.2.0'

@@ -282,7 +282,7 @@ func TestOutputMarshalYAML(t *testing.T) {
 		{
 			name:     "output marshal JSON",
 			output:   outputs[1],
-			expected: "*tfconf.Output",
+			expected: "tfconf.Output",
 		},
 		{
 			name:     "output marshal JSON",
@@ -302,7 +302,7 @@ func TestOutputMarshalYAML(t *testing.T) {
 		{
 			name:     "output marshal JSON",
 			output:   outputs[5],
-			expected: "*tfconf.Output",
+			expected: "tfconf.Output",
 		},
 		{
 			name:     "output marshal JSON",

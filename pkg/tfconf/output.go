@@ -112,5 +112,5 @@ func (o *Output) MarshalYAML() (interface{}, error) {
 	}
 	o.Value = nil       // explicitly make empty
 	o.Sensitive = false // explicitly make empty
-	return o, nil
+	return *o, nil
 }

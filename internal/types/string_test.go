@@ -191,12 +191,12 @@ func TestStringMarshalYAML(t *testing.T) {
 		{
 			name:     "string marshal YAML",
 			value:    "foo",
-			expected: String("foo"),
+			expected: "foo",
 		},
 		{
 			name:     "string marshal YAML",
 			value:    "lorem ipsum",
-			expected: String("lorem ipsum"),
+			expected: "lorem ipsum",
 		},
 		{
 			name:     "string marshal YAML",
