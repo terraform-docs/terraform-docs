@@ -74,7 +74,7 @@ header = "This header comes from a custom file\n\nLorem ipsum dolor sit amet, co
   name = "number-1"
   type = "number"
   description = "It's number number one."
-  default = 42
+  default = 42.0
   required = false
 
 [[inputs]]
@@ -97,9 +97,9 @@ header = "This header comes from a custom file\n\nLorem ipsum dolor sit amet, co
   description = "It's map number one."
   required = false
   [inputs.default]
-    a = 1
-    b = 2
-    c = 3
+    a = 1.0
+    b = 2.0
+    c = 3.0
 
 [[inputs]]
   name = "list-3"
@@ -198,7 +198,7 @@ header = "This header comes from a custom file\n\nLorem ipsum dolor sit amet, co
   name = "number_default_zero"
   type = "number"
   description = ""
-  default = 0
+  default = 0.0
   required = false
 
 [[inputs]]
