@@ -9,6 +9,8 @@
 - Reorganize markdown format tests ([#244](https://github.com/segmentio/terraform-docs/issues/244))
 
 ### Features
+- Add support for TOML renderer ([#197](https://github.com/segmentio/terraform-docs/issues/197))
+- Add new flag to sort inputs by type ([#246](https://github.com/segmentio/terraform-docs/issues/246))
 - Add support for AsciiDoc renderer ([#241](https://github.com/segmentio/terraform-docs/issues/241))
 
 ### BREAKING CHANGE
