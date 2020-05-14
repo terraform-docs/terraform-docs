@@ -10,21 +10,21 @@ import (
 
 // Output represents a Terraform output.
 type Output struct {
-	Name        string       `json:"name" xml:"name" yaml:"name"`
-	Description types.String `json:"description" xml:"description" yaml:"description"`
-	Value       types.Value  `json:"value,omitempty" xml:"value,omitempty" yaml:"value,omitempty"`
-	Sensitive   bool         `json:"sensitive,omitempty" xml:"sensitive,omitempty" yaml:"sensitive,omitempty"`
-	Position    Position     `json:"-" xml:"-" yaml:"-"`
-	ShowValue   bool         `json:"-" xml:"-" yaml:"-"`
+	Name        string       `json:"name" toml:"name" xml:"name" yaml:"name"`
+	Description types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
+	Value       types.Value  `json:"value,omitempty" toml:"value,omitempty" xml:"value,omitempty" yaml:"value,omitempty"`
+	Sensitive   bool         `json:"sensitive,omitempty" toml:"sensitive,omitempty" xml:"sensitive,omitempty" yaml:"sensitive,omitempty"`
+	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
+	ShowValue   bool         `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 
 type withvalue struct {
-	Name        string       `json:"name" xml:"name" yaml:"name"`
-	Description types.String `json:"description" xml:"description" yaml:"description"`
-	Value       types.Value  `json:"value" xml:"value" yaml:"value"`
-	Sensitive   bool         `json:"sensitive" xml:"sensitive" yaml:"sensitive"`
-	Position    Position     `json:"-" xml:"-" yaml:"-"`
-	ShowValue   bool         `json:"-" xml:"-" yaml:"-"`
+	Name        string       `json:"name" toml:"name" xml:"name" yaml:"name"`
+	Description types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
+	Value       types.Value  `json:"value" toml:"value" xml:"value" yaml:"value"`
+	Sensitive   bool         `json:"sensitive" toml:"sensitive" xml:"sensitive" yaml:"sensitive"`
+	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
+	ShowValue   bool         `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 
 // GetValue returns JSON representation of the 'Value', which is an 'interface'.

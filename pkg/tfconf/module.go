@@ -12,16 +12,16 @@ import (
 // - Providers    ('providers' json key): List of 'providers' extracted from resources used in Terraform module
 // - Requirements ('header' json key):    List of 'requirements' extracted from the Terraform module .tf files
 type Module struct {
-	XMLName xml.Name `json:"-" xml:"module" yaml:"-"`
+	XMLName xml.Name `json:"-" toml:"-" xml:"module" yaml:"-"`
 
-	Header       string         `json:"header" xml:"header" yaml:"header"`
-	Inputs       []*Input       `json:"inputs" xml:"inputs>input" yaml:"inputs"`
-	Outputs      []*Output      `json:"outputs" xml:"outputs>output" yaml:"outputs"`
-	Providers    []*Provider    `json:"providers" xml:"providers>provider" yaml:"providers"`
-	Requirements []*Requirement `json:"requirements" xml:"requirements>requirement" yaml:"requirements"`
+	Header       string         `json:"header" toml:"header" xml:"header" yaml:"header"`
+	Inputs       []*Input       `json:"inputs" toml:"inputs" xml:"inputs>input" yaml:"inputs"`
+	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
+	Providers    []*Provider    `json:"providers" toml:"providers" xml:"providers>provider" yaml:"providers"`
+	Requirements []*Requirement `json:"requirements" toml:"requirements" xml:"requirements>requirement" yaml:"requirements"`
 
-	RequiredInputs []*Input `json:"-" xml:"-" yaml:"-"`
-	OptionalInputs []*Input `json:"-" xml:"-" yaml:"-"`
+	RequiredInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
+	OptionalInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 
 // HasHeader indicates if the module has header.

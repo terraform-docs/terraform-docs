@@ -3,6 +3,7 @@ module github.com/segmentio/terraform-docs
 go 1.14
 
 require (
+	github.com/BurntSushi/toml v0.3.1
 	github.com/go-test/deep v1.0.6
 	github.com/hashicorp/hcl v1.0.0
 	github.com/hashicorp/hcl/v2 v2.5.1

@@ -1,0 +1,24 @@
+header = ""
+inputs = []
+outputs = []
+requirements = []
+
+[[providers]]
+  name = "tls"
+  alias = ""
+  version = ""
+
+[[providers]]
+  name = "aws"
+  alias = ""
+  version = ">= 2.15.0"
+
+[[providers]]
+  name = "aws"
+  alias = "ident"
+  version = ">= 2.15.0"
+
+[[providers]]
+  name = "null"
+  alias = ""
+  version = ""

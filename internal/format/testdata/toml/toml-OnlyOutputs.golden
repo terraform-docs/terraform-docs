@@ -1,0 +1,20 @@
+header = ""
+inputs = []
+providers = []
+requirements = []
+
+[[outputs]]
+  name = "unquoted"
+  description = "It's unquoted output."
+
+[[outputs]]
+  name = "output-2"
+  description = "It's output number two."
+
+[[outputs]]
+  name = "output-1"
+  description = "It's output number one."
+
+[[outputs]]
+  name = "output-0.12"
+  description = "terraform 0.12 only"

@@ -19,6 +19,7 @@ terraform-docs markdown document ./my-terraform-module # generate markdown docum
 terraform-docs pretty ./my-terraform-module            # generate colorized pretty
 terraform-docs tfvars hcl ./my-terraform-module        # generate hcl format of terraform.tfvars
 terraform-docs tfvars json ./my-terraform-module       # generate json format of terraform.tfvars
+terraform-docs toml ./my-terraform-module              # generate toml
 terraform-docs xml ./my-terraform-module               # generate xml
 terraform-docs yaml ./my-terraform-module              # generate yaml
 ```
