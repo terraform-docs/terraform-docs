@@ -2,6 +2,7 @@ package testutil
 
 import (
 	"github.com/imdario/mergo"
+
 	"github.com/segmentio/terraform-docs/pkg/print"
 )
 

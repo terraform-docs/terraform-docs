@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/iancoleman/orderedmap"
+
 	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
 )

@@ -3,8 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/segmentio/terraform-docs/internal/version"
 	"github.com/spf13/cobra"
+
+	"github.com/segmentio/terraform-docs/internal/version"
 )
 
 var versionCmd = &cobra.Command{

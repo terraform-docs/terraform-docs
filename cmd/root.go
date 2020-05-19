@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/spf13/cobra"
+
 	"github.com/segmentio/terraform-docs/internal/format"
 	"github.com/segmentio/terraform-docs/internal/module"
 	"github.com/segmentio/terraform-docs/internal/version"
 	"github.com/segmentio/terraform-docs/pkg/print"
-	"github.com/spf13/cobra"
 )
 
 var settings = print.NewSettings()

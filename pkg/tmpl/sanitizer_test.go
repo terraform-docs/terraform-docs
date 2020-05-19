@@ -5,9 +5,10 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/segmentio/terraform-docs/internal/testutil"
 	"github.com/segmentio/terraform-docs/pkg/print"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestSanitizeName(t *testing.T) {
