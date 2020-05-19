@@ -6,8 +6,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/segmentio/terraform-docs/pkg/print"
 	"mvdan.cc/xurls/v2"
+
+	"github.com/segmentio/terraform-docs/pkg/print"
 )
 
 // sanitizeName escapes underscore character which have special meaning in Markdown.

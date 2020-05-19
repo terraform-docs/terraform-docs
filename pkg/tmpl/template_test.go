@@ -8,10 +8,11 @@ import (
 	"testing"
 	"text/template"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/segmentio/terraform-docs/internal/types"
 	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestTemplateRender(t *testing.T) {

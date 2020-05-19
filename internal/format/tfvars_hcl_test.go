@@ -3,10 +3,11 @@ package format
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/segmentio/terraform-docs/internal/module"
 	"github.com/segmentio/terraform-docs/internal/testutil"
 	"github.com/segmentio/terraform-docs/pkg/print"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestTfvarsHcl(t *testing.T) {

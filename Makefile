@@ -19,8 +19,6 @@ COVERAGE_OUT := coverage.out
 # Go variables
 GOOS        ?= $(shell go env GOOS)
 GOARCH      ?= $(shell go env GOARCH)
-GOFILES     ?= $(shell find . -type f -name '*.go' -not -path "./vendor/*")
-GOPKGS      ?= $(shell go list ./... | grep -v /vendor)
 
 GOLDFLAGS   :="
 GOLDFLAGS   += -X $(PACKAGE)/internal/version.version=$(VERSION)
@@ -30,6 +28,8 @@ GOLDFLAGS   +="
 
 GOBUILD     ?= CGO_ENABLED=0 go build -ldflags $(GOLDFLAGS)
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
+
+GOIMPORTS_LOCAL_ARG := -local github.com/segmentio/terraform-docs
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
@@ -42,12 +42,9 @@ all: clean verify checkfmt lint test build
 ## Development targets ##
 #########################
 .PHONY: checkfmt
-checkfmt: RESULT = $(shell goimports -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
-checkfmt: SHELL := /usr/bin/env bash
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
-	@ echo "$(RESULT)"
-	@ if [ "$(RESULT)" != "OK" ]; then exit 1; fi
+	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg && echo "OK"
 
 .PHONY: clean
 clean: ## Clean workspace
@@ -57,7 +54,7 @@ clean: ## Clean workspace
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
-	goimports -w $(GOFILES)
+	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg
 
 .PHONY: lint
 lint: ## Run linter
@@ -72,7 +69,7 @@ staticcheck: ## Run staticcheck
 .PHONY: test
 test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
-	go test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v $(GOPKGS)
+	go test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v ./...
 
 .PHONY: verify
 verify: ## Verify 'vendor' dependencies

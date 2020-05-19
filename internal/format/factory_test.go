@@ -4,8 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/segmentio/terraform-docs/pkg/print"
 )
 
 func TestFormatFactory(t *testing.T) {

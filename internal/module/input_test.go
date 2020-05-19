@@ -4,9 +4,10 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/segmentio/terraform-docs/internal/types"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestInputsSortedByName(t *testing.T) {

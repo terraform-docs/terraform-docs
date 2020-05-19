@@ -4,6 +4,7 @@ import (
 	"bytes"
 
 	"github.com/BurntSushi/toml"
+
 	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
 )

@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"strings"
 
+	"gopkg.in/yaml.v3"
+
 	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/segmentio/terraform-docs/pkg/tfconf"
-	"gopkg.in/yaml.v3"
 )
 
 // YAML represents YAML format.
