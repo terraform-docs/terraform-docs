@@ -12,19 +12,19 @@ import (
 // function.
 func Factory(name string, settings *print.Settings) (print.Format, error) {
 	switch name {
-	case "asciidoc":
+	case "asciidoc", "adoc":
 		return NewAsciidocTable(settings), nil
-	case "asciidoc document":
+	case "asciidoc document", "asciidoc doc", "adoc document", "adoc doc":
 		return NewAsciidocDocument(settings), nil
-	case "asciidoc table":
+	case "asciidoc table", "asciidoc tbl", "adoc table", "adoc tbl":
 		return NewAsciidocTable(settings), nil
 	case "json":
 		return NewJSON(settings), nil
-	case "markdown":
+	case "markdown", "md":
 		return NewTable(settings), nil
-	case "markdown document":
+	case "markdown document", "markdown doc", "md document", "md doc":
 		return NewDocument(settings), nil
-	case "markdown table":
+	case "markdown table", "markdown tbl", "md table", "md tbl":
 		return NewTable(settings), nil
 	case "pretty":
 		return NewPretty(settings), nil
