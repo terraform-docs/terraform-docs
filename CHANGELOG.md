@@ -4,6 +4,7 @@
 ## [Unreleased]
 
 ### Code Refactoring
+- Deprecate multiple flags in favor of new ones ([#265](https://github.com/segmentio/terraform-docs/issues/265))
 - Remove deprecated flags ([#229](https://github.com/segmentio/terraform-docs/issues/229))
 - Add factory function to return format types ([#243](https://github.com/segmentio/terraform-docs/issues/243))
 - Reorganize markdown format tests ([#244](https://github.com/segmentio/terraform-docs/issues/244))
@@ -14,6 +15,29 @@
 - Add support for AsciiDoc renderer ([#241](https://github.com/segmentio/terraform-docs/issues/241))
 
 ### BREAKING CHANGE
+
+- Following flags have been deprecated and will be
+removed in the following releases:
+
+  - Flag `--no-color` has been deprecated, use `--color=false` instead
+
+  - Flag `--no-escape` has been deprecated, use `--escape=false` instead
+
+  - Flag `--no-header` has been deprecated, use `--hide header` instead
+
+  - Flag `--no-inputs` has been deprecated, use `--hide inputs` instead
+
+  - Flag `--no-outputs` has been deprecated, use `--hide outputs` instead
+
+  - Flag `--no-providers` has been deprecated, use `--hide providers` instead
+
+  - Flag `--no-requirements` has been deprecated, use `--hide requirements` instead
+
+  - Flag `--no-required` has been deprecated, use `--required=false` instead
+
+  - Flag `--no-sensitive` has been deprecated, use `--sensitive=false` instead
+
+  - Flag `--no-sort` has been deprecated, use `--sort=false` instead
 
 - Flags `--with-aggregate-type-defaults` and
 `--sort-inputs-by-required` were marked as deprecated in v0.8.2
