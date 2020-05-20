@@ -35,6 +35,13 @@ func init() {
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-required", false, "do not show \"Required\" column or section")
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-sensitive", false, "do not show \"Sensitive\" column or section")
 	markdownCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
+	markdownCmd.PersistentFlags().MarkDeprecated("no-required", "use '--required=false' instead")   //nolint:errcheck
+	markdownCmd.PersistentFlags().MarkDeprecated("no-sensitive", "use '--sensitive=false' instead") //nolint:errcheck
+	markdownCmd.PersistentFlags().MarkDeprecated("no-escape", "use '--escape=false' instead")       //nolint:errcheck
+
+	markdownCmd.PersistentFlags().BoolVar(&settings.ShowRequired, "required", true, "show \"Required\" column or section")
+	markdownCmd.PersistentFlags().BoolVar(&settings.ShowSensitivity, "sensitive", true, "show \"Sensitive\" column or section")
+	markdownCmd.PersistentFlags().BoolVar(&settings.EscapeCharacters, "escape", true, "escape special characters")
 	markdownCmd.PersistentFlags().IntVar(&settings.IndentLevel, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
 
 	markdownCmd.AddCommand(markdownTableCmd)

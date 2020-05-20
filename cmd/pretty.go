@@ -14,6 +14,9 @@ var prettyCmd = &cobra.Command{
 
 func init() {
 	prettyCmd.PersistentFlags().BoolVar(new(bool), "no-color", false, "do not colorize printed result")
+	prettyCmd.PersistentFlags().MarkDeprecated("no-color", "use '--color=false' instead") //nolint:errcheck
+
+	prettyCmd.PersistentFlags().BoolVar(&settings.ShowColor, "color", true, "colorize printed result")
 
 	rootCmd.AddCommand(prettyCmd)
 }
