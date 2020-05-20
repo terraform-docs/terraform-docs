@@ -12,6 +12,7 @@ import (
 	"github.com/segmentio/terraform-docs/pkg/print"
 )
 
+var hides []string
 var settings = print.NewSettings()
 var options = module.NewOptions()
 
@@ -23,30 +24,77 @@ var rootCmd = &cobra.Command{
 	Version:       version.Version(),
 	SilenceUsage:  true,
 	SilenceErrors: true,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		oppositeBool := func(name string) bool {
 			val, _ := cmd.Flags().GetBool(name)
 			return !val
 		}
-		settings.ShowHeader = oppositeBool("no-header")
+
+		for _, h := range hides {
+			switch h {
+			case "header":
+			case "inputs":
+			case "outputs":
+			case "providers":
+			case "requirements":
+			default:
+				return fmt.Errorf("'%s' is not a valid section to hide, available options [header, inputs, outputs, providers, requirements]", h)
+			}
+		}
+
+		if len(hides) > 0 && contains("header") {
+			settings.ShowHeader = false
+		} else {
+			settings.ShowHeader = oppositeBool("no-header")
+		}
 		options.ShowHeader = settings.ShowHeader
 
-		settings.ShowInputs = oppositeBool("no-inputs")
-		settings.ShowOutputs = oppositeBool("no-outputs")
-		settings.ShowProviders = oppositeBool("no-providers")
-		settings.ShowRequirements = oppositeBool("no-requirements")
+		if len(hides) > 0 && contains("inputs") {
+			settings.ShowInputs = false
+		} else {
+			settings.ShowInputs = oppositeBool("no-inputs")
+		}
+		if len(hides) > 0 && contains("outputs") {
+			settings.ShowOutputs = false
+		} else {
+			settings.ShowOutputs = oppositeBool("no-outputs")
+		}
+		if len(hides) > 0 && contains("providers") {
+			settings.ShowProviders = false
+		} else {
+			settings.ShowProviders = oppositeBool("no-providers")
+		}
+		if len(hides) > 0 && contains("requirements") {
+			settings.ShowRequirements = false
+		} else {
+			settings.ShowRequirements = oppositeBool("no-requirements")
+		}
 
 		settings.OutputValues = options.OutputValues
 
-		settings.ShowColor = oppositeBool("no-color")
-		settings.SortByName = oppositeBool("no-sort")
-		settings.ShowRequired = oppositeBool("no-required")
-		settings.EscapeCharacters = oppositeBool("no-escape")
-		settings.ShowSensitivity = oppositeBool("no-sensitive")
+		if !cmd.Flags().Changed("color") {
+			settings.ShowColor = oppositeBool("no-color")
+		}
+		if !cmd.Flags().Changed("sort") {
+			settings.SortByName = oppositeBool("no-sort")
+		}
+		if !cmd.Flags().Changed("required") {
+			settings.ShowRequired = oppositeBool("no-required")
+		}
+		if !cmd.Flags().Changed("escape") {
+			settings.EscapeCharacters = oppositeBool("no-escape")
+		}
+		if !cmd.Flags().Changed("sensitive") {
+			settings.ShowSensitivity = oppositeBool("no-sensitive")
+		}
+
+		return nil
 	},
 }
 
 func init() {
+	rootCmd.PersistentFlags().StringSliceVar(&hides, "hide", []string{}, "hide section [header, inputs, outputs, providers, requirements]")
+
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-header", false, "do not show module header")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-inputs", false, "do not show inputs")
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-outputs", false, "do not show outputs")
@@ -54,13 +102,21 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-requirements", false, "do not show module requirements")
 
 	rootCmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "do no sort items")
-	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first")
-	rootCmd.PersistentFlags().BoolVar(&settings.SortByType, "sort-by-type", false, "sort items by type of them")
+	rootCmd.PersistentFlags().BoolVar(&settings.SortByName, "sort", true, "sort items")
+	rootCmd.PersistentFlags().BoolVar(&settings.SortByRequired, "sort-by-required", false, "sort items by name and print required ones first (default false)")
+	rootCmd.PersistentFlags().BoolVar(&settings.SortByType, "sort-by-type", false, "sort items by type of them (default false)")
 
 	rootCmd.PersistentFlags().StringVar(&options.HeaderFromFile, "header-from", "main.tf", "relative path of a file to read header from")
 
-	rootCmd.PersistentFlags().BoolVar(&options.OutputValues, "output-values", false, "inject output values into outputs")
+	rootCmd.PersistentFlags().BoolVar(&options.OutputValues, "output-values", false, "inject output values into outputs (default false)")
 	rootCmd.PersistentFlags().StringVar(&options.OutputValuesPath, "output-values-from", "", "inject output values from file into outputs")
+
+	rootCmd.PersistentFlags().MarkDeprecated("no-header", "use '--hide header' instead")             //nolint:errcheck
+	rootCmd.PersistentFlags().MarkDeprecated("no-inputs", "use '--hide inputs' instead")             //nolint:errcheck
+	rootCmd.PersistentFlags().MarkDeprecated("no-outputs", "use '--hide outputs' instead")           //nolint:errcheck
+	rootCmd.PersistentFlags().MarkDeprecated("no-providers", "use '--hide providers' instead")       //nolint:errcheck
+	rootCmd.PersistentFlags().MarkDeprecated("no-requirements", "use '--hide requirements' instead") //nolint:errcheck
+	rootCmd.PersistentFlags().MarkDeprecated("no-sort", "use '--sort=false' instead")                //nolint:errcheck
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -75,6 +131,15 @@ func Execute() error {
 // RootCmd represents the base command when called without any subcommands
 func RootCmd() *cobra.Command {
 	return rootCmd
+}
+
+func contains(section string) bool {
+	for _, h := range hides {
+		if h == section {
+			return true
+		}
+	}
+	return false
 }
 
 var formatRunE = func(cmd *cobra.Command, args []string) error {

@@ -14,6 +14,9 @@ var jsonCmd = &cobra.Command{
 
 func init() {
 	jsonCmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
+	jsonCmd.PersistentFlags().MarkDeprecated("no-escape", "use '--escape=false' instead") //nolint:errcheck
+
+	jsonCmd.PersistentFlags().BoolVar(&settings.EscapeCharacters, "escape", true, "escape special characters")
 
 	rootCmd.AddCommand(jsonCmd)
 }
