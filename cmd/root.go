@@ -42,7 +42,10 @@ func NewCommand() *cobra.Command {
 	}
 
 	// flags
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section [header, inputs, outputs, providers, requirements]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section [header, inputs, outputs, providers, requirements]")
+	cmd.PersistentFlags().BoolVar(&config.Sections.ShowAll, "show-all", true, "show all sections")
+	cmd.PersistentFlags().BoolVar(&config.Sections.HideAll, "hide-all", false, "hide all sections (default false)")
 
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
 	cmd.PersistentFlags().BoolVar(&config.Sort.By.Required, "sort-by-required", false, "sort items by name and print required ones first (default false)")
