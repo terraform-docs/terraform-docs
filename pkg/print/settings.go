@@ -63,7 +63,7 @@ type Settings struct {
 	SortByType bool
 }
 
-//NewSettings returns new instance of Settings
+// NewSettings returns new instance of Settings
 func NewSettings() *Settings {
 	return &Settings{
 		EscapeCharacters: true,

@@ -1,0 +1,47 @@
+package cli
+
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+
+	"github.com/segmentio/terraform-docs/internal/format"
+	"github.com/segmentio/terraform-docs/internal/module"
+)
+
+// PreRunEFunc returns actual 'cobra.Command#PreRunE' function
+// for 'formatter' commands. This functions reads and normalizes
+// flags and arguments passed through CLI execution.
+func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
+	return func(cmd *cobra.Command, args []string) error {
+		return normalize(cmd.CommandPath(), cmd.Flags(), config)
+	}
+}
+
+// RunEFunc returns actual 'cobra.Command#RunE' function for
+// 'formatter' commands. This functions extract print.Settings
+// and module.Options from generated and normalized Config and
+// initializes required print.Format instance and executes it.
+func RunEFunc(config *Config) func(*cobra.Command, []string) error {
+	return func(cmd *cobra.Command, args []string) error {
+		settings, options, err := config.extract()
+		if err != nil {
+			return err
+		}
+		printer, err := format.Factory(config.Formatter, settings)
+		if err != nil {
+			return err
+		}
+		options.Path = args[0]
+		tfmodule, err := module.LoadWithOptions(options)
+		if err != nil {
+			return err
+		}
+		output, err := printer.Print(tfmodule, settings)
+		if err != nil {
+			return err
+		}
+		fmt.Println(output)
+		return nil
+	}
+}

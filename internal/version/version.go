@@ -30,8 +30,8 @@ func init() {
 	}
 }
 
-// Version return the full version of the binary including commit hash and build date
-func Version() string {
+// Full return the full version of the binary including commit hash and build date
+func Full() string {
 	if !strings.HasSuffix(version, commitHash) {
 		version += " " + commitHash
 	}

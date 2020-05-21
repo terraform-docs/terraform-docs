@@ -26,7 +26,7 @@ var basedir = "/docs"
 var formatdir = "/formats"
 
 func main() {
-	err := generate(cmd.RootCmd(), "", "FORMATS_GUIDE")
+	err := generate(cmd.NewCommand(), "", "FORMATS_GUIDE")
 	if err != nil {
 		log.Fatal(err)
 	}
