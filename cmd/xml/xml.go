@@ -13,10 +13,8 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Use:         "xml [PATH]",
 		Short:       "Generate XML of inputs and outputs",
 		Annotations: cli.Annotations("xml"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
-
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
 	return cmd
 }

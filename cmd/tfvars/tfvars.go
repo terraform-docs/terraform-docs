@@ -17,6 +17,7 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Annotations: cli.Annotations("tfvars"),
 	}
 
+	// subcommands
 	cmd.AddCommand(hcl.NewCommand(config))
 	cmd.AddCommand(json.NewCommand(config))
 

@@ -13,11 +13,11 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Use:         "json [PATH]",
 		Short:       "Generate JSON of inputs and outputs",
 		Annotations: cli.Annotations("json"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
 
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
+	// flags
 	cmd.PersistentFlags().BoolVar(&config.Settings.Escape, "escape", true, "escape special characters")
 
 	// deprecation

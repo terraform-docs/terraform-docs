@@ -13,10 +13,8 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Use:         "toml [PATH]",
 		Short:       "Generate TOML of inputs and outputs",
 		Annotations: cli.Annotations("toml"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
-
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
 	return cmd
 }

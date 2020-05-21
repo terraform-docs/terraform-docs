@@ -13,11 +13,11 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Use:         "pretty [PATH]",
 		Short:       "Generate colorized pretty of inputs and outputs",
 		Annotations: cli.Annotations("pretty"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
 
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
+	// flags
 	cmd.PersistentFlags().BoolVar(&config.Settings.Color, "color", true, "colorize printed result")
 
 	// deprecation

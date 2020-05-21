@@ -13,10 +13,8 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Use:         "hcl [PATH]",
 		Short:       "Generate HCL format of terraform.tfvars of inputs",
 		Annotations: cli.Annotations("tfvars hcl"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
-
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
 	return cmd
 }

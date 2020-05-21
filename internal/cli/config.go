@@ -74,6 +74,9 @@ func (s *sort) validate(fs *pflag.FlagSet) error {
 			return fmt.Errorf("'--no-%s' and '--%s' cannot be used together", item, item)
 		}
 	}
+	if fs.Changed("sort-by-required") && fs.Changed("sort-by-type") {
+		return fmt.Errorf("'--sort-by-required' and '--sort-by-type' cannot be used together")
+	}
 	return nil
 }
 
@@ -91,9 +94,6 @@ func (s *settings) validate(fs *pflag.FlagSet) error {
 		if fs.Changed("no-"+item) && fs.Changed(item) {
 			return fmt.Errorf("'--no-%s' and '--%s' cannot be used together", item, item)
 		}
-	}
-	if fs.Changed("sort-by-required") && fs.Changed("sort-by-type") {
-		return fmt.Errorf("'--sort-by-required' and '--sort-by-type' cannot be used together")
 	}
 	return nil
 }
@@ -195,7 +195,6 @@ func normalize(command string, fs *pflag.FlagSet, config *Config) error {
 	if err := config.Sections.validate(fs); err != nil {
 		return err
 	}
-
 	config.Sections.header = !(config.Sections.contains("header") || fs.Changed("no-header"))
 	config.Sections.inputs = !(config.Sections.contains("inputs") || fs.Changed("no-inputs"))
 	config.Sections.outputs = !(config.Sections.contains("outputs") || fs.Changed("no-outputs"))
@@ -211,7 +210,6 @@ func normalize(command string, fs *pflag.FlagSet, config *Config) error {
 	if err := config.Sort.validate(fs); err != nil {
 		return err
 	}
-
 	if !fs.Changed("sort") {
 		config.Sort.Enabled = !fs.Changed("no-sort")
 	}
@@ -220,7 +218,6 @@ func normalize(command string, fs *pflag.FlagSet, config *Config) error {
 	if err := config.Settings.validate(fs); err != nil {
 		return err
 	}
-
 	if !fs.Changed("escape") {
 		config.Settings.Escape = !fs.Changed("no-escape")
 	}

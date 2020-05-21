@@ -14,10 +14,8 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Aliases:     []string{"doc"},
 		Short:       "Generate AsciiDoc document of inputs and outputs",
 		Annotations: cli.Annotations("asciidoc document"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
-
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
 	return cmd
 }

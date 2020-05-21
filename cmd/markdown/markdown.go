@@ -16,11 +16,11 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Aliases:     []string{"md"},
 		Short:       "Generate Markdown of inputs and outputs",
 		Annotations: cli.Annotations("markdown"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
 
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
+	// flags
 	cmd.PersistentFlags().BoolVar(&config.Settings.Required, "required", true, "show \"Required\" column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Sensitive, "sensitive", true, "show \"Sensitive\" column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Escape, "escape", true, "escape special characters")
@@ -34,6 +34,7 @@ func NewCommand(config *cli.Config) *cobra.Command {
 	cmd.PersistentFlags().MarkDeprecated("no-sensitive", "use '--sensitive=false' instead") //nolint:errcheck
 	cmd.PersistentFlags().MarkDeprecated("no-escape", "use '--escape=false' instead")       //nolint:errcheck
 
+	// subcommands
 	cmd.AddCommand(document.NewCommand(config))
 	cmd.AddCommand(table.NewCommand(config))
 

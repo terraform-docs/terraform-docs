@@ -16,6 +16,7 @@ func NewCommand() *cobra.Command {
 		Long:  longDescription,
 	}
 
+	// subcommands
 	cmd.AddCommand(bash.NewCommand())
 	cmd.AddCommand(zsh.NewCommand())
 

@@ -16,11 +16,11 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		Aliases:     []string{"adoc"},
 		Short:       "Generate AsciiDoc of inputs and outputs",
 		Annotations: cli.Annotations("asciidoc"),
+		PreRunE:     cli.PreRunEFunc(config),
+		RunE:        cli.RunEFunc(config),
 	}
 
-	cmd.PreRunE = cli.PreRunEFunc(config)
-	cmd.RunE = cli.RunEFunc(config)
-
+	// flags
 	cmd.PersistentFlags().BoolVar(&config.Settings.Required, "required", true, "show \"Required\" column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Sensitive, "sensitive", true, "show \"Sensitive\" column or section")
 	cmd.PersistentFlags().IntVar(&config.Settings.Indent, "indent", 2, "indention level of AsciiDoc sections [1, 2, 3, 4, 5]")
@@ -31,6 +31,7 @@ func NewCommand(config *cli.Config) *cobra.Command {
 	cmd.PersistentFlags().MarkDeprecated("no-required", "use '--required=false' instead")   //nolint:errcheck
 	cmd.PersistentFlags().MarkDeprecated("no-sensitive", "use '--sensitive=false' instead") //nolint:errcheck
 
+	// subcommands
 	cmd.AddCommand(document.NewCommand(config))
 	cmd.AddCommand(table.NewCommand(config))
 
