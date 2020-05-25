@@ -21,7 +21,7 @@ func NewCommand(config *cli.Config) *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Settings.Escape, "escape", true, "escape special characters")
 
 	// deprecation
-	cmd.PersistentFlags().BoolVar(new(bool), "no-escape", false, "do not escape special characters")
+	cmd.PersistentFlags().BoolVar(&config.Settings.Deprecated.NoEscape, "no-escape", false, "do not escape special characters")
 	cmd.PersistentFlags().MarkDeprecated("no-escape", "use '--escape=false' instead") //nolint:errcheck
 
 	return cmd

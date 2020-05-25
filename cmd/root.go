@@ -42,7 +42,10 @@ func NewCommand() *cobra.Command {
 	}
 
 	// flags
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section [header, inputs, outputs, providers, requirements]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section [header, inputs, outputs, providers, requirements]")
+	cmd.PersistentFlags().BoolVar(&config.Sections.ShowAll, "show-all", true, "show all sections")
+	cmd.PersistentFlags().BoolVar(&config.Sections.HideAll, "hide-all", false, "hide all sections (default false)")
 
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
 	cmd.PersistentFlags().BoolVar(&config.Sort.By.Required, "sort-by-required", false, "sort items by name and print required ones first (default false)")
@@ -54,12 +57,12 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.OutputValues.From, "output-values-from", "", "inject output values from file into outputs (default \"\")")
 
 	// deprecation
-	cmd.PersistentFlags().BoolVar(new(bool), "no-header", false, "do not show module header")
-	cmd.PersistentFlags().BoolVar(new(bool), "no-inputs", false, "do not show inputs")
-	cmd.PersistentFlags().BoolVar(new(bool), "no-outputs", false, "do not show outputs")
-	cmd.PersistentFlags().BoolVar(new(bool), "no-providers", false, "do not show providers")
-	cmd.PersistentFlags().BoolVar(new(bool), "no-requirements", false, "do not show module requirements")
-	cmd.PersistentFlags().BoolVar(new(bool), "no-sort", false, "do no sort items")
+	cmd.PersistentFlags().BoolVar(&config.Sections.Deprecated.NoHeader, "no-header", false, "do not show module header")
+	cmd.PersistentFlags().BoolVar(&config.Sections.Deprecated.NoInputs, "no-inputs", false, "do not show inputs")
+	cmd.PersistentFlags().BoolVar(&config.Sections.Deprecated.NoOutputs, "no-outputs", false, "do not show outputs")
+	cmd.PersistentFlags().BoolVar(&config.Sections.Deprecated.NoProviders, "no-providers", false, "do not show providers")
+	cmd.PersistentFlags().BoolVar(&config.Sections.Deprecated.NoRequirements, "no-requirements", false, "do not show module requirements")
+	cmd.PersistentFlags().BoolVar(&config.Sort.Deprecated.NoSort, "no-sort", false, "do no sort items")
 
 	cmd.PersistentFlags().MarkDeprecated("no-header", "use '--hide header' instead")             //nolint:errcheck
 	cmd.PersistentFlags().MarkDeprecated("no-inputs", "use '--hide inputs' instead")             //nolint:errcheck

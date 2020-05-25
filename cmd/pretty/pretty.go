@@ -21,7 +21,7 @@ func NewCommand(config *cli.Config) *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Settings.Color, "color", true, "colorize printed result")
 
 	// deprecation
-	cmd.PersistentFlags().BoolVar(new(bool), "no-color", false, "do not colorize printed result")
+	cmd.PersistentFlags().BoolVar(&config.Settings.Deprecated.NoColor, "no-color", false, "do not colorize printed result")
 	cmd.PersistentFlags().MarkDeprecated("no-color", "use '--color=false' instead") //nolint:errcheck
 
 	return cmd

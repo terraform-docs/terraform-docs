@@ -4,14 +4,26 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/spf13/pflag"
-
 	"github.com/segmentio/terraform-docs/internal/module"
 	"github.com/segmentio/terraform-docs/pkg/print"
 )
 
+// list of flagset items which explicitly changed from CLI
+var changedfs = make(map[string]bool)
+
+type _sections struct {
+	NoHeader       bool
+	NoInputs       bool
+	NoOutputs      bool
+	NoProviders    bool
+	NoRequirements bool
+}
 type sections struct {
-	Hide []string
+	Show       []string
+	Hide       []string
+	ShowAll    bool
+	HideAll    bool
+	Deprecated *_sections
 
 	header       bool
 	inputs       bool
@@ -20,30 +32,81 @@ type sections struct {
 	requirements bool
 }
 
-func (s *sections) contains(section string) bool {
-	for _, item := range s.Hide {
-		if item == section {
-			return true
-		}
+func defaultSections() *sections {
+	return &sections{
+		Show:    []string{},
+		Hide:    []string{},
+		ShowAll: true,
+		HideAll: false,
+		Deprecated: &_sections{
+			NoHeader:       false,
+			NoInputs:       false,
+			NoOutputs:      false,
+			NoProviders:    false,
+			NoRequirements: false,
+		},
+
+		header:       false,
+		inputs:       false,
+		outputs:      false,
+		providers:    false,
+		requirements: false,
 	}
-	return false
 }
 
-func (s *sections) validate(fs *pflag.FlagSet) error {
-	sections := []string{"header", "inputs", "outputs", "providers", "requirements"}
-	for _, h := range s.Hide {
-		switch h {
-		case sections[0], sections[1], sections[2], sections[3], sections[4]:
+func (s *sections) validate() error {
+	items := []string{"header", "inputs", "outputs", "providers", "requirements"}
+	for _, item := range s.Show {
+		switch item {
+		case items[0], items[1], items[2], items[3], items[4]:
 		default:
-			return fmt.Errorf("'%s' is not a valid section", h)
+			return fmt.Errorf("'%s' is not a valid section", item)
 		}
 	}
-	for _, section := range sections {
-		if fs.Changed("no-"+section) && s.contains(section) {
-			return fmt.Errorf("'--no-%s' and '--hide %s' cannot be used together", section, section)
+	for _, item := range s.Hide {
+		switch item {
+		case items[0], items[1], items[2], items[3], items[4]:
+		default:
+			return fmt.Errorf("'%s' is not a valid section", item)
+		}
+	}
+	if s.ShowAll && s.HideAll {
+		return fmt.Errorf("'--show-all' and '--hide-all' can't be used together")
+	}
+	if s.ShowAll && len(s.Show) != 0 {
+		return fmt.Errorf("'--show-all' and '--show' can't be used together")
+	}
+	if s.HideAll && len(s.Hide) != 0 {
+		return fmt.Errorf("'--hide-all' and '--hide' can't be used together")
+	}
+	for _, section := range items {
+		if changedfs["no-"+section] && contains(s.Hide, section) {
+			return fmt.Errorf("'--no-%s' and '--hide %s' can't be used together", section, section)
 		}
 	}
 	return nil
+}
+
+func (s *sections) visibility(section string) bool {
+	if s.ShowAll && !s.HideAll {
+		for _, n := range s.Hide {
+			if n == section {
+				return false
+			}
+		}
+		return true
+	}
+	for _, n := range s.Show {
+		if n == section {
+			return true
+		}
+	}
+	for _, n := range s.Hide {
+		if n == section {
+			return false
+		}
+	}
+	return false
 }
 
 type outputvalues struct {
@@ -51,9 +114,19 @@ type outputvalues struct {
 	From    string
 }
 
+func defaultOutputValues() *outputvalues {
+	return &outputvalues{
+		Enabled: false,
+		From:    "",
+	}
+}
+
 func (o *outputvalues) validate() error {
 	if o.Enabled && o.From == "" {
-		return fmt.Errorf("value of '--output-values-from' cannot be empty")
+		if changedfs["output-values-from"] {
+			return fmt.Errorf("value of '--output-values-from' can't be empty")
+		}
+		return fmt.Errorf("value of '--output-values-from' is missing")
 	}
 	return nil
 }
@@ -62,37 +135,77 @@ type sortby struct {
 	Required bool
 	Type     bool
 }
+type _sort struct {
+	NoSort bool
+}
 type sort struct {
-	Enabled bool
-	By      *sortby
+	Enabled    bool
+	By         *sortby
+	Deprecated *_sort
 }
 
-func (s *sort) validate(fs *pflag.FlagSet) error {
+func defaultSort() *sort {
+	return &sort{
+		Enabled: true,
+		By: &sortby{
+			Required: false,
+			Type:     false,
+		},
+		Deprecated: &_sort{
+			NoSort: false,
+		},
+	}
+}
+
+func (s *sort) validate() error {
 	items := []string{"sort"}
 	for _, item := range items {
-		if fs.Changed("no-"+item) && fs.Changed(item) {
-			return fmt.Errorf("'--no-%s' and '--%s' cannot be used together", item, item)
+		if changedfs[item] && changedfs["no-"+item] {
+			return fmt.Errorf("'--%s' and '--no-%s' can't be used together", item, item)
 		}
 	}
-	if fs.Changed("sort-by-required") && fs.Changed("sort-by-type") {
-		return fmt.Errorf("'--sort-by-required' and '--sort-by-type' cannot be used together")
+	if s.By.Required && s.By.Type {
+		return fmt.Errorf("'--sort-by-required' and '--sort-by-type' can't be used together")
 	}
 	return nil
 }
 
+type _settings struct {
+	NoColor     bool
+	NoEscape    bool
+	NoRequired  bool
+	NoSensitive bool
+}
 type settings struct {
-	Color     bool
-	Escape    bool
-	Indent    int
-	Required  bool
-	Sensitive bool
+	Color      bool
+	Escape     bool
+	Indent     int
+	Required   bool
+	Sensitive  bool
+	Deprecated *_settings
 }
 
-func (s *settings) validate(fs *pflag.FlagSet) error {
+func defaultSettings() *settings {
+	return &settings{
+		Color:     true,
+		Escape:    true,
+		Indent:    2,
+		Required:  true,
+		Sensitive: true,
+		Deprecated: &_settings{
+			NoColor:     false,
+			NoEscape:    false,
+			NoRequired:  false,
+			NoSensitive: false,
+		},
+	}
+}
+
+func (s *settings) validate() error {
 	items := []string{"escape", "color", "required", "sensitive"}
 	for _, item := range items {
-		if fs.Changed("no-"+item) && fs.Changed(item) {
-			return fmt.Errorf("'--no-%s' and '--%s' cannot be used together", item, item)
+		if changedfs[item] && changedfs["no-"+item] {
+			return fmt.Errorf("'--%s' and '--no-%s' can't be used together", item, item)
 		}
 	}
 	return nil
@@ -111,40 +224,84 @@ type Config struct {
 // DefaultConfig returns new instance of Config with default values set
 func DefaultConfig() *Config {
 	return &Config{
-		Formatter:  "",
-		HeaderFrom: "main.tf",
-		Sections: &sections{
-			Hide: []string{},
-
-			header:       true,
-			inputs:       true,
-			outputs:      true,
-			providers:    true,
-			requirements: true,
-		},
-		OutputValues: &outputvalues{
-			Enabled: false,
-			From:    "",
-		},
-		Sort: &sort{
-			Enabled: true,
-			By: &sortby{
-				Required: false,
-				Type:     false,
-			},
-		},
-		Settings: &settings{
-			Color:     true,
-			Escape:    true,
-			Indent:    2,
-			Required:  false,
-			Sensitive: false,
-		},
+		Formatter:    "",
+		HeaderFrom:   "main.tf",
+		Sections:     defaultSections(),
+		OutputValues: defaultOutputValues(),
+		Sort:         defaultSort(),
+		Settings:     defaultSettings(),
 	}
 }
 
+// normalize provided Config
+func (c *Config) normalize(command string) {
+	c.Formatter = strings.Replace(command, "terraform-docs ", "", -1)
+
+	// sections
+	if c.Sections.HideAll && !changedfs["show-all"] {
+		c.Sections.ShowAll = false
+	}
+	if !c.Sections.ShowAll && !changedfs["hide-all"] {
+		c.Sections.HideAll = true
+	}
+	c.Sections.header = c.Sections.visibility("header")
+	c.Sections.inputs = c.Sections.visibility("inputs")
+	c.Sections.outputs = c.Sections.visibility("outputs")
+	c.Sections.providers = c.Sections.visibility("providers")
+	c.Sections.requirements = c.Sections.visibility("requirements")
+
+	// sort
+	if !changedfs["sort"] {
+		c.Sort.Enabled = !c.Sort.Deprecated.NoSort
+	}
+
+	// settings
+	if !changedfs["escape"] {
+		c.Settings.Escape = !c.Settings.Deprecated.NoEscape
+	}
+	if !changedfs["color"] {
+		c.Settings.Color = !c.Settings.Deprecated.NoColor
+	}
+	if !changedfs["required"] {
+		c.Settings.Required = !c.Settings.Deprecated.NoRequired
+	}
+	if !changedfs["sensitive"] {
+		c.Settings.Sensitive = !c.Settings.Deprecated.NoSensitive
+	}
+}
+
+// validate config and check for any misuse or misconfiguration
+func (c *Config) validate() error {
+	// header-from
+	if c.HeaderFrom == "" {
+		return fmt.Errorf("value of '--header-from' can't be empty")
+	}
+
+	// sections
+	if err := c.Sections.validate(); err != nil {
+		return err
+	}
+
+	// output values
+	if err := c.OutputValues.validate(); err != nil {
+		return err
+	}
+
+	// sort
+	if err := c.Sort.validate(); err != nil {
+		return err
+	}
+
+	// settings
+	if err := c.Settings.validate(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // extract and build print.Settings and module.Options out of Config
-func (c *Config) extract() (*print.Settings, *module.Options, error) {
+func (c *Config) extract() (*print.Settings, *module.Options) {
 	settings := print.NewSettings()
 	options := module.NewOptions()
 
@@ -179,57 +336,14 @@ func (c *Config) extract() (*print.Settings, *module.Options, error) {
 	settings.ShowRequired = c.Settings.Required
 	settings.ShowSensitivity = c.Settings.Sensitive
 
-	return settings, options, nil
+	return settings, options
 }
 
-// normalize provided Config and check for any misuse or misconfiguration
-func normalize(command string, fs *pflag.FlagSet, config *Config) error {
-	config.Formatter = strings.Replace(command, "terraform-docs ", "", -1)
-
-	// header-from
-	if fs.Changed("header-from") && config.HeaderFrom == "" {
-		return fmt.Errorf("value of '--header-from' cannot be empty")
+func contains(list []string, name string) bool {
+	for _, i := range list {
+		if i == name {
+			return true
+		}
 	}
-
-	// sections
-	if err := config.Sections.validate(fs); err != nil {
-		return err
-	}
-	config.Sections.header = !(config.Sections.contains("header") || fs.Changed("no-header"))
-	config.Sections.inputs = !(config.Sections.contains("inputs") || fs.Changed("no-inputs"))
-	config.Sections.outputs = !(config.Sections.contains("outputs") || fs.Changed("no-outputs"))
-	config.Sections.providers = !(config.Sections.contains("providers") || fs.Changed("no-providers"))
-	config.Sections.requirements = !(config.Sections.contains("requirements") || fs.Changed("no-requirements"))
-
-	// output values
-	if err := config.OutputValues.validate(); err != nil {
-		return err
-	}
-
-	// sort
-	if err := config.Sort.validate(fs); err != nil {
-		return err
-	}
-	if !fs.Changed("sort") {
-		config.Sort.Enabled = !fs.Changed("no-sort")
-	}
-
-	// settings
-	if err := config.Settings.validate(fs); err != nil {
-		return err
-	}
-	if !fs.Changed("escape") {
-		config.Settings.Escape = !fs.Changed("no-escape")
-	}
-	if !fs.Changed("color") {
-		config.Settings.Color = !fs.Changed("no-color")
-	}
-	if !fs.Changed("required") {
-		config.Settings.Required = !fs.Changed("no-required")
-	}
-	if !fs.Changed("sensitive") {
-		config.Settings.Sensitive = !fs.Changed("no-sensitive")
-	}
-
-	return nil
+	return false
 }
