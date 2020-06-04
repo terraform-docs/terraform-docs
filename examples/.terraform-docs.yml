@@ -1,0 +1,9 @@
+formatter: markdown table
+header-from: "doc.txt"
+sections:
+  hide:
+    - inputs
+    - outputs
+settings:
+  indent: 4
+  required: false

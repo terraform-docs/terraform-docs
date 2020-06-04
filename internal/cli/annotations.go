@@ -1,16 +1,10 @@
 package cli
 
-import (
-	"strings"
-)
-
 // Annotations returns set of annotations for cobra.Commands,
-// specifically the 'command' namd and command 'kind'
+// specifically the command 'name' and command 'kind'
 func Annotations(cmd string) map[string]string {
-	annotations := make(map[string]string)
-	for _, s := range strings.Split(cmd, " ") {
-		annotations["command"] = s
+	return map[string]string{
+		"command": cmd,
+		"kind":    "formatter",
 	}
-	annotations["kind"] = "formatter"
-	return annotations
 }
