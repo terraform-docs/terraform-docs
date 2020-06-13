@@ -1,9 +1,15 @@
 formatter: markdown table
-header-from: "doc.txt"
+header-from: doc.txt
 sections:
-  hide:
+  hide-all: true
+  show:
+    - header
     - inputs
-    - outputs
+    - providers
+sort:
+  enabled: true
+  by:
+    - required
 settings:
   indent: 4
-  required: false
+  escape: false

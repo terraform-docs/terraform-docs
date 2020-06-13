@@ -128,8 +128,8 @@ func (o *outputvalues) validate() error {
 }
 
 type sortby struct {
-	Required bool
-	Type     bool
+	Required bool `name:"required"`
+	Type     bool `name:"type"`
 }
 type _sort struct {
 	NoSort bool
@@ -160,6 +160,14 @@ func (s *sort) validate() error {
 	for _, item := range items {
 		if changedfs[item] && changedfs["no-"+item] {
 			return fmt.Errorf("'--%s' and '--no-%s' can't be used together", item, item)
+		}
+	}
+	types := []string{"required", "type"}
+	for _, item := range s.ByList {
+		switch item {
+		case types[0], types[1]:
+		default:
+			return fmt.Errorf("'%s' is not a valid sort type", item)
 		}
 	}
 	if s.By.Required && s.By.Type {
@@ -340,13 +348,4 @@ func (c *Config) extract() (*print.Settings, *module.Options) {
 	settings.ShowSensitivity = c.Settings.Sensitive
 
 	return settings, options
-}
-
-func contains(list []string, name string) bool {
-	for _, i := range list {
-		if i == name {
-			return true
-		}
-	}
-	return false
 }
