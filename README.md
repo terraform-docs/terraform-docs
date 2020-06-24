@@ -92,8 +92,8 @@ To make this change permenant, the above commands can be added to your `~/.profi
 ## Documentation
 
 - **Users**
-  - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-doccs
-  - Read the [Formats Guide](./docs/FORMATS_GUIDE.md) to learn about different output formats of terraform-doccs
+  - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-docs
+  - Read the [Formats Guide](./docs/FORMATS_GUIDE.md) to learn about different output formats of terraform-docs
 - **Developers**
   - Read [Contributing Guide](CONTRIBUTING.md) before submitting a pull request.
   - Building: not written yet
