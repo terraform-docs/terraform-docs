@@ -17,6 +17,34 @@ terraform-docs --show-all --hide header ...                # show all sections e
 terraform-docs --hide-all --show inputs --show outputs ... # hide all sections except 'inputs' and 'outputs'
 ```
 
+## Generate Module Header
+
+Module header can be extracted from different sources. Default file to extract header from is `main.tf`, otherwise you can specify the file with `--header-from FILE`. Supported file formats to read header from are:
+
+1. `.adoc`
+2. `.md`
+3. `.tf`
+4. `.txt`
+
+The whole file content is being extracted as module header when extracting from `.adoc`, `.md` or `.txt`. But to extract header from `.tf` file you need to use following javascript, c or java like multi-line comment:
+
+```tf
+/**
+ * # Main title
+ *
+ * Everything in this comment block will get extracted.
+ *
+ * You can put simple text or complete Markdown content
+ * here. Subsequently if you want to render AsciiDoc format
+ * you can put AsciiDoc compatible content in this comment
+ * block.
+ */
+
+resource "foo" "bar" { ... }
+```
+
+**Note:** This comment must start at the immediate first line of the `.tf` file before any `resource`, `variable`, `module`, etc.
+
 ## Generate terraform.tfvars
 
 You can generate `terraform.tfvars` in both `hcl` and `json` format by executing the following:
