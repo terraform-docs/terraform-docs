@@ -1,16 +1,17 @@
-unquoted = ""
-bool-3   = true
-bool-2   = false
-bool-1   = true
-string-3 = ""
-string-2 = ""
-string-1 = "bar"
-number-3 = "19"
-number-4 = 15.75
-number-2 = ""
-number-1 = 42
-map-3    = {}
-map-2    = ""
+unquoted             = ""
+bool-3               = true
+bool-2               = false
+bool-1               = true
+string-3             = ""
+string-2             = ""
+string-1             = "bar"
+string-special-chars = "\\.\u003c\u003e[]{}_-"
+number-3             = "19"
+number-4             = 15.75
+number-2             = ""
+number-1             = 42
+map-3                = {}
+map-2                = ""
 map-1 = {
   "a": 1,
   "b": 2,

@@ -50,6 +50,9 @@ esse cillum dolore eu fugiat nulla pariatur.[0m
 [36minput.string-1[0m ("bar")
 [90mIt's string number one.[0m
 
+[36minput.string-special-chars[0m ("\\.\u003c\u003e[]{}_-")
+[90mn/a[0m
+
 [36minput.number-3[0m ("19")
 [90mn/a[0m
 

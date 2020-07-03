@@ -6,7 +6,7 @@ variable "bool-3" {
 
 variable "bool-2" {
   description = "It's bool number two."
-  default = false
+  default     = false
 }
 
 // It's bool number one.
@@ -26,6 +26,10 @@ variable "string-2" {
 // It's string number one.
 variable "string-1" {
   default = "bar"
+}
+
+variable "string-special-chars" {
+  default = "\\.<>[]{}_-"
 }
 
 variable "number-3" {
@@ -102,7 +106,7 @@ default     = [
 ]
 ```
 EOD
-  default     = [
+  default = [
     "name rack:location"
   ]
 }
@@ -156,7 +160,7 @@ variable "string_default_null" {
 }
 
 variable "string_no_default" {
-  type    = string
+  type = string
 }
 
 variable "number_default_zero" {

@@ -329,6 +329,14 @@ Type: `string`
 
 Default: `""`
 
+=== string-special-chars
+
+Description: n/a
+
+Type: `string`
+
+Default: `"\\.\u003c\u003e[]{}_-"`
+
 === string_default_empty
 
 Description: n/a

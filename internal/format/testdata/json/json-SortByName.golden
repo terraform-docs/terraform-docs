@@ -202,6 +202,13 @@
       "required": false
     },
     {
+      "name": "string-special-chars",
+      "type": "string",
+      "description": null,
+      "default": "\\.<>[]{}_-",
+      "required": false
+    },
+    {
       "name": "string_default_empty",
       "type": "string",
       "description": null,

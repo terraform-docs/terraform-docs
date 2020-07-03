@@ -260,6 +260,11 @@ object({
 |`string`
 |`""`
 
+|string-special-chars
+|n/a
+|`string`
+|`"\\.\u003c\u003e[]{}_-"`
+
 |string_default_empty
 |n/a
 |`string`

@@ -51,6 +51,13 @@
       "required": false
     },
     {
+      "name": "string-special-chars",
+      "type": "string",
+      "description": null,
+      "default": "\\.\u003c\u003e[]{}_-",
+      "required": false
+    },
+    {
       "name": "number-3",
       "type": "number",
       "description": null,

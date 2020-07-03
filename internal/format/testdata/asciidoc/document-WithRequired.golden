@@ -148,6 +148,14 @@ Type: `string`
 
 Default: `"bar"`
 
+=== string-special-chars
+
+Description: n/a
+
+Type: `string`
+
+Default: `"\\.\u003c\u003e[]{}_-"`
+
 === number-3
 
 Description: n/a

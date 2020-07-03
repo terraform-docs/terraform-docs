@@ -48,6 +48,7 @@ object_default_empty    = {}
 string-1                = "bar"
 string-2                = ""
 string-3                = ""
+string-special-chars    = "\\.\u003c\u003e[]{}_-"
 string_default_empty    = ""
 string_default_null     = ""
 string_no_default       = ""

@@ -38,6 +38,11 @@
 |`string`
 |`"bar"`
 
+|string-special-chars
+|n/a
+|`string`
+|`"\\.\u003c\u003e[]{}_-"`
+
 |number-3
 |n/a
 |`number`
