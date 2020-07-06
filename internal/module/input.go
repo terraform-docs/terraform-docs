@@ -1,7 +1,7 @@
 package module
 
 import (
-	"github.com/segmentio/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 type inputsSortedByName []*tfconf.Input

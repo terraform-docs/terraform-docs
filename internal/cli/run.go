@@ -6,8 +6,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/segmentio/terraform-docs/internal/format"
-	"github.com/segmentio/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/format"
+	"github.com/terraform-docs/terraform-docs/internal/module"
 )
 
 // PreRunEFunc returns actual 'cobra.Command#PreRunE' function

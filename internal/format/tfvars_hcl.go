@@ -6,9 +6,9 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/segmentio/terraform-docs/pkg/print"
-	"github.com/segmentio/terraform-docs/pkg/tfconf"
-	"github.com/segmentio/terraform-docs/pkg/tmpl"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (

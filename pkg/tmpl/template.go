@@ -6,9 +6,9 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/segmentio/terraform-docs/internal/types"
-	"github.com/segmentio/terraform-docs/pkg/print"
-	"github.com/segmentio/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // Item represents a named templated which can reference

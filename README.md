@@ -1,6 +1,6 @@
 # terraform-docs
 
-[![Build Status](https://github.com/segmentio/terraform-docs/workflows/build/badge.svg)](https://github.com/segmentio/terraform-docs/actions) [![GoDoc](https://godoc.org/github.com/segmentio/terraform-docs?status.svg)](https://godoc.org/github.com/segmentio/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/terraform-docs)](https://goreportcard.com/report/github.com/segmentio/terraform-docs) [![Codecov Report](https://codecov.io/gh/segmentio/terraform-docs/branch/master/graph/badge.svg)](https://codecov.io/gh/segmentio/terraform-docs) [![License](https://img.shields.io/github/license/segmentio/terraform-docs)](https://github.com/segmentio/terraform-docs/blob/master/LICENSE) [![Latest release](https://img.shields.io/github/v/release/segmentio/terraform-docs)](https://github.com/segmentio/terraform-docs/releases)
+[![Build Status](https://github.com/terraform-docs/terraform-docs/workflows/build/badge.svg)](https://github.com/terraform-docs/terraform-docs/actions) [![GoDoc](https://godoc.org/github.com/terraform-docs/terraform-docs?status.svg)](https://godoc.org/github.com/terraform-docs/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/terraform-docs/terraform-docs)](https://goreportcard.com/report/github.com/terraform-docs/terraform-docs) [![Codecov Report](https://codecov.io/gh/terraform-docs/terraform-docs/branch/master/graph/badge.svg)](https://codecov.io/gh/terraform-docs/terraform-docs) [![License](https://img.shields.io/github/license/terraform-docs/terraform-docs)](https://github.com/terraform-docs/terraform-docs/blob/master/LICENSE) [![Latest release](https://img.shields.io/github/v/release/terraform-docs/terraform-docs)](https://github.com/terraform-docs/terraform-docs/releases)
 
 ![terraform-docs-teaser](./images/terraform-docs-teaser.png)
 
@@ -31,7 +31,7 @@ Read the [User Guide](./docs/USER_GUIDE.md) and [Formats Guide](./docs/FORMATS_G
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
+GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.9.1
 ```
 
 If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
@@ -51,13 +51,13 @@ choco install terraform-docs
 This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error `terraform-docs: command not found` after installation then you may need to either add that directory to your `$PATH` as shown [here](https://golang.org/doc/code.html#GOPATH) or do a manual installation by cloning the repo and run `make build` from the repository which will put `terraform-docs` in:
 
 ```bash
-$(go env GOPATH)/src/github.com/segmentio/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
+$(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
 ```
 
-Stable binaries are also available on the [releases](https://github.com/segmentio/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
+Stable binaries are also available on the [releases](https://github.com/terraform-docs/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.9.1/terraform-docs-v0.9.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.9.1/terraform-docs-v0.9.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
 chmod +x ./terraform-docs
 mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
@@ -110,7 +110,7 @@ Visit [./docs](./docs/) for all documentation.
 
 ## Maintenance
 
-This project is no longer maintained by Segment. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
+This project was origanially developed by [Segment](https://github.com/segmentio/) but now is no longer maintained by them. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
 
 ## License
 

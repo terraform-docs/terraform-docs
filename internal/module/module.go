@@ -10,10 +10,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/segmentio/terraform-docs/internal/reader"
-	"github.com/segmentio/terraform-docs/internal/tfconfig"
-	"github.com/segmentio/terraform-docs/internal/types"
-	"github.com/segmentio/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/internal/reader"
+	"github.com/terraform-docs/terraform-docs/internal/tfconfig"
+	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // LoadWithOptions returns new instance of Module with all the inputs and

@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/segmentio/terraform-docs/cmd"
+	"github.com/terraform-docs/terraform-docs/cmd"
 )
 
 func main() {

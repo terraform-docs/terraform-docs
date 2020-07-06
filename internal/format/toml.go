@@ -5,8 +5,8 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"github.com/segmentio/terraform-docs/pkg/print"
-	"github.com/segmentio/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // TOML represents TOML format.

@@ -1,7 +1,7 @@
 package tfconf
 
 import (
-	"github.com/segmentio/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
 // Requirement represents a requirement for Terraform module.

@@ -8,7 +8,7 @@ assignees: ''
 
 <!-- Please note, this template is for bugs report, not feature requests -->
 <!-- For more information, see the Contributing Guidelines at -->
-<!-- https://github.com/segmentio/terraform-docs/tree/master/CONTRIBUTING.md -->
+<!-- https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md -->
 
 **Describe the bug**
 

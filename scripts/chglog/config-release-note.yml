@@ -2,7 +2,7 @@ style: github
 template: CHANGELOG-release-note.tpl.md
 info:
   title: CHANGELOG
-  repository_url: https://github.com/segmentio/terraform-docs
+  repository_url: https://github.com/terraform-docs/terraform-docs
 options:
   commits:
     filters:

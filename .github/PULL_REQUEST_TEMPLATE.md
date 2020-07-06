@@ -7,11 +7,11 @@ Put an `x` into the box(es) that apply:
 - [ ] This pull request enhances existing functionality.
 - [ ] This pull request introduces breaking change.
 
-For more information, see the [Contributing Guide](https://github.com/segmentio/terraform-docs/tree/master/CONTRIBUTING.md).
+For more information, see the [Contributing Guide](https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md).
 
 ### Description
 
-Describe what this pull request achieves. Ensure you have read the [Contributing Guidelines](https://github.com/segmentio/terraform-docs/tree/master/CONTRIBUTING.md) document before submitting.
+Describe what this pull request achieves. Ensure you have read the [Contributing Guidelines](https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md) document before submitting.
 
 ### Issues Resolved
 
@@ -21,7 +21,7 @@ List any existing issues this pull request resolves.
 
 Put an `x` into all boxes that apply:
 
-- [ ] I have read the [Contributing Guidelines](https://github.com/segmentio/terraform-docs/tree/master/CONTRIBUTING.md).
+- [ ] I have read the [Contributing Guidelines](https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md).
 
 #### Tests
 

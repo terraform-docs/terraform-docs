@@ -3,7 +3,7 @@ package tfconf
 import (
 	"fmt"
 
-	"github.com/segmentio/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
 // Provider represents a Terraform output.

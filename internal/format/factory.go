@@ -3,7 +3,7 @@ package format
 import (
 	"fmt"
 
-	"github.com/segmentio/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // Factory initializes and returns the conceret implementation of
