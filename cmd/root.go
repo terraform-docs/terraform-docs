@@ -5,17 +5,17 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/segmentio/terraform-docs/cmd/asciidoc"
-	"github.com/segmentio/terraform-docs/cmd/completion"
-	"github.com/segmentio/terraform-docs/cmd/json"
-	"github.com/segmentio/terraform-docs/cmd/markdown"
-	"github.com/segmentio/terraform-docs/cmd/pretty"
-	"github.com/segmentio/terraform-docs/cmd/tfvars"
-	"github.com/segmentio/terraform-docs/cmd/toml"
-	"github.com/segmentio/terraform-docs/cmd/version"
-	"github.com/segmentio/terraform-docs/cmd/xml"
-	"github.com/segmentio/terraform-docs/cmd/yaml"
-	"github.com/segmentio/terraform-docs/internal/cli"
+	"github.com/terraform-docs/terraform-docs/cmd/asciidoc"
+	"github.com/terraform-docs/terraform-docs/cmd/completion"
+	"github.com/terraform-docs/terraform-docs/cmd/json"
+	"github.com/terraform-docs/terraform-docs/cmd/markdown"
+	"github.com/terraform-docs/terraform-docs/cmd/pretty"
+	"github.com/terraform-docs/terraform-docs/cmd/tfvars"
+	"github.com/terraform-docs/terraform-docs/cmd/toml"
+	"github.com/terraform-docs/terraform-docs/cmd/version"
+	"github.com/terraform-docs/terraform-docs/cmd/xml"
+	"github.com/terraform-docs/terraform-docs/cmd/yaml"
+	"github.com/terraform-docs/terraform-docs/internal/cli"
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.

@@ -3,7 +3,7 @@ package tfconf
 import (
 	"encoding/json"
 
-	"github.com/segmentio/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
 // Input represents a Terraform input.

@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/segmentio/terraform-docs/internal/version"
+	"github.com/terraform-docs/terraform-docs/internal/version"
 )
 
 // NewCommand returns a new cobra.Command for 'version' command

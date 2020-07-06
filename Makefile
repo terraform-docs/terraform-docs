@@ -1,8 +1,7 @@
 # Project variables
 NAME        := terraform-docs
-VENDOR      := segmentio
-DESCRIPTION := Generate docs from Terraform modules
-MAINTAINER  := Martin Etmajer <metmajer@getcloudnative.io>
+VENDOR      := terraform-docs
+DESCRIPTION := generate documentation from Terraform modules in various output formats
 URL         := https://github.com/$(VENDOR)/$(NAME)
 LICENSE     := MIT
 
@@ -29,7 +28,7 @@ GOLDFLAGS   +="
 GOBUILD     ?= CGO_ENABLED=0 go build -ldflags $(GOLDFLAGS)
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
 
-GOIMPORTS_LOCAL_ARG := -local github.com/segmentio/terraform-docs
+GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs/terraform-docs
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
@@ -44,7 +43,7 @@ all: clean verify checkfmt lint test build
 .PHONY: checkfmt
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
-	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg && echo "OK"
+	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/ && echo "OK"
 
 .PHONY: clean
 clean: ## Clean workspace
@@ -54,7 +53,7 @@ clean: ## Clean workspace
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
-	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg
+	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/
 
 .PHONY: lint
 lint: ## Run linter

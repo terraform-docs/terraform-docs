@@ -10,11 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/segmentio/terraform-docs/cmd"
-	"github.com/segmentio/terraform-docs/internal/format"
-	"github.com/segmentio/terraform-docs/internal/module"
-	"github.com/segmentio/terraform-docs/pkg/print"
 	"github.com/spf13/cobra"
+
+	"github.com/terraform-docs/terraform-docs/cmd"
+	"github.com/terraform-docs/terraform-docs/internal/format"
+	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // These are practiaclly a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go

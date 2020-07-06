@@ -4,16 +4,16 @@ Thank you for your interest in this project!
 
 We use *GitHub Issues* for trackings issues and features. You can make a contribution by:
 
-1. Reporting an issue or making a feature request [here](https://github.com/segmentio/terraform-docs/issues).
+1. Reporting an issue or making a feature request [here](https://github.com/terraform-docs/terraform-docs/issues).
 2. Contributing code to this project by fixing an issue or adding a new feature (see below).
 
 Before contributing a new feature, please discuss its suitability with the project maintainers in an issue first. Thanks!
 
 ## Contribution Process
 
-1. Fork and *git clone* [terraform-docs](https://github.com/segmentio/terraform-docs).
+1. Fork and *git clone* [terraform-docs](https://github.com/terraform-docs/terraform-docs).
 2. Create a new *git branch* from the master branch where you develop your changes.
-3. Create a [Pull Request](https://help.github.com/articles/about-pull-requests/) for your contribution by following the instructions in the pull request template [here](https://github.com/segmentio/terraform-docs/pull).
+3. Create a [Pull Request](https://help.github.com/articles/about-pull-requests/) for your contribution by following the instructions in the pull request template [here](https://github.com/terraform-docs/terraform-docs/pull).
 4. Perform a code review with the project maintainers on the pull request. We may suggest changes, improvements or alternatives.
 5. Once approved, your code will be merged into `master` and your name will be included in `AUTHORS`.
 
@@ -21,7 +21,7 @@ Before contributing a new feature, please discuss its suitability with the proje
 
 Pull requests have to meet the following requirements:
 
-1. **Tests**: Code changes need to be tested with code and tests being located in the same folder (see packages [format](https://github.com/segmentio/terraform-docs/tree/master/internal/format/) for example). Make sure that your tests pass using `make test`.
+1. **Tests**: Code changes need to be tested with code and tests being located in the same folder (see packages [format](https://github.com/terraform-docs/terraform-docs/tree/master/internal/format/) for example). Make sure that your tests pass using `make test`.
 
 2. **Documentation**: Pull requests need to update the [Formats Guide](/docs/FORMATS_GUIDE.md) and if need be the main [README](README.md) together with the code change. You can generate the format guides by using `make docs`.
 

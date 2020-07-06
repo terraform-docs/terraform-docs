@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 
-	"github.com/segmentio/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
 // Output represents a Terraform output.

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/segmentio/terraform-docs/internal/module"
-	"github.com/segmentio/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // list of flagset items which explicitly changed from CLI

@@ -1,4 +1,4 @@
-module github.com/segmentio/terraform-docs
+module github.com/terraform-docs/terraform-docs
 
 go 1.14
 

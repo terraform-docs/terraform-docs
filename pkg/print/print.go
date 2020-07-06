@@ -1,7 +1,7 @@
 package print
 
 import (
-	"github.com/segmentio/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // Format represents a printer format (e.g. json, table, yaml, ...)
