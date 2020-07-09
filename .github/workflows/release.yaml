@@ -41,6 +41,27 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  docker:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Set version output
+      id: vars
+      run: echo ::set-output name=tag::${GITHUB_REF:11} # tag name without leading 'v'
+
+    - name: Build and push Docker image
+      if: "contains(github.ref, 'refs/heads/master')"
+      run: |
+        echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin quay.io
+        DOCKER_TAG=${{ steps.vars.outputs.tag }} make docker push
+        DOCKER_TAG=latest make push
+      env:
+        REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+        REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
   homebrew:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
