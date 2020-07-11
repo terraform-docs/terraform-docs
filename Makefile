@@ -30,6 +30,11 @@ GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
 
 GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs/terraform-docs
 
+# Docker variables
+DEFAULT_TAG  ?= $(shell echo "$(VERSION)" | tr -d 'v')
+DOCKER_IMAGE := quay.io/$(VENDOR)/$(NAME)
+DOCKER_TAG   ?= $(DEFAULT_TAG)
+
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
 GOLANGCI_VERSION  := v1.23.7
@@ -94,6 +99,16 @@ build-all: GOARCH = amd64 arm
 build-all: clean ## Build binary for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
 	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
+
+.PHONY: docker
+docker: ## Build Docker image
+	@ $(MAKE) --no-print-directory log-$@
+	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG) --file Dockerfile .
+
+.PHONY: push
+push: ## Push Docker image
+	@ $(MAKE) --no-print-directory log-$@
+	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 .PHONY: docs
 docs: ## Generate document of formatter commands
