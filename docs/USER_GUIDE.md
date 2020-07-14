@@ -10,7 +10,7 @@ Please refer to [Formats Guide](/docs/FORMATS_GUIDE.md) for guidance on output f
 
 ## Configuration File
 
-`terraform-docs` can read the desired formatter and options from a file, instead of being passed to in CLI. This is a convinient way to share the configuation amongst teammates and also CI pipelines. To do so you can use `-c` or `--config` flag which accepts name of the config file (default to `.terraform-docs.yml`). Example `.terraform-docs.yml`:
+`terraform-docs` can read the desired formatter and options from a file, instead of being passed to in CLI. This is a convenient way to share the configuation amongst teammates and also CI pipelines. To do so you can use `-c` or `--config` flag which accepts name of the config file (default to `.terraform-docs.yml`). Example `.terraform-docs.yml`:
 
 ```yaml
 formatter: markdown table
@@ -24,7 +24,7 @@ settings:
   required: false
 ```
 
-which produces:
+when executed:
 
 ```bash
 terraform-docs ./example/ # this will read the config above and:
