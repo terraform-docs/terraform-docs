@@ -3,13 +3,25 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+
+
+<a name="v0.10.0-rc.1"></a>
+## [v0.10.0-rc.1] - 2020-07-13
+
 ### Code Refactoring
+- Refactor cli implemention and configuration ([#266](https://github.com/terraform-docs/terraform-docs/issues/266))
 - Deprecate multiple flags in favor of new ones ([#265](https://github.com/terraform-docs/terraform-docs/issues/265))
 - Remove deprecated flags ([#229](https://github.com/terraform-docs/terraform-docs/issues/229))
 - Add factory function to return format types ([#243](https://github.com/terraform-docs/terraform-docs/issues/243))
 - Reorganize markdown format tests ([#244](https://github.com/terraform-docs/terraform-docs/issues/244))
 
+### Documentation
+- Add detail about module header usage guide ([#282](https://github.com/terraform-docs/terraform-docs/issues/282))
+
 ### Features
+- Add support for .terraform-docs.yml config file ([#272](https://github.com/terraform-docs/terraform-docs/issues/272))
+- Build and push docker image ([#289](https://github.com/terraform-docs/terraform-docs/issues/289))
+- Add new flags: --show, --show-all, --hide-all ([#267](https://github.com/terraform-docs/terraform-docs/issues/267))
 - Add support for TOML renderer ([#197](https://github.com/terraform-docs/terraform-docs/issues/197))
 - Add new flag to sort inputs by type ([#246](https://github.com/terraform-docs/terraform-docs/issues/246))
 - Add support for AsciiDoc renderer ([#241](https://github.com/terraform-docs/terraform-docs/issues/241))
@@ -340,9 +352,9 @@ the second release from now.
 ## [v0.0.2] - 2016-06-29
 
 - Release v0.0.2
-- Merge pull request [#11](https://github.com/terraform-docs/terraform-docs/issues/11) from terraform-docs/fix-md
+- Merge pull request [#11](https://github.com/terraform-docs/terraform-docs/issues/11) from segmentio/fix-md
 - wrap default values
-- Merge pull request [#10](https://github.com/terraform-docs/terraform-docs/issues/10) from terraform-docs/fix-map-type
+- Merge pull request [#10](https://github.com/terraform-docs/terraform-docs/issues/10) from segmentio/fix-map-type
 - fix map type
 - add more install notes
 - add dist
@@ -351,11 +363,11 @@ the second release from now.
 <a name="v0.0.1"></a>
 ## v0.0.1 - 2016-06-15
 
-- Merge pull request [#5](https://github.com/terraform-docs/terraform-docs/issues/5) from terraform-docs/fix-comment
+- Merge pull request [#5](https://github.com/terraform-docs/terraform-docs/issues/5) from segmentio/fix-comment
 - use /** comment for module commnet
 - actually print head comment
 - img
-- Merge pull request [#4](https://github.com/terraform-docs/terraform-docs/issues/4) from terraform-docs/layout
+- Merge pull request [#4](https://github.com/terraform-docs/terraform-docs/issues/4) from segmentio/layout
 - fix view
 - docs
 - ignore comments with /** prefix
@@ -377,7 +389,8 @@ the second release from now.
 - Initial commit
 
 
-[Unreleased]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.1...HEAD
+[Unreleased]: https://github.com/terraform-docs/terraform-docs/compare/v0.10.0-rc.1...HEAD
+[v0.10.0-rc.1]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.1...v0.10.0-rc.1
 [v0.9.1]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.0...v0.9.1
 [v0.9.0]: https://github.com/terraform-docs/terraform-docs/compare/v0.8.2...v0.9.0
 [v0.8.2]: https://github.com/terraform-docs/terraform-docs/compare/v0.8.1...v0.8.2
