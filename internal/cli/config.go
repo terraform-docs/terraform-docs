@@ -2,14 +2,10 @@ package cli
 
 import (
 	"fmt"
-	"strings"
 
-	"github.com/segmentio/terraform-docs/internal/module"
-	"github.com/segmentio/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
-
-// list of flagset items which explicitly changed from CLI
-var changedfs = make(map[string]bool)
 
 type _sections struct {
 	NoHeader       bool
@@ -19,26 +15,26 @@ type _sections struct {
 	NoRequirements bool
 }
 type sections struct {
-	Show       []string
-	Hide       []string
-	ShowAll    bool
-	HideAll    bool
-	Deprecated *_sections
+	Show       []string  `yaml:"show"`
+	Hide       []string  `yaml:"hide"`
+	ShowAll    bool      `yaml:"show-all"`
+	HideAll    bool      `yaml:"hide-all"`
+	Deprecated _sections `yaml:"-"`
 
-	header       bool
-	inputs       bool
-	outputs      bool
-	providers    bool
-	requirements bool
+	header       bool `yaml:"-"`
+	inputs       bool `yaml:"-"`
+	outputs      bool `yaml:"-"`
+	providers    bool `yaml:"-"`
+	requirements bool `yaml:"-"`
 }
 
-func defaultSections() *sections {
-	return &sections{
+func defaultSections() sections {
+	return sections{
 		Show:    []string{},
 		Hide:    []string{},
 		ShowAll: true,
 		HideAll: false,
-		Deprecated: &_sections{
+		Deprecated: _sections{
 			NoHeader:       false,
 			NoInputs:       false,
 			NoOutputs:      false,
@@ -110,12 +106,12 @@ func (s *sections) visibility(section string) bool {
 }
 
 type outputvalues struct {
-	Enabled bool
-	From    string
+	Enabled bool   `yaml:"enabled"`
+	From    string `yaml:"from"`
 }
 
-func defaultOutputValues() *outputvalues {
-	return &outputvalues{
+func defaultOutputValues() outputvalues {
+	return outputvalues{
 		Enabled: false,
 		From:    "",
 	}
@@ -132,26 +128,28 @@ func (o *outputvalues) validate() error {
 }
 
 type sortby struct {
-	Required bool
-	Type     bool
+	Required bool `name:"required"`
+	Type     bool `name:"type"`
 }
 type _sort struct {
 	NoSort bool
 }
 type sort struct {
-	Enabled    bool
-	By         *sortby
-	Deprecated *_sort
+	Enabled    bool     `yaml:"enabled"`
+	ByList     []string `yaml:"by"`
+	By         sortby   `yaml:"-"`
+	Deprecated _sort    `yaml:"-"`
 }
 
-func defaultSort() *sort {
-	return &sort{
+func defaultSort() sort {
+	return sort{
 		Enabled: true,
-		By: &sortby{
+		ByList:  []string{},
+		By: sortby{
 			Required: false,
 			Type:     false,
 		},
-		Deprecated: &_sort{
+		Deprecated: _sort{
 			NoSort: false,
 		},
 	}
@@ -162,6 +160,14 @@ func (s *sort) validate() error {
 	for _, item := range items {
 		if changedfs[item] && changedfs["no-"+item] {
 			return fmt.Errorf("'--%s' and '--no-%s' can't be used together", item, item)
+		}
+	}
+	types := []string{"required", "type"}
+	for _, item := range s.ByList {
+		switch item {
+		case types[0], types[1]:
+		default:
+			return fmt.Errorf("'%s' is not a valid sort type", item)
 		}
 	}
 	if s.By.Required && s.By.Type {
@@ -177,22 +183,22 @@ type _settings struct {
 	NoSensitive bool
 }
 type settings struct {
-	Color      bool
-	Escape     bool
-	Indent     int
-	Required   bool
-	Sensitive  bool
-	Deprecated *_settings
+	Color      bool      `yaml:"color"`
+	Escape     bool      `yaml:"escape"`
+	Indent     int       `yaml:"indent"`
+	Required   bool      `yaml:"required"`
+	Sensitive  bool      `yaml:"sensitive"`
+	Deprecated _settings `yaml:"-"`
 }
 
-func defaultSettings() *settings {
-	return &settings{
+func defaultSettings() settings {
+	return settings{
 		Color:     true,
 		Escape:    true,
 		Indent:    2,
 		Required:  true,
 		Sensitive: true,
-		Deprecated: &_settings{
+		Deprecated: _settings{
 			NoColor:     false,
 			NoEscape:    false,
 			NoRequired:  false,
@@ -213,17 +219,19 @@ func (s *settings) validate() error {
 
 // Config represents all the available config options that can be accessed and passed through CLI
 type Config struct {
-	Formatter    string
-	HeaderFrom   string
-	Sections     *sections
-	OutputValues *outputvalues
-	Sort         *sort
-	Settings     *settings
+	File         string       `yaml:"-"`
+	Formatter    string       `yaml:"formatter"`
+	HeaderFrom   string       `yaml:"header-from"`
+	Sections     sections     `yaml:"sections"`
+	OutputValues outputvalues `yaml:"output-values"`
+	Sort         sort         `yaml:"sort"`
+	Settings     settings     `yaml:"settings"`
 }
 
 // DefaultConfig returns new instance of Config with default values set
 func DefaultConfig() *Config {
 	return &Config{
+		File:         "",
 		Formatter:    "",
 		HeaderFrom:   "main.tf",
 		Sections:     defaultSections(),
@@ -233,10 +241,8 @@ func DefaultConfig() *Config {
 	}
 }
 
-// normalize provided Config
-func (c *Config) normalize(command string) {
-	c.Formatter = strings.Replace(command, "terraform-docs ", "", -1)
-
+// process provided Config
+func (c *Config) process() {
 	// sections
 	if c.Sections.HideAll && !changedfs["show-all"] {
 		c.Sections.ShowAll = false
@@ -251,27 +257,32 @@ func (c *Config) normalize(command string) {
 	c.Sections.requirements = c.Sections.visibility("requirements")
 
 	// sort
-	if !changedfs["sort"] {
+	if !changedfs["sort"] && changedfs["no-sort"] {
 		c.Sort.Enabled = !c.Sort.Deprecated.NoSort
 	}
 
 	// settings
-	if !changedfs["escape"] {
+	if !changedfs["escape"] && changedfs["no-escape"] {
 		c.Settings.Escape = !c.Settings.Deprecated.NoEscape
 	}
-	if !changedfs["color"] {
+	if !changedfs["color"] && changedfs["no-color"] {
 		c.Settings.Color = !c.Settings.Deprecated.NoColor
 	}
-	if !changedfs["required"] {
+	if !changedfs["required"] && changedfs["no-required"] {
 		c.Settings.Required = !c.Settings.Deprecated.NoRequired
 	}
-	if !changedfs["sensitive"] {
+	if !changedfs["sensitive"] && changedfs["no-sensitive"] {
 		c.Settings.Sensitive = !c.Settings.Deprecated.NoSensitive
 	}
 }
 
 // validate config and check for any misuse or misconfiguration
 func (c *Config) validate() error {
+	// formatter
+	if c.Formatter == "" {
+		return fmt.Errorf("value of 'formatter' can't be empty")
+	}
+
 	// header-from
 	if c.HeaderFrom == "" {
 		return fmt.Errorf("value of '--header-from' can't be empty")
@@ -337,13 +348,4 @@ func (c *Config) extract() (*print.Settings, *module.Options) {
 	settings.ShowSensitivity = c.Settings.Sensitive
 
 	return settings, options
-}
-
-func contains(list []string, name string) bool {
-	for _, i := range list {
-		if i == name {
-			return true
-		}
-	}
-	return false
 }

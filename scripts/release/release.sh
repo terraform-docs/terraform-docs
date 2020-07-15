@@ -52,12 +52,12 @@ function getClosestVersion() {
         fi
         break
     done
-    echo "$tag"
+    echo "$tag" | sed 's/^v//'
 }
 CLOSEST_VERSION=$(getClosestVersion)
 
 # Bump the released version in README and version.go
-sed -i -E 's|'${CLOSEST_VERSION}'|v'${RELEASE_VERSION}'|g' README.md
+sed -i -E 's|'${CLOSEST_VERSION}'|'${RELEASE_VERSION}'|g' README.md
 sed -i -E 's|v'${RELEASE_VERSION}'-alpha|v'${RELEASE_VERSION}'|g' internal/version/version.go
 
 # Commit changes

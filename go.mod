@@ -1,14 +1,15 @@
-module github.com/segmentio/terraform-docs
+module github.com/terraform-docs/terraform-docs
 
 go 1.14
 
 require (
 	github.com/BurntSushi/toml v0.3.1
-	github.com/go-test/deep v1.0.6
+	github.com/go-test/deep v1.0.7
 	github.com/hashicorp/hcl v1.0.0
 	github.com/hashicorp/hcl/v2 v2.6.0
 	github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0
 	github.com/imdario/mergo v0.3.9
+	github.com/segmentio/terraform-docs v0.9.1 // indirect
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.6.1

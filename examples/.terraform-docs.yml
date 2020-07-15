@@ -1,0 +1,15 @@
+formatter: markdown table
+header-from: doc.txt
+sections:
+  hide-all: true
+  show:
+    - header
+    - inputs
+    - providers
+sort:
+  enabled: true
+  by:
+    - required
+settings:
+  indent: 4
+  escape: false

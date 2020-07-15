@@ -5,17 +5,17 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/segmentio/terraform-docs/cmd/asciidoc"
-	"github.com/segmentio/terraform-docs/cmd/completion"
-	"github.com/segmentio/terraform-docs/cmd/json"
-	"github.com/segmentio/terraform-docs/cmd/markdown"
-	"github.com/segmentio/terraform-docs/cmd/pretty"
-	"github.com/segmentio/terraform-docs/cmd/tfvars"
-	"github.com/segmentio/terraform-docs/cmd/toml"
-	"github.com/segmentio/terraform-docs/cmd/version"
-	"github.com/segmentio/terraform-docs/cmd/xml"
-	"github.com/segmentio/terraform-docs/cmd/yaml"
-	"github.com/segmentio/terraform-docs/internal/cli"
+	"github.com/terraform-docs/terraform-docs/cmd/asciidoc"
+	"github.com/terraform-docs/terraform-docs/cmd/completion"
+	"github.com/terraform-docs/terraform-docs/cmd/json"
+	"github.com/terraform-docs/terraform-docs/cmd/markdown"
+	"github.com/terraform-docs/terraform-docs/cmd/pretty"
+	"github.com/terraform-docs/terraform-docs/cmd/tfvars"
+	"github.com/terraform-docs/terraform-docs/cmd/toml"
+	"github.com/terraform-docs/terraform-docs/cmd/version"
+	"github.com/terraform-docs/terraform-docs/cmd/xml"
+	"github.com/terraform-docs/terraform-docs/cmd/yaml"
+	"github.com/terraform-docs/terraform-docs/internal/cli"
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -32,16 +32,21 @@ func Execute() error {
 func NewCommand() *cobra.Command {
 	config := cli.DefaultConfig()
 	cmd := &cobra.Command{
-		Args:          cobra.NoArgs,
-		Use:           "terraform-docs",
+		Args:          cobra.MaximumNArgs(1),
+		Use:           "terraform-docs [PATH]",
 		Short:         "A utility to generate documentation from Terraform modules in various output formats",
 		Long:          "A utility to generate documentation from Terraform modules in various output formats",
 		Version:       version.Full(),
 		SilenceUsage:  true,
 		SilenceErrors: true,
+		Annotations:   cli.Annotations("root"),
+		PreRunE:       cli.PreRunEFunc(config),
+		RunE:          cli.RunEFunc(config),
 	}
 
 	// flags
+	cmd.PersistentFlags().StringVarP(&config.File, "config", "c", ".terraform-docs.yml", "config file name")
+
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section [header, inputs, outputs, providers, requirements]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section [header, inputs, outputs, providers, requirements]")
 	cmd.PersistentFlags().BoolVar(&config.Sections.ShowAll, "show-all", true, "show all sections")

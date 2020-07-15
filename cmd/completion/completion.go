@@ -3,8 +3,8 @@ package completion
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/segmentio/terraform-docs/cmd/completion/bash"
-	"github.com/segmentio/terraform-docs/cmd/completion/zsh"
+	"github.com/terraform-docs/terraform-docs/cmd/completion/bash"
+	"github.com/terraform-docs/terraform-docs/cmd/completion/zsh"
 )
 
 // NewCommand returns a new cobra.Command for 'completion' command

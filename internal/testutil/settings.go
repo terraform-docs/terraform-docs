@@ -3,7 +3,7 @@ package testutil
 import (
 	"github.com/imdario/mergo"
 
-	"github.com/segmentio/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // TestSettings respresents the Settings instance for tests

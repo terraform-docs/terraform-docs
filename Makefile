@@ -1,8 +1,7 @@
 # Project variables
 NAME        := terraform-docs
-VENDOR      := segmentio
-DESCRIPTION := Generate docs from Terraform modules
-MAINTAINER  := Martin Etmajer <metmajer@getcloudnative.io>
+VENDOR      := terraform-docs
+DESCRIPTION := generate documentation from Terraform modules in various output formats
 URL         := https://github.com/$(VENDOR)/$(NAME)
 LICENSE     := MIT
 
@@ -29,7 +28,12 @@ GOLDFLAGS   +="
 GOBUILD     ?= CGO_ENABLED=0 go build -ldflags $(GOLDFLAGS)
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
 
-GOIMPORTS_LOCAL_ARG := -local github.com/segmentio/terraform-docs
+GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs/terraform-docs
+
+# Docker variables
+DEFAULT_TAG  ?= $(shell echo "$(VERSION)" | tr -d 'v')
+DOCKER_IMAGE := quay.io/$(VENDOR)/$(NAME)
+DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
@@ -44,7 +48,7 @@ all: clean verify checkfmt lint test build
 .PHONY: checkfmt
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
-	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg && echo "OK"
+	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/ && echo "OK"
 
 .PHONY: clean
 clean: ## Clean workspace
@@ -54,7 +58,7 @@ clean: ## Clean workspace
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
-	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg
+	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/
 
 .PHONY: lint
 lint: ## Run linter
@@ -95,6 +99,16 @@ build-all: GOARCH = amd64 arm
 build-all: clean ## Build binary for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
 	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
+
+.PHONY: docker
+docker: ## Build Docker image
+	@ $(MAKE) --no-print-directory log-$@
+	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG) --file Dockerfile .
+
+.PHONY: push
+push: ## Push Docker image
+	@ $(MAKE) --no-print-directory log-$@
+	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 .PHONY: docs
 docs: ## Generate document of formatter commands
