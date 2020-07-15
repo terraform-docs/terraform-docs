@@ -166,7 +166,7 @@ It spans over multiple lines.[0m
 [36minput.string-3[0m ("")
 [90mn/a[0m
 
-[36minput.string-special-chars[0m ("\\.\u003c\u003e[]{}_-")
+[36minput.string-special-chars[0m ("\\.<>[]{}_-")
 [90mn/a[0m
 
 [36minput.string_default_empty[0m ("")

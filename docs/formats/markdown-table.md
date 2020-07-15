@@ -130,7 +130,7 @@ generates the following output:
     | string-1 | It's string number one. | `string` | `"bar"` | no |
     | string-2 | It's string number two. | `string` | n/a | yes |
     | string-3 | n/a | `string` | `""` | no |
-    | string-special-chars | n/a | `string` | `"\\.\u003c\u003e[]{}_-"` | no |
+    | string-special-chars | n/a | `string` | `"\\.<>[]{}_-"` | no |
     | string\_default\_empty | n/a | `string` | `""` | no |
     | string\_default\_null | n/a | `string` | `null` | no |
     | string\_no\_default | n/a | `string` | n/a | yes |

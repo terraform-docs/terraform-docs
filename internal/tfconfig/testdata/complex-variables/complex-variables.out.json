@@ -3,7 +3,7 @@
   "variables": {
     "special_chars": {
       "name": "special_chars",
-      "default": "\\.\u003c\u003e[]{}_-",
+      "default": "\\.<>[]{}_-",
       "required": false,
       "pos": {
         "filename": "testdata/complex-variables/complex.tf",

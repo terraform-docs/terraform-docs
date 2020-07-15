@@ -381,7 +381,7 @@ generates the following output:
 
     Type: `string`
 
-    Default: `"\\.\u003c\u003e[]{}_-"`
+    Default: `"\\.<>[]{}_-"`
 
     ### string\_default\_empty
 

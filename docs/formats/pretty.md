@@ -211,7 +211,7 @@ generates the following output:
     input.string-3 ("")
     n/a
 
-    input.string-special-chars ("\\.\u003c\u003e[]{}_-")
+    input.string-special-chars ("\\.<>[]{}_-")
     n/a
 
     input.string_default_empty ("")

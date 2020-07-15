@@ -82,7 +82,7 @@ followed by another line of text.
 | string-1 | It's string number one. | `string` | `"bar"` |
 | string-2 | It's string number two. | `string` | n/a |
 | string-3 | n/a | `string` | `""` |
-| string-special-chars | n/a | `string` | `"\\.\u003c\u003e[]{}_-"` |
+| string-special-chars | n/a | `string` | `"\\.<>[]{}_-"` |
 | string_default_empty | n/a | `string` | `""` |
 | string_default_null | n/a | `string` | `null` |
 | string_no_default | n/a | `string` | n/a |

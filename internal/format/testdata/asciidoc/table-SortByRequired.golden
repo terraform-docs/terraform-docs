@@ -268,7 +268,7 @@ object({
 |string-special-chars
 |n/a
 |`string`
-|`"\\.\u003c\u003e[]{}_-"`
+|`"\\.<>[]{}_-"`
 
 |string_default_empty
 |n/a

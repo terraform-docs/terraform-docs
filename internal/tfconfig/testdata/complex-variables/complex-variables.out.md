@@ -3,4 +3,4 @@
 
 ## Input Variables
 
-* `special_chars` (default `"\\.\u003c\u003e[]{}_-"`)
+* `special_chars` (default `"\\.<>[]{}_-"`)

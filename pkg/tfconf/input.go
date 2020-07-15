@@ -1,7 +1,9 @@
 package tfconf
 
 import (
+	"bytes"
 	"encoding/json"
+	"strings"
 
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
@@ -20,11 +22,15 @@ type Input struct {
 // If 'Default' is a primitive type, the primitive value of 'Default' will be returned
 // and not the JSON formatted of it.
 func (i *Input) GetValue() string {
-	marshaled, err := json.MarshalIndent(i.Default, "", "  ")
+	var buf bytes.Buffer
+	encoder := json.NewEncoder(&buf)
+	encoder.SetIndent("", "  ")
+	encoder.SetEscapeHTML(false)
+	err := encoder.Encode(i.Default)
 	if err != nil {
 		panic(err)
 	}
-	value := string(marshaled)
+	value := strings.TrimSpace(buf.String())
 	if value == `null` {
 		if i.Required {
 			return ""

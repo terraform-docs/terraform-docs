@@ -71,7 +71,7 @@ esse cillum dolore eu fugiat nulla pariatur.
 |string-special-chars
 |n/a
 |`string`
-|`"\\.\u003c\u003e[]{}_-"`
+|`"\\.<>[]{}_-"`
 
 |number-3
 |n/a

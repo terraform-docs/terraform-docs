@@ -334,7 +334,7 @@ generates the following output:
     |string-special-chars
     |n/a
     |`string`
-    |`"\\.\u003c\u003e[]{}_-"`
+    |`"\\.<>[]{}_-"`
     |no
 
     |string_default_empty
