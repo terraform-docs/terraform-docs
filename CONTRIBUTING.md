@@ -9,6 +9,21 @@ We use *GitHub Issues* for trackings issues and features. You can make a contrib
 
 Before contributing a new feature, please discuss its suitability with the project maintainers in an issue first. Thanks!
 
+## Development Requirements
+
+For development:
+
+- [Go](https://golang.org/) 1.14+
+- [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
+- [golangci-lint](https://github.com/golangci/golangci-lint)
+
+For releasing:
+
+- [gox](https://github.com/mitchellh/gox)
+- [git-chlog](https://github.com/git-chglog/git-chglog)
+
+You can install required tools with `make tools` or individually, refer to Makefile for more details.
+
 ## Contribution Process
 
 1. Fork and *git clone* [terraform-docs](https://github.com/terraform-docs/terraform-docs).
