@@ -64,6 +64,7 @@ followed by another line of text.
 | string-3 | n/a | `string` | `""` | no |
 | string-2 | It's string number two. | `string` | n/a | yes |
 | string-1 | It's string number one. | `string` | `"bar"` | no |
+| string-special-chars | n/a | `string` | `"\\.<>[]{}_-"` | no |
 | number-3 | n/a | `number` | `"19"` | no |
 | number-4 | n/a | `number` | `15.75` | no |
 | number-2 | It's number number two. | `number` | n/a | yes |

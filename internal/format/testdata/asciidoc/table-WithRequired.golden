@@ -104,6 +104,12 @@ followed by another line of text.
 |`"bar"`
 |no
 
+|string-special-chars
+|n/a
+|`string`
+|`"\\.<>[]{}_-"`
+|no
+
 |number-3
 |n/a
 |`number`

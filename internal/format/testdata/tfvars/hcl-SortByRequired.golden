@@ -50,6 +50,7 @@ number_default_zero     = 0
 object_default_empty    = {}
 string-1                = "bar"
 string-3                = ""
+string-special-chars    = "\\.<>[]{}_-"
 string_default_empty    = ""
 string_default_null     = ""
 with-url                = ""

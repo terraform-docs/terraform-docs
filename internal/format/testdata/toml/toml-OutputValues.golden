@@ -50,6 +50,13 @@ header = "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 
   required = false
 
 [[inputs]]
+  name = "string-special-chars"
+  type = "string"
+  description = ""
+  default = "\\.<>[]{}_-"
+  required = false
+
+[[inputs]]
   name = "number-3"
   type = "number"
   description = ""

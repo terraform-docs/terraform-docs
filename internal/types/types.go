@@ -2,11 +2,11 @@ package types
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"go/types"
 	"reflect"
 	"sort"
-	"strings"
 )
 
 // Value is a default value of an input or output.
@@ -129,10 +129,12 @@ func (s String) MarshalJSON() ([]byte, error) {
 	if len(string(s)) == 0 {
 		buf.WriteString(`null`)
 	} else {
-		normalize := string(s)
-		normalize = strings.Replace(normalize, "\n", "\\n", -1)
-		normalize = strings.Replace(normalize, "\"", "\\\"", -1)
-		buf.WriteString(`"` + normalize + `"`) // add double quation mark as json format required
+		encoder := json.NewEncoder(&buf)
+		encoder.SetEscapeHTML(false)
+		if err := encoder.Encode(string(s)); err != nil {
+			return nil, err
+		}
+		buf.Truncate(buf.Len() - 1) // The json encoder adds a newline, this is not configurable
 	}
 	return buf.Bytes(), nil
 }

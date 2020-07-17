@@ -51,6 +51,13 @@
       <required>false</required>
     </input>
     <input>
+      <name>string-special-chars</name>
+      <type>string</type>
+      <description xsi:nil="true"></description>
+      <default>\.&lt;&gt;[]{}_-</default>
+      <required>false</required>
+    </input>
+    <input>
       <name>number-3</name>
       <type>number</type>
       <description xsi:nil="true"></description>

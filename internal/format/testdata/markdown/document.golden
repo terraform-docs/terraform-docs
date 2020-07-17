@@ -118,6 +118,14 @@ Type: `string`
 
 Default: `"bar"`
 
+### string-special-chars
+
+Description: n/a
+
+Type: `string`
+
+Default: `"\\.<>[]{}_-"`
+
 ### number-3
 
 Description: n/a

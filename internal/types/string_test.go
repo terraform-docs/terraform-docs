@@ -126,6 +126,11 @@ func TestStringMarshalJSON(t *testing.T) {
 			expected: "\"lorem ipsum\\ndolor\"",
 		},
 		{
+			name:     "string marshal a regex",
+			value:    "\\.<>[]{}_-",
+			expected: "\"\\\\.<>[]{}_-\"",
+		},
+		{
 			name:     "string marshal JSON",
 			value:    "",
 			expected: "null",

@@ -79,6 +79,9 @@ It's string number two.
 input.string-1 ("bar")
 It's string number one.
 
+input.string-special-chars ("\\.<>[]{}_-")
+n/a
+
 input.number-3 ("19")
 n/a
 

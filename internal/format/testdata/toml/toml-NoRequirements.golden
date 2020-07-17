@@ -51,6 +51,13 @@ requirements = []
   required = false
 
 [[inputs]]
+  name = "string-special-chars"
+  type = "string"
+  description = ""
+  default = "\\.<>[]{}_-"
+  required = false
+
+[[inputs]]
   name = "number-3"
   type = "number"
   description = ""

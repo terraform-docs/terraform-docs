@@ -321,6 +321,14 @@ Type: `string`
 
 Default: `""`
 
+### string-special-chars
+
+Description: n/a
+
+Type: `string`
+
+Default: `"\\.<>[]{}_-"`
+
 ### string_default_empty
 
 Description: n/a

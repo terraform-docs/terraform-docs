@@ -9,6 +9,7 @@
 | string-3 | n/a | `string` | `""` |
 | string-2 | It's string number two. | `string` | n/a |
 | string-1 | It's string number one. | `string` | `"bar"` |
+| string-special-chars | n/a | `string` | `"\\.<>[]{}_-"` |
 | number-3 | n/a | `number` | `"19"` |
 | number-4 | n/a | `number` | `15.75` |
 | number-2 | It's number number two. | `number` | n/a |

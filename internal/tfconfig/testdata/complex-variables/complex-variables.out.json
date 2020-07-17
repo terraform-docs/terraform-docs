@@ -1,0 +1,19 @@
+{
+  "path": "testdata/complex-variables",
+  "variables": {
+    "special_chars": {
+      "name": "special_chars",
+      "default": "\\.<>[]{}_-",
+      "required": false,
+      "pos": {
+        "filename": "testdata/complex-variables/complex.tf",
+        "line": 1
+      }
+    }
+  },
+  "outputs": {},
+  "required_providers": {},
+  "managed_resources": {},
+  "data_resources": {},
+  "module_calls": {}
+}
