@@ -4,9 +4,68 @@
 
 Support for Terraform `v0.12.x` has been added in `terraform-docs` version `v0.8.0`. Note that you can still generate output of module configuration which is not compatible with Terraform v0.12 with terraform-docs `v0.8.0` and future releases.
 
+## Installation
+
+Please refer to [Installation](/README.md#installation) for various installation options.
+
+## Code Completion
+
+The code completion for `bash` or `zsh` can be installed using:
+
+**Note:** Shell auto-completion is not available for Windows users.
+
+### bash
+
+``` bash
+terraform-docs completion bash > ~/.terraform-docs-completion
+source ~/.terraform-docs-completion
+
+# or simply the one-liner below
+source <(terraform-docs completion bash)
+```
+
+### zsh
+
+``` bash
+terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-docs
+autoload -U compinit && compinit
+```
+
+To make this change permanent, the above commands can be added to your `~/.profile` file.
+
 ## Syntax, Usage, and Output Formats
 
 Please refer to [Formats Guide](/docs/FORMATS_GUIDE.md) for guidance on output formats, execution syntax, CLI options, etc.
+
+## Docker Image
+
+`terraform-docs` is also available as a Docker image. Docker tag `latest` refers to _latest_ stable released version and `edge` refers to HEAD of `master` at any given point in time.
+
+```bash
+docker run quay.io/terraform-docs/terraform-docs
+```
+
+The named version tags are identical to the official GitHub releases **without** leading `v`.
+
+```bash
+docker run quay.io/terraform-docs/terraform-docs:0.9.0 # corresponding to v0.9.0 release
+```
+
+Usage:
+
+```bash
+# to view the help
+docker run quay.io/terraform-docs/terraform-docs help
+
+# to view the version
+docker run quay.io/terraform-docs/terraform-docs version
+
+# to generate 'markdown table' of '/path/to/module'
+docker run \
+    -v /path/to/module:/module \
+    quay.io/terraform-docs/terraform-docs \
+    markdown table --sort-by-required /module
+```
 
 ## Configuration File
 

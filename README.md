@@ -24,23 +24,48 @@ terraform-docs xml ./my-terraform-module               # generate xml
 terraform-docs yaml ./my-terraform-module              # generate yaml
 ```
 
-Read the [User Guide](./docs/USER_GUIDE.md) and [Formats Guide](./docs/FORMATS_GUIDE.md) for detailed documentation.
+## Documentation
+
+- **Users**
+  - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-docs
+  - Read the [Formats Guide](./docs/FORMATS_GUIDE.md) to learn about different output formats of terraform-docs
+  - Refer to [Config File Reference](./docs/CONFIG_FILE.md) for all the available confiuartion options
+- **Developers**
+  - Read [Contributing Guide](CONTRIBUTING.md) before submitting a pull request
+
+Visit [./docs](./docs/) for all documentation.
 
 ## Installation
 
 The latest version can be installed using `go get`:
 
-``` bash
+```bash
 GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.10.0-rc.1
 ```
 
-**NOTE:** please use the latest go to do this, we use 1.14 but ideally go 1.13.5 or greater.
+**NOTE:** to download any version **before** `v0.9.1` (inclusive) you need to use to old module namespace (`segmentio`):
+
+```bash
+# only for v0.9.1 and before
+GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
+```
+
+**NOTE:** please use the latest go to do this, we use 1.14.4 but ideally go 1.14 or greater.
 
 This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error `terraform-docs: command not found` after installation then you may need to either add that directory to your `$PATH` as shown [here](https://golang.org/doc/code.html#GOPATH) or do a manual installation by cloning the repo and run `make build` from the repository which will put `terraform-docs` in:
 
 ```bash
 $(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
 ```
+Stable binaries are also available on the [releases](https://github.com/terraform-docs/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
+
+```bash
+curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.0-rc.1/terraform-docs-v0.10.0-rc.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+chmod +x ./terraform-docs
+mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
+```
+
+**NOTE:** Windows releases are in `EXE` format.
 
 If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
 
@@ -60,59 +85,7 @@ Alternatively you also can run `terraform-docs` as a container:
 docker run quay.io/terraform-docs/terraform-docs:0.10.0-rc.1
 ```
 
-Stable binaries are also available on the [releases](https://github.com/terraform-docs/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
-
-```bash
-curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.0-rc.1/terraform-docs-v0.10.0-rc.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
-chmod +x ./terraform-docs
-mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
-```
-
-**NOTE:** Windows releases are in `EXE` format.
-
-## Code Completion
-
-The code completion for `bash` or `zsh` can be installed using:
-
-**Note:** Shell auto-completion is not available for Windows users.
-
-### bash
-
-``` bash
-terraform-docs completion bash > ~/.terraform-docs-completion
-source ~/.terraform-docs-completion
-
-# or simply the one-liner below
-source <(terraform-docs completion bash)
-```
-
-### zsh
-
-``` bash
-terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-docs
-autoload -U compinit && compinit
-```
-
-To make this change permanent, the above commands can be added to your `~/.profile` file.
-
-## Documentation
-
-- **Users**
-  - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-docs
-  - Read the [Formats Guide](./docs/FORMATS_GUIDE.md) to learn about different output formats of terraform-docs
-- **Developers**
-  - Read [Contributing Guide](CONTRIBUTING.md) before submitting a pull request.
-  - Building: not written yet
-  - Releasing: not written yet
-
-Visit [./docs](./docs/) for all documentation.
-
-## Development Requirements
-
-- [Go](https://golang.org/) 1.14 (ideally 1.13+)
-- [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
-- [git-chlog](https://github.com/git-chglog/git-chglog)
-- [golangci-lint](https://github.com/golangci/golangci-lint)
+**NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge` refers to HEAD of `master` at any given point in time.
 
 ## Maintenance
 
@@ -120,24 +93,4 @@ This project was origanially developed by [Segment](https://github.com/segmentio
 
 ## License
 
-MIT License
-
-Copyright (c) 2018 The terraform-docs Authors.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+MIT License - Copyright (c) 2020 The terraform-docs Authors.
