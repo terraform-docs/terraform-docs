@@ -89,7 +89,7 @@ docker run quay.io/terraform-docs/terraform-docs:0.10.0-rc.1
 
 ## Maintenance
 
-This project was origanially developed by [Segment](https://github.com/segmentio/) but now is no longer maintained by them. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
+This project was originally developed by [Segment](https://github.com/segmentio/) but now is no longer maintained by them. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
 
 ## License
 
