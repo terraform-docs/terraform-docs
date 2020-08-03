@@ -29,7 +29,7 @@ terraform-docs yaml ./my-terraform-module              # generate yaml
 - **Users**
   - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-docs
   - Read the [Formats Guide](./docs/FORMATS_GUIDE.md) to learn about different output formats of terraform-docs
-  - Refer to [Config File Reference](./docs/CONFIG_FILE.md) for all the available confiuartion options
+  - Refer to [Config File Reference](./docs/CONFIG_FILE.md) for all the available configuration options
 - **Developers**
   - Read [Contributing Guide](CONTRIBUTING.md) before submitting a pull request
 
