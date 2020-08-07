@@ -46,9 +46,9 @@ Available options for `FORMATTER_NAME` are:
 - `asciidoc document`
 - `asciidoc table`
 - `json`
-- `markdonw`
-- `markdonw document`
-- `markdonw table`
+- `markdown`
+- `markdown document`
+- `markdown table`
 - `pretty`
 - `tfvars hcl`
 - `tfvars json`
