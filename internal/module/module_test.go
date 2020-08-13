@@ -340,6 +340,35 @@ func TestLoadInputs(t *testing.T) {
 	}
 }
 
+func TestLoadInputsLineEnding(t *testing.T) {
+	tests := []struct {
+		name     string
+		path     string
+		expected string
+	}{
+		{
+			name:     "load module inputs from file with lf line ending",
+			path:     "inputs-lf",
+			expected: "The quick brown fox jumps\nover the lazy dog\n",
+		},
+		{
+			name:     "load module inputs from file with crlf line ending",
+			path:     "inputs-crlf",
+			expected: "The quick brown fox jumps\nover the lazy dog\n",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			inputs, _, _ := loadInputs(module)
+
+			assert.Equal(1, len(inputs))
+			assert.Equal(tt.expected, string(inputs[0].Description))
+		})
+	}
+}
+
 func TestLoadOutputs(t *testing.T) {
 	type expected struct {
 		outputs int

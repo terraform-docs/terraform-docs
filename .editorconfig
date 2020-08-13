@@ -30,5 +30,8 @@ indent_size = 2
 [*.tf]
 trim_trailing_whitespace = false
 
+[**/inputs-crlf/variables.tf]
+end_of_line = crlf
+
 [Makefile]
 indent_style = tab
