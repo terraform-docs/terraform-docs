@@ -13,7 +13,7 @@ Before contributing a new feature, please discuss its suitability with the proje
 
 For development:
 
-- [Go](https://golang.org/) 1.14+
+- [Go](https://golang.org/) 1.15+
 - [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
 - [golangci-lint](https://github.com/golangci/golangci-lint)
 
