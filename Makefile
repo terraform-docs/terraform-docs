@@ -36,7 +36,6 @@ DOCKER_IMAGE := quay.io/$(VENDOR)/$(NAME)
 DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
-GITCHGLOG_VERSION := 0.9.2
 GOLANGCI_VERSION  := v1.23.7
 
 .PHONY: all
@@ -160,7 +159,7 @@ changelog: ## Generate Changelog
 .PHONY: git-chglog
 git-chglog:
 ifeq (, $(shell which git-chglog))
-	curl -sfL https://github.com/git-chglog/git-chglog/releases/download/$(GITCHGLOG_VERSION)/git-chglog_$(shell go env GOOS)_$(shell go env GOARCH) -o $(shell go env GOPATH)/bin/git-chglog && chmod +x $(shell go env GOPATH)/bin/git-chglog
+	GO111MODULE=off go get -u github.com/terraform-docs/git-chglog/cmd/git-chglog
 endif
 
 .PHONY: goimports

@@ -20,7 +20,7 @@ For development:
 For releasing:
 
 - [gox](https://github.com/mitchellh/gox)
-- [git-chlog](https://github.com/git-chglog/git-chglog)
+- [git-chlog](https://github.com/terraform-docs/git-chglog)
 
 You can install required tools with `make tools` or individually, refer to Makefile for more details.
 
