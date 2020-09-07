@@ -8,24 +8,6 @@
 <a name="v0.10.0-rc.1"></a>
 ## [v0.10.0-rc.1] - 2020-07-13
 
-### Code Refactoring
-- Refactor cli implemention and configuration ([#266](https://github.com/terraform-docs/terraform-docs/issues/266))
-- Deprecate multiple flags in favor of new ones ([#265](https://github.com/terraform-docs/terraform-docs/issues/265))
-- Remove deprecated flags ([#229](https://github.com/terraform-docs/terraform-docs/issues/229))
-- Add factory function to return format types ([#243](https://github.com/terraform-docs/terraform-docs/issues/243))
-- Reorganize markdown format tests ([#244](https://github.com/terraform-docs/terraform-docs/issues/244))
-
-### Documentation
-- Add detail about module header usage guide ([#282](https://github.com/terraform-docs/terraform-docs/issues/282))
-
-### Features
-- Add support for .terraform-docs.yml config file ([#272](https://github.com/terraform-docs/terraform-docs/issues/272))
-- Build and push docker image ([#289](https://github.com/terraform-docs/terraform-docs/issues/289))
-- Add new flags: --show, --show-all, --hide-all ([#267](https://github.com/terraform-docs/terraform-docs/issues/267))
-- Add support for TOML renderer ([#197](https://github.com/terraform-docs/terraform-docs/issues/197))
-- Add new flag to sort inputs by type ([#246](https://github.com/terraform-docs/terraform-docs/issues/246))
-- Add support for AsciiDoc renderer ([#241](https://github.com/terraform-docs/terraform-docs/issues/241))
-
 ### BREAKING CHANGE
 - Following flags have been deprecated and will be
 removed in the following releases:
@@ -54,10 +36,16 @@ removed in the following releases:
 and now are removed.
 
 ### Features
+- Add support for .terraform-docs.yml config file ([#272](https://github.com/terraform-docs/terraform-docs/issues/272))
+- Build and push docker image ([#289](https://github.com/terraform-docs/terraform-docs/issues/289))
 - Add new flags: --show, --show-all, --hide-all ([#267](https://github.com/terraform-docs/terraform-docs/issues/267))
 - Add support for TOML renderer ([#197](https://github.com/terraform-docs/terraform-docs/issues/197))
 - Add new flag to sort inputs by type ([#246](https://github.com/terraform-docs/terraform-docs/issues/246))
 - Add support for AsciiDoc renderer ([#241](https://github.com/terraform-docs/terraform-docs/issues/241))
+
+### Bug Fixes
+- Normalize variables with CRLF line ending in heredoc ([#307](https://github.com/terraform-docs/terraform-docs/issues/307))
+- Render special chars in variables' default value properly ([#284](https://github.com/terraform-docs/terraform-docs/issues/284))
 
 ### Refactoring
 - Refactor cli implemention and configuration ([#266](https://github.com/terraform-docs/terraform-docs/issues/266))
