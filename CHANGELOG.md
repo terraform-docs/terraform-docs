@@ -8,26 +8,7 @@
 <a name="v0.10.0-rc.1"></a>
 ## [v0.10.0-rc.1] - 2020-07-13
 
-### Code Refactoring
-- Refactor cli implemention and configuration ([#266](https://github.com/terraform-docs/terraform-docs/issues/266))
-- Deprecate multiple flags in favor of new ones ([#265](https://github.com/terraform-docs/terraform-docs/issues/265))
-- Remove deprecated flags ([#229](https://github.com/terraform-docs/terraform-docs/issues/229))
-- Add factory function to return format types ([#243](https://github.com/terraform-docs/terraform-docs/issues/243))
-- Reorganize markdown format tests ([#244](https://github.com/terraform-docs/terraform-docs/issues/244))
-
-### Documentation
-- Add detail about module header usage guide ([#282](https://github.com/terraform-docs/terraform-docs/issues/282))
-
-### Features
-- Add support for .terraform-docs.yml config file ([#272](https://github.com/terraform-docs/terraform-docs/issues/272))
-- Build and push docker image ([#289](https://github.com/terraform-docs/terraform-docs/issues/289))
-- Add new flags: --show, --show-all, --hide-all ([#267](https://github.com/terraform-docs/terraform-docs/issues/267))
-- Add support for TOML renderer ([#197](https://github.com/terraform-docs/terraform-docs/issues/197))
-- Add new flag to sort inputs by type ([#246](https://github.com/terraform-docs/terraform-docs/issues/246))
-- Add support for AsciiDoc renderer ([#241](https://github.com/terraform-docs/terraform-docs/issues/241))
-
 ### BREAKING CHANGE
-
 - Following flags have been deprecated and will be
 removed in the following releases:
 
@@ -50,10 +31,31 @@ removed in the following releases:
   - Flag `--no-sensitive` has been deprecated, use `--sensitive=false` instead
 
   - Flag `--no-sort` has been deprecated, use `--sort=false` instead
-
 - Flags `--with-aggregate-type-defaults` and
 `--sort-inputs-by-required` were marked as deprecated in v0.8.2
 and now are removed.
+
+### Features
+- Add support for .terraform-docs.yml config file ([#272](https://github.com/terraform-docs/terraform-docs/issues/272))
+- Build and push docker image ([#289](https://github.com/terraform-docs/terraform-docs/issues/289))
+- Add new flags: --show, --show-all, --hide-all ([#267](https://github.com/terraform-docs/terraform-docs/issues/267))
+- Add support for TOML renderer ([#197](https://github.com/terraform-docs/terraform-docs/issues/197))
+- Add new flag to sort inputs by type ([#246](https://github.com/terraform-docs/terraform-docs/issues/246))
+- Add support for AsciiDoc renderer ([#241](https://github.com/terraform-docs/terraform-docs/issues/241))
+
+### Bug Fixes
+- Normalize variables with CRLF line ending in heredoc ([#307](https://github.com/terraform-docs/terraform-docs/issues/307))
+- Render special chars in variables' default value properly ([#284](https://github.com/terraform-docs/terraform-docs/issues/284))
+
+### Refactoring
+- Refactor cli implemention and configuration ([#266](https://github.com/terraform-docs/terraform-docs/issues/266))
+- Deprecate multiple flags in favor of new ones ([#265](https://github.com/terraform-docs/terraform-docs/issues/265))
+- Remove deprecated flags ([#229](https://github.com/terraform-docs/terraform-docs/issues/229))
+- Add factory function to return format types ([#243](https://github.com/terraform-docs/terraform-docs/issues/243))
+- Reorganize markdown format tests ([#244](https://github.com/terraform-docs/terraform-docs/issues/244))
+
+### Documentation
+- Add detail about module header usage guide ([#282](https://github.com/terraform-docs/terraform-docs/issues/282))
 
 
 <a name="v0.9.1"></a>
@@ -67,26 +69,6 @@ and now are removed.
 <a name="v0.9.0"></a>
 ## [v0.9.0] - 2020-03-31
 
-### Bug Fixes
-- Mark variables not required if default set to null ([#221](https://github.com/terraform-docs/terraform-docs/issues/221))
-- --no-header should not attempt reading main.tf file ([#224](https://github.com/terraform-docs/terraform-docs/issues/224))
-- Fix type conversion for numbers ([#204](https://github.com/terraform-docs/terraform-docs/issues/204))
-
-### Code Refactoring
-- Add Default value types for better marshalling ([#196](https://github.com/terraform-docs/terraform-docs/issues/196))
-- Introduce Format interface and expose to public pkg ([#195](https://github.com/terraform-docs/terraform-docs/issues/195))
-- Add tfconf.Options to load Module with ([#193](https://github.com/terraform-docs/terraform-docs/issues/193))
-
-### Documentation
-- Enhance automatic document generation ([#227](https://github.com/terraform-docs/terraform-docs/issues/227))
-- Add installation guide for Windows users ([#218](https://github.com/terraform-docs/terraform-docs/issues/218))
-- Put reference to usage, cli, etc. in user guide ([#216](https://github.com/terraform-docs/terraform-docs/issues/216))
-- Example git hook to keep module docs up to date ([#214](https://github.com/terraform-docs/terraform-docs/issues/214))
-- Auto generate formats document from examples ([#192](https://github.com/terraform-docs/terraform-docs/issues/192))
-
-### Enhancements
-- Add extensive tests coverage for all the packages ([#208](https://github.com/terraform-docs/terraform-docs/issues/208))
-
 ### Features
 - Add support for tfvars hcl and json commands ([#226](https://github.com/terraform-docs/terraform-docs/issues/226))
 - Allow hiding the "Sensitive" column in markdown ([#223](https://github.com/terraform-docs/terraform-docs/issues/223))
@@ -97,6 +79,26 @@ and now are removed.
 - Extract and render output values from Terraform ([#191](https://github.com/terraform-docs/terraform-docs/issues/191))
 - Render formatted results with go templates ([#177](https://github.com/terraform-docs/terraform-docs/issues/177))
 - Add support for YAML renderer ([#189](https://github.com/terraform-docs/terraform-docs/issues/189))
+
+### Bug Fixes
+- Mark variables not required if default set to null ([#221](https://github.com/terraform-docs/terraform-docs/issues/221))
+- --no-header should not attempt reading main.tf file ([#224](https://github.com/terraform-docs/terraform-docs/issues/224))
+- Fix type conversion for numbers ([#204](https://github.com/terraform-docs/terraform-docs/issues/204))
+
+### Enhancements
+- Add extensive tests coverage for all the packages ([#208](https://github.com/terraform-docs/terraform-docs/issues/208))
+
+### Refactoring
+- Add Default value types for better marshalling ([#196](https://github.com/terraform-docs/terraform-docs/issues/196))
+- Introduce Format interface and expose to public pkg ([#195](https://github.com/terraform-docs/terraform-docs/issues/195))
+- Add tfconf.Options to load Module with ([#193](https://github.com/terraform-docs/terraform-docs/issues/193))
+
+### Documentation
+- Enhance automatic document generation ([#227](https://github.com/terraform-docs/terraform-docs/issues/227))
+- Add installation guide for Windows users ([#218](https://github.com/terraform-docs/terraform-docs/issues/218))
+- Put reference to usage, cli, etc. in user guide ([#216](https://github.com/terraform-docs/terraform-docs/issues/216))
+- Example git hook to keep module docs up to date ([#214](https://github.com/terraform-docs/terraform-docs/issues/214))
+- Auto generate formats document from examples ([#192](https://github.com/terraform-docs/terraform-docs/issues/192))
 
 
 <a name="v0.8.2"></a>
@@ -119,6 +121,35 @@ and now are removed.
 <a name="v0.8.0"></a>
 ## [v0.8.0] - 2020-01-17
 
+### BREAKING CHANGE
+- With Terraform 0.12 ability to generate
+output from file has been deprecated in favor of from folder
+which contains one or more `.tf` files.
+- In the JSON format response, list of "Inputs"
+has been renamed to `inputs`.
+- In the JSON format response, list of "Outputs" has been renamed
+to `outputs`.
+- In the JSON format respone, module "Comment" has been renamed to module `header`.
+- For simplicity we've decided to
+deprecated the old `--sort-inputs-by-required` flag
+to the simpler and more generic `--sort--by-required`.
+The deprecated flags will get removed second release
+from now.
+- As of Terraform 0.12, the default value of
+input variables are shown in full JSON format (if available)
+and `--with-aggregate-type-defaults` is not needed anymore.
+The flag is marked as soft deprecated and will get removed in
+the second release from now.
+- With Terraform 0.12 the information about `providers` being used in the module will be generated by default. This will cause the first generation of documents with the latest release of `terraform-docs` binary be slightly different than before, now there will be `Providers` section in Markdown and `providers` block in JSON. You can ignore this by using new `--no-providers` flag if you choose to.
+
+### Features
+- Add '--no-escape' flag to 'json' command ([#147](https://github.com/terraform-docs/terraform-docs/issues/147))
+- Add flags to not show different sections ([#144](https://github.com/terraform-docs/terraform-docs/issues/144))
+- Add '--no-color' flag to 'pretty' command ([#143](https://github.com/terraform-docs/terraform-docs/issues/143))
+- Show 'providers' information ([#140](https://github.com/terraform-docs/terraform-docs/issues/140))
+- Bump golang to latest v1.13 ([#133](https://github.com/terraform-docs/terraform-docs/issues/133))
+- Support Terraform 0.12.x configuration ([#113](https://github.com/terraform-docs/terraform-docs/issues/113))
+
 ### Bug Fixes
 - Do not escape any characters of a URL ([#170](https://github.com/terraform-docs/terraform-docs/issues/170))
 - Add double space at the end of multi-lines paragraph ([#169](https://github.com/terraform-docs/terraform-docs/issues/169))
@@ -129,54 +160,19 @@ and now are removed.
 - Read leading comment lines if description is not provided ([#151](https://github.com/terraform-docs/terraform-docs/issues/151))
 - Reimplement '--no-sort' to be compatible with Terraform 0.12 configuration ([#141](https://github.com/terraform-docs/terraform-docs/issues/141))
 
-### Code Refactoring
-- Move doc.Doc to tfconf.Module ([#136](https://github.com/terraform-docs/terraform-docs/issues/136))
-
-### Documentation
-- Initial commit of usage documentation ([#162](https://github.com/terraform-docs/terraform-docs/issues/162))
-- Deprecate accepting files as commands param ([#163](https://github.com/terraform-docs/terraform-docs/issues/163))
-- Update Module internal documentaion
-
 ### Enhancements
 - Rename flag to '--sort-by-required' ([#150](https://github.com/terraform-docs/terraform-docs/issues/150))
 - Mark '--with-aggregate-type-defaults' as deprecated ([#148](https://github.com/terraform-docs/terraform-docs/issues/148))
 - Bump homebrew formula version on release ([#135](https://github.com/terraform-docs/terraform-docs/issues/135))
 - Enable new go linters and fix the existing issues ([#132](https://github.com/terraform-docs/terraform-docs/issues/132))
 
-### Features
-- Add '--no-escape' flag to 'json' command ([#147](https://github.com/terraform-docs/terraform-docs/issues/147))
-- Add flags to not show different sections ([#144](https://github.com/terraform-docs/terraform-docs/issues/144))
-- Add '--no-color' flag to 'pretty' command ([#143](https://github.com/terraform-docs/terraform-docs/issues/143))
-- Show 'providers' information ([#140](https://github.com/terraform-docs/terraform-docs/issues/140))
-- Bump golang to latest v1.13 ([#133](https://github.com/terraform-docs/terraform-docs/issues/133))
-- Support Terraform 0.12.x configuration ([#113](https://github.com/terraform-docs/terraform-docs/issues/113))
+### Refactoring
+- Move doc.Doc to tfconf.Module ([#136](https://github.com/terraform-docs/terraform-docs/issues/136))
 
-### BREAKING CHANGE
-
-- With Terraform 0.12 ability to generate
-output from file has been deprecated in favor of from folder
-which contains one or more `.tf` files.
-
-- In the JSON format response, list of "Inputs"
-has been renamed to `inputs`.
-- In the JSON format response, list of "Outputs" has been renamed
-to `outputs`.
-
-- In the JSON format respone, module "Comment" has been renamed to module `header`.
-
-- For simplicity we've decided to
-deprecated the old `--sort-inputs-by-required` flag
-to the simpler and more generic `--sort--by-required`.
-The deprecated flags will get removed second release
-from now.
-
-- As of Terraform 0.12, the default value of
-input variables are shown in full JSON format (if available)
-and `--with-aggregate-type-defaults` is not needed anymore.
-The flag is marked as soft deprecated and will get removed in
-the second release from now.
-
-- With Terraform 0.12 the information about `providers` being used in the module will be generated by default. This will cause the first generation of documents with the latest release of `terraform-docs` binary be slightly different than before, now there will be `Providers` section in Markdown and `providers` block in JSON. You can ignore this by using new `--no-providers` flag if you choose to.
+### Documentation
+- Initial commit of usage documentation ([#162](https://github.com/terraform-docs/terraform-docs/issues/162))
+- Deprecate accepting files as commands param ([#163](https://github.com/terraform-docs/terraform-docs/issues/163))
+- Update Module internal documentaion
 
 
 <a name="v0.7.0"></a>
