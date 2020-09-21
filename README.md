@@ -40,7 +40,7 @@ Visit [./docs](./docs/) for all documentation.
 The latest version can be installed using `go get`:
 
 ```bash
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.10.0-rc.1
+GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.10.0
 ```
 
 **NOTE:** to download any version **before** `v0.9.1` (inclusive) you need to use to old module namespace (`segmentio`):
@@ -60,7 +60,7 @@ $(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '
 Stable binaries are also available on the [releases](https://github.com/terraform-docs/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.0-rc.1/terraform-docs-v0.10.0-rc.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.0/terraform-docs-v0.10.0-$(uname | tr '[:upper:]' '[:lower:]')-amd64
 chmod +x ./terraform-docs
 mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
