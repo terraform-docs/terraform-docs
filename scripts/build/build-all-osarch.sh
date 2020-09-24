@@ -18,48 +18,46 @@ if [ -z "${GOLDFLAGS}" ]; then
     exit 1
 fi
 
-PWD=$(cd $(dirname "$0") && pwd -P)
+PWD=$(cd "$(dirname "$0")" && pwd -P)
 BUILD_DIR="${PWD}/../../${BUILD_DIR}"
 
 CGO_ENABLED=0 gox \
     -verbose \
     -ldflags "${GOLDFLAGS}" \
-    -gcflags=-trimpath=`go env GOPATH` \
+    -gcflags=-trimpath="$(go env GOPATH)" \
     -os="${GOOS}" \
     -arch="${GOARCH}" \
     -osarch="!darwin/arm" \
-    -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/{{.Dir}}" ${PWD}/../../
+    -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/{{.Dir}}" "${PWD}"/../../
 
 printf "\033[36m==> Finalize binary\033[0m\n"
 
-for platform in $(find ${BUILD_DIR} -mindepth 1 -maxdepth 1 -type d); do
-    OSARCH=$(basename ${platform})
+for platform in $(find "${BUILD_DIR}" -mindepth 1 -maxdepth 1 -type d | sort -u); do
+    OSARCH=$(basename "${platform}")
     FULLNAME="${NAME}-${VERSION}-${OSARCH}"
 
     case "${OSARCH}" in
     "windows"*)
-        mv ${platform}/${NAME}.exe ${BUILD_DIR}/${FULLNAME}.exe
+        mv "${platform}/${NAME}.exe" "${BUILD_DIR}/${FULLNAME}.exe"
         printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}.exe"
-
         ;;
     *)
-        mv ${platform}/${NAME} ${BUILD_DIR}/${FULLNAME}
+        mv "${platform}/${NAME}" "${BUILD_DIR}/${FULLNAME}"
         printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}"
-
         ;;
     esac
 done
 
-cd ${BUILD_DIR}
-touch ${NAME}-${VERSION}.sha256sum
+cd "${BUILD_DIR}"
+touch "${NAME}-${VERSION}.sha256sum"
 
 for binary in $(find . -mindepth 1 -maxdepth 1 -type f | grep -v "${NAME}-${VERSION}.sha256sum" | sort); do
-    binary=$(basename ${binary})
+    binary=$(basename "${binary}")
 
     if command -v sha256sum >/dev/null; then
-        sha256sum ${binary} >>${NAME}-${VERSION}.sha256sum
+        sha256sum "${binary}" >>"${NAME}-${VERSION}.sha256sum"
     elif command -v shasum >/dev/null; then
-        shasum -a256 ${binary} >>${NAME}-${VERSION}.sha256sum
+        shasum -a256 "${binary}" >>"${NAME}-${VERSION}.sha256sum"
     fi
 done
 
