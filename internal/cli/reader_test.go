@@ -36,6 +36,13 @@ func TestExists(t *testing.T) {
 			wantErr:  true,
 			errMsg:   "config file name is missing",
 		},
+		{
+			name:     "main argument is a file",
+			config:   cfgreader{file: "testdata/sample-config.yaml/some-config.yaml"},
+			expected: false,
+			wantErr:  true,
+			errMsg:   "stat testdata/sample-config.yaml/some-config.yaml: not a directory",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
