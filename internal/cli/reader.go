@@ -19,7 +19,7 @@ func (c *cfgreader) exist() (bool, error) {
 	if c.file == "" {
 		return false, fmt.Errorf("config file name is missing")
 	}
-	if info, err := os.Stat(c.file); os.IsNotExist(err) || info.IsDir() {
+	if info, err := os.Stat(c.file); os.IsNotExist(err) || info == nil || info.IsDir() {
 		return false, err
 	}
 	return true, nil
