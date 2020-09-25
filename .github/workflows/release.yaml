@@ -56,7 +56,7 @@ jobs:
       run: |
         echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin quay.io
         DOCKER_TAG=${{ steps.vars.outputs.tag }} make docker push
-        DOCKER_TAG=latest make push
+        DOCKER_TAG=latest make docker push
       env:
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
