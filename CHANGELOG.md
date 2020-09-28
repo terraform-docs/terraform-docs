@@ -5,6 +5,13 @@
 
 
 
+<a name="v0.10.1"></a>
+## [v0.10.1] - 2020-09-28
+
+### Bug Fixes
+- Prevent segfault error if input arg is a file ([#327](https://github.com/terraform-docs/terraform-docs/issues/327))
+
+
 <a name="v0.10.0"></a>
 ## [v0.10.0] - 2020-09-21
 
@@ -386,7 +393,8 @@ the second release from now.
 - Initial commit
 
 
-[Unreleased]: https://github.com/terraform-docs/terraform-docs/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/terraform-docs/terraform-docs/compare/v0.10.1...HEAD
+[v0.10.1]: https://github.com/terraform-docs/terraform-docs/compare/v0.10.0...v0.10.1
 [v0.10.0]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.1...v0.10.0
 [v0.9.1]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.0...v0.9.1
 [v0.9.0]: https://github.com/terraform-docs/terraform-docs/compare/v0.8.2...v0.9.0
