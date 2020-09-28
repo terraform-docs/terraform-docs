@@ -66,9 +66,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Bump Homebrew formula version
-        uses: mislav/bump-homebrew-formula-action@v1.7
+        uses: dawidd6/action-homebrew-bump-formula@v3.4.1
         if: "!contains(github.ref, '-')" # skip prereleases
         with:
-          formula-name: terraform-docs
-        env:
-          COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
+          token: ${{ secrets.COMMITTER_TOKEN }}
+          formula: terraform-docs
