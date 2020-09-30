@@ -60,7 +60,7 @@ $(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '
 Stable binaries are also available on the [releases](https://github.com/terraform-docs/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/0.10.1/terraform-docs-0.10.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.1/terraform-docs-v0.10.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
 chmod +x ./terraform-docs
 mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
@@ -82,7 +82,7 @@ choco install terraform-docs
 Alternatively you also can run `terraform-docs` as a container:
 
 ```bash
-docker run quay.io/terraform-docs/terraform-docs:0.10.0
+docker run quay.io/terraform-docs/terraform-docs:v0.10.1
 ```
 
 **NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge` refers to HEAD of `master` at any given point in time.
