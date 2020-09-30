@@ -82,7 +82,7 @@ choco install terraform-docs
 Alternatively you also can run `terraform-docs` as a container:
 
 ```bash
-docker run quay.io/terraform-docs/terraform-docs:v0.10.1
+docker run quay.io/terraform-docs/terraform-docs:0.10.1
 ```
 
 **NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge` refers to HEAD of `master` at any given point in time.
