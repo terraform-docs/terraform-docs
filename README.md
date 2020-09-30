@@ -40,7 +40,7 @@ Visit [./docs](./docs/) for all documentation.
 The latest version can be installed using `go get`:
 
 ```bash
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@0.10.1
+GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.10.1
 ```
 
 **NOTE:** to download any version **before** `v0.9.1` (inclusive) you need to use to old module namespace (`segmentio`):
