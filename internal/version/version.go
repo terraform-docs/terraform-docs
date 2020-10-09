@@ -17,9 +17,12 @@ var (
 	buildDate  string
 )
 
+// Load defaults for info variables
 func init() {
-	// Load defaults for info variables
 	if version == "" {
+		version = dev
+	}
+	if version == "v0.0.0-" { // building in a directory which is not a git repository
 		version = dev
 	}
 	if commitHash == "" {
