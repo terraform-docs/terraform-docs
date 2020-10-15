@@ -13,6 +13,6 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.6.1
 	github.com/zclconf/go-cty v1.6.1
-	gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 	mvdan.cc/xurls/v2 v2.2.0
 )
