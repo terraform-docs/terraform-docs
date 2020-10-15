@@ -25,7 +25,7 @@ func sanitize(markdown string) string {
 
 	// Remove multiple consecutive blank lines
 	result = regexp.MustCompile(`(\r?\n){3,}`).ReplaceAllString(result, "$1$1")
-	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "$1")
+	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "")
 
 	return result
 }
