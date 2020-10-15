@@ -2,6 +2,7 @@ package format
 
 import (
 	"bytes"
+	"strings"
 
 	"github.com/BurntSushi/toml"
 
@@ -50,5 +51,5 @@ func (t *TOML) Print(module *tfconf.Module, settings *print.Settings) (string, e
 		return "", err
 	}
 
-	return buffer.String(), nil
+	return strings.TrimSuffix(buffer.String(), "\n"), nil
 }

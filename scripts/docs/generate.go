@@ -179,7 +179,7 @@ func printExample(buf *bytes.Buffer, name string) error {
 			buf.WriteString(fmt.Sprintf("    %s\n", s))
 		}
 	}
-	buf.WriteString("\n\n")
+	buf.WriteString("\n")
 	return nil
 }
 
