@@ -7,7 +7,7 @@ require (
 	github.com/go-test/deep v1.0.7
 	github.com/hashicorp/hcl v1.0.0
 	github.com/hashicorp/hcl/v2 v2.7.0
-	github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0
+	github.com/iancoleman/orderedmap v0.1.0
 	github.com/imdario/mergo v0.3.11
 	github.com/spf13/cobra v1.1.0
 	github.com/spf13/pflag v1.0.5
