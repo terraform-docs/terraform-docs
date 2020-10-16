@@ -1,8 +1,3 @@
-
-
 [36mrequirement.terraform[0m (>= 0.12)
-
 [36mrequirement.aws[0m (>= 2.15.0)
-
 [36mrequirement.random[0m (>= 2.2.0)
-

@@ -2,6 +2,7 @@ package format
 
 import (
 	"fmt"
+	"regexp"
 	"text/template"
 
 	"github.com/terraform-docs/terraform-docs/pkg/print"
@@ -12,65 +13,62 @@ import (
 const (
 	prettyHeaderTpl = `
 	{{- if .Settings.ShowHeader -}}
-		{{- with .Module.Header }}
-			{{- printf "\n" }}
+		{{- with .Module.Header -}}
 			{{ colorize "\033[90m" . }}
-			{{- printf "\n" }}
 		{{ end -}}
+		{{- printf "\n\n" -}}
 	{{ end -}}
 	`
 
 	prettyRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
 		{{- with .Module.Requirements }}
-			{{- printf "\n" -}}
 			{{- range . }}
 				{{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				{{ printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
-			{{ end }}
-			{{- printf "\n" -}}
+				{{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
+			{{ end -}}
 		{{ end -}}
+		{{- printf "\n\n" -}}
 	{{ end -}}
 	`
 
 	prettyProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
 		{{- with .Module.Providers }}
-			{{- printf "\n" -}}
 			{{- range . }}
 				{{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				{{ printf "provider.%s" .FullName | colorize "\033[36m" }}{{ $version }}
-			{{ end }}
-			{{- printf "\n" -}}
+				{{- printf "provider.%s" .FullName | colorize "\033[36m" }}{{ $version }}
+			{{ end -}}
 		{{ end -}}
+		{{- printf "\n\n" -}}
 	{{ end -}}
 	`
 
 	prettyInputsTpl = `
 	{{- if .Settings.ShowInputs -}}
 		{{- with .Module.Inputs }}
-			{{- printf "\n" -}}
 			{{- range . }}
-				{{ printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
+				{{- printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
 				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
-			{{ end }}
-			{{- printf "\n" -}}
+				{{- printf "\n\n" -}}
+			{{ end -}}
 		{{ end -}}
+		{{- printf "\n" -}}
 	{{ end -}}
 	`
 
 	prettyOutputsTpl = `
 	{{- if .Settings.ShowOutputs -}}
 		{{- with .Module.Outputs }}
-			{{- printf "\n" -}}
 			{{- range . }}
-				{{ printf "output.%s" .Name | colorize "\033[36m" }}
+				{{- printf "output.%s" .Name | colorize "\033[36m" }}
 				{{- if $.Settings.OutputValues -}}
 					{{- printf " " -}}
 					({{ ternary .Sensitive "<sensitive>" .GetValue }})
-			{{- end }}
-			{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
-			{{ end }}
+				{{- end }}
+				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
+				{{- printf "\n\n" -}}
+			{{ end -}}
 		{{ end -}}
 	{{ end -}}
 	`
@@ -132,5 +130,5 @@ func (p *Pretty) Print(module *tfconf.Module, settings *print.Settings) (string,
 	if err != nil {
 		return "", err
 	}
-	return rendered, nil
+	return regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, ""), nil
 }

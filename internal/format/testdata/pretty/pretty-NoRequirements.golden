@@ -1,5 +1,3 @@
-
-
 [90mUsage:
 
 Example of 'foo_bar' module in `foo_bar.tf`.
@@ -39,15 +37,10 @@ followed by another line of text.
 | Bar  | Bar description |[0m
 
 
-
 [36mprovider.tls[0m
-
 [36mprovider.aws[0m (>= 2.15.0)
-
 [36mprovider.aws.ident[0m (>= 2.15.0)
-
 [36mprovider.null[0m
-
 
 
 [36minput.unquoted[0m (required)
@@ -177,7 +170,6 @@ It spans over multiple lines.[0m
 [90mn/a[0m
 
 
-
 [36moutput.unquoted[0m
 [90mIt's unquoted output.[0m
 
@@ -189,4 +181,3 @@ It spans over multiple lines.[0m
 
 [36moutput.output-0.12[0m
 [90mterraform 0.12 only[0m
-

@@ -1,5 +1,3 @@
-
-
 [36moutput.unquoted[0m
 [90mIt's unquoted output.[0m
 
@@ -11,4 +9,3 @@
 
 [36moutput.output-0.12[0m
 [90mterraform 0.12 only[0m
-

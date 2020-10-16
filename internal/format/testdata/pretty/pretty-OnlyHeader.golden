@@ -1,5 +1,3 @@
-
-
 [90mUsage:
 
 Example of 'foo_bar' module in `foo_bar.tf`.
@@ -37,4 +35,3 @@ followed by another line of text.
 |------|-----------------|
 | Foo  | Foo description |
 | Bar  | Bar description |[0m
-
