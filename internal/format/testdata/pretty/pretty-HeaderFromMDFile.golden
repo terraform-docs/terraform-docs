@@ -1,5 +1,3 @@
-
-
 [90m# This header comes from a custom Markdown file
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -11,23 +9,15 @@ esse cillum dolore eu fugiat nulla pariatur.
 [0m
 
 
-
 [36mrequirement.terraform[0m (>= 0.12)
-
 [36mrequirement.aws[0m (>= 2.15.0)
-
 [36mrequirement.random[0m (>= 2.2.0)
 
 
-
 [36mprovider.tls[0m
-
 [36mprovider.aws[0m (>= 2.15.0)
-
 [36mprovider.aws.ident[0m (>= 2.15.0)
-
 [36mprovider.null[0m
-
 
 
 [36minput.unquoted[0m (required)
@@ -157,7 +147,6 @@ It spans over multiple lines.[0m
 [90mn/a[0m
 
 
-
 [36moutput.unquoted[0m
 [90mIt's unquoted output.[0m
 
@@ -169,4 +158,3 @@ It spans over multiple lines.[0m
 
 [36moutput.output-0.12[0m
 [90mterraform 0.12 only[0m
-
