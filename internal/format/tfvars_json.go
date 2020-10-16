@@ -22,6 +22,7 @@ func NewTfvarsJSON(settings *print.Settings) *TfvarsJSON {
 // Print prints a Terraform module as Terraform tfvars JSON document.
 func (j *TfvarsJSON) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
 	copy := orderedmap.New()
+	copy.SetEscapeHTML(false)
 	for _, i := range module.Inputs {
 		copy.Set(i.Name, i.Default)
 	}

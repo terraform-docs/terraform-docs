@@ -51,7 +51,7 @@
   "object_default_empty": {},
   "string-1": "bar",
   "string-3": "",
-  "string-special-chars": "\\.\u003c\u003e[]{}_-",
+  "string-special-chars": "\\.<>[]{}_-",
   "string_default_empty": "",
   "string_default_null": null,
   "with-url": ""

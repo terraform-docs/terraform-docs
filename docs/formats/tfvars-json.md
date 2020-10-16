@@ -93,7 +93,7 @@ generates the following output:
       "string-1": "bar",
       "string-2": null,
       "string-3": "",
-      "string-special-chars": "\\.\u003c\u003e[]{}_-",
+      "string-special-chars": "\\.<>[]{}_-",
       "string_default_empty": "",
       "string_default_null": null,
       "string_no_default": null,
