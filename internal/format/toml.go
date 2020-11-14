@@ -36,6 +36,7 @@ func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string
 		Inputs:       make([]*terraform.Input, 0),
 		Outputs:      make([]*terraform.Output, 0),
 		Requirements: make([]*terraform.Requirement, 0),
+		Resources:    make([]*terraform.Resource, 0),
 	}
 
 	if settings.ShowHeader {
@@ -52,6 +53,9 @@ func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string
 	}
 	if settings.ShowRequirements {
 		copy.Requirements = module.Requirements
+	}
+	if settings.ShowResources {
+		copy.Resources = module.Resources
 	}
 
 	buffer := new(bytes.Buffer)

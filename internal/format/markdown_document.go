@@ -27,6 +27,23 @@ const (
 		{{- end -}}
 	{{ end -}}
 	`
+	documentResourcesTpl = `
+	{{- if .Settings.ShowResources -}}
+		{{ indent 0 "#" }} Resources
+		{{ if not .Module.Resources }}
+			No resources.
+		{{ else }}
+			The following resources are used by this module:
+			{{ range .Module.Resources }}
+				{{ if eq (len .URL) 0 }}
+				- {{ .FullType }}
+				{{- else -}}
+				- [{{ .FullType }}]({{ .URL }})
+				{{- end }}
+			{{- end }}
+		{{ end }}
+	{{ end -}}
+	`
 
 	documentRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
@@ -136,6 +153,7 @@ const (
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
 	`
@@ -160,6 +178,9 @@ func NewDocument(settings *print.Settings) *Document {
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: documentProvidersTpl,
+	}, &tmpl.Item{
+		Name: "resources",
+		Text: documentResourcesTpl,
 	}, &tmpl.Item{
 		Name: "inputs",
 		Text: documentInputsTpl,

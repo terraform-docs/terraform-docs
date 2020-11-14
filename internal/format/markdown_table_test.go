@@ -146,6 +146,7 @@ func TestTableNoHeader(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-NoHeader")
@@ -170,6 +171,7 @@ func TestTableNoInputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-NoInputs")
@@ -194,6 +196,7 @@ func TestTableNoOutputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-NoOutputs")
@@ -218,6 +221,7 @@ func TestTableNoProviders(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-NoProviders")
@@ -242,9 +246,35 @@ func TestTableNoRequirements(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-NoRequirements")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestTableNoResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("markdown", "table-NoResources")
 	assert.Nil(err)
 
 	options := terraform.NewOptions()
@@ -266,6 +296,7 @@ func TestTableOnlyHeader(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-OnlyHeader")
@@ -290,6 +321,7 @@ func TestTableOnlyInputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-OnlyInputs")
@@ -314,6 +346,7 @@ func TestTableOnlyOutputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-OnlyOutputs")
@@ -338,6 +371,7 @@ func TestTableOnlyProviders(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-OnlyProviders")
@@ -362,9 +396,35 @@ func TestTableOnlyRequirements(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-OnlyRequirements")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestTableOnlyResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("markdown", "table-OnlyResources")
 	assert.Nil(err)
 
 	options := terraform.NewOptions()

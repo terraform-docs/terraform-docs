@@ -2,6 +2,7 @@ header = ""
 outputs = []
 providers = []
 requirements = []
+resources = []
 
 [[inputs]]
   name = "unquoted"

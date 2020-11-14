@@ -30,6 +30,21 @@ const (
 	{{ end -}}
 	`
 
+	prettyResourcesTpl = `
+	{{- if .Settings.ShowResources -}}
+		{{- with .Module.Resources }}
+			{{- range . }}
+				{{- if eq (len .URL) 0 }}
+					{{- printf "resource.%s" .FullType | colorize "\033[36m" }}
+				{{- else -}}
+					{{- printf "resource.%s" .FullType | colorize "\033[36m" }} ({{ .URL}})
+				{{- end }}
+			{{ end -}}
+		{{ end -}}
+		{{- printf "\n\n" -}}
+	{{ end -}}
+	`
+
 	prettyRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
 		{{- with .Module.Requirements }}
@@ -87,6 +102,7 @@ const (
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
 	`
@@ -111,6 +127,9 @@ func NewPretty(settings *print.Settings) *Pretty {
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: prettyProvidersTpl,
+	}, &tmpl.Item{
+		Name: "resources",
+		Text: prettyResourcesTpl,
 	}, &tmpl.Item{
 		Name: "inputs",
 		Text: prettyInputsTpl,

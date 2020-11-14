@@ -126,6 +126,7 @@ func TestXmlNoHeader(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoHeader")
@@ -150,6 +151,7 @@ func TestXmlNoInputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoInputs")
@@ -174,6 +176,7 @@ func TestXmlNoOutputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoOutputs")
@@ -198,6 +201,7 @@ func TestXmlNoProviders(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoProviders")
@@ -222,9 +226,35 @@ func TestXmlNoRequirements(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-NoRequirements")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewXML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestXmlNoResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("xml", "xml-NoResources")
 	assert.Nil(err)
 
 	options := terraform.NewOptions()
@@ -246,6 +276,7 @@ func TestXmlOnlyHeader(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyHeader")
@@ -270,6 +301,7 @@ func TestXmlOnlyInputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyInputs")
@@ -294,6 +326,7 @@ func TestXmlOnlyOutputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyOutputs")
@@ -318,6 +351,7 @@ func TestXmlOnlyProviders(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyProviders")
@@ -342,9 +376,35 @@ func TestXmlOnlyRequirements(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-OnlyRequirements")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewXML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestXmlOnlyResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("xml", "xml-OnlyResources")
 	assert.Nil(err)
 
 	options := terraform.NewOptions()

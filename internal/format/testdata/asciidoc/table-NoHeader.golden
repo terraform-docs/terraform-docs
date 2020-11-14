@@ -19,6 +19,16 @@
 |null |n/a
 |===
 
+== Resources
+
+[cols="a",options="header,autowidth"]
+|===
+|Name
+|https://registry.terraform.io/providers/hashicorp/aws/2.15.0/docs/data-sources/caller_identity[aws_caller_identity]
+|https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource]
+|https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key]
+|===
+
 == Inputs
 
 [cols="a,a,a,a",options="header,autowidth"]

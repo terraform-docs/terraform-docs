@@ -146,6 +146,7 @@ func TestAsciidocDocumentNoHeader(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-NoHeader")
@@ -170,6 +171,7 @@ func TestAsciidocDocumentNoInputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-NoInputs")
@@ -194,6 +196,7 @@ func TestAsciidocDocumentNoOutputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-NoOutputs")
@@ -218,6 +221,7 @@ func TestAsciidocDocumentNoProviders(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-NoProviders")
@@ -242,9 +246,35 @@ func TestAsciidocDocumentNoRequirements(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-NoRequirements")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewAsciidocDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestAsciidocDocumentNoResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("asciidoc", "document-NoResources")
 	assert.Nil(err)
 
 	options := terraform.NewOptions()
@@ -266,6 +296,7 @@ func TestAsciidocDocumentOnlyHeader(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-OnlyHeader")
@@ -290,6 +321,7 @@ func TestAsciidocDocumentOnlyInputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-OnlyInputs")
@@ -314,6 +346,7 @@ func TestAsciidocDocumentOnlyOutputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-OnlyOutputs")
@@ -338,6 +371,7 @@ func TestAsciidocDocumentOnlyProviders(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-OnlyProviders")
@@ -362,9 +396,35 @@ func TestAsciidocDocumentOnlyRequirements(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-OnlyRequirements")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewAsciidocDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestAsciidocDocumentOnlyResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("asciidoc", "document-OnlyResources")
 	assert.Nil(err)
 
 	options := terraform.NewOptions()

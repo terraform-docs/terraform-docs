@@ -58,6 +58,7 @@ func (s *TestSettings) WithSections() *TestSettings {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}
 	if err := mergo.Merge(sections, s.full); err == nil {
 		s.full = sections

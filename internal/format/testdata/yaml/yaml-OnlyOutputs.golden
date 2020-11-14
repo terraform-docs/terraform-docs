@@ -11,3 +11,4 @@ outputs:
     description: terraform 0.12 only
 providers: []
 requirements: []
+resources: []

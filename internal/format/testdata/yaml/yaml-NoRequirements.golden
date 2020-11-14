@@ -243,3 +243,19 @@ providers:
     alias: null
     version: null
 requirements: []
+resources:
+  - type: caller_identity
+    providerName: aws
+    providerSource: hashicorp/aws
+    mode: data
+    version: 2.15.0
+  - type: resource
+    providerName: "null"
+    providerSource: hashicorp/null
+    mode: managed
+    version: latest
+  - type: private_key
+    providerName: tls
+    providerSource: hashicorp/tls
+    mode: managed
+    version: latest

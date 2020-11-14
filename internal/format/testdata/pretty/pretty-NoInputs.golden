@@ -48,6 +48,11 @@ followed by another line of text.
 [36mprovider.null[0m
 
 
+[36mresource.aws_caller_identity[0m (https://registry.terraform.io/providers/hashicorp/aws/2.15.0/docs/data-sources/caller_identity)
+[36mresource.null_resource[0m (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
+[36mresource.tls_private_key[0m (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)
+
+
 [36moutput.unquoted[0m
 [90mIt's unquoted output.[0m
 

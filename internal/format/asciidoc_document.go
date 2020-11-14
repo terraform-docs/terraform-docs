@@ -27,6 +27,23 @@ const (
 		{{- end -}}
 	{{ end -}}
 	`
+	asciidocDocumentResourcesTpl = `
+	{{- if .Settings.ShowResources -}}
+		{{ indent 0 "=" }} Resources
+		{{ if not .Module.Resources }}
+			No resources.
+		{{ else }}
+			The following resources are used by this module:
+			{{ range .Module.Resources }}
+				{{ if eq (len .URL) 0 }}
+				- {{ .FullType }}
+				{{- else -}}
+				- {{ .URL }}[{{ .FullType }}]
+				{{- end }}
+			{{- end }}
+		{{ end }}
+	{{ end -}}
+	`
 
 	asciidocDocumentRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
@@ -136,6 +153,7 @@ const (
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
 	`
@@ -160,6 +178,9 @@ func NewAsciidocDocument(settings *print.Settings) *AsciidocDocument {
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: asciidocDocumentProvidersTpl,
+	}, &tmpl.Item{
+		Name: "resources",
+		Text: asciidocDocumentResourcesTpl,
 	}, &tmpl.Item{
 		Name: "inputs",
 		Text: asciidocDocumentInputsTpl,
