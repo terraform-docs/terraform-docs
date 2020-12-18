@@ -66,7 +66,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Bump Homebrew formula version
-        uses: dawidd6/action-homebrew-bump-formula@v3.4.1
+        uses: dawidd6/action-homebrew-bump-formula@v3.5.0
         if: "!contains(github.ref, '-')" # skip prereleases
         with:
           token: ${{ secrets.COMMITTER_TOKEN }}
