@@ -40,7 +40,7 @@ Pull requests have to meet the following requirements:
 
 2. **Documentation**: Pull requests need to update the [Formats Guide](/docs/FORMATS_GUIDE.md) and if need be the main [README](README.md) together with the code change. You can generate the format guides by using `make docs`.
 
-3. **Commits**: Commits should be as small as possible while ensuring that each commit compiles and passes tests independently. [Write good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). If needed, [squash your commits](https://davidwalsh.name/squash-commits-git) prior to submission.
+3. **Commits**: Commits should be as small as possible while ensuring that each commit compiles and passes tests independently. [Write good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). Ensure each of your commits is signed-off in compliance with the [Developer Certificate of Origin](https://github.com/apps/dco) by using `git commit -s`. If needed, [squash your commits](https://davidwalsh.name/squash-commits-git) prior to submission.
 
 4. **Code Style**: We use `goimports` which wrappes around [gofmt](https://blog.golang.org/go-fmt-your-code) to keep the code in unified format. You can use `make goimports` to install and `make fmt` to format your code. If useful, include code comments to support your intentions. Make sure your code doesn't have issues with `make checkfmt` and `make lint` before submission.
 
