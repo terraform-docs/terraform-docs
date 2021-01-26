@@ -6,8 +6,8 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
@@ -52,7 +52,7 @@ func NewTfvarsHCL(settings *print.Settings) *TfvarsHCL {
 }
 
 // Print prints a Terraform module as Terraform tfvars HCL document.
-func (h *TfvarsHCL) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+func (h *TfvarsHCL) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	alignments(module.Inputs)
 	rendered, err := h.template.Render(module)
 	if err != nil {
@@ -61,7 +61,7 @@ func (h *TfvarsHCL) Print(module *tfconf.Module, settings *print.Settings) (stri
 	return strings.TrimSuffix(sanitize(rendered), "\n"), nil
 }
 
-func alignments(inputs []*tfconf.Input) {
+func alignments(inputs []*terraform.Input) {
 	padding = make([]int, len(inputs))
 	maxlen := 0
 	index := 0

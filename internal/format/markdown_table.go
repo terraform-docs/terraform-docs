@@ -3,8 +3,8 @@ package format
 import (
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
@@ -143,7 +143,7 @@ func NewTable(settings *print.Settings) *Table {
 }
 
 // Print prints a Terraform module as Markdown tables.
-func (t *Table) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+func (t *Table) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := t.template.Render(module)
 	if err != nil {
 		return "", err

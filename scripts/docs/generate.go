@@ -14,7 +14,7 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/cmd"
 	"github.com/terraform-docs/terraform-docs/internal/format"
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
@@ -148,11 +148,11 @@ func printExample(buf *bytes.Buffer, name string) error {
 
 	settings := print.NewSettings()
 	settings.ShowColor = false
-	options := &module.Options{
+	options := &terraform.Options{
 		Path:           "./examples",
 		ShowHeader:     true,
 		HeaderFromFile: "main.tf",
-		SortBy: &module.SortBy{
+		SortBy: &terraform.SortBy{
 			Name:     settings.SortByName,
 			Required: settings.SortByRequired,
 		},
@@ -163,7 +163,7 @@ func printExample(buf *bytes.Buffer, name string) error {
 	if err != nil {
 		return err
 	}
-	tfmodule, err := module.LoadWithOptions(options)
+	tfmodule, err := terraform.LoadWithOptions(options)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
@@ -17,7 +17,7 @@ func TestTfvarsJson(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "json")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,8 +37,8 @@ func TestTfvarsJsonSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "json-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -64,8 +64,8 @@ func TestTfvarsJsonSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "json-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -91,8 +91,8 @@ func TestTfvarsJsonSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "json-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -121,7 +121,7 @@ func TestTfvarsJsonNoInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "json-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -141,7 +141,7 @@ func TestTfvarsJsonEscapeCharacters(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "json-EscapeCharacters")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 

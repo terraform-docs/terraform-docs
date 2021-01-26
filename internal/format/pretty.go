@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
@@ -125,7 +125,7 @@ func NewPretty(settings *print.Settings) *Pretty {
 }
 
 // Print prints a Terraform module document.
-func (p *Pretty) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+func (p *Pretty) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := p.template.Render(module)
 	if err != nil {
 		return "", err

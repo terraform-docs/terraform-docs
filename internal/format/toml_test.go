@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
@@ -17,7 +17,7 @@ func TestToml(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,8 +37,8 @@ func TestTomlSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -64,8 +64,8 @@ func TestTomlSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -91,8 +91,8 @@ func TestTomlSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -121,7 +121,7 @@ func TestTomlNoHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-NoHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -145,7 +145,7 @@ func TestTomlNoInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -169,7 +169,7 @@ func TestTomlNoOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-NoOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -193,7 +193,7 @@ func TestTomlNoProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-NoProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -217,7 +217,7 @@ func TestTomlNoRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-NoRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -241,7 +241,7 @@ func TestTomlOnlyHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-OnlyHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -265,7 +265,7 @@ func TestTomlOnlyInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-OnlyInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -289,7 +289,7 @@ func TestTomlOnlyOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-OnlyOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -313,7 +313,7 @@ func TestTomlOnlyProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-OnlyProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -337,7 +337,7 @@ func TestTomlOnlyRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-OnlyRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -357,7 +357,7 @@ func TestTomlOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-OutputValues")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -380,7 +380,7 @@ func TestTomlHeaderFromFile(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-HeaderFromFile")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "doc.tf",
 	})
 	assert.Nil(err)
@@ -408,7 +408,7 @@ func TestTomlEmpty(t *testing.T) {
 	expected, err := testutil.GetExpected("toml", "toml-Empty")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "bad.tf",
 	})
 	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all

@@ -1,4 +1,4 @@
-package tfconf
+package terraform
 
 import (
 	"github.com/terraform-docs/terraform-docs/internal/types"

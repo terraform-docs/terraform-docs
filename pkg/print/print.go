@@ -1,10 +1,10 @@
 package print
 
 import (
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // Format represents a printer format (e.g. json, table, yaml, ...)
 type Format interface {
-	Print(*tfconf.Module, *Settings) (string, error)
+	Print(*terraform.Module, *Settings) (string, error)
 }

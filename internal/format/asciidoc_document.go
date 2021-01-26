@@ -3,8 +3,8 @@ package format
 import (
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
@@ -190,7 +190,7 @@ func NewAsciidocDocument(settings *print.Settings) *AsciidocDocument {
 }
 
 // Print prints a Terraform module as AsciiDoc document.
-func (d *AsciidocDocument) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+func (d *AsciidocDocument) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := d.template.Render(module)
 	if err != nil {
 		return "", err

@@ -6,9 +6,9 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // Item represents a named templated which can reference
@@ -57,7 +57,7 @@ func (t *Template) Settings(settings *print.Settings) {
 }
 
 // Render renders the Template with given Module struct
-func (t *Template) Render(module *tfconf.Module) (string, error) {
+func (t *Template) Render(module *terraform.Module) (string, error) {
 	if len(t.Items) < 1 {
 		return "", fmt.Errorf("base template not found")
 	}
@@ -74,7 +74,7 @@ func (t *Template) Render(module *tfconf.Module) (string, error) {
 		template.Must(tt.Parse(normalize(item.Text)))
 	}
 	err := tmpl.ExecuteTemplate(&buffer, t.Items[0].Name, struct {
-		Module   *tfconf.Module
+		Module   *terraform.Module
 		Settings *print.Settings
 	}{
 		Module:   module,

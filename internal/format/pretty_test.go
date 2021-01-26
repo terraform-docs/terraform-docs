@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
@@ -17,7 +17,7 @@ func TestPretty(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,8 +37,8 @@ func TestPrettySortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -64,8 +64,8 @@ func TestPrettySortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -91,8 +91,8 @@ func TestPrettySortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -121,7 +121,7 @@ func TestPrettyNoHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-NoHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -145,7 +145,7 @@ func TestPrettyNoInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -169,7 +169,7 @@ func TestPrettyNoOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-NoOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -193,7 +193,7 @@ func TestPrettyNoProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-NoProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -217,7 +217,7 @@ func TestPrettyNoRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-NoRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -241,7 +241,7 @@ func TestPrettyOnlyHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-OnlyHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -265,7 +265,7 @@ func TestPrettyOnlyInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-OnlyInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -289,7 +289,7 @@ func TestPrettyOnlyOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-OnlyOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -313,7 +313,7 @@ func TestPrettyOnlyProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-OnlyProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -337,7 +337,7 @@ func TestPrettyOnlyRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-OnlyRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -357,7 +357,7 @@ func TestPrettyNoColor(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-NoColor")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -377,7 +377,7 @@ func TestPrettyOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("pretty", "pretty-OutputValues")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -428,7 +428,7 @@ func TestPrettyHeaderFromFile(t *testing.T) {
 			expected, err := testutil.GetExpected("pretty", tt.golden)
 			assert.Nil(err)
 
-			options, err := module.NewOptions().WithOverwrite(&module.Options{
+			options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 				HeaderFromFile: tt.file,
 			})
 			assert.Nil(err)
@@ -454,7 +454,7 @@ func TestPrettyEmpty(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "bad.tf",
 	})
 	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all

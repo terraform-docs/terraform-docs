@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
@@ -311,10 +311,10 @@ func (c *Config) validate() error {
 	return nil
 }
 
-// extract and build print.Settings and module.Options out of Config
-func (c *Config) extract() (*print.Settings, *module.Options) {
+// extract and build print.Settings and terraform.Options out of Config
+func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings := print.NewSettings()
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 
 	// header-from
 	options.HeaderFromFile = c.HeaderFrom

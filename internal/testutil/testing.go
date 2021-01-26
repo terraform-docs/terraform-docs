@@ -6,12 +6,11 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // GetModule returns 'example' Module
-func GetModule(options *module.Options) (*tfconf.Module, error) {
+func GetModule(options *terraform.Options) (*terraform.Module, error) {
 	path, err := getExampleFolder()
 	if err != nil {
 		return nil, err
@@ -20,7 +19,7 @@ func GetModule(options *module.Options) (*tfconf.Module, error) {
 	if options.OutputValues {
 		options.OutputValuesPath = filepath.Join(path, options.OutputValuesPath)
 	}
-	tfmodule, err := module.LoadWithOptions(options)
+	tfmodule, err := terraform.LoadWithOptions(options)
 	if err != nil {
 		return nil, err
 	}
