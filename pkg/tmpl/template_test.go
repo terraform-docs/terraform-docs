@@ -10,9 +10,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 func TestTemplateRender(t *testing.T) {
@@ -26,7 +26,7 @@ func TestTemplateRender(t *testing.T) {
 			return fmt.Sprintf("customized <<%s>>", s)
 		},
 	}
-	module := &tfconf.Module{
+	module := &terraform.Module{
 		Header: "sample header",
 	}
 	tests := []struct {

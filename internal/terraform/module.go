@@ -1,7 +1,8 @@
-package module
+package terraform
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -14,12 +15,56 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/internal/reader"
 	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
+
+// Module represents a Terraform module. It consists of
+//
+// - Header       ('header' json key):    Module header found in shape of multi line comments at the beginning of 'main.tf'
+// - Inputs       ('inputs' json key):    List of input 'variables' extracted from the Terraform module .tf files
+// - Outputs      ('outputs' json key):   List of 'outputs' extracted from Terraform module .tf files
+// - Providers    ('providers' json key): List of 'providers' extracted from resources used in Terraform module
+// - Requirements ('header' json key):    List of 'requirements' extracted from the Terraform module .tf files
+type Module struct {
+	XMLName xml.Name `json:"-" toml:"-" xml:"module" yaml:"-"`
+
+	Header       string         `json:"header" toml:"header" xml:"header" yaml:"header"`
+	Inputs       []*Input       `json:"inputs" toml:"inputs" xml:"inputs>input" yaml:"inputs"`
+	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
+	Providers    []*Provider    `json:"providers" toml:"providers" xml:"providers>provider" yaml:"providers"`
+	Requirements []*Requirement `json:"requirements" toml:"requirements" xml:"requirements>requirement" yaml:"requirements"`
+
+	RequiredInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
+	OptionalInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
+}
+
+// HasHeader indicates if the module has header.
+func (m *Module) HasHeader() bool {
+	return len(m.Header) > 0
+}
+
+// HasInputs indicates if the module has inputs.
+func (m *Module) HasInputs() bool {
+	return len(m.Inputs) > 0
+}
+
+// HasOutputs indicates if the module has outputs.
+func (m *Module) HasOutputs() bool {
+	return len(m.Outputs) > 0
+}
+
+// HasProviders indicates if the module has providers.
+func (m *Module) HasProviders() bool {
+	return len(m.Providers) > 0
+}
+
+// HasRequirements indicates if the module has requirements.
+func (m *Module) HasRequirements() bool {
+	return len(m.Requirements) > 0
+}
 
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
-func LoadWithOptions(options *Options) (*tfconf.Module, error) {
+func LoadWithOptions(options *Options) (*Module, error) {
 	tfmodule, err := loadModule(options.Path)
 	if err != nil {
 		return nil, err
@@ -40,7 +85,7 @@ func loadModule(path string) (*tfconfig.Module, error) {
 	return module, nil
 }
 
-func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Module, error) {
+func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, error) {
 	header, err := loadHeader(options)
 	if err != nil {
 		return nil, err
@@ -54,7 +99,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*tfconf.Modul
 	providers := loadProviders(tfmodule)
 	requirements := loadRequirements(tfmodule)
 
-	return &tfconf.Module{
+	return &Module{
 		Header:       header,
 		Inputs:       inputs,
 		Outputs:      outputs,
@@ -134,10 +179,10 @@ func loadHeader(options *Options) (string, error) {
 	return strings.Join(header, "\n"), nil
 }
 
-func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []*tfconf.Input) {
-	var inputs = make([]*tfconf.Input, 0, len(tfmodule.Variables))
-	var required = make([]*tfconf.Input, 0, len(tfmodule.Variables))
-	var optional = make([]*tfconf.Input, 0, len(tfmodule.Variables))
+func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
+	var inputs = make([]*Input, 0, len(tfmodule.Variables))
+	var required = make([]*Input, 0, len(tfmodule.Variables))
+	var optional = make([]*Input, 0, len(tfmodule.Variables))
 
 	for _, input := range tfmodule.Variables {
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
@@ -146,13 +191,13 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
 
-		i := &tfconf.Input{
+		i := &Input{
 			Name:        input.Name,
 			Type:        types.TypeOf(input.Type, input.Default),
 			Description: types.String(inputDescription),
 			Default:     types.ValueOf(input.Default),
 			Required:    input.Required,
-			Position: tfconf.Position{
+			Position: Position{
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,
 			},
@@ -168,9 +213,9 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*tfconf.Input, []*tfconf.Input, []
 	return inputs, required, optional
 }
 
-func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*tfconf.Output, error) {
-	outputs := make([]*tfconf.Output, 0, len(tfmodule.Outputs))
-	values := make(map[string]*TerraformOutput)
+func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*Output, error) {
+	outputs := make([]*Output, 0, len(tfmodule.Outputs))
+	values := make(map[string]*output)
 	if options.OutputValues {
 		var err error
 		values, err = loadOutputValues(options)
@@ -183,10 +228,10 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*tfconf.Output,
 		if description == "" {
 			description = loadComments(o.Pos.Filename, o.Pos.Line)
 		}
-		output := &tfconf.Output{
+		output := &Output{
 			Name:        o.Name,
 			Description: types.String(description),
-			Position: tfconf.Position{
+			Position: Position{
 				Filename: o.Pos.Filename,
 				Line:     o.Pos.Line,
 			},
@@ -205,7 +250,7 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*tfconf.Output,
 	return outputs, nil
 }
 
-func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
+func loadOutputValues(options *Options) (map[string]*output, error) {
 	var out []byte
 	var err error
 	if options.OutputValuesPath == "" {
@@ -219,7 +264,7 @@ func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
 			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
 		}
 	}
-	var terraformOutputs map[string]*TerraformOutput
+	var terraformOutputs map[string]*output
 	err = json.Unmarshal(out, &terraformOutputs)
 	if err != nil {
 		return nil, err
@@ -227,9 +272,9 @@ func loadOutputValues(options *Options) (map[string]*TerraformOutput, error) {
 	return terraformOutputs, err
 }
 
-func loadProviders(tfmodule *tfconfig.Module) []*tfconf.Provider {
+func loadProviders(tfmodule *tfconfig.Module) []*Provider {
 	resources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
-	discovered := make(map[string]*tfconf.Provider)
+	discovered := make(map[string]*Provider)
 	for _, resource := range resources {
 		for _, r := range resource {
 			var version = ""
@@ -237,28 +282,28 @@ func loadProviders(tfmodule *tfconfig.Module) []*tfconf.Provider {
 				version = strings.Join(rv.VersionConstraints, " ")
 			}
 			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
-			discovered[key] = &tfconf.Provider{
+			discovered[key] = &Provider{
 				Name:    r.Provider.Name,
 				Alias:   types.String(r.Provider.Alias),
 				Version: types.String(version),
-				Position: tfconf.Position{
+				Position: Position{
 					Filename: r.Pos.Filename,
 					Line:     r.Pos.Line,
 				},
 			}
 		}
 	}
-	providers := make([]*tfconf.Provider, 0, len(discovered))
+	providers := make([]*Provider, 0, len(discovered))
 	for _, provider := range discovered {
 		providers = append(providers, provider)
 	}
 	return providers
 }
 
-func loadRequirements(tfmodule *tfconfig.Module) []*tfconf.Requirement {
-	var requirements = make([]*tfconf.Requirement, 0)
+func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
+	var requirements = make([]*Requirement, 0)
 	for _, core := range tfmodule.RequiredCore {
-		requirements = append(requirements, &tfconf.Requirement{
+		requirements = append(requirements, &Requirement{
 			Name:    "terraform",
 			Version: types.String(core),
 		})
@@ -270,7 +315,7 @@ func loadRequirements(tfmodule *tfconfig.Module) []*tfconf.Requirement {
 	sort.Strings(names)
 	for _, name := range names {
 		for _, version := range tfmodule.RequiredProviders[name].VersionConstraints {
-			requirements = append(requirements, &tfconf.Requirement{
+			requirements = append(requirements, &Requirement{
 				Name:    name,
 				Version: types.String(version),
 			})
@@ -301,7 +346,7 @@ func loadComments(filename string, lineNum int) string {
 	return strings.Join(comment, " ")
 }
 
-func sortItems(tfmodule *tfconf.Module, sortby *SortBy) {
+func sortItems(tfmodule *Module, sortby *SortBy) {
 	if sortby.Type {
 		sort.Sort(inputsSortedByType(tfmodule.Inputs))
 		sort.Sort(inputsSortedByType(tfmodule.RequiredInputs))

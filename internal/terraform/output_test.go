@@ -1,9 +1,10 @@
-package tfconf
+package terraform
 
 import (
 	"bytes"
 	"encoding/xml"
 	"reflect"
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -278,62 +279,62 @@ func TestOutputMarshalYAML(t *testing.T) {
 		{
 			name:     "output marshal JSON",
 			output:   outputs[0],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[1],
-			expected: "tfconf.Output",
+			expected: "terraform.Output",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[2],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[3],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[4],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[5],
-			expected: "tfconf.Output",
+			expected: "terraform.Output",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[6],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[7],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[8],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[9],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[10],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 		{
 			name:     "output marshal JSON",
 			output:   outputs[11],
-			expected: "tfconf.withvalue",
+			expected: "terraform.withvalue",
 		},
 	}
 	for _, tt := range tests {
@@ -445,6 +446,73 @@ func sampleOutputs() []Output {
 			Sensitive:   false,
 			Position:    position,
 			ShowValue:   true,
+		},
+	}
+}
+
+func TestOutputsSortedByName(t *testing.T) {
+	assert := assert.New(t)
+	outputs := sampleOutputsForSort()
+
+	sort.Sort(outputsSortedByName(outputs))
+
+	expected := []string{"a", "b", "c", "d", "e"}
+	actual := make([]string, len(outputs))
+
+	for k, o := range outputs {
+		actual[k] = o.Name
+	}
+
+	assert.Equal(expected, actual)
+}
+
+func TestOutputsSortedByPosition(t *testing.T) {
+	assert := assert.New(t)
+	outputs := sampleOutputsForSort()
+
+	sort.Sort(outputsSortedByPosition(outputs))
+
+	expected := []string{"d", "a", "e", "b", "c"}
+	actual := make([]string, len(outputs))
+
+	for k, o := range outputs {
+		actual[k] = o.Name
+	}
+
+	assert.Equal(expected, actual)
+}
+
+func sampleOutputsForSort() []*Output {
+	return []*Output{
+		{
+			Name:        "a",
+			Description: types.String("description of a"),
+			Value:       nil,
+			Position:    Position{Filename: "foo/outputs.tf", Line: 25},
+		},
+		{
+			Name:        "d",
+			Description: types.String("description of d"),
+			Value:       nil,
+			Position:    Position{Filename: "foo/outputs.tf", Line: 10},
+		},
+		{
+			Name:        "e",
+			Description: types.String("description of e"),
+			Value:       nil,
+			Position:    Position{Filename: "foo/outputs.tf", Line: 33},
+		},
+		{
+			Name:        "b",
+			Description: types.String("description of b"),
+			Value:       nil,
+			Position:    Position{Filename: "foo/outputs.tf", Line: 39},
+		},
+		{
+			Name:        "c",
+			Description: types.String("description of c"),
+			Value:       nil,
+			Position:    Position{Filename: "foo/outputs.tf", Line: 42},
 		},
 	}
 }

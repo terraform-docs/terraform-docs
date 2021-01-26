@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/pflag"
 
 	"github.com/terraform-docs/terraform-docs/internal/format"
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // list of flagset items which are explicitly changed from CLI
@@ -80,26 +80,27 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 
 // RunEFunc returns actual 'cobra.Command#RunE' function for
 // 'formatter' commands. This functions extract print.Settings
-// and module.Options from generated and normalized Config and
+// and terraform.Options from generated and normalized Config and
 // initializes required print.Format instance and executes it.
 func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		settings, options := config.extract()
+		options.Path = args[0]
+
+		var output string
+		var err error
+
+		module, err := terraform.LoadWithOptions(options)
+		if err != nil {
+			return err
+		}
 
 		printer, err := format.Factory(config.Formatter, settings)
 		if err != nil {
 			return err
 		}
 
-		options.Path = args[0]
-
-		tfmodule, err := module.LoadWithOptions(options)
-		if err != nil {
-			return err
-
-		}
-
-		output, err := printer.Print(tfmodule, settings)
+		output, err = printer.Print(module, settings)
 		if err != nil {
 			return err
 		}

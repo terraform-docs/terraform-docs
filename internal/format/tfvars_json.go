@@ -7,8 +7,8 @@ import (
 
 	"github.com/iancoleman/orderedmap"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // TfvarsJSON represents Terraform tfvars JSON format.
@@ -20,7 +20,7 @@ func NewTfvarsJSON(settings *print.Settings) *TfvarsJSON {
 }
 
 // Print prints a Terraform module as Terraform tfvars JSON document.
-func (j *TfvarsJSON) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+func (j *TfvarsJSON) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	copy := orderedmap.New()
 	copy.SetEscapeHTML(false)
 	for _, i := range module.Inputs {

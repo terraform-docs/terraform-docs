@@ -6,8 +6,8 @@ import (
 
 	"gopkg.in/yaml.v3"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // YAML represents YAML format.
@@ -19,13 +19,13 @@ func NewYAML(settings *print.Settings) *YAML {
 }
 
 // Print prints a Terraform module as yaml.
-func (y *YAML) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
-	copy := &tfconf.Module{
+func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+	copy := &terraform.Module{
 		Header:       "",
-		Inputs:       make([]*tfconf.Input, 0),
-		Outputs:      make([]*tfconf.Output, 0),
-		Providers:    make([]*tfconf.Provider, 0),
-		Requirements: make([]*tfconf.Requirement, 0),
+		Inputs:       make([]*terraform.Input, 0),
+		Outputs:      make([]*terraform.Output, 0),
+		Providers:    make([]*terraform.Provider, 0),
+		Requirements: make([]*terraform.Requirement, 0),
 	}
 
 	if settings.ShowHeader {

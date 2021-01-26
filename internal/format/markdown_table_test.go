@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
@@ -17,7 +17,7 @@ func TestTable(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,7 +37,7 @@ func TestTableWithRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-WithRequired")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -57,8 +57,8 @@ func TestTableSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -84,8 +84,8 @@ func TestTableSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -111,8 +111,8 @@ func TestTableSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -141,7 +141,7 @@ func TestTableNoHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-NoHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -165,7 +165,7 @@ func TestTableNoInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -189,7 +189,7 @@ func TestTableNoOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-NoOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -213,7 +213,7 @@ func TestTableNoProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-NoProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -237,7 +237,7 @@ func TestTableNoRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-NoRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -261,7 +261,7 @@ func TestTableOnlyHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-OnlyHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -285,7 +285,7 @@ func TestTableOnlyInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-OnlyInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -309,7 +309,7 @@ func TestTableOnlyOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-OnlyOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -333,7 +333,7 @@ func TestTableOnlyProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-OnlyProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -357,7 +357,7 @@ func TestTableOnlyRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-OnlyRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -377,7 +377,7 @@ func TestTableEscapeCharacters(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-EscapeCharacters")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -397,7 +397,7 @@ func TestTableIndentationBelowAllowed(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-IndentationBelowAllowed")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -417,7 +417,7 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-IndentationAboveAllowed")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -437,7 +437,7 @@ func TestTableIndentationOfFour(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-IndentationOfFour")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -458,7 +458,7 @@ func TestTableOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-OutputValues")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -509,7 +509,7 @@ func TestTableHeaderFromFile(t *testing.T) {
 			expected, err := testutil.GetExpected("markdown", tt.golden)
 			assert.Nil(err)
 
-			options, err := module.NewOptions().WithOverwrite(&module.Options{
+			options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 				HeaderFromFile: tt.file,
 			})
 			assert.Nil(err)
@@ -536,7 +536,7 @@ func TestTableOutputValuesNoSensitivity(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "table-OutputValuesNoSensitivity")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -561,7 +561,7 @@ func TestTableEmpty(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "bad.tf",
 	})
 	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all

@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
@@ -17,7 +17,7 @@ func TestXml(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,8 +37,8 @@ func TestXmlSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -64,8 +64,8 @@ func TestXmlSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -91,8 +91,8 @@ func TestXmlSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -121,7 +121,7 @@ func TestXmlNoHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-NoHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -145,7 +145,7 @@ func TestXmlNoInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -169,7 +169,7 @@ func TestXmlNoOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-NoOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -193,7 +193,7 @@ func TestXmlNoProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-NoProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -217,7 +217,7 @@ func TestXmlNoRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-NoRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -241,7 +241,7 @@ func TestXmlOnlyHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-OnlyHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -265,7 +265,7 @@ func TestXmlOnlyInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-OnlyInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -289,7 +289,7 @@ func TestXmlOnlyOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-OnlyOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -313,7 +313,7 @@ func TestXmlOnlyProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-OnlyProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -337,7 +337,7 @@ func TestXmlOnlyRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-OnlyRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -357,7 +357,7 @@ func TestXmlOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-OutputValues")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -408,7 +408,7 @@ func TestXmlHeaderFromFile(t *testing.T) {
 			expected, err := testutil.GetExpected("xml", tt.golden)
 			assert.Nil(err)
 
-			options, err := module.NewOptions().WithOverwrite(&module.Options{
+			options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 				HeaderFromFile: tt.file,
 			})
 			assert.Nil(err)
@@ -437,7 +437,7 @@ func TestXmlEmpty(t *testing.T) {
 	expected, err := testutil.GetExpected("xml", "xml-Empty")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "bad.tf",
 	})
 	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all

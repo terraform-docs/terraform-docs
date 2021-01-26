@@ -1,4 +1,4 @@
-package tfconf
+package terraform
 
 import (
 	"bytes"
@@ -43,4 +43,42 @@ func (i *Input) GetValue() string {
 // HasDefault indicates if a Terraform variable has a default value set.
 func (i *Input) HasDefault() bool {
 	return i.Default.HasDefault() || !i.Required
+}
+
+type inputsSortedByName []*Input
+
+func (a inputsSortedByName) Len() int      { return len(a) }
+func (a inputsSortedByName) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a inputsSortedByName) Less(i, j int) bool {
+	return a[i].Name < a[j].Name
+}
+
+type inputsSortedByRequired []*Input
+
+func (a inputsSortedByRequired) Len() int      { return len(a) }
+func (a inputsSortedByRequired) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a inputsSortedByRequired) Less(i, j int) bool {
+	if a[i].HasDefault() == a[j].HasDefault() {
+		return a[i].Name < a[j].Name
+	}
+	return !a[i].HasDefault() && a[j].HasDefault()
+}
+
+type inputsSortedByPosition []*Input
+
+func (a inputsSortedByPosition) Len() int      { return len(a) }
+func (a inputsSortedByPosition) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a inputsSortedByPosition) Less(i, j int) bool {
+	return a[i].Position.Filename < a[j].Position.Filename || a[i].Position.Line < a[j].Position.Line
+}
+
+type inputsSortedByType []*Input
+
+func (a inputsSortedByType) Len() int      { return len(a) }
+func (a inputsSortedByType) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a inputsSortedByType) Less(i, j int) bool {
+	if a[i].Type == a[j].Type {
+		return a[i].Name < a[j].Name
+	}
+	return a[i].Type < a[j].Type
 }

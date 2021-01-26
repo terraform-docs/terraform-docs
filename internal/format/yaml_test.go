@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
@@ -17,7 +17,7 @@ func TestYaml(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,8 +37,8 @@ func TestYamlSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -64,8 +64,8 @@ func TestYamlSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -91,8 +91,8 @@ func TestYamlSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -121,7 +121,7 @@ func TestYamlNoHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-NoHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -145,7 +145,7 @@ func TestYamlNoInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -169,7 +169,7 @@ func TestYamlNoOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-NoOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -193,7 +193,7 @@ func TestYamlNoProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-NoProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -217,7 +217,7 @@ func TestYamlNoRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-NoRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -241,7 +241,7 @@ func TestYamlOnlyHeader(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -265,7 +265,7 @@ func TestYamlOnlyInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -289,7 +289,7 @@ func TestYamlOnlyOutputs(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -313,7 +313,7 @@ func TestYamlOnlyProviders(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -337,7 +337,7 @@ func TestYamlOnlyRequirements(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-OnlyRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -357,7 +357,7 @@ func TestYamlOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-OutputValues")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -408,7 +408,7 @@ func TestYamlHeaderFromFile(t *testing.T) {
 			expected, err := testutil.GetExpected("yaml", tt.golden)
 			assert.Nil(err)
 
-			options, err := module.NewOptions().WithOverwrite(&module.Options{
+			options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 				HeaderFromFile: tt.file,
 			})
 			assert.Nil(err)
@@ -437,7 +437,7 @@ func TestYamlEmpty(t *testing.T) {
 	expected, err := testutil.GetExpected("yaml", "yaml-Empty")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "bad.tf",
 	})
 	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all

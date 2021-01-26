@@ -4,8 +4,8 @@ import (
 	"encoding/xml"
 	"strings"
 
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
 )
 
 // XML represents XML format.
@@ -17,13 +17,13 @@ func NewXML(settings *print.Settings) *XML {
 }
 
 // Print prints a Terraform module as xml.
-func (x *XML) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
-	copy := &tfconf.Module{
+func (x *XML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+	copy := &terraform.Module{
 		Header:       "",
-		Inputs:       make([]*tfconf.Input, 0),
-		Outputs:      make([]*tfconf.Output, 0),
-		Providers:    make([]*tfconf.Provider, 0),
-		Requirements: make([]*tfconf.Requirement, 0),
+		Inputs:       make([]*terraform.Input, 0),
+		Outputs:      make([]*terraform.Output, 0),
+		Providers:    make([]*terraform.Provider, 0),
+		Requirements: make([]*terraform.Requirement, 0),
 	}
 
 	if settings.ShowHeader {
