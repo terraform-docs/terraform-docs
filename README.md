@@ -93,4 +93,4 @@ This project was originally developed by [Segment](https://github.com/segmentio/
 
 ## License
 
-MIT License - Copyright (c) 2020 The terraform-docs Authors.
+MIT License - Copyright (c) 2021 The terraform-docs Authors.
