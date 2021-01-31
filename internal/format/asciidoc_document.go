@@ -13,8 +13,8 @@ package format
 import (
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
@@ -165,7 +165,7 @@ type AsciidocDocument struct {
 }
 
 // NewAsciidocDocument returns new instance of AsciidocDocument.
-func NewAsciidocDocument(settings *print.Settings) *AsciidocDocument {
+func NewAsciidocDocument(settings *print.Settings) print.Engine {
 	tt := tmpl.NewTemplate(&tmpl.Item{
 		Name: "document",
 		Text: asciidocDocumentTpl,
@@ -220,11 +220,20 @@ func NewAsciidocDocument(settings *print.Settings) *AsciidocDocument {
 	}
 }
 
-// Print prints a Terraform module as AsciiDoc document.
+// Print a Terraform module as AsciiDoc document.
 func (d *AsciidocDocument) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := d.template.Render(module)
 	if err != nil {
 		return "", err
 	}
 	return sanitize(rendered), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"asciidoc document": NewAsciidocDocument,
+		"asciidoc doc":      NewAsciidocDocument,
+		"adoc document":     NewAsciidocDocument,
+		"adoc doc":          NewAsciidocDocument,
+	})
 }

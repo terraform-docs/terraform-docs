@@ -15,8 +15,8 @@ import (
 	"regexp"
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
@@ -114,7 +114,7 @@ type Pretty struct {
 }
 
 // NewPretty returns new instance of Pretty.
-func NewPretty(settings *print.Settings) *Pretty {
+func NewPretty(settings *print.Settings) print.Engine {
 	tt := tmpl.NewTemplate(&tmpl.Item{
 		Name: "pretty",
 		Text: prettyTpl,
@@ -153,11 +153,17 @@ func NewPretty(settings *print.Settings) *Pretty {
 	}
 }
 
-// Print prints a Terraform module document.
+// Print a Terraform module document.
 func (p *Pretty) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := p.template.Render(module)
 	if err != nil {
 		return "", err
 	}
 	return regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, ""), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"pretty": NewPretty,
+	})
 }

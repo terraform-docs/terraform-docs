@@ -14,19 +14,19 @@ import (
 	"encoding/xml"
 	"strings"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // XML represents XML format.
 type XML struct{}
 
 // NewXML returns new instance of XML.
-func NewXML(settings *print.Settings) *XML {
+func NewXML(settings *print.Settings) print.Engine {
 	return &XML{}
 }
 
-// Print prints a Terraform module as xml.
+// Print a Terraform module as xml.
 func (x *XML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	copy := &terraform.Module{
 		Header:       "",
@@ -62,4 +62,10 @@ func (x *XML) Print(module *terraform.Module, settings *print.Settings) (string,
 	}
 
 	return strings.TrimSuffix(string(out), "\n"), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"xml": NewXML,
+	})
 }

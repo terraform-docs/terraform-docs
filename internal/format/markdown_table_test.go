@@ -15,9 +15,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 func TestTable(t *testing.T) {
@@ -31,7 +31,7 @@ func TestTable(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -51,7 +51,7 @@ func TestTableWithRequired(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -77,7 +77,7 @@ func TestTableSortByName(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -105,7 +105,7 @@ func TestTableSortByRequired(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -131,7 +131,7 @@ func TestTableSortByType(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -156,7 +156,7 @@ func TestTableNoHeader(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -181,7 +181,7 @@ func TestTableNoInputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -206,7 +206,7 @@ func TestTableNoOutputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -231,7 +231,7 @@ func TestTableNoProviders(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -256,7 +256,7 @@ func TestTableNoRequirements(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -281,7 +281,7 @@ func TestTableNoResources(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -306,7 +306,7 @@ func TestTableOnlyHeader(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -331,7 +331,7 @@ func TestTableOnlyInputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -356,7 +356,7 @@ func TestTableOnlyOutputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -381,7 +381,7 @@ func TestTableOnlyProviders(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -406,7 +406,7 @@ func TestTableOnlyRequirements(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -431,7 +431,7 @@ func TestTableOnlyResources(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -451,7 +451,7 @@ func TestTableEscapeCharacters(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -471,7 +471,7 @@ func TestTableIndentationBelowAllowed(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -491,7 +491,7 @@ func TestTableIndentationAboveAllowed(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -511,7 +511,7 @@ func TestTableIndentationOfFour(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -537,7 +537,7 @@ func TestTableOutputValues(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -587,7 +587,7 @@ func TestTableHeaderFromFile(t *testing.T) {
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			printer := NewTable(settings)
+			printer := NewMarkdownTable(settings)
 			actual, err := printer.Print(module, settings)
 
 			assert.Nil(err)
@@ -615,7 +615,7 @@ func TestTableOutputValuesNoSensitivity(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -640,7 +640,7 @@ func TestTableEmpty(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewTable(settings)
+	printer := NewMarkdownTable(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)

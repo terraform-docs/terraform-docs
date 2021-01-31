@@ -16,19 +16,19 @@ import (
 
 	"gopkg.in/yaml.v3"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // YAML represents YAML format.
 type YAML struct{}
 
 // NewYAML returns new instance of YAML.
-func NewYAML(settings *print.Settings) *YAML {
+func NewYAML(settings *print.Settings) print.Engine {
 	return &YAML{}
 }
 
-// Print prints a Terraform module as yaml.
+// Print a Terraform module as yaml.
 func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	copy := &terraform.Module{
 		Header:       "",
@@ -69,4 +69,10 @@ func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string
 	}
 
 	return strings.TrimSuffix(buffer.String(), "\n"), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"yaml": NewYAML,
+	})
 }

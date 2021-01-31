@@ -16,9 +16,9 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // Item represents a named templated which can reference
@@ -40,7 +40,7 @@ type Template struct {
 
 // NewTemplate returns new instance of Template
 func NewTemplate(items ...*Item) *Template {
-	settings := print.NewSettings()
+	settings := print.DefaultSettings()
 	return &Template{
 		Items:    items,
 		settings: settings,

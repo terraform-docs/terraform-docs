@@ -20,9 +20,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 func TestTemplateRender(t *testing.T) {
@@ -70,7 +70,7 @@ func TestTemplateRender(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			tpl := NewTemplate(tt.items...)
-			tpl.Settings(print.NewSettings())
+			tpl.Settings(print.DefaultSettings())
 			tpl.CustomFunc(customFuncs)
 			rendered, err := tpl.Render(module)
 			if tt.wantErr {
@@ -487,7 +487,7 @@ func TestBuiltinFunc(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := print.NewSettings()
+			settings := print.DefaultSettings()
 			settings.EscapeCharacters = tt.escapeChar
 			settings.EscapePipe = tt.escapePipe
 			funcs := builtinFuncs(settings)

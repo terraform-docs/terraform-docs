@@ -13,8 +13,8 @@ package format
 import (
 	"text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
@@ -159,13 +159,13 @@ const (
 	`
 )
 
-// Document represents Markdown Document format.
-type Document struct {
+// MarkdownDocument represents Markdown Document format.
+type MarkdownDocument struct {
 	template *tmpl.Template
 }
 
-// NewDocument returns new instance of Document.
-func NewDocument(settings *print.Settings) *Document {
+// NewMarkdownDocument returns new instance of Document.
+func NewMarkdownDocument(settings *print.Settings) print.Engine {
 	tt := tmpl.NewTemplate(&tmpl.Item{
 		Name: "document",
 		Text: documentTpl,
@@ -214,16 +214,25 @@ func NewDocument(settings *print.Settings) *Document {
 			return settings.ShowRequired
 		},
 	})
-	return &Document{
+	return &MarkdownDocument{
 		template: tt,
 	}
 }
 
-// Print prints a Terraform module as Markdown document.
-func (d *Document) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+// Print a Terraform module as Markdown document.
+func (d *MarkdownDocument) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := d.template.Render(module)
 	if err != nil {
 		return "", err
 	}
 	return sanitize(rendered), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"markdown document": NewMarkdownDocument,
+		"markdown doc":      NewMarkdownDocument,
+		"md document":       NewMarkdownDocument,
+		"md doc":            NewMarkdownDocument,
+	})
 }
