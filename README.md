@@ -87,6 +87,10 @@ docker run quay.io/terraform-docs/terraform-docs:0.10.1
 
 **NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge` refers to HEAD of `master` at any given point in time.
 
+## Community
+
+- Discuss terraform-docs on [Slack](https://terraform-docs.slack.com/)
+
 ## Maintenance
 
 This project was originally developed by [Segment](https://github.com/segmentio/) but now is no longer maintained by them. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
