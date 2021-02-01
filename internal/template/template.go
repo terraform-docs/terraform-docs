@@ -8,13 +8,13 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package tmpl
+package template
 
 import (
 	"bytes"
 	"fmt"
 	"strings"
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
@@ -22,7 +22,7 @@ import (
 )
 
 // Item represents a named templated which can reference
-// other named templated too
+// other named templated too.
 type Item struct {
 	Name string
 	Text string
@@ -30,60 +30,97 @@ type Item struct {
 
 // Template represents a new Template with given name and content
 // to be rendered with provided settings with use of built-in and
-// custom functions
+// custom functions.
 type Template struct {
-	Items []*Item
-
+	items    []*Item
 	settings *print.Settings
-	funcMap  template.FuncMap
+
+	funcMap    gotemplate.FuncMap
+	customFunc gotemplate.FuncMap
 }
 
-// NewTemplate returns new instance of Template
-func NewTemplate(items ...*Item) *Template {
-	settings := print.DefaultSettings()
-	return &Template{
-		Items:    items,
-		settings: settings,
-		funcMap:  builtinFuncs(settings),
+// New returns new instance of Template.
+func New(settings *print.Settings, items ...*Item) *Template {
+	t := &Template{
+		items:      items,
+		settings:   settings,
+		funcMap:    builtinFuncs(settings),
+		customFunc: make(gotemplate.FuncMap),
 	}
+	t.CustomFunc(gotemplate.FuncMap{
+		"tostring": func(s types.String) string {
+			return string(s)
+		},
+		"sanitizeHeader": func(s string) string {
+			copy := *settings
+			copy.EscapePipe = false
+			s = sanitizeItemForDocument(s, &copy)
+			return s
+		},
+		"sanitizeDoc": func(s string) string {
+			return sanitizeItemForDocument(s, settings)
+		},
+		"sanitizeTbl": func(s string) string {
+			copy := *settings
+			copy.EscapePipe = true
+			s = sanitizeItemForTable(s, &copy)
+			return s
+		},
+		"sanitizeAsciidocTbl": func(s string) string {
+			copy := *settings
+			copy.EscapePipe = true
+			s = sanitizeItemForAsciidocTable(s, &copy)
+			return s
+		},
+	})
+
+	return t
+}
+
+// Funcs return available template out of the box and custom functions.
+func (t Template) Funcs() gotemplate.FuncMap {
+	return t.funcMap
 }
 
 // CustomFunc adds new custom functions to the template
-// if functions with the same names didn't exist
-func (t *Template) CustomFunc(funcs template.FuncMap) {
+// if functions with the same names didn't exist.
+func (t Template) CustomFunc(funcs gotemplate.FuncMap) {
 	for name, fn := range funcs {
-		if t.funcMap[name] == nil {
+		if _, found := t.customFunc[name]; !found {
+			t.customFunc[name] = fn
+		}
+	}
+	t.applyCustomFunc()
+}
+
+// applyCustomFunc is re-adding the custom functions to list
+// of avialable functions.
+func (t *Template) applyCustomFunc() {
+	for name, fn := range t.customFunc {
+		if _, found := t.funcMap[name]; !found {
 			t.funcMap[name] = fn
 		}
 	}
 }
 
-// Settings adds current user-selected settings to the Template
-func (t *Template) Settings(settings *print.Settings) {
-	t.settings = settings
-	if settings != nil {
-		t.funcMap = builtinFuncs(settings)
-	}
-}
-
-// Render renders the Template with given Module struct
-func (t *Template) Render(module *terraform.Module) (string, error) {
-	if len(t.Items) < 1 {
+// Render template with given Module struct.
+func (t Template) Render(module *terraform.Module) (string, error) {
+	if len(t.items) < 1 {
 		return "", fmt.Errorf("base template not found")
 	}
 	var buffer bytes.Buffer
-	tmpl := template.New(t.Items[0].Name)
+	tmpl := gotemplate.New(t.items[0].Name)
 	tmpl.Funcs(t.funcMap)
-	template.Must(tmpl.Parse(normalize(t.Items[0].Text)))
-	for i, item := range t.Items {
+	gotemplate.Must(tmpl.Parse(normalize(t.items[0].Text)))
+	for i, item := range t.items {
 		if i == 0 {
 			continue
 		}
 		tt := tmpl.New(item.Name)
 		tt.Funcs(t.funcMap)
-		template.Must(tt.Parse(normalize(item.Text)))
+		gotemplate.Must(tt.Parse(normalize(item.Text)))
 	}
-	err := tmpl.ExecuteTemplate(&buffer, t.Items[0].Name, struct {
+	err := tmpl.ExecuteTemplate(&buffer, t.items[0].Name, struct {
 		Module   *terraform.Module
 		Settings *print.Settings
 	}{
@@ -95,9 +132,8 @@ func (t *Template) Render(module *terraform.Module) (string, error) {
 	}
 	return buffer.String(), nil
 }
-
-func builtinFuncs(settings *print.Settings) template.FuncMap {
-	return template.FuncMap{
+func builtinFuncs(settings *print.Settings) gotemplate.FuncMap {
+	return gotemplate.FuncMap{
 		"default": func(d string, s string) string {
 			if s != "" {
 				return s
@@ -118,9 +154,6 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 				return trueValue
 			}
 			return falseValue
-		},
-		"tostring": func(s types.String) string {
-			return string(s)
 		},
 		"trim": func(cut string, s string) string {
 			if s != "" {
@@ -157,27 +190,6 @@ func builtinFuncs(settings *print.Settings) template.FuncMap {
 		},
 		"name": func(n string) string {
 			return sanitizeName(n, settings)
-		},
-		"sanitizeHeader": func(s string) string {
-			settings.EscapePipe = false
-			s = sanitizeItemForDocument(s, settings)
-			settings.EscapePipe = true
-			return s
-		},
-		"sanitizeDoc": func(s string) string {
-			return sanitizeItemForDocument(s, settings)
-		},
-		"sanitizeTbl": func(s string) string {
-			settings.EscapePipe = true
-			s = sanitizeItemForTable(s, settings)
-			settings.EscapePipe = false
-			return s
-		},
-		"sanitizeAsciidocTbl": func(s string) string {
-			settings.EscapePipe = true
-			s = sanitizeItemForAsciidocTable(s, settings)
-			settings.EscapePipe = false
-			return s
 		},
 	}
 }

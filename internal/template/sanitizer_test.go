@@ -8,7 +8,7 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package tmpl
+package template
 
 import (
 	"io/ioutil"

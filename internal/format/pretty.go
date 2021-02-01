@@ -13,11 +13,11 @@ package format
 import (
 	"fmt"
 	"regexp"
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -110,35 +110,34 @@ const (
 
 // Pretty represents colorized pretty format.
 type Pretty struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 // NewPretty returns new instance of Pretty.
 func NewPretty(settings *print.Settings) print.Engine {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+	tt := template.New(settings, &template.Item{
 		Name: "pretty",
 		Text: prettyTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: prettyHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: prettyRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: prettyProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "resources",
 		Text: prettyResourcesTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "inputs",
 		Text: prettyInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: prettyOutputsTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"colorize": func(c string, s string) string {
 			r := "\033[0m"
 			if !settings.ShowColor {

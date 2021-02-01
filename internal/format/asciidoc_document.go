@@ -11,11 +11,11 @@ the root directory of this source tree.
 package format
 
 import (
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -161,39 +161,38 @@ const (
 
 // AsciidocDocument represents AsciiDoc Document format.
 type AsciidocDocument struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 // NewAsciidocDocument returns new instance of AsciidocDocument.
 func NewAsciidocDocument(settings *print.Settings) print.Engine {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+	settings.EscapeCharacters = false
+	tt := template.New(settings, &template.Item{
 		Name: "document",
 		Text: asciidocDocumentTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: asciidocDocumentHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: asciidocDocumentRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: asciidocDocumentProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "resources",
 		Text: asciidocDocumentResourcesTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "inputs",
 		Text: asciidocDocumentInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "input",
 		Text: asciidocDocumentInputTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: asciidocDocumentOutputsTpl,
 	})
-	settings.EscapeCharacters = false
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			result, extraline := printFencedAsciidocCodeBlock(t, "hcl")
 			if !extraline {

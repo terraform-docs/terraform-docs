@@ -11,11 +11,11 @@ the root directory of this source tree.
 package format
 
 import (
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -161,38 +161,37 @@ const (
 
 // MarkdownDocument represents Markdown Document format.
 type MarkdownDocument struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 // NewMarkdownDocument returns new instance of Document.
 func NewMarkdownDocument(settings *print.Settings) print.Engine {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+	tt := template.New(settings, &template.Item{
 		Name: "document",
 		Text: documentTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: documentHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: documentRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: documentProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "resources",
 		Text: documentResourcesTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "inputs",
 		Text: documentInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "input",
 		Text: documentInputTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: documentOutputsTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			result, extraline := printFencedCodeBlock(t, "hcl")
 			if !extraline {

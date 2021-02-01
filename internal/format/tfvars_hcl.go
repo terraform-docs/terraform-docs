@@ -14,11 +14,11 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -33,19 +33,18 @@ const (
 
 // TfvarsHCL represents Terraform tfvars HCL format.
 type TfvarsHCL struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 var padding []int
 
 // NewTfvarsHCL returns new instance of TfvarsHCL.
 func NewTfvarsHCL(settings *print.Settings) print.Engine {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+	tt := template.New(settings, &template.Item{
 		Name: "tfvars",
 		Text: tfvarsHCLTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"align": func(s string, i int) string {
 			return fmt.Sprintf("%-*s", padding[i], s)
 		},

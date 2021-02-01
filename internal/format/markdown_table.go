@@ -11,11 +11,11 @@ the root directory of this source tree.
 package format
 
 import (
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -128,35 +128,34 @@ const (
 
 // MarkdownTable represents Markdown Table format.
 type MarkdownTable struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 // NewMarkdownTable returns new instance of Table.
 func NewMarkdownTable(settings *print.Settings) print.Engine {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+	tt := template.New(settings, &template.Item{
 		Name: "table",
 		Text: tableTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: tableHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: tableRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: tableProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "resources",
 		Text: tableResourcesTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "inputs",
 		Text: tableInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: tableOutputsTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			inputType, _ := printFencedCodeBlock(t, "")
 			return inputType

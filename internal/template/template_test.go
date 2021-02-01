@@ -8,7 +8,7 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package tmpl
+package template
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/stretchr/testify/assert"
 
@@ -31,7 +31,7 @@ func TestTemplateRender(t *testing.T) {
 		{{ custom . }}
 	{{- end -}}
 	`
-	customFuncs := template.FuncMap{
+	customFuncs := gotemplate.FuncMap{
 		"custom": func(s string) string {
 			return fmt.Sprintf("customized <<%s>>", s)
 		},
@@ -69,8 +69,7 @@ func TestTemplateRender(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			tpl := NewTemplate(tt.items...)
-			tpl.Settings(print.DefaultSettings())
+			tpl := New(print.DefaultSettings(), tt.items...)
 			tpl.CustomFunc(customFuncs)
 			rendered, err := tpl.Render(module)
 			if tt.wantErr {
@@ -490,7 +489,8 @@ func TestBuiltinFunc(t *testing.T) {
 			settings := print.DefaultSettings()
 			settings.EscapeCharacters = tt.escapeChar
 			settings.EscapePipe = tt.escapePipe
-			funcs := builtinFuncs(settings)
+			tmpl := New(settings)
+			funcs := tmpl.Funcs()
 
 			fn, ok := funcs[tt.funcName]
 			assert.Truef(ok, "function %s is not defined", tt.funcName)

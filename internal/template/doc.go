@@ -8,5 +8,5 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-// Package tmpl provides templating functionality
-package tmpl
+// Package template provides templating functionality
+package template

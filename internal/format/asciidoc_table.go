@@ -11,11 +11,11 @@ the root directory of this source tree.
 package format
 
 import (
-	"text/template"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -139,36 +139,35 @@ const (
 
 // AsciidocTable represents AsciiDoc Table format.
 type AsciidocTable struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 // NewAsciidocTable returns new instance of AsciidocTable.
 func NewAsciidocTable(settings *print.Settings) print.Engine {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+	settings.EscapeCharacters = false
+	tt := template.New(settings, &template.Item{
 		Name: "table",
 		Text: asciidocTableTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: asciidocTableHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "resources",
 		Text: asciidocTableResourcesTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: asciidocTableRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: asciidocTableProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "inputs",
 		Text: asciidocTableInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: asciidocTableOutputsTpl,
 	})
-	settings.EscapeCharacters = false
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			inputType, _ := printFencedCodeBlock(t, "")
 			return inputType
