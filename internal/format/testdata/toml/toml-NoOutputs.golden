@@ -261,3 +261,24 @@ outputs = []
 [[requirements]]
   Name = "random"
   Version = ">= 2.2.0"
+
+[[resources]]
+  type = "caller_identity"
+  providerName = "aws"
+  providerSource = "hashicorp/aws"
+  mode = "data"
+  version = "2.15.0"
+
+[[resources]]
+  type = "resource"
+  providerName = "null"
+  providerSource = "hashicorp/null"
+  mode = "managed"
+  version = "latest"
+
+[[resources]]
+  type = "private_key"
+  providerName = "tls"
+  providerSource = "hashicorp/tls"
+  mode = "managed"
+  version = "latest"

@@ -27,6 +27,24 @@ const (
 		{{- end -}}
 	{{ end -}}
 	`
+	tableResourcesTpl = `
+	{{- if .Settings.ShowResources -}}
+		{{ indent 0 "#" }} Resources
+		{{ if not .Module.Resources }}
+			No resources.
+		{{ else }}
+			| Name |
+			|------|
+			{{- range .Module.Resources }}
+			{{ if eq (len .URL) 0 }}
+				| {{ .FullType }}
+			{{- else -}}
+				| [{{ .FullType }}]({{ .URL }}) |
+			{{- end }}
+			{{- end }}
+		{{ end }}
+	{{ end -}}
+	`
 
 	tableRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
@@ -102,6 +120,7 @@ const (
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
 	`
@@ -126,6 +145,9 @@ func NewTable(settings *print.Settings) *Table {
 	}, &tmpl.Item{
 		Name: "providers",
 		Text: tableProvidersTpl,
+	}, &tmpl.Item{
+		Name: "resources",
+		Text: tableResourcesTpl,
 	}, &tmpl.Item{
 		Name: "inputs",
 		Text: tableInputsTpl,

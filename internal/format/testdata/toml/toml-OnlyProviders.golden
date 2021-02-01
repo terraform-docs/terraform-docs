@@ -2,6 +2,7 @@ header = ""
 inputs = []
 outputs = []
 requirements = []
+resources = []
 
 [[providers]]
   name = "tls"

@@ -60,6 +60,10 @@ type Settings struct {
 	// scope: Global
 	ShowRequirements bool
 
+	// ShowResources show "Resources" section (default: true)
+	// scope: Global
+	ShowResources bool
+
 	// SortByName sorted rendering of inputs and outputs (default: true)
 	// scope: Global
 	SortByName bool
@@ -88,6 +92,7 @@ func NewSettings() *Settings {
 		ShowRequired:     true,
 		ShowSensitivity:  true,
 		ShowRequirements: true,
+		ShowResources:    true,
 		SortByName:       true,
 		SortByRequired:   false,
 		SortByType:       false,

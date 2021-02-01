@@ -2,6 +2,7 @@ header = ""
 inputs = []
 outputs = []
 providers = []
+resources = []
 
 [[requirements]]
   Name = "terraform"

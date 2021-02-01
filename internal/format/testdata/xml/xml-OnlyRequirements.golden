@@ -17,4 +17,5 @@
       <version>&gt;= 2.2.0</version>
     </requirement>
   </requirements>
+  <resources></resources>
 </module>

@@ -281,4 +281,27 @@
       <version>&gt;= 2.2.0</version>
     </requirement>
   </requirements>
+  <resources>
+    <resource>
+      <type>caller_identity</type>
+      <providerName>aws</providerName>
+      <providerSource>hashicorp/aws</providerSource>
+      <mode>data</mode>
+      <version>2.15.0</version>
+    </resource>
+    <resource>
+      <type>resource</type>
+      <providerName>null</providerName>
+      <providerSource>hashicorp/null</providerSource>
+      <mode>managed</mode>
+      <version>latest</version>
+    </resource>
+    <resource>
+      <type>private_key</type>
+      <providerName>tls</providerName>
+      <providerSource>hashicorp/tls</providerSource>
+      <mode>managed</mode>
+      <version>latest</version>
+    </resource>
+  </resources>
 </module>

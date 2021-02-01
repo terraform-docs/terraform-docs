@@ -27,6 +27,26 @@ const (
 		{{- end -}}
 	{{ end -}}
 	`
+	asciidocTableResourcesTpl = `
+	{{- if .Settings.ShowResources -}}
+		{{ indent 0 "=" }} Resources
+		{{ if not .Module.Resources }}
+			No resources.
+		{{ else }}
+			[cols="a",options="header,autowidth"]
+			|===
+			|Name
+			{{- range .Module.Resources }}
+				{{ if eq (len .URL) 0 }}
+				|{{ .FullType }}
+				{{- else -}}
+				|{{ .URL }}[{{ .FullType }}]
+				{{- end }}
+			{{- end }}
+			|===
+		{{ end }}
+	{{ end -}}
+	`
 
 	asciidocTableRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
@@ -111,6 +131,7 @@ const (
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
 	`
@@ -129,6 +150,9 @@ func NewAsciidocTable(settings *print.Settings) *AsciidocTable {
 	}, &tmpl.Item{
 		Name: "header",
 		Text: asciidocTableHeaderTpl,
+	}, &tmpl.Item{
+		Name: "resources",
+		Text: asciidocTableResourcesTpl,
 	}, &tmpl.Item{
 		Name: "requirements",
 		Text: asciidocTableRequirementsTpl,

@@ -34,6 +34,7 @@ func (x *XML) Print(module *terraform.Module, settings *print.Settings) (string,
 		Outputs:      make([]*terraform.Output, 0),
 		Providers:    make([]*terraform.Provider, 0),
 		Requirements: make([]*terraform.Requirement, 0),
+		Resources:    make([]*terraform.Resource, 0),
 	}
 
 	if settings.ShowHeader {
@@ -50,6 +51,9 @@ func (x *XML) Print(module *terraform.Module, settings *print.Settings) (string,
 	}
 	if settings.ShowRequirements {
 		copy.Requirements = module.Requirements
+	}
+	if settings.ShowResources {
+		copy.Resources = module.Resources
 	}
 
 	out, err := xml.MarshalIndent(copy, "", "  ")

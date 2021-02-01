@@ -42,6 +42,7 @@ type Module struct {
 	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
 	Providers    []*Provider    `json:"providers" toml:"providers" xml:"providers>provider" yaml:"providers"`
 	Requirements []*Requirement `json:"requirements" toml:"requirements" xml:"requirements>requirement" yaml:"requirements"`
+	Resources    []*Resource    `json:"resources" toml:"resources" xml:"resources>resource" yaml:"resources"`
 
 	RequiredInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
 	OptionalInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
@@ -108,6 +109,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 	}
 	providers := loadProviders(tfmodule)
 	requirements := loadRequirements(tfmodule)
+	resources := loadResources(tfmodule)
 
 	return &Module{
 		Header:       header,
@@ -115,6 +117,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 		Outputs:      outputs,
 		Providers:    providers,
 		Requirements: requirements,
+		Resources:    resources,
 
 		RequiredInputs: required,
 		OptionalInputs: optional,
@@ -334,6 +337,43 @@ func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
 	return requirements
 }
 
+func loadResources(tfmodule *tfconfig.Module) []*Resource {
+	allResources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
+	discovered := make(map[string]*Resource)
+
+	for _, resource := range allResources {
+		for _, r := range resource {
+			version := "latest"
+			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok && len(rv.VersionConstraints) > 0 {
+				versionParts := strings.Split(rv.VersionConstraints[len(rv.VersionConstraints)-1], " ")
+				version = versionParts[len(versionParts)-1]
+			}
+
+			var source string
+			if len(tfmodule.RequiredProviders[r.Provider.Name].Source) > 0 {
+				source = tfmodule.RequiredProviders[r.Provider.Name].Source
+			} else {
+				source = fmt.Sprintf("%s/%s", "hashicorp", r.Provider.Name)
+			}
+			rType := strings.TrimPrefix(r.Type, r.Provider.Name+"_")
+			key := fmt.Sprintf("%s.%s.%s", r.Provider.Name, r.Mode, rType)
+			discovered[key] = &Resource{
+				Type:           rType,
+				Mode:           r.Mode.String(),
+				ProviderName:   r.Provider.Name,
+				ProviderSource: source,
+				Version:        types.String(version),
+			}
+		}
+	}
+
+	resources := make([]*Resource, 0, len(discovered))
+	for _, resource := range discovered {
+		resources = append(resources, resource)
+	}
+	return resources
+}
+
 func loadComments(filename string, lineNum int) string {
 	lines := reader.Lines{
 		FileName: filename,
@@ -379,13 +419,12 @@ func sortItems(tfmodule *Module, sortby *SortBy) {
 
 	if sortby.Name || sortby.Type {
 		sort.Sort(outputsSortedByName(tfmodule.Outputs))
-	} else {
-		sort.Sort(outputsSortedByPosition(tfmodule.Outputs))
-	}
-
-	if sortby.Name || sortby.Type {
 		sort.Sort(providersSortedByName(tfmodule.Providers))
 	} else {
+		sort.Sort(outputsSortedByPosition(tfmodule.Outputs))
 		sort.Sort(providersSortedByPosition(tfmodule.Providers))
 	}
+
+	// Always sort resources
+	sort.Sort(resourcesSortedByType(tfmodule.Resources))
 }
