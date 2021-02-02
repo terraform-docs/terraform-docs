@@ -1,38 +1,35 @@
-### Prerequisites
+<!--
+Thank you for helping to improve terraform-docs!
 
-Put an `x` into the box(es) that apply:
+Please read through https://git.io/JtEzg if this is your first time opening a
+terraform-docs pull request. Find us in https://terraform-docs.slack.com/messages/dev if
+you need any help contributing.
+-->
 
-- [ ] This pull request fixes a bug.
-- [ ] This pull request adds a feature.
-- [ ] This pull request enhances existing functionality.
-- [ ] This pull request introduces breaking change.
+### Description of your changes
 
-For more information, see the [Contributing Guide](https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md).
+<!--
+Briefly describe what this pull request does. Be sure to direct your reviewers'
+attention to anything that needs special consideration.
 
-### Description
+We love pull requests that resolve an open terraform-docs issue. If yours does, you
+can uncomment the below line to indicate which issue your PR fixes, for example
+"Fixes #500":
+-->
 
-Describe what this pull request achieves. Ensure you have read the [Contributing Guidelines](https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md) document before submitting.
+<!-- Fixes # -->
 
-### Issues Resolved
+I have:
 
-List any existing issues this pull request resolves.
-
-### Checklist
-
-Put an `x` into all boxes that apply:
-
-- [ ] I have read the [Contributing Guidelines](https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md).
-
-#### Tests
-
-- [ ] I have added tests to cover my changes.
+- [ ] Read and followed terraform-docs' [contribution process].
 - [ ] All tests pass when I run `make test`.
 
-#### Documentation
+### How has this code been tested
 
-- [ ] My change requires a change to the documentation.
-- [ ] I have updated the documentation accordingly.
+<!--
+Before reviewers can be confident in the correctness of this pull request, it
+needs to tested and shown to be correct. Briefly describe the testing that has
+already been done or which is planned for this change.
+-->
 
-#### Code Style
-
-- [ ] My code follows the code style of this project.
+[contribution process]: https://git.io/JtEzg

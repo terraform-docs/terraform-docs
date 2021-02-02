@@ -1,50 +1,90 @@
-# Contributing
+# Contributing to terraform-docs
 
-Thank you for your interest in this project!
+Welcome, and thank you for considering contributing to terraform-docs. We
+encourage you to help out by raising issues, improving documentation, fixing
+bugs, or adding new features.
 
-We use *GitHub Issues* for trackings issues and features. You can make a contribution by:
-
-1. Reporting an issue or making a feature request [here](https://github.com/terraform-docs/terraform-docs/issues).
-2. Contributing code to this project by fixing an issue or adding a new feature (see below).
-
-Before contributing a new feature, please discuss its suitability with the project maintainers in an issue first. Thanks!
+If you're interested in contributing please start by reading this document. If
+you have any questions at all, or don't know where to start, please reach out to
+us on [Slack].
 
 ## Development Requirements
 
-For development:
-
-- [Go](https://golang.org/) 1.15+
-- [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
-- [golangci-lint](https://github.com/golangci/golangci-lint)
+- [Go] 1.15+
+- [goimports]
+- [golangci-lint]
 
 For releasing:
 
-- [gox](https://github.com/mitchellh/gox)
-- [git-chlog](https://github.com/terraform-docs/git-chglog)
+- [gox]
+- [git-chlog]
 
-You can install required tools with `make tools` or individually, refer to Makefile for more details.
+You can install all the required tools with `make tools` or individually with
+their own make targets. (please refer to Makefile for more details)
 
-## Contribution Process
+## Contributing Code
 
-1. Fork and *git clone* [terraform-docs](https://github.com/terraform-docs/terraform-docs).
-2. Create a new *git branch* from the master branch where you develop your changes.
-3. Create a [Pull Request](https://help.github.com/articles/about-pull-requests/) for your contribution by following the instructions in the pull request template [here](https://github.com/terraform-docs/terraform-docs/pull).
-4. Perform a code review with the project maintainers on the pull request. We may suggest changes, improvements or alternatives.
-5. Once approved, your code will be merged into `master` and your name will be included in `AUTHORS`.
+To contribute bug fixes or features to terraform-docs:
 
-### Requirements
+1. Communicate your intent.
+1. Make your changes.
+1. Test your changes.
+1. Update documentation and examples.
+1. Open a Pull Request (PR).
 
-Pull requests have to meet the following requirements:
+Communicating your intent lets the terraform-docs maintainers know that you intend
+to contribute, and how. This sets you up for success - you can avoid duplicating
+an effort that may already be underway, adding a feature that may be rejected,
+or heading down a path that you would be steered away from at review time. The
+best way to communicate your intent is via a detailed GitHub issue. Take a look
+first to see if there's already an issue relating to the thing you'd like to
+contribute. If there isn't, please raise a new one! Let us know what you'd like
+to work on, and why.
 
-1. **Tests**: Code changes need to be tested with code and tests being located in the same folder (see packages [format](https://github.com/terraform-docs/terraform-docs/tree/master/internal/format/) for example). Make sure that your tests pass using `make test`.
+Be sure to practice [good git commit hygiene] as you make your changes. All but
+the smallest changes should be broken up into a few commits that tell a story.
+Use your git commits to provide context for the folks who will review PR, and
+the folks who will be spelunking the codebase in the months and years to come.
+Ensure each of your commits is signed-off in compliance with the [Developer
+Certificate of Origin] by using `git commit -s`.
 
-2. **Documentation**: Pull requests need to update the [Formats Guide](/docs/FORMATS_GUIDE.md) and if need be the main [README](README.md) together with the code change. You can generate the format guides by using `make docs`.
+All codes must be formatted properly, we use `goimports` which wrappes around
+[gofmt] to keep the code in unified format. You can use `make goimports` to install
+and `make fmt` to format your code. Make sure your code doesn't have issues with
+`make checkfmt` and `make lint` before submission.
 
-3. **Commits**: Commits should be as small as possible while ensuring that each commit compiles and passes tests independently. [Write good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). Ensure each of your commits is signed-off in compliance with the [Developer Certificate of Origin](https://github.com/apps/dco) by using `git commit -s`. If needed, [squash your commits](https://davidwalsh.name/squash-commits-git) prior to submission.
+Once your change is written, tested, and documented the final step is to have it
+reviewed! You'll be presented with a template and a small checklist when you
+open a PR. Please read the template and fill out the checklist. Please make all
+PR request changes in subsequent commits. This allows your reviewers to see what
+has changed as you address their comments. Be mindful of your commit history as
+you do this - avoid commit messages like "Address review feedback" if possible.
+If doing so is difficult a good alternative is to rewrite your commit history to
+clean them up after your PR is approved but before it is merged.
 
-4. **Code Style**: We use `goimports` which wrappes around [gofmt](https://blog.golang.org/go-fmt-your-code) to keep the code in unified format. You can use `make goimports` to install and `make fmt` to format your code. If useful, include code comments to support your intentions. Make sure your code doesn't have issues with `make checkfmt` and `make lint` before submission.
+In summary, please:
 
-## Additional Resources
+* Discuss your change in a GitHub issue before you start.
+* Use your Git commit messages to communicate your intent to your reviewers.
+* Sign-off on all Git commits by running `git commit -s`
+* Add or update tests for all changes.
+* Preempt common [code review comments] and [test review comments].
+* Update all relevant documentation and examples.
+* Don't force push to address review feedback. Your commits should tell a story.
+* If necessary, tidy up your git commit history once your PR is approved.
 
-- [Golang Basics: Writing Unit Tests (Alex Ellis)](https://blog.alexellis.io/golang-writing-unit-tests/)
-- [Advanced Testing in Go (Mitchell Hashimoto)](https://about.sourcegraph.com/go/advanced-testing-in-go/)
+Thank you for reading through our contributing guide! We appreciate you taking
+the time to ensure your contributions are high quality and easy for our community
+to review and accept.
+
+[Slack]: https://terraform-docs.slack.com/
+[Go]: https://golang.org/
+[goimports]: https://pkg.go.dev/golang.org/x/tools/cmd/goimports
+[golangci-lint]: https://github.com/golangci/golangci-lint
+[gox]: https://github.com/mitchellh/gox
+[git-chlog]: https://github.com/terraform-docs/git-chglog
+[good git commit hygiene]: https://www.futurelearn.com/info/blog/telling-stories-with-your-git-history
+[Developer Certificate of Origin]: https://github.com/apps/dco
+[gofmt]: https://blog.golang.org/go-fmt-your-code
+[code review comments]: https://github.com/golang/go/wiki/CodeReviewComments
+[test review comments]: https://github.com/golang/go/wiki/TestComments

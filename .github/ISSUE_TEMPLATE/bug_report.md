@@ -1,40 +1,42 @@
 ---
 name: Bug report
 about: Create a bug report
-title: ''
-labels: 'bug'
-assignees: ''
+labels: bug
 ---
 
-<!-- Please note, this template is for bugs report, not feature requests -->
-<!-- For more information, see the Contributing Guidelines at -->
-<!-- https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md -->
+<!--
+Thank you for helping to improve terraform-docs!
 
-**Describe the bug**
+Please be sure to search for open issues before raising a new one. We use issues
+for bug reports and feature requests. Please note, this template is for bugs
+report, not feature requests. For more information, see the Contributing Guidelines
+at https://git.io/JtEzg. Please find us at https://terraform-docs.slack.com for
+questions, support, and discussion.
+-->
 
-A clear and concise description of what the bug is.
+### Describe the bug
 
-**To Reproduce**
+<!--
+Please let us know what behaviour you expected and how terraform-docs diverged
+from that behaviour.
+-->
 
-Steps to reproduce the behavior:
 
-1. ...
-2. ...
-3. ...
+### How can we reproduce it?
 
-Do you have long logs to share? Please go to https://ghostbin.com and
-insert the link here.
+<!--
+Help us to reproduce your bug as succinctly and precisely as possible. Any and
+all steps or script that triggers the issue are highly appreciated!
 
-**Expected behavior**
+Do you have long logs to share? Please go to https://ghostbin.com and insert the
+link here.
+-->
 
-A clear and concise description of what you expected to happen.
 
-**Version information:**
+### Environment information
 
+<!--
 - terraform-docs version (use `terraform-docs --version`):
 - Go version (if you manually built. use `go version`):
 - OS (e.g. Windows, MacOS):
-
-**Additional context**
-
-Add any other context about the problem here.
+-->
