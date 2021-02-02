@@ -14,7 +14,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 
+	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
@@ -63,12 +65,10 @@ func (o *Output) HasDefault() bool {
 	return o.Value.HasDefault()
 }
 
-// MarshalJSON custom yaml marshal function to take
-// '--output-values' flag into consideration. It means
-// if the flag is not set Value and Sensitive fields
-// are set to 'omitempty', otherwise if output values
-// are being shown 'omitempty' gets explicitly removed
-// to show even empty and false values.
+// MarshalJSON custom yaml marshal function to take '--output-values' flag into
+// consideration. It means if the flag is not set Value and Sensitive fields are
+// set to 'omitempty', otherwise if output values are being shown 'omitempty' gets
+// explicitly removed to show even empty and false values.
 func (o *Output) MarshalJSON() ([]byte, error) {
 	fn := func(oo interface{}) ([]byte, error) {
 		buf := new(bytes.Buffer)
@@ -87,12 +87,10 @@ func (o *Output) MarshalJSON() ([]byte, error) {
 	return fn(*o)
 }
 
-// MarshalXML custom xml marshal function to take
-// '--output-values' flag into consideration. It means
-// if the flag is not set Value and Sensitive fields
-// are set to 'omitempty', otherwise if output values
-// are being shown 'omitempty' gets explicitly removed
-// to show even empty and false values.
+// MarshalXML custom xml marshal function to take '--output-values' flag into
+// consideration. It means if the flag is not set Value and Sensitive fields
+// are set to 'omitempty', otherwise if output values are being shown 'omitempty'
+// gets explicitly removed to show even empty and false values.
 func (o *Output) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	fn := func(v interface{}, name string) error {
 		return e.EncodeElement(v, xml.StartElement{Name: xml.Name{Local: name}})
@@ -110,12 +108,10 @@ func (o *Output) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeToken(start.End())
 }
 
-// MarshalYAML custom yaml marshal function to take
-// '--output-values' flag into consideration. It means
-// if the flag is not set Value and Sensitive fields
-// are set to 'omitempty', otherwise if output values
-// are being shown 'omitempty' gets explicitly removed
-// to show even empty and false values.
+// MarshalYAML custom yaml marshal function to take '--output-values' flag into
+// consideration. It means if the flag is not set Value and Sensitive fields are
+// set to 'omitempty', otherwise if output values are being shown 'omitempty' gets
+// explicitly removed to show even empty and false values.
 func (o *Output) MarshalYAML() (interface{}, error) {
 	if o.ShowValue {
 		return withvalue(*o), nil
@@ -130,6 +126,26 @@ type output struct {
 	Sensitive bool        `json:"sensitive"`
 	Type      interface{} `json:"type"`
 	Value     interface{} `json:"value"`
+}
+
+type outputs []*Output
+
+func (oo outputs) convert() []*terraformsdk.Output {
+	list := []*terraformsdk.Output{}
+	for _, o := range oo {
+		list = append(list, &terraformsdk.Output{
+			Name:        o.Name,
+			Description: fmt.Sprintf("%v", o.Description.Raw()),
+			Value:       nil,
+			Sensitive:   o.Sensitive,
+			Position: terraformsdk.Position{
+				Filename: o.Position.Filename,
+				Line:     o.Position.Line,
+			},
+			ShowValue: o.ShowValue,
+		})
+	}
+	return list
 }
 
 type outputsSortedByName []*Output

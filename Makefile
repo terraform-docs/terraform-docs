@@ -36,7 +36,7 @@ GOLDFLAGS   +="
 GOBUILD     ?= CGO_ENABLED=0 go build -ldflags $(GOLDFLAGS)
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
 
-GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs/terraform-docs
+GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs
 
 # Docker variables
 DEFAULT_TAG  ?= $(shell echo "$(VERSION)" | tr -d 'v')

@@ -21,19 +21,20 @@ import (
 	"sort"
 	"strings"
 
+	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
-
 	"github.com/terraform-docs/terraform-docs/internal/reader"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
 // Module represents a Terraform module. It consists of
 //
-// - Header       ('header' json key):    Module header found in shape of multi line comments at the beginning of 'main.tf'
-// - Inputs       ('inputs' json key):    List of input 'variables' extracted from the Terraform module .tf files
-// - Outputs      ('outputs' json key):   List of 'outputs' extracted from Terraform module .tf files
-// - Providers    ('providers' json key): List of 'providers' extracted from resources used in Terraform module
-// - Requirements ('header' json key):    List of 'requirements' extracted from the Terraform module .tf files
+// - Header       ('header' json key):        Module header found in shape of multi line comments at the beginning of 'main.tf'
+// - Inputs       ('inputs' json key):        List of input 'variables' extracted from the Terraform module .tf files
+// - Outputs      ('outputs' json key):       List of 'outputs' extracted from Terraform module .tf files
+// - Providers    ('providers' json key):     List of 'providers' extracted from resources used in Terraform module
+// - Requirements ('requirements' json key):  List of 'requirements' extracted from the Terraform module .tf files
+// - Resources    ('resources' json key):     List of 'resources' extracted from the Terraform module .tf files
 type Module struct {
 	XMLName xml.Name `json:"-" toml:"-" xml:"module" yaml:"-"`
 
@@ -71,6 +72,25 @@ func (m *Module) HasProviders() bool {
 // HasRequirements indicates if the module has requirements.
 func (m *Module) HasRequirements() bool {
 	return len(m.Requirements) > 0
+}
+
+// HasResources indicates if the module has resources.
+func (m *Module) HasResources() bool {
+	return len(m.Resources) > 0
+}
+
+// Convert internal Module to its equivalent in plugin-sdk
+func (m *Module) Convert() terraformsdk.Module {
+	return terraformsdk.NewModule(
+		terraformsdk.WithHeader(m.Header),
+		terraformsdk.WithInputs(inputs(m.Inputs).convert()),
+		terraformsdk.WithOutputs(outputs(m.Outputs).convert()),
+		terraformsdk.WithProviders(providers(m.Providers).convert()),
+		terraformsdk.WithRequirements(requirements(m.Requirements).convert()),
+		terraformsdk.WithResources(resources(m.Resources).convert()),
+		terraformsdk.WithRequiredInputs(inputs(m.RequiredInputs).convert()),
+		terraformsdk.WithOptionalInputs(inputs(m.OptionalInputs).convert()),
+	)
 }
 
 // LoadWithOptions returns new instance of Module with all the inputs and

@@ -13,6 +13,7 @@ package terraform
 import (
 	"fmt"
 
+	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
@@ -30,6 +31,24 @@ func (p *Provider) FullName() string {
 		return fmt.Sprintf("%s.%s", p.Name, p.Alias)
 	}
 	return p.Name
+}
+
+type providers []*Provider
+
+func (pp providers) convert() []*terraformsdk.Provider {
+	list := []*terraformsdk.Provider{}
+	for _, p := range pp {
+		list = append(list, &terraformsdk.Provider{
+			Name:    p.Name,
+			Alias:   fmt.Sprintf("%v", p.Alias.Raw()),
+			Version: fmt.Sprintf("%v", p.Version.Raw()),
+			Position: terraformsdk.Position{
+				Filename: p.Position.Filename,
+				Line:     p.Position.Line,
+			},
+		})
+	}
+	return list
 }
 
 type providersSortedByName []*Provider

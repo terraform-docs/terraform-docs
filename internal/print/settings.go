@@ -10,6 +10,10 @@ the root directory of this source tree.
 
 package print
 
+import (
+	printsdk "github.com/terraform-docs/plugin-sdk/print"
+)
+
 // Settings represents all settings.
 type Settings struct {
 	// EscapeCharacters escapes special characters (such as _ * in Markdown and > < in JSON)
@@ -128,5 +132,27 @@ func DefaultSettings() *Settings {
 		SortByName:       true,
 		SortByRequired:   false,
 		SortByType:       false,
+	}
+}
+
+// Convert internal Settings to its equivalent in plugin-sdk
+func (s *Settings) Convert() *printsdk.Settings {
+	return &printsdk.Settings{
+		EscapeCharacters: s.EscapeCharacters,
+		EscapePipe:       s.EscapePipe,
+		IndentLevel:      s.IndentLevel,
+		OutputValues:     s.OutputValues,
+		ShowColor:        s.ShowColor,
+		ShowHeader:       s.ShowHeader,
+		ShowInputs:       s.ShowInputs,
+		ShowOutputs:      s.ShowOutputs,
+		ShowProviders:    s.ShowProviders,
+		ShowRequired:     s.ShowRequired,
+		ShowSensitivity:  s.ShowSensitivity,
+		ShowRequirements: s.ShowRequirements,
+		ShowResources:    s.ShowResources,
+		SortByName:       s.SortByName,
+		SortByRequired:   s.SortByRequired,
+		SortByType:       s.SortByType,
 	}
 }

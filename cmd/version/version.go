@@ -15,6 +15,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/terraform-docs/terraform-docs/internal/plugin"
 	"github.com/terraform-docs/terraform-docs/internal/version"
 )
 
@@ -26,6 +27,21 @@ func NewCommand() *cobra.Command {
 		Short: "Print the version number of terraform-docs",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Printf("terraform-docs version %s\n", Full())
+			plugins, err := plugin.Discover()
+			if err != nil {
+				return
+			}
+			for _, f := range plugins.All() {
+				name, err := f.Name()
+				if err != nil {
+					name = "unknown"
+				}
+				version, err := f.Version()
+				if err != nil {
+					version = "unknown"
+				}
+				fmt.Printf("- plugin %s %s\n", name, version)
+			}
 		},
 	}
 	return cmd

@@ -11,6 +11,9 @@ the root directory of this source tree.
 package terraform
 
 import (
+	"fmt"
+
+	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
@@ -18,4 +21,17 @@ import (
 type Requirement struct {
 	Name    string       `json:"name" xml:"name" yaml:"name"`
 	Version types.String `json:"version" xml:"version" yaml:"version"`
+}
+
+type requirements []*Requirement
+
+func (rr requirements) convert() []*terraformsdk.Requirement {
+	list := []*terraformsdk.Requirement{}
+	for _, r := range rr {
+		list = append(list, &terraformsdk.Requirement{
+			Name:    r.Name,
+			Version: fmt.Sprintf("%v", r.Version.Raw()),
+		})
+	}
+	return list
 }
