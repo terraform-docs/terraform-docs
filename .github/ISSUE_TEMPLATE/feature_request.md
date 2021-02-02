@@ -1,29 +1,30 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ''
-labels: 'feature request'
-assignees: ''
+labels: "feature request"
 ---
 
-<!-- Please note, this template is for feature requests, not bugs report -->
-<!-- For more information, see the Contributing Guidelines at -->
-<!-- https://github.com/terraform-docs/terraform-docs/tree/master/CONTRIBUTING.md -->
+<!--
+Thank you for helping to improve terraform-docs!
 
-**Is your feature request related to a problem? Please describe.**
+Please be sure to search for open issues before raising a new one. We use issues
+for bug reports and feature requests. Please note, this template is for feature
+requests, not bugs report. For more information, see the Contributing Guidelines
+at https://git.io/JtEzg. Please find us at https://terraform-docs.slack.com for
+questions, support, and discussion.
+-->
 
-A clear and concise description of what the problem is. Ex. I'm always
-frustrated when [...]
+### What problem are you facing?
 
-**Describe the solution you'd like**
+<!--
+Please tell us a little about your use case - it's okay if it's hypothetical!
+Leading with this context helps frame the feature request so we can ensure we
+implement it sensibly.
+--->
 
-A clear and concise description of what you want to happen.
 
-**Describe alternatives you've considered**
+### How could terraform-docs help solve your problem?
 
-A clear and concise description of any alternative solutions or
-features you've considered.
-
-**Additional context**
-
-Add any other context or screenshots about the feature request here.
+<!--
+Let us know how you think terraform-docs could help with your use case.
+-->
