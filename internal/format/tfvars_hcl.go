@@ -14,11 +14,11 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"text/template"
+	gotemplate "text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -33,19 +33,18 @@ const (
 
 // TfvarsHCL represents Terraform tfvars HCL format.
 type TfvarsHCL struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 var padding []int
 
 // NewTfvarsHCL returns new instance of TfvarsHCL.
-func NewTfvarsHCL(settings *print.Settings) *TfvarsHCL {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+func NewTfvarsHCL(settings *print.Settings) print.Engine {
+	tt := template.New(settings, &template.Item{
 		Name: "tfvars",
 		Text: tfvarsHCLTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"align": func(s string, i int) string {
 			return fmt.Sprintf("%-*s", padding[i], s)
 		},
@@ -61,7 +60,7 @@ func NewTfvarsHCL(settings *print.Settings) *TfvarsHCL {
 	}
 }
 
-// Print prints a Terraform module as Terraform tfvars HCL document.
+// Print a Terraform module as Terraform tfvars HCL.
 func (h *TfvarsHCL) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	alignments(module.Inputs)
 	rendered, err := h.template.Render(module)
@@ -95,4 +94,10 @@ func alignments(inputs []*terraform.Input) {
 	for i := index; i < len(inputs); i++ {
 		padding[i] = maxlen
 	}
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"tfvars hcl": NewTfvarsHCL,
+	})
 }

@@ -8,7 +8,7 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package tmpl
+package template
 
 import (
 	"io/ioutil"
@@ -17,8 +17,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 func TestSanitizeName(t *testing.T) {

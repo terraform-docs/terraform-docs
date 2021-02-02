@@ -8,7 +8,7 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package tmpl
+package template
 
 import (
 	"bytes"
@@ -18,7 +18,7 @@ import (
 
 	"mvdan.cc/xurls/v2"
 
-	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/print"
 )
 
 // sanitizeName escapes underscore character which have special meaning in Markdown.

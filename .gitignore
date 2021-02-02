@@ -1,3 +1,31 @@
-bin
+# Build binaries
+terraform-docs
+/bin
+/.tfdocs.d
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
 coverage.out
 coverage.txt
+
+# Dependency directories
+/vendor/
+
+# ignore GoLand files (debug config etc...)
+/.idea
+
+# ignore vscode files (debug config etc...)
+/.vscode
+
+# ignore asdf local versions
+/.tool-versions

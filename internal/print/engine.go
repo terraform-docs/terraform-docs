@@ -8,5 +8,13 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-// Package tmpl provides templating functionality
-package tmpl
+package print
+
+import (
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
+)
+
+// Engine represents a printer format engine (e.g. json, table, yaml, ...)
+type Engine interface {
+	Print(*terraform.Module, *Settings) (string, error)
+}

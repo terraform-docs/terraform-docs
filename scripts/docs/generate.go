@@ -24,8 +24,8 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/cmd"
 	"github.com/terraform-docs/terraform-docs/internal/format"
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // These are practiaclly a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go
@@ -156,7 +156,7 @@ func printExample(buf *bytes.Buffer, name string) error {
 	buf.WriteString("```\n\n")
 	buf.WriteString("generates the following output:\n\n")
 
-	settings := print.NewSettings()
+	settings := print.DefaultSettings()
 	settings.ShowColor = false
 	options := &terraform.Options{
 		Path:           "./examples",

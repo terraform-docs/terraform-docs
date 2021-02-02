@@ -15,9 +15,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 func TestDocument(t *testing.T) {
@@ -31,7 +31,7 @@ func TestDocument(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -51,7 +51,7 @@ func TestDocumentWithRequired(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -77,7 +77,7 @@ func TestDocumentSortByName(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -105,7 +105,7 @@ func TestDocumentSortByRequired(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -131,7 +131,7 @@ func TestDocumentSortByType(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -156,7 +156,7 @@ func TestDocumentNoHeader(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -181,7 +181,7 @@ func TestDocumentNoInputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -206,7 +206,7 @@ func TestDocumentNoOutputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -231,7 +231,7 @@ func TestDocumentNoProviders(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -256,7 +256,7 @@ func TestDocumentNoRequirements(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -281,7 +281,7 @@ func TestDocumentNoResources(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -306,7 +306,7 @@ func TestDocumentOnlyHeader(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -331,7 +331,7 @@ func TestDocumentOnlyInputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -356,7 +356,7 @@ func TestDocumentOnlyOutputs(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -381,7 +381,7 @@ func TestDocumentOnlyProviders(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -406,7 +406,7 @@ func TestDocumentOnlyRequirements(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -431,7 +431,7 @@ func TestDocumentOnlyResources(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -451,7 +451,7 @@ func TestDocumentEscapeCharacters(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -471,7 +471,7 @@ func TestDocumentIndentationBelowAllowed(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -491,7 +491,7 @@ func TestDocumentIndentationAboveAllowed(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -511,7 +511,7 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -537,7 +537,7 @@ func TestDocumentOutputValues(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -587,7 +587,7 @@ func TestDocumentHeaderFromFile(t *testing.T) {
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			printer := NewDocument(settings)
+			printer := NewMarkdownDocument(settings)
 			actual, err := printer.Print(module, settings)
 
 			assert.Nil(err)
@@ -615,7 +615,7 @@ func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -640,7 +640,7 @@ func TestDocumentEmpty(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)

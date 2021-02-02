@@ -36,7 +36,7 @@ GOLDFLAGS   +="
 GOBUILD     ?= CGO_ENABLED=0 go build -ldflags $(GOLDFLAGS)
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
 
-GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs/terraform-docs
+GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs
 
 # Docker variables
 DEFAULT_TAG  ?= $(shell echo "$(VERSION)" | tr -d 'v')
@@ -55,7 +55,7 @@ all: clean verify checkfmt lint test build
 .PHONY: checkfmt
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
-	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/ && echo "OK"
+	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ scripts/docs/ && echo "OK"
 
 .PHONY: clean
 clean: ## Clean workspace
@@ -65,7 +65,7 @@ clean: ## Clean workspace
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
-	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/
+	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ scripts/docs/
 
 .PHONY: lint
 lint: ## Run linter

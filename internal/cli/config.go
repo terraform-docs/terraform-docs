@@ -13,8 +13,8 @@ package cli
 import (
 	"fmt"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 type _sections struct {
@@ -326,7 +326,7 @@ func (c *Config) validate() error {
 
 // extract and build print.Settings and terraform.Options out of Config
 func (c *Config) extract() (*print.Settings, *terraform.Options) {
-	settings := print.NewSettings()
+	settings := print.DefaultSettings()
 	options := terraform.NewOptions()
 
 	// header-from

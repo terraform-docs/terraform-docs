@@ -15,19 +15,19 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // JSON represents JSON format.
 type JSON struct{}
 
 // NewJSON returns new instance of JSON.
-func NewJSON(settings *print.Settings) *JSON {
+func NewJSON(settings *print.Settings) print.Engine {
 	return &JSON{}
 }
 
-// Print prints a Terraform module as json.
+// Print a Terraform module as json.
 func (j *JSON) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	copy := &terraform.Module{
 		Header:       "",
@@ -69,4 +69,10 @@ func (j *JSON) Print(module *terraform.Module, settings *print.Settings) (string
 	}
 
 	return strings.TrimSuffix(buffer.String(), "\n"), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"json": NewJSON,
+	})
 }

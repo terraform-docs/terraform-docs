@@ -11,11 +11,11 @@ the root directory of this source tree.
 package format
 
 import (
-	"text/template"
+	gotemplate "text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -159,40 +159,39 @@ const (
 	`
 )
 
-// Document represents Markdown Document format.
-type Document struct {
-	template *tmpl.Template
+// MarkdownDocument represents Markdown Document format.
+type MarkdownDocument struct {
+	template *template.Template
 }
 
-// NewDocument returns new instance of Document.
-func NewDocument(settings *print.Settings) *Document {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+// NewMarkdownDocument returns new instance of Document.
+func NewMarkdownDocument(settings *print.Settings) print.Engine {
+	tt := template.New(settings, &template.Item{
 		Name: "document",
 		Text: documentTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: documentHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: documentRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: documentProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "resources",
 		Text: documentResourcesTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "inputs",
 		Text: documentInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "input",
 		Text: documentInputTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: documentOutputsTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			result, extraline := printFencedCodeBlock(t, "hcl")
 			if !extraline {
@@ -214,16 +213,25 @@ func NewDocument(settings *print.Settings) *Document {
 			return settings.ShowRequired
 		},
 	})
-	return &Document{
+	return &MarkdownDocument{
 		template: tt,
 	}
 }
 
-// Print prints a Terraform module as Markdown document.
-func (d *Document) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+// Print a Terraform module as Markdown document.
+func (d *MarkdownDocument) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := d.template.Render(module)
 	if err != nil {
 		return "", err
 	}
 	return sanitize(rendered), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"markdown document": NewMarkdownDocument,
+		"markdown doc":      NewMarkdownDocument,
+		"md document":       NewMarkdownDocument,
+		"md doc":            NewMarkdownDocument,
+	})
 }

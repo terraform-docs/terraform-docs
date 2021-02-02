@@ -11,11 +11,11 @@ the root directory of this source tree.
 package format
 
 import (
-	"text/template"
+	gotemplate "text/template"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
 )
 
 const (
@@ -126,37 +126,36 @@ const (
 	`
 )
 
-// Table represents Markdown Table format.
-type Table struct {
-	template *tmpl.Template
+// MarkdownTable represents Markdown Table format.
+type MarkdownTable struct {
+	template *template.Template
 }
 
-// NewTable returns new instance of Table.
-func NewTable(settings *print.Settings) *Table {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+// NewMarkdownTable returns new instance of Table.
+func NewMarkdownTable(settings *print.Settings) print.Engine {
+	tt := template.New(settings, &template.Item{
 		Name: "table",
 		Text: tableTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: tableHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: tableRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: tableProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "resources",
 		Text: tableResourcesTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "inputs",
 		Text: tableInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: tableOutputsTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			inputType, _ := printFencedCodeBlock(t, "")
 			return inputType
@@ -169,16 +168,27 @@ func NewTable(settings *print.Settings) *Table {
 			return result
 		},
 	})
-	return &Table{
+	return &MarkdownTable{
 		template: tt,
 	}
 }
 
-// Print prints a Terraform module as Markdown tables.
-func (t *Table) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+// Print a Terraform module as Markdown tables.
+func (t *MarkdownTable) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := t.template.Render(module)
 	if err != nil {
 		return "", err
 	}
 	return sanitize(rendered), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"markdown":       NewMarkdownTable,
+		"markdown table": NewMarkdownTable,
+		"markdown tbl":   NewMarkdownTable,
+		"md":             NewMarkdownTable,
+		"md table":       NewMarkdownTable,
+		"md tbl":         NewMarkdownTable,
+	})
 }

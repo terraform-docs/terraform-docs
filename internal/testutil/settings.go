@@ -13,7 +13,7 @@ package testutil
 import (
 	"github.com/imdario/mergo"
 
-	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/print"
 )
 
 // TestSettings respresents the Settings instance for tests

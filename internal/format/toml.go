@@ -16,19 +16,19 @@ import (
 
 	"github.com/BurntSushi/toml"
 
+	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 // TOML represents TOML format.
 type TOML struct{}
 
 // NewTOML returns new instance of TOML.
-func NewTOML(settings *print.Settings) *TOML {
+func NewTOML(settings *print.Settings) print.Engine {
 	return &TOML{}
 }
 
-// Print prints a Terraform module as toml.
+// Print a Terraform module as toml.
 func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	copy := terraform.Module{
 		Header:       "",
@@ -66,4 +66,10 @@ func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string
 	}
 
 	return strings.TrimSuffix(buffer.String(), "\n"), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"toml": NewTOML,
+	})
 }

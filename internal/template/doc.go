@@ -8,13 +8,5 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package print
-
-import (
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
-)
-
-// Format represents a printer format (e.g. json, table, yaml, ...)
-type Format interface {
-	Print(*terraform.Module, *Settings) (string, error)
-}
+// Package template provides templating functionality
+package template

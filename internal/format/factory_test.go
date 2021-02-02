@@ -16,7 +16,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/print"
 )
 
 func TestFormatFactory(t *testing.T) {
@@ -95,61 +95,61 @@ func TestFormatFactory(t *testing.T) {
 		{
 			name:     "format factory from name",
 			format:   "markdown",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown document",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown doc",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md document",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md doc",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown table",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown tbl",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md table",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md tbl",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{

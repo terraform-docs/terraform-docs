@@ -32,6 +32,7 @@ import (
 type Value interface {
 	HasDefault() bool
 	Length() int
+	Raw() interface{}
 }
 
 // ValueOf returns actual value of a variable casted to 'Default' interface.
@@ -98,6 +99,11 @@ func (n Nil) Length() int {
 	return 0
 }
 
+// Raw underlying value of this type.
+func (n Nil) Raw() interface{} {
+	return nil
+}
+
 // MarshalJSON custom marshal function which sets the value to literal `null`
 func (n Nil) MarshalJSON() ([]byte, error) {
 	return []byte(`null`), nil
@@ -131,6 +137,11 @@ func (s String) HasDefault() bool {
 // Length returns the length of underlying item
 func (s String) Length() int {
 	return len(s.underlying())
+}
+
+// Raw underlying value of this type.
+func (s String) Raw() interface{} {
+	return s.underlying()
 }
 
 // MarshalJSON custom marshal function which sets the value to literal `null` when empty
@@ -185,6 +196,11 @@ func (e Empty) Length() int {
 	return len(e.underlying())
 }
 
+// Raw underlying value of this type.
+func (e Empty) Raw() interface{} {
+	return e.underlying()
+}
+
 // MarshalJSON custom marshal function which sets the value to `""`
 func (e Empty) MarshalJSON() ([]byte, error) {
 	return []byte(`""`), nil
@@ -208,6 +224,11 @@ func (n Number) Length() int {
 	return 0
 }
 
+// Raw underlying value of this type.
+func (n Number) Raw() interface{} {
+	return n.underlying()
+}
+
 // Bool represents a 'bool' value
 type Bool bool
 
@@ -224,6 +245,11 @@ func (b Bool) HasDefault() bool {
 // Length returns the length of underlying item
 func (b Bool) Length() int {
 	return 0
+}
+
+// Raw underlying value of this type.
+func (b Bool) Raw() interface{} {
+	return b.underlying()
 }
 
 // List represents a 'list' of values
@@ -246,6 +272,11 @@ func (l List) HasDefault() bool {
 // Length returns the length of underlying item
 func (l List) Length() int {
 	return len(l)
+}
+
+// Raw underlying value of this type.
+func (l List) Raw() interface{} {
+	return l.Underlying()
 }
 
 type xmllistentry struct {
@@ -279,6 +310,11 @@ func (m Map) Underlying() map[string]interface{} {
 		r[k] = e
 	}
 	return r
+}
+
+// Raw underlying value of this type.
+func (m Map) Raw() interface{} {
+	return m.Underlying()
 }
 
 // HasDefault indicates a Terraform variable has a default value set.
