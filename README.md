@@ -8,7 +8,7 @@
 
 A utility to generate documentation from Terraform modules in various output formats.
 
-``` bash
+```bash
 terraform-docs asciidoc ./my-terraform-module          # generate asciidoc table
 terraform-docs asciidoc table ./my-terraform-module    # generate asciidoc table
 terraform-docs asciidoc document ./my-terraform-module # generate asciidoc document
@@ -27,13 +27,13 @@ terraform-docs yaml ./my-terraform-module              # generate yaml
 ## Documentation
 
 - **Users**
-  - Read the [User Guide](./docs/USER_GUIDE.md) to learn how to use terraform-docs
-  - Read the [Formats Guide](./docs/FORMATS_GUIDE.md) to learn about different output formats of terraform-docs
-  - Refer to [Config File Reference](./docs/CONFIG_FILE.md) for all the available configuration options
+  - Read the [User Guide] to learn how to use terraform-docs
+  - Read the [Formats Guide] to learn about different output formats of terraform-docs
+  - Refer to [Config File Reference] for all the available configuration options
 - **Developers**
-  - Read [Contributing Guide](CONTRIBUTING.md) before submitting a pull request
+  - Read [Contributing Guide] before submitting a pull request
 
-Visit [./docs](./docs/) for all documentation.
+Visit [docs] folder for all documentation.
 
 ## Installation
 
@@ -43,7 +43,8 @@ The latest version can be installed using `go get`:
 GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.10.1
 ```
 
-**NOTE:** to download any version **before** `v0.9.1` (inclusive) you need to use to old module namespace (`segmentio`):
+**NOTE:** to download any version **before** `v0.9.1` (inclusive) you need to use to
+old module namespace (`segmentio`):
 
 ```bash
 # only for v0.9.1 and before
@@ -52,30 +53,48 @@ GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
 
 **NOTE:** please use the latest go to do this, we use 1.15.6 but ideally go 1.14 or greater.
 
-This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error `terraform-docs: command not found` after installation then you may need to either add that directory to your `$PATH` as shown [here](https://golang.org/doc/code.html#GOPATH) or do a manual installation by cloning the repo and run `make build` from the repository which will put `terraform-docs` in:
+This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error
+`terraform-docs: command not found` after installation then you may need to either add
+that directory to your `$PATH` as shown [here] or do a manual installation by cloning
+the repo and run `make build` from the repository which will put `terraform-docs` in:
 
 ```bash
 $(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
 ```
-Stable binaries are also available on the [releases](https://github.com/terraform-docs/terraform-docs/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
+
+Stable binaries are also available on the [releases] page. To install, download the
+binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.1/terraform-docs-v0.10.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.1/terraform-docs-v0.10.1-$(uname)-amd64
 chmod +x ./terraform-docs
 mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
 
 **NOTE:** Windows releases are in `EXE` format.
 
-If you are a Mac OS X user, you can use [Homebrew](https://brew.sh):
+If you are a Mac OS X user, you can use [Homebrew]:
 
-``` bash
+```bash
 brew install terraform-docs
 ```
 
-Windows users can install using [Chocolatey](https://www.chocolatey.org):
+or
 
-``` bash
+```bash
+brew install terraform-docs/tap/terraform-docs
+```
+
+Windows users can install using [Scoop]:
+
+```bash
+scoop bucket add terraform-docs https://github.com/terraform-docs/scoop-bucket
+scoop install terraform-docs
+```
+
+or [Chocolatey]:
+
+```bash
 choco install terraform-docs
 ```
 
@@ -85,16 +104,38 @@ Alternatively you also can run `terraform-docs` as a container:
 docker run quay.io/terraform-docs/terraform-docs:0.10.1
 ```
 
-**NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge` refers to HEAD of `master` at any given point in time.
+**NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge`
+refers to HEAD of `master` at any given point in time.
 
 ## Community
 
-- Discuss terraform-docs on [Slack](https://terraform-docs.slack.com/)
+- Discuss terraform-docs on [Slack]
 
 ## Maintenance
 
-This project was originally developed by [Segment](https://github.com/segmentio/) but now is no longer maintained by them. Instead, [Martin Etmajer](https://github.com/metmajer) from [GetCloudnative](https://github.com/getcloudnative) and [Khosrow Moossavi](https://github.com/khos2ow) from [CloudOps](https://github.com/cloudops) are maintaining the project with help from these awesome [contributors](AUTHORS). Note that maintainers are unaffiliated with Segment.
+This project was originally developed by [Segment] but now is no longer maintained
+by them. Instead, [Martin Etmajer] from [GetCloudnative] and [Khosrow Moossavi] from
+[CloudOps] are maintaining the project with help from these awesome [contributors].
+Note that maintainers are unaffiliated with Segment.
 
 ## License
 
 MIT License - Copyright (c) 2021 The terraform-docs Authors.
+
+[User Guide]: ./docs/USER_GUIDE.md
+[Formats Guide]: ./docs/FORMATS_GUIDE.md
+[Config File Reference]: ./docs/CONFIG_FILE.md
+[Contributing Guide]: CONTRIBUTING.md
+[docs]: ./docs/
+[here]: https://golang.org/doc/code.html#GOPATH
+[releases]: https://github.com/terraform-docs/terraform-docs/releases
+[Homebrew]: https://brew.sh
+[Scoop]: https://scoop.sh/
+[Chocolatey]: https://www.chocolatey.org
+[Slack]: https://terraform-docs.slack.com/
+[Segment]: https://github.com/segmentio/
+[Martin Etmajer]: https://github.com/metmajer
+[GetCloudnative]: https://github.com/getcloudnative
+[Khosrow Moossavi]: https://github.com/khos2ow
+[CloudOps]: https://github.com/cloudops
+[contributors]: AUTHORS

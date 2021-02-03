@@ -12,7 +12,8 @@ set -o errexit
 set -o pipefail
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-if [ -z "${CURRENT_BRANCH}" ] && [ "${CURRENT_BRANCH}" != "master" ]; then
+
+if [ -z "${CURRENT_BRANCH}" ] || [ "${CURRENT_BRANCH}" != "master" ]; then
     echo "Error: The current branch is '${CURRENT_BRANCH}', switch to 'master' to do the release."
     exit 1
 fi
@@ -30,7 +31,7 @@ if [ -z "${RELEASE_VERSION}" ]; then
     if [ -z "${FROM_MAKEFILE}" ]; then
         echo "Error: VERSION is missing. e.g. ./release.sh <version>"
     else
-        echo "Error: missing value for 'version'. e.g. 'make release version=x.y.z'"
+        echo "Error: missing value for 'version'. e.g. 'make release VERSION=x.y.z'"
     fi
     exit 1
 fi
@@ -60,7 +61,7 @@ function getClosestVersion() {
         fi
         break
     done
-    echo "${tag//^v/}"
+    echo "${tag//v/}"
 }
 CLOSEST_VERSION=$(getClosestVersion)
 
@@ -69,18 +70,16 @@ if [[ $RELEASE_VERSION != *"-alpha"* && $RELEASE_VERSION != *"-beta"* && $RELEAS
     sed -i -E "s|${CLOSEST_VERSION}|${RELEASE_VERSION}|g" README.md
     git add README.md
 fi
+
 sed -i -E "s|v${RELEASE_VERSION}-alpha|v${RELEASE_VERSION}|g" internal/version/version.go
+git add internal/version/version.go
 
 # Commit changes
 printf "\033[36m==> %s\033[0m\n" "Commit changes for release version v${RELEASE_VERSION}"
-git add internal/version/version.go
 git commit -m "Release version v${RELEASE_VERSION}"
 
 printf "\033[36m==> %s\033[0m\n" "Push commits for v${RELEASE_VERSION}"
 git push origin master
-
-# Generate Changelog
-make --no-print-directory -f "${PWD}"/../../Makefile changelog NEXT="--next-tag v${RELEASE_VERSION}"
 
 # Tag the release
 printf "\033[36m==> %s\033[0m\n" "Tag release v${RELEASE_VERSION}"
