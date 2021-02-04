@@ -1,0 +1,89 @@
+project_name: terraform-docs
+
+builds:
+  - main: .
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X github.com/terraform-docs/terraform-docs/internal/version.version={{ .Version }}
+      - -X github.com/terraform-docs/terraform-docs/internal/version.commitHash={{ .ShortCommit }}
+      - -X github.com/terraform-docs/terraform-docs/internal/version.buildDate={{ .Date }}
+    goos:
+      - darwin
+      - linux
+      - freebsd
+      - windows
+    goarch:
+      - amd64
+      - arm
+    goarm:
+      - 7
+    ignore:
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+  - format: binary
+    id: deprecated
+    name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+
+checksum:
+  name_template: "{{ .ProjectName }}-{{ .Tag }}.sha256sum"
+
+snapshot:
+  name_template: "{{ .Tag }}-dev"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+dockers:
+  - dockerfile: scripts/release/Dockerfile
+    image_templates:
+      - "quay.io/terraform-docs/terraform-docs:latest"
+      - "quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}"
+
+brews:
+  - tap:
+      owner: terraform-docs
+      name: homebrew-tap
+    commit_author:
+      name: terraform-docs-bot
+      email: bot@terraform-docs.io
+    url_template: "https://github.com/terraform-docs/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    homepage: "https://github.com/terraform-docs/"
+    description: "Generate documentation from Terraform modules in various output formats"
+    test: |
+      system "#{bin}/terraform-docs version"
+
+scoop:
+  bucket:
+    owner: terraform-docs
+    name: scoop-bucket
+  commit_author:
+    name: terraform-docs-bot
+    email: bot@terraform-docs.io
+  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+  url_template: "https://github.com/terraform-docs/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+  homepage: "https://github.com/terraform-docs/"
+  description: "Generate documentation from Terraform modules in various output formats"
+  license: MIT
+
+# Uncomment these lines if you want to experiment with other
+# parts of the release process without releasing new binaries.
+# release:
+#  disable: true

@@ -16,7 +16,7 @@ us on [Slack].
 
 For releasing:
 
-- [gox]
+- [goreleaser]
 - [git-chlog]
 
 You can install all the required tools with `make tools` or individually with
@@ -81,7 +81,7 @@ to review and accept.
 [Go]: https://golang.org/
 [goimports]: https://pkg.go.dev/golang.org/x/tools/cmd/goimports
 [golangci-lint]: https://github.com/golangci/golangci-lint
-[gox]: https://github.com/mitchellh/gox
+[goreleaser]: https://goreleaser.com/
 [git-chlog]: https://github.com/terraform-docs/git-chglog
 [good git commit hygiene]: https://www.futurelearn.com/info/blog/telling-stories-with-your-git-history
 [Developer Certificate of Origin]: https://github.com/apps/dco

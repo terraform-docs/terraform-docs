@@ -29,3 +29,6 @@ coverage.txt
 
 # ignore asdf local versions
 /.tool-versions
+
+# goreleaser
+dist/

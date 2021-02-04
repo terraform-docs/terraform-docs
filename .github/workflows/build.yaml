@@ -6,115 +6,93 @@ on:
       - master
   pull_request:
 
+env:
+  GO_VERSION: "1.15"
+  REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+
 jobs:
-  linux:
+  build:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.15.6
-      id: go
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
 
-    - name: Build binary
-      run: make build
+      - name: Build binary
+        run: make build
 
-  darwin:
+  test:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.15.6
-      id: go
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
 
-    - name: Build binary
-      env:
-        GOOS: darwin
-        GOARCH: amd64
-      run: make build
+      - name: Run tests
+        run: make test
 
-  freebsd:
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.out
+
+  validate:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.15.6
-      id: go
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
 
-    - name: Build binary
-      env:
-        GOOS: freebsd
-        GOARCH: amd64
-      run: make build
+      - name: Verify dependencies
+        run: make verify
 
-  openbsd:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
-    steps:
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.15.6
-      id: go
+      - name: Check formatting
+        run: make goimports checkfmt
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Run linters
+        run: make golangci lint
 
-    - name: Build binary
-      env:
-        GOOS: openbsd
-        GOARCH: amd64
-      run: make build
-
-  windows:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
-    steps:
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.15.6
-      id: go
-
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-
-    - name: Build binary
-      env:
-        GOOS: windows
-        GOARCH: amd64
-      run: make build
+      - name: Run Staticcheck
+        run: make staticcheck
 
   docker:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Build 'dev' Docker image
-      if: "!contains(github.ref, 'refs/heads/master')"
-      run: DOCKER_TAG=${{ github.sha }} make docker
+      - name: Login to Docker
+        uses: docker/login-action@v1
+        if: env.REGISTRY_USERNAME != ''
+        with:
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
-    - name: Build and push 'edge' Docker image
-      if: "contains(github.ref, 'refs/heads/master')"
-      run: |
-        echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin quay.io
-        DOCKER_TAG=edge make docker push
-      env:
-        REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-        REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Build 'dev' Docker image
+        if: "env.REGISTRY_USERNAME != '' && !contains(github.ref, 'refs/heads/master')"
+        run: make docker
+        env:
+          DOCKER_TAG: ${{ github.sha }}
+
+      - name: Build and push 'edge' Docker image
+        if: env.REGISTRY_USERNAME != '' && contains(github.ref, 'refs/heads/master')
+        run: make docker push
+        env:
+          DOCKER_TAG: edge
