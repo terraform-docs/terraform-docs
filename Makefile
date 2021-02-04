@@ -1,38 +1,42 @@
-# Project variables
-NAME        := terraform-docs
-VENDOR      := terraform-docs
-DESCRIPTION := generate documentation from Terraform modules in various output formats
-URL         := https://github.com/$(VENDOR)/$(NAME)
-LICENSE     := MIT
+# Copyright 2021 The terraform-docs Authors.
+#
+# Licensed under the MIT license (the "License"); you may not
+# use this file except in compliance with the License.
+#
+# You may obtain a copy of the License at the LICENSE file in
+# the root directory of this source tree.
 
-# Repository variables
-PACKAGE     := github.com/$(VENDOR)/$(NAME)
+# Project variables
+PROJECT_NAME  := terraform-docs
+PROJECT_OWNER := terraform-docs
+DESCRIPTION   := generate documentation from Terraform modules in various output formats
+PROJECT_URL   := https://github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
+LICENSE       := MIT
 
 # Build variables
 BUILD_DIR    := bin
 COMMIT_HASH  ?= $(shell git rev-parse --short HEAD 2>/dev/null)
 BUILD_DATE   ?= $(shell date +%FT%T%z)
-VERSION      ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
+CUR_VERSION  ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
 COVERAGE_OUT := coverage.out
 
 # Go variables
+GO_PACKAGE  := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
 GOOS        ?= $(shell go env GOOS)
 GOARCH      ?= $(shell go env GOARCH)
 
-GOLDFLAGS   :="
-GOLDFLAGS   += -X $(PACKAGE)/internal/version.version=$(VERSION)
-GOLDFLAGS   += -X $(PACKAGE)/internal/version.commitHash=$(COMMIT_HASH)
-GOLDFLAGS   += -X $(PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
-GOLDFLAGS   +="
+GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.version=$(CUR_VERSION)
+GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.commitHash=$(COMMIT_HASH)
+GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
 
-GOBUILD     ?= CGO_ENABLED=0 go build -ldflags $(GOLDFLAGS)
+GOBUILD     ?= CGO_ENABLED=0 go build -ldflags="$(GOLDFLAGS)"
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
 
-GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs/terraform-docs
+GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs
 
 # Docker variables
-DEFAULT_TAG  ?= $(shell echo "$(VERSION)" | tr -d 'v')
-DOCKER_IMAGE := quay.io/$(VENDOR)/$(NAME)
+DEFAULT_TAG  ?= $(shell echo "$(CUR_VERSION)" | tr -d 'v')
+DOCKER_IMAGE := quay.io/$(PROJECT_OWNER)/$(PROJECT_NAME)
 DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
@@ -47,7 +51,7 @@ all: clean verify checkfmt lint test build
 .PHONY: checkfmt
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
-	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/ && echo "OK"
+	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ scripts/docs/ && echo "OK"
 
 .PHONY: clean
 clean: ## Clean workspace
@@ -57,7 +61,7 @@ clean: ## Clean workspace
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
-	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ pkg/ scripts/docs/
+	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ scripts/docs/
 
 .PHONY: lint
 lint: ## Run linter
@@ -90,14 +94,7 @@ deps:
 .PHONY: build
 build: clean ## Build binary for current OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(NAME)
-
-.PHONY: build-all
-build-all: GOOS   = linux darwin windows freebsd
-build-all: GOARCH = amd64 arm
-build-all: clean ## Build binary for all OS/ARCH
-	@ $(MAKE) --no-print-directory log-$@
-	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
+	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(PROJECT_NAME)
 
 .PHONY: docker
 docker: ## Build Docker image
@@ -123,10 +120,10 @@ PATTERN =
 # cycle release. For example if latest tag is v0.8.0-rc.2 and v0.8.0 GA needs to get
 # released the following should be executed: "make release version=0.8.0"
 .PHONY: release
-release: version ?= $(shell echo $(VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
+release: VERSION ?= $(shell echo $(CUR_VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
 release: ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
-	@ ./scripts/release/release.sh "$(version)" "$(VERSION)" "1"
+	@ ./scripts/release/release.sh "$(VERSION)" "$(CUR_VERSION)" "1"
 
 .PHONY: patch
 patch: PATTERN = '\$$1\".\"\$$2\".\"\$$3+1'
@@ -174,16 +171,10 @@ ifeq (, $(shell which golangci-lint))
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell go env GOPATH)/bin $(GOLANGCI_VERSION)
 endif
 
-.PHONY: gox
-gox:
-ifeq (, $(shell which gox))
-	GO111MODULE=off go get -u github.com/mitchellh/gox
-endif
-
 .PHONY: tools
 tools: ## Install required tools
 	@ $(MAKE) --no-print-directory log-$@
-	@ $(MAKE) --no-print-directory git-chglog goimports golangci gox
+	@ $(MAKE) --no-print-directory git-chglog goimports golangci
 
 ########################################################################
 ## Self-Documenting Makefile Help                                     ##

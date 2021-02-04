@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package cmd
 
 import (
@@ -47,8 +57,8 @@ func NewCommand() *cobra.Command {
 	// flags
 	cmd.PersistentFlags().StringVarP(&config.File, "config", "c", ".terraform-docs.yml", "config file name")
 
-	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section [header, inputs, outputs, providers, requirements]")
-	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section [header, inputs, outputs, providers, requirements]")
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section [header, inputs, outputs, providers, requirements, resources]")
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section [header, inputs, outputs, providers, requirements, resources]")
 	cmd.PersistentFlags().BoolVar(&config.Sections.ShowAll, "show-all", true, "show all sections")
 	cmd.PersistentFlags().BoolVar(&config.Sections.HideAll, "hide-all", false, "hide all sections (default false)")
 

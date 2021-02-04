@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package cli
 
 import (
@@ -35,6 +45,13 @@ func TestExists(t *testing.T) {
 			expected: false,
 			wantErr:  true,
 			errMsg:   "config file name is missing",
+		},
+		{
+			name:     "main argument is a file",
+			config:   cfgreader{file: "testdata/sample-config.yaml/some-config.yaml"},
+			expected: false,
+			wantErr:  true,
+			errMsg:   "stat testdata/sample-config.yaml/some-config.yaml: not a directory",
 		},
 	}
 	for _, tt := range tests {

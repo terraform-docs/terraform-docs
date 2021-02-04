@@ -1,5 +1,3 @@
-
-
 [90mUsage:
 
 Example of 'foo_bar' module in `foo_bar.tf`.
@@ -39,23 +37,20 @@ followed by another line of text.
 | Bar  | Bar description |[0m
 
 
-
 [36mrequirement.terraform[0m (>= 0.12)
-
 [36mrequirement.aws[0m (>= 2.15.0)
-
 [36mrequirement.random[0m (>= 2.2.0)
 
 
-
 [36mprovider.tls[0m
-
 [36mprovider.aws[0m (>= 2.15.0)
-
 [36mprovider.aws.ident[0m (>= 2.15.0)
-
 [36mprovider.null[0m
 
+
+[36mresource.aws_caller_identity[0m (https://registry.terraform.io/providers/hashicorp/aws/2.15.0/docs/data-sources/caller_identity)
+[36mresource.null_resource[0m (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
+[36mresource.tls_private_key[0m (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)
 
 
 [36moutput.unquoted[0m
@@ -69,4 +64,3 @@ followed by another line of text.
 
 [36moutput.output-0.12[0m
 [90mterraform 0.12 only[0m
-

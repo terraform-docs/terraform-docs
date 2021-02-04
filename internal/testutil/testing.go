@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package testutil
 
 import (
@@ -6,12 +16,11 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // GetModule returns 'example' Module
-func GetModule(options *module.Options) (*tfconf.Module, error) {
+func GetModule(options *terraform.Options) (*terraform.Module, error) {
 	path, err := getExampleFolder()
 	if err != nil {
 		return nil, err
@@ -20,7 +29,7 @@ func GetModule(options *module.Options) (*tfconf.Module, error) {
 	if options.OutputValues {
 		options.OutputValuesPath = filepath.Join(path, options.OutputValuesPath)
 	}
-	tfmodule, err := module.LoadWithOptions(options)
+	tfmodule, err := terraform.LoadWithOptions(options)
 	if err != nil {
 		return nil, err
 	}

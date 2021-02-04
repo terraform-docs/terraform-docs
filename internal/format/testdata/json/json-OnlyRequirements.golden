@@ -16,5 +16,6 @@
       "name": "random",
       "version": ">= 2.2.0"
     }
-  ]
+  ],
+  "resources": []
 }

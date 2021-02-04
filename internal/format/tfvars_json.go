@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package format
 
 import (
@@ -7,21 +17,22 @@ import (
 
 	"github.com/iancoleman/orderedmap"
 
-	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // TfvarsJSON represents Terraform tfvars JSON format.
 type TfvarsJSON struct{}
 
 // NewTfvarsJSON returns new instance of TfvarsJSON.
-func NewTfvarsJSON(settings *print.Settings) *TfvarsJSON {
+func NewTfvarsJSON(settings *print.Settings) print.Engine {
 	return &TfvarsJSON{}
 }
 
-// Print prints a Terraform module as Terraform tfvars JSON document.
-func (j *TfvarsJSON) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+// Print a Terraform module as Terraform tfvars JSON.
+func (j *TfvarsJSON) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	copy := orderedmap.New()
+	copy.SetEscapeHTML(false)
 	for _, i := range module.Inputs {
 		copy.Set(i.Name, i.Default)
 	}
@@ -38,4 +49,10 @@ func (j *TfvarsJSON) Print(module *tfconf.Module, settings *print.Settings) (str
 	}
 
 	return strings.TrimSuffix(buffer.String(), "\n"), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"tfvars json": NewTfvarsJSON,
+	})
 }

@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package format
 
 import (
@@ -5,9 +15,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 func TestTfvarsHcl(t *testing.T) {
@@ -17,7 +27,7 @@ func TestTfvarsHcl(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "hcl")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,8 +47,8 @@ func TestTfvarsHclSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "hcl-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -64,8 +74,8 @@ func TestTfvarsHclSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "hcl-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -91,8 +101,8 @@ func TestTfvarsHclSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "hcl-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -121,7 +131,7 @@ func TestTfvarsHclNoInputs(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "hcl-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -141,7 +151,7 @@ func TestTfvarsHclEscapeCharacters(t *testing.T) {
 	expected, err := testutil.GetExpected("tfvars", "hcl-EscapeCharacters")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 

@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package main
 
 import (
@@ -14,8 +24,8 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/cmd"
 	"github.com/terraform-docs/terraform-docs/internal/format"
-	"github.com/terraform-docs/terraform-docs/internal/module"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // These are practiaclly a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go
@@ -146,13 +156,13 @@ func printExample(buf *bytes.Buffer, name string) error {
 	buf.WriteString("```\n\n")
 	buf.WriteString("generates the following output:\n\n")
 
-	settings := print.NewSettings()
+	settings := print.DefaultSettings()
 	settings.ShowColor = false
-	options := &module.Options{
+	options := &terraform.Options{
 		Path:           "./examples",
 		ShowHeader:     true,
 		HeaderFromFile: "main.tf",
-		SortBy: &module.SortBy{
+		SortBy: &terraform.SortBy{
 			Name:     settings.SortByName,
 			Required: settings.SortByRequired,
 		},
@@ -163,7 +173,7 @@ func printExample(buf *bytes.Buffer, name string) error {
 	if err != nil {
 		return err
 	}
-	tfmodule, err := module.LoadWithOptions(options)
+	tfmodule, err := terraform.LoadWithOptions(options)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -179,7 +189,7 @@ func printExample(buf *bytes.Buffer, name string) error {
 			buf.WriteString(fmt.Sprintf("    %s\n", s))
 		}
 	}
-	buf.WriteString("\n\n")
+	buf.WriteString("\n")
 	return nil
 }
 

@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package format
 
 import (
@@ -5,9 +15,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 func TestAsciidocTable(t *testing.T) {
@@ -17,7 +27,7 @@ func TestAsciidocTable(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -37,7 +47,7 @@ func TestAsciidocTableWithRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-WithRequired")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -57,8 +67,8 @@ func TestAsciidocTableSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -84,8 +94,8 @@ func TestAsciidocTableSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -111,8 +121,8 @@ func TestAsciidocTableSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -136,12 +146,13 @@ func TestAsciidocTableNoHeader(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-NoHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -160,12 +171,13 @@ func TestAsciidocTableNoInputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -184,12 +196,13 @@ func TestAsciidocTableNoOutputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-NoOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -208,12 +221,13 @@ func TestAsciidocTableNoProviders(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-NoProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -232,12 +246,38 @@ func TestAsciidocTableNoRequirements(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-NoRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewAsciidocTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestAsciidocTableNoResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("asciidoc", "table-NoResources")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -256,12 +296,13 @@ func TestAsciidocTableOnlyHeader(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-OnlyHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -280,12 +321,13 @@ func TestAsciidocTableOnlyInputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-OnlyInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -304,12 +346,13 @@ func TestAsciidocTableOnlyOutputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-OnlyOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -328,12 +371,13 @@ func TestAsciidocTableOnlyProviders(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-OnlyProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -352,12 +396,38 @@ func TestAsciidocTableOnlyRequirements(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-OnlyRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewAsciidocTable(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestAsciidocTableOnlyResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("asciidoc", "table-OnlyResources")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -377,7 +447,7 @@ func TestAsciidocTableIndentationBelowAllowed(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-IndentationBelowAllowed")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -397,7 +467,7 @@ func TestAsciidocTableIndentationAboveAllowed(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-IndentationAboveAllowed")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -417,7 +487,7 @@ func TestAsciidocTableIndentationOfFour(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-IndentationOfFour")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
@@ -438,7 +508,7 @@ func TestAsciidocTableOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-OutputValues")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -489,7 +559,7 @@ func TestAsciidocTableHeaderFromFile(t *testing.T) {
 			expected, err := testutil.GetExpected("asciidoc", tt.golden)
 			assert.Nil(err)
 
-			options, err := module.NewOptions().WithOverwrite(&module.Options{
+			options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 				HeaderFromFile: tt.file,
 			})
 			assert.Nil(err)
@@ -516,7 +586,7 @@ func TestAsciidocTableOutputValuesNoSensitivity(t *testing.T) {
 	expected, err := testutil.GetExpected("asciidoc", "table-OutputValuesNoSensitivity")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -541,7 +611,7 @@ func TestAsciidocTableEmpty(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "bad.tf",
 	})
 	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all

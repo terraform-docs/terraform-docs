@@ -1,10 +1,20 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package cli
 
 import (
 	"fmt"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 type _sections struct {
@@ -26,6 +36,7 @@ type sections struct {
 	outputs      bool `yaml:"-"`
 	providers    bool `yaml:"-"`
 	requirements bool `yaml:"-"`
+	resources    bool `yaml:"-"`
 }
 
 func defaultSections() sections {
@@ -47,21 +58,22 @@ func defaultSections() sections {
 		outputs:      false,
 		providers:    false,
 		requirements: false,
+		resources:    false,
 	}
 }
 
 func (s *sections) validate() error {
-	items := []string{"header", "inputs", "outputs", "providers", "requirements"}
+	items := []string{"header", "inputs", "outputs", "providers", "requirements", "resources"}
 	for _, item := range s.Show {
 		switch item {
-		case items[0], items[1], items[2], items[3], items[4]:
+		case items[0], items[1], items[2], items[3], items[4], items[5]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
 	}
 	for _, item := range s.Hide {
 		switch item {
-		case items[0], items[1], items[2], items[3], items[4]:
+		case items[0], items[1], items[2], items[3], items[4], items[5]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
@@ -255,6 +267,7 @@ func (c *Config) process() {
 	c.Sections.outputs = c.Sections.visibility("outputs")
 	c.Sections.providers = c.Sections.visibility("providers")
 	c.Sections.requirements = c.Sections.visibility("requirements")
+	c.Sections.resources = c.Sections.visibility("resources")
 
 	// sort
 	if !changedfs["sort"] && changedfs["no-sort"] {
@@ -311,10 +324,10 @@ func (c *Config) validate() error {
 	return nil
 }
 
-// extract and build print.Settings and module.Options out of Config
-func (c *Config) extract() (*print.Settings, *module.Options) {
-	settings := print.NewSettings()
-	options := module.NewOptions()
+// extract and build print.Settings and terraform.Options out of Config
+func (c *Config) extract() (*print.Settings, *terraform.Options) {
+	settings := print.DefaultSettings()
+	options := terraform.NewOptions()
 
 	// header-from
 	options.HeaderFromFile = c.HeaderFrom
@@ -325,6 +338,7 @@ func (c *Config) extract() (*print.Settings, *module.Options) {
 	settings.ShowOutputs = c.Sections.outputs
 	settings.ShowProviders = c.Sections.providers
 	settings.ShowRequirements = c.Sections.requirements
+	settings.ShowResources = c.Sections.resources
 	options.ShowHeader = settings.ShowHeader
 
 	// output values

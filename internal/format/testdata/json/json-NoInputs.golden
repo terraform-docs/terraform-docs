@@ -54,5 +54,28 @@
       "name": "random",
       "version": ">= 2.2.0"
     }
+  ],
+  "resources": [
+    {
+      "type": "caller_identity",
+      "providerName": "aws",
+      "provicerSource": "hashicorp/aws",
+      "mode": "data",
+      "version": "2.15.0"
+    },
+    {
+      "type": "resource",
+      "providerName": "null",
+      "provicerSource": "hashicorp/null",
+      "mode": "managed",
+      "version": "latest"
+    },
+    {
+      "type": "private_key",
+      "providerName": "tls",
+      "provicerSource": "hashicorp/tls",
+      "mode": "managed",
+      "version": "latest"
+    }
   ]
 }

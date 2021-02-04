@@ -5,8 +5,15 @@
 
 
 
-<a name="v0.10.0-rc.1"></a>
-## [v0.10.0-rc.1] - 2020-07-13
+<a name="v0.10.1"></a>
+## [v0.10.1] - 2020-09-28
+
+### Bug Fixes
+- Prevent segfault error if input arg is a file ([#327](https://github.com/terraform-docs/terraform-docs/issues/327))
+
+
+<a name="v0.10.0"></a>
+## [v0.10.0] - 2020-09-21
 
 ### BREAKING CHANGE
 - Following flags have been deprecated and will be
@@ -55,6 +62,7 @@ and now are removed.
 - Reorganize markdown format tests ([#244](https://github.com/terraform-docs/terraform-docs/issues/244))
 
 ### Documentation
+- Overall improvements to documentation ([#293](https://github.com/terraform-docs/terraform-docs/issues/293))
 - Add detail about module header usage guide ([#282](https://github.com/terraform-docs/terraform-docs/issues/282))
 
 
@@ -385,8 +393,9 @@ the second release from now.
 - Initial commit
 
 
-[Unreleased]: https://github.com/terraform-docs/terraform-docs/compare/v0.10.0-rc.1...HEAD
-[v0.10.0-rc.1]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.1...v0.10.0-rc.1
+[Unreleased]: https://github.com/terraform-docs/terraform-docs/compare/v0.10.1...HEAD
+[v0.10.1]: https://github.com/terraform-docs/terraform-docs/compare/v0.10.0...v0.10.1
+[v0.10.0]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.1...v0.10.0
 [v0.9.1]: https://github.com/terraform-docs/terraform-docs/compare/v0.9.0...v0.9.1
 [v0.9.0]: https://github.com/terraform-docs/terraform-docs/compare/v0.8.2...v0.9.0
 [v0.8.2]: https://github.com/terraform-docs/terraform-docs/compare/v0.8.1...v0.8.2

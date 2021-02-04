@@ -58,6 +58,14 @@ The following providers are used by this module:
 
 - null
 
+#### Resources
+
+The following resources are used by this module:
+
+- [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/2.15.0/docs/data-sources/caller_identity)
+- [null_resource](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
+- [tls_private_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)
+
 #### Inputs
 
 The following input variables are supported:

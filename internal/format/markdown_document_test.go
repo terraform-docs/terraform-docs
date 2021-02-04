@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package format
 
 import (
@@ -5,9 +15,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/pkg/print"
 )
 
 func TestDocument(t *testing.T) {
@@ -17,11 +27,11 @@ func TestDocument(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -37,11 +47,11 @@ func TestDocumentWithRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-WithRequired")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -57,8 +67,8 @@ func TestDocumentSortByName(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-SortByName")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name: true,
 		},
 	})
@@ -67,7 +77,7 @@ func TestDocumentSortByName(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -84,8 +94,8 @@ func TestDocumentSortByRequired(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-SortByRequired")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Name:     true,
 			Required: true,
 		},
@@ -95,7 +105,7 @@ func TestDocumentSortByRequired(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -111,8 +121,8 @@ func TestDocumentSortByType(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-SortByType")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
-		SortBy: &module.SortBy{
+	options, err := terraform.NewOptions().With(&terraform.Options{
+		SortBy: &terraform.SortBy{
 			Type: true,
 		},
 	})
@@ -121,7 +131,7 @@ func TestDocumentSortByType(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -136,16 +146,17 @@ func TestDocumentNoHeader(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-NoHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -160,16 +171,17 @@ func TestDocumentNoInputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-NoInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -184,16 +196,17 @@ func TestDocumentNoOutputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-NoOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -208,16 +221,17 @@ func TestDocumentNoProviders(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-NoProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -232,16 +246,42 @@ func TestDocumentNoRequirements(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    true,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-NoRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentNoResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("markdown", "document-NoResources")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -256,16 +296,17 @@ func TestDocumentOnlyHeader(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-OnlyHeader")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -280,16 +321,17 @@ func TestDocumentOnlyInputs(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-OnlyInputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -304,16 +346,17 @@ func TestDocumentOnlyOutputs(t *testing.T) {
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-OnlyOutputs")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -328,16 +371,17 @@ func TestDocumentOnlyProviders(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-OnlyProviders")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -352,16 +396,42 @@ func TestDocumentOnlyRequirements(t *testing.T) {
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-OnlyRequirements")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
+func TestDocumentOnlyResources(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("markdown", "document-OnlyResources")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -377,11 +447,11 @@ func TestDocumentEscapeCharacters(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-EscapeCharacters")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -397,11 +467,11 @@ func TestDocumentIndentationBelowAllowed(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-IndentationBelowAllowed")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -417,11 +487,11 @@ func TestDocumentIndentationAboveAllowed(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-IndentationAboveAllowed")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -437,11 +507,11 @@ func TestDocumentIndentationOfFour(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-IndentationOfFour")
 	assert.Nil(err)
 
-	options := module.NewOptions()
+	options := terraform.NewOptions()
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -458,7 +528,7 @@ func TestDocumentOutputValues(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-OutputValues")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -467,7 +537,7 @@ func TestDocumentOutputValues(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -509,7 +579,7 @@ func TestDocumentHeaderFromFile(t *testing.T) {
 			expected, err := testutil.GetExpected("markdown", tt.golden)
 			assert.Nil(err)
 
-			options, err := module.NewOptions().WithOverwrite(&module.Options{
+			options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 				HeaderFromFile: tt.file,
 			})
 			assert.Nil(err)
@@ -517,7 +587,7 @@ func TestDocumentHeaderFromFile(t *testing.T) {
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			printer := NewDocument(settings)
+			printer := NewMarkdownDocument(settings)
 			actual, err := printer.Print(module, settings)
 
 			assert.Nil(err)
@@ -536,7 +606,7 @@ func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
 	expected, err := testutil.GetExpected("markdown", "document-OutputValuesNoSensitivity")
 	assert.Nil(err)
 
-	options, err := module.NewOptions().With(&module.Options{
+	options, err := terraform.NewOptions().With(&terraform.Options{
 		OutputValues:     true,
 		OutputValuesPath: "output_values.json",
 	})
@@ -545,7 +615,7 @@ func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)
@@ -561,7 +631,7 @@ func TestDocumentEmpty(t *testing.T) {
 		ShowOutputs:   false,
 	}).Build()
 
-	options, err := module.NewOptions().WithOverwrite(&module.Options{
+	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
 		HeaderFromFile: "bad.tf",
 	})
 	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all
@@ -570,7 +640,7 @@ func TestDocumentEmpty(t *testing.T) {
 	module, err := testutil.GetModule(options)
 	assert.Nil(err)
 
-	printer := NewDocument(settings)
+	printer := NewMarkdownDocument(settings)
 	actual, err := printer.Print(module, settings)
 
 	assert.Nil(err)

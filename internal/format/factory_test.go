@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package format
 
 import (
@@ -6,7 +16,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/pkg/print"
+	"github.com/terraform-docs/terraform-docs/internal/print"
 )
 
 func TestFormatFactory(t *testing.T) {
@@ -85,61 +95,61 @@ func TestFormatFactory(t *testing.T) {
 		{
 			name:     "format factory from name",
 			format:   "markdown",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown document",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown doc",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md document",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md doc",
-			expected: "*format.Document",
+			expected: "*format.MarkdownDocument",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown table",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "markdown tbl",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md table",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{
 			name:     "format factory from name",
 			format:   "md tbl",
-			expected: "*format.Table",
+			expected: "*format.MarkdownTable",
 			wantErr:  false,
 		},
 		{

@@ -1,76 +1,99 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package format
 
 import (
 	"fmt"
-	"text/template"
+	"regexp"
+	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/pkg/print"
-	"github.com/terraform-docs/terraform-docs/pkg/tfconf"
-	"github.com/terraform-docs/terraform-docs/pkg/tmpl"
+	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/internal/template"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 const (
 	prettyHeaderTpl = `
 	{{- if .Settings.ShowHeader -}}
-		{{- with .Module.Header }}
-			{{- printf "\n" }}
+		{{- with .Module.Header -}}
 			{{ colorize "\033[90m" . }}
-			{{- printf "\n" }}
 		{{ end -}}
+		{{- printf "\n\n" -}}
+	{{ end -}}
+	`
+
+	prettyResourcesTpl = `
+	{{- if .Settings.ShowResources -}}
+		{{- with .Module.Resources }}
+			{{- range . }}
+				{{- if eq (len .URL) 0 }}
+					{{- printf "resource.%s" .FullType | colorize "\033[36m" }}
+				{{- else -}}
+					{{- printf "resource.%s" .FullType | colorize "\033[36m" }} ({{ .URL}})
+				{{- end }}
+			{{ end -}}
+		{{ end -}}
+		{{- printf "\n\n" -}}
 	{{ end -}}
 	`
 
 	prettyRequirementsTpl = `
 	{{- if .Settings.ShowRequirements -}}
 		{{- with .Module.Requirements }}
-			{{- printf "\n" -}}
 			{{- range . }}
 				{{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				{{ printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
-			{{ end }}
-			{{- printf "\n" -}}
+				{{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
+			{{ end -}}
 		{{ end -}}
+		{{- printf "\n\n" -}}
 	{{ end -}}
 	`
 
 	prettyProvidersTpl = `
 	{{- if .Settings.ShowProviders -}}
 		{{- with .Module.Providers }}
-			{{- printf "\n" -}}
 			{{- range . }}
 				{{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				{{ printf "provider.%s" .FullName | colorize "\033[36m" }}{{ $version }}
-			{{ end }}
-			{{- printf "\n" -}}
+				{{- printf "provider.%s" .FullName | colorize "\033[36m" }}{{ $version }}
+			{{ end -}}
 		{{ end -}}
+		{{- printf "\n\n" -}}
 	{{ end -}}
 	`
 
 	prettyInputsTpl = `
 	{{- if .Settings.ShowInputs -}}
 		{{- with .Module.Inputs }}
-			{{- printf "\n" -}}
 			{{- range . }}
-				{{ printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
+				{{- printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
 				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
-			{{ end }}
-			{{- printf "\n" -}}
+				{{- printf "\n\n" -}}
+			{{ end -}}
 		{{ end -}}
+		{{- printf "\n" -}}
 	{{ end -}}
 	`
 
 	prettyOutputsTpl = `
 	{{- if .Settings.ShowOutputs -}}
 		{{- with .Module.Outputs }}
-			{{- printf "\n" -}}
 			{{- range . }}
-				{{ printf "output.%s" .Name | colorize "\033[36m" }}
+				{{- printf "output.%s" .Name | colorize "\033[36m" }}
 				{{- if $.Settings.OutputValues -}}
 					{{- printf " " -}}
 					({{ ternary .Sensitive "<sensitive>" .GetValue }})
-			{{- end }}
-			{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
-			{{ end }}
+				{{- end }}
+				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
+				{{- printf "\n\n" -}}
+			{{ end -}}
 		{{ end -}}
 	{{ end -}}
 	`
@@ -79,6 +102,7 @@ const (
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
 	`
@@ -86,32 +110,34 @@ const (
 
 // Pretty represents colorized pretty format.
 type Pretty struct {
-	template *tmpl.Template
+	template *template.Template
 }
 
 // NewPretty returns new instance of Pretty.
-func NewPretty(settings *print.Settings) *Pretty {
-	tt := tmpl.NewTemplate(&tmpl.Item{
+func NewPretty(settings *print.Settings) print.Engine {
+	tt := template.New(settings, &template.Item{
 		Name: "pretty",
 		Text: prettyTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "header",
 		Text: prettyHeaderTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "requirements",
 		Text: prettyRequirementsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "providers",
 		Text: prettyProvidersTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
+		Name: "resources",
+		Text: prettyResourcesTpl,
+	}, &template.Item{
 		Name: "inputs",
 		Text: prettyInputsTpl,
-	}, &tmpl.Item{
+	}, &template.Item{
 		Name: "outputs",
 		Text: prettyOutputsTpl,
 	})
-	tt.Settings(settings)
-	tt.CustomFunc(template.FuncMap{
+	tt.CustomFunc(gotemplate.FuncMap{
 		"colorize": func(c string, s string) string {
 			r := "\033[0m"
 			if !settings.ShowColor {
@@ -126,11 +152,17 @@ func NewPretty(settings *print.Settings) *Pretty {
 	}
 }
 
-// Print prints a Terraform module document.
-func (p *Pretty) Print(module *tfconf.Module, settings *print.Settings) (string, error) {
+// Print a Terraform module document.
+func (p *Pretty) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	rendered, err := p.template.Render(module)
 	if err != nil {
 		return "", err
 	}
-	return rendered, nil
+	return regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, ""), nil
+}
+
+func init() {
+	register(map[string]initializerFn{
+		"pretty": NewPretty,
+	})
 }

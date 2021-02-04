@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package version
 
 import (
@@ -8,7 +18,7 @@ import (
 )
 
 // current version
-const dev = "v0.10.0-alpha"
+const dev = "v0.11.0-alpha"
 
 // Provisioned by ldflags
 var (
@@ -17,9 +27,12 @@ var (
 	buildDate  string
 )
 
+// Load defaults for info variables
 func init() {
-	// Load defaults for info variables
 	if version == "" {
+		version = dev
+	}
+	if version == "v0.0.0-" { // building in a directory which is not a git repository
 		version = dev
 	}
 	if commitHash == "" {

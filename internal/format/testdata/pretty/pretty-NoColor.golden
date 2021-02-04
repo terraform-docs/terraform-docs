@@ -1,5 +1,3 @@
-
-
 Usage:
 
 Example of 'foo_bar' module in `foo_bar.tf`.
@@ -39,23 +37,20 @@ followed by another line of text.
 | Bar  | Bar description |
 
 
-
 requirement.terraform (>= 0.12)
-
 requirement.aws (>= 2.15.0)
-
 requirement.random (>= 2.2.0)
 
 
-
 provider.tls
-
 provider.aws (>= 2.15.0)
-
 provider.aws.ident (>= 2.15.0)
-
 provider.null
 
+
+resource.aws_caller_identity (https://registry.terraform.io/providers/hashicorp/aws/2.15.0/docs/data-sources/caller_identity)
+resource.null_resource (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
+resource.tls_private_key (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)
 
 
 input.unquoted (required)
@@ -185,7 +180,6 @@ input.object_default_empty ({})
 n/a
 
 
-
 output.unquoted
 It's unquoted output.
 
@@ -197,4 +191,3 @@ It's output number one.
 
 output.output-0.12
 terraform 0.12 only
-

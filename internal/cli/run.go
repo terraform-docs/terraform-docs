@@ -1,3 +1,13 @@
+/*
+Copyright 2021 The terraform-docs Authors.
+
+Licensed under the MIT license (the "License"); you may not
+use this file except in compliance with the License.
+
+You may obtain a copy of the License at the LICENSE file in
+the root directory of this source tree.
+*/
+
 package cli
 
 import (
@@ -8,16 +18,18 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
+	pluginsdk "github.com/terraform-docs/plugin-sdk/plugin"
 	"github.com/terraform-docs/terraform-docs/internal/format"
-	"github.com/terraform-docs/terraform-docs/internal/module"
+	"github.com/terraform-docs/terraform-docs/internal/plugin"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // list of flagset items which are explicitly changed from CLI
 var changedfs = make(map[string]bool)
 
-// PreRunEFunc returns actual 'cobra.Command#PreRunE' function
-// for 'formatter' commands. This functions reads and normalizes
-// flags and arguments passed through CLI execution.
+// PreRunEFunc returns actual 'cobra.Command#PreRunE' function for 'formatter'
+// commands. This functions reads and normalizes flags and arguments passed
+// through CLI execution.
 func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		formatter := cmd.Annotations["command"]
@@ -78,34 +90,47 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 	}
 }
 
-// RunEFunc returns actual 'cobra.Command#RunE' function for
-// 'formatter' commands. This functions extract print.Settings
-// and module.Options from generated and normalized Config and
-// initializes required print.Format instance and executes it.
+// RunEFunc returns actual 'cobra.Command#RunE' function for 'formatter' commands.
+// This functions extract print.Settings and terraform.Options from generated and
+// normalized Config and initializes required print.Format instance and executes it.
 func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		settings, options := config.extract()
+		options.Path = args[0]
+
+		module, err := terraform.LoadWithOptions(options)
+		if err != nil {
+			return err
+		}
 
 		printer, err := format.Factory(config.Formatter, settings)
 		if err != nil {
-			return err
+			plugins, perr := plugin.Discover()
+			if perr != nil {
+				return fmt.Errorf("formatter '%s' not found", config.Formatter)
+			}
+
+			client, found := plugins.Get(config.Formatter)
+			if !found {
+				return fmt.Errorf("formatter '%s' not found", config.Formatter)
+			}
+
+			output, cerr := client.Execute(pluginsdk.ExecuteArgs{
+				Module:   module.Convert(),
+				Settings: settings.Convert(),
+			})
+			return printOrDie(output, cerr)
 		}
 
-		options.Path = args[0]
-
-		tfmodule, err := module.LoadWithOptions(options)
-		if err != nil {
-			return err
-
-		}
-
-		output, err := printer.Print(tfmodule, settings)
-		if err != nil {
-			return err
-		}
-
-		fmt.Println(output)
-
-		return nil
+		output, err := printer.Print(module, settings)
+		return printOrDie(output, err)
 	}
+}
+
+func printOrDie(output string, err error) error {
+	if err != nil {
+		return err
+	}
+	fmt.Println(output)
+	return nil
 }

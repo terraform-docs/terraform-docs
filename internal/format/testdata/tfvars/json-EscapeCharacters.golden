@@ -6,7 +6,7 @@
   "string-3": "",
   "string-2": null,
   "string-1": "bar",
-  "string-special-chars": "\\.\u003c\u003e[]{}_-",
+  "string-special-chars": "\\.<>[]{}_-",
   "number-3": "19",
   "number-4": 15.75,
   "number-2": null,
