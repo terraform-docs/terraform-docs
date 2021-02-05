@@ -34,6 +34,7 @@ func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string
 		Header:       "",
 		Providers:    make([]*terraform.Provider, 0),
 		Inputs:       make([]*terraform.Input, 0),
+		ModuleCalls:  make([]*terraform.ModuleCall, 0),
 		Outputs:      make([]*terraform.Output, 0),
 		Requirements: make([]*terraform.Requirement, 0),
 		Resources:    make([]*terraform.Resource, 0),
@@ -44,6 +45,9 @@ func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string
 	}
 	if settings.ShowInputs {
 		copy.Inputs = module.Inputs
+	}
+	if settings.ShowModuleCalls {
+		copy.ModuleCalls = module.ModuleCalls
 	}
 	if settings.ShowOutputs {
 		copy.Outputs = module.Outputs

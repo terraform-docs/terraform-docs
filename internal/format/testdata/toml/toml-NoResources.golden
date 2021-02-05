@@ -230,6 +230,21 @@ resources = []
   required = false
   [inputs.default]
 
+[[modules]]
+  Name = "foo"
+  Source = "bar"
+  Version = "1.2.3"
+
+[[modules]]
+  Name = "bar"
+  Source = "baz"
+  Version = "4.5.6"
+
+[[modules]]
+  Name = "baz"
+  Source = "baz"
+  Version = "4.5.6"
+
 [[outputs]]
   name = "unquoted"
   description = "It's unquoted output."

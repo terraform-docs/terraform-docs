@@ -229,6 +229,21 @@ header = "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 
   required = false
   [inputs.default]
 
+[[modules]]
+  Name = "foo"
+  Source = "bar"
+  Version = "1.2.3"
+
+[[modules]]
+  Name = "bar"
+  Source = "baz"
+  Version = "4.5.6"
+
+[[modules]]
+  Name = "baz"
+  Source = "baz"
+  Version = "4.5.6"
+
 [[outputs]]
   name = "unquoted"
   description = "It's unquoted output."

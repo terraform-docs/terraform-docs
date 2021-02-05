@@ -98,10 +98,22 @@ const (
 	{{ end -}}
 	`
 
+	prettyModulecallsTpl = `
+	{{- if .Settings.ShowModuleCalls -}}
+		{{- with .Module.ModuleCalls }}
+			{{- range . }}
+				{{- printf "modulecall.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
+			{{ end -}}
+			{{- printf "\n\n" -}}
+		{{ end -}}
+	{{ end -}}
+	`
+
 	prettyTpl = `
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "modulecalls" . -}}
 	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
@@ -136,6 +148,9 @@ func NewPretty(settings *print.Settings) print.Engine {
 	}, &template.Item{
 		Name: "outputs",
 		Text: prettyOutputsTpl,
+	}, &template.Item{
+		Name: "modulecalls",
+		Text: prettyModulecallsTpl,
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"colorize": func(c string, s string) string {

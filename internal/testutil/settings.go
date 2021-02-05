@@ -50,11 +50,12 @@ func (s *TestSettings) WithColor() *TestSettings {
 	return s
 }
 
-// WithSections appends predefined show all sections ShowHeader, ShowProviders, ShowInputs, ShowOutputs to TestSettings
+// WithSections appends predefined show all sections ShowHeader, ShowProviders, ShowInputs, ShowModulecalls, ShowOutputs to TestSettings
 func (s *TestSettings) WithSections() *TestSettings {
 	sections := &print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,

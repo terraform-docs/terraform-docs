@@ -1,6 +1,7 @@
 {
   "header": "",
   "inputs": [],
+  "modules": [],
   "outputs": [
     {
       "name": "unquoted",

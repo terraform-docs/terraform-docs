@@ -123,6 +123,7 @@ func TestXmlNoHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -148,6 +149,7 @@ func TestXmlNoInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -168,11 +170,38 @@ func TestXmlNoInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestXmlNoModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowModuleCalls:  false,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("xml", "xml-NoModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewXML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestXmlNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -198,6 +227,7 @@ func TestXmlNoProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -223,6 +253,7 @@ func TestXmlNoRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -248,6 +279,7 @@ func TestXmlNoResources(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -273,6 +305,7 @@ func TestXmlOnlyHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -298,6 +331,7 @@ func TestXmlOnlyInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -318,11 +352,38 @@ func TestXmlOnlyInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestXmlOnlyModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowModuleCalls:  true,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("xml", "xml-OnlyModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewXML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestXmlOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -348,6 +409,7 @@ func TestXmlOnlyProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -373,6 +435,7 @@ func TestXmlOnlyRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -398,6 +461,7 @@ func TestXmlOnlyResources(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,

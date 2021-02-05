@@ -31,6 +31,7 @@ import (
 //
 // - Header       ('header' json key):        Module header found in shape of multi line comments at the beginning of 'main.tf'
 // - Inputs       ('inputs' json key):        List of input 'variables' extracted from the Terraform module .tf files
+// - ModuleCalls  ('modules' json key):       List of 'modules' extracted from the Terraform module .tf files
 // - Outputs      ('outputs' json key):       List of 'outputs' extracted from Terraform module .tf files
 // - Providers    ('providers' json key):     List of 'providers' extracted from resources used in Terraform module
 // - Requirements ('requirements' json key):  List of 'requirements' extracted from the Terraform module .tf files
@@ -40,6 +41,7 @@ type Module struct {
 
 	Header       string         `json:"header" toml:"header" xml:"header" yaml:"header"`
 	Inputs       []*Input       `json:"inputs" toml:"inputs" xml:"inputs>input" yaml:"inputs"`
+	ModuleCalls  []*ModuleCall  `json:"modules" toml:"modules" xml:"modules>module" yaml:"modules"`
 	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
 	Providers    []*Provider    `json:"providers" toml:"providers" xml:"providers>provider" yaml:"providers"`
 	Requirements []*Requirement `json:"requirements" toml:"requirements" xml:"requirements>requirement" yaml:"requirements"`
@@ -57,6 +59,11 @@ func (m *Module) HasHeader() bool {
 // HasInputs indicates if the module has inputs.
 func (m *Module) HasInputs() bool {
 	return len(m.Inputs) > 0
+}
+
+// HasModuleCalls indicates if the module has modulecalls.
+func (m *Module) HasModuleCalls() bool {
+	return len(m.ModuleCalls) > 0
 }
 
 // HasOutputs indicates if the module has outputs.
@@ -84,6 +91,7 @@ func (m *Module) Convert() terraformsdk.Module {
 	return terraformsdk.NewModule(
 		terraformsdk.WithHeader(m.Header),
 		terraformsdk.WithInputs(inputs(m.Inputs).convert()),
+		terraformsdk.WithModuleCalls(modulecalls(m.ModuleCalls).convert()),
 		terraformsdk.WithOutputs(outputs(m.Outputs).convert()),
 		terraformsdk.WithProviders(providers(m.Providers).convert()),
 		terraformsdk.WithRequirements(requirements(m.Requirements).convert()),
@@ -123,6 +131,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 	}
 
 	inputs, required, optional := loadInputs(tfmodule)
+	modulecalls := loadModulecalls(tfmodule)
 	outputs, err := loadOutputs(tfmodule, options)
 	if err != nil {
 		return nil, err
@@ -134,6 +143,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 	return &Module{
 		Header:       header,
 		Inputs:       inputs,
+		ModuleCalls:  modulecalls,
 		Outputs:      outputs,
 		Providers:    providers,
 		Requirements: requirements,
@@ -244,6 +254,18 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
 		}
 	}
 	return inputs, required, optional
+}
+
+func loadModulecalls(tfmodule *tfconfig.Module) []*ModuleCall {
+	var modulecalls = make([]*ModuleCall, 0)
+	for _, modulecall := range tfmodule.ModuleCalls {
+		modulecalls = append(modulecalls, &ModuleCall{
+			Name:    modulecall.Name,
+			Source:  modulecall.Source,
+			Version: modulecall.Version,
+		})
+	}
+	return modulecalls
 }
 
 func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*Output, error) {
@@ -447,4 +469,15 @@ func sortItems(tfmodule *Module, sortby *SortBy) {
 
 	// Always sort resources
 	sort.Sort(resourcesSortedByType(tfmodule.Resources))
+	if sortby.Name {
+		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
+	} else {
+		sort.Sort(modulecallsSortedBySource(tfmodule.ModuleCalls))
+	}
+
+	if sortby.Name {
+		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
+	} else {
+		sort.Sort(modulecallsSortedBySource(tfmodule.ModuleCalls))
+	}
 }

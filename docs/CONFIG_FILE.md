@@ -11,16 +11,20 @@ sections:
   hide:
     - header
     - inputs
+    - modules
     - outputs
     - providers
     - requirements
+    - resources
   show-all: true
   show:
     - header
     - inputs
+    - modules
     - outputs
     - providers
     - requirements
+    - resources
 
 output-values:
   enabled: false

@@ -48,6 +48,11 @@ provider.aws.ident (>= 2.15.0)
 provider.null
 
 
+modulecall.foo (bar,1.2.3)
+modulecall.bar (baz,4.5.6)
+modulecall.baz (baz,4.5.6)
+
+
 resource.aws_caller_identity (https://registry.terraform.io/providers/hashicorp/aws/2.15.0/docs/data-sources/caller_identity)
 resource.null_resource (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
 resource.tls_private_key (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)

@@ -58,6 +58,12 @@ type Settings struct {
 	// scope: Global
 	ShowInputs bool
 
+	// ShowModuleCalls show "ModuleCalls" information (default: true)
+	//
+	// default: true
+	// scope: Global
+	ShowModuleCalls bool
+
 	// ShowOutputs show "Outputs" information
 	//
 	// default: true
@@ -123,6 +129,7 @@ func DefaultSettings() *Settings {
 		ShowColor:        true,
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequired:     true,
@@ -146,6 +153,7 @@ func (s *Settings) Convert() *printsdk.Settings {
 		ShowHeader:       s.ShowHeader,
 		ShowInputs:       s.ShowInputs,
 		ShowOutputs:      s.ShowOutputs,
+		ShowModuleCalls:  s.ShowModuleCalls,
 		ShowProviders:    s.ShowProviders,
 		ShowRequired:     s.ShowRequired,
 		ShowSensitivity:  s.ShowSensitivity,

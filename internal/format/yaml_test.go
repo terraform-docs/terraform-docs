@@ -123,6 +123,7 @@ func TestYamlNoHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -148,6 +149,7 @@ func TestYamlNoInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -168,11 +170,38 @@ func TestYamlNoInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestYamlNoModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowModuleCalls:  false,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("yaml", "yaml-NoModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestYamlNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -198,6 +227,7 @@ func TestYamlNoProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -223,6 +253,7 @@ func TestYamlNoRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -248,6 +279,7 @@ func TestYamlNoResources(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -273,6 +305,7 @@ func TestYamlOnlyHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -298,6 +331,7 @@ func TestYamlOnlyInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -318,11 +352,38 @@ func TestYamlOnlyInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestYamlOnlyModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowModuleCalls:  true,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("yaml", "yaml-OnlyModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewYAML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestYamlOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -348,6 +409,7 @@ func TestYamlOnlyProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -373,6 +435,7 @@ func TestYamlOnlyRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -398,6 +461,7 @@ func TestYamlOnlyResources(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -498,10 +562,12 @@ func TestYamlHeaderFromFile(t *testing.T) {
 func TestYamlEmpty(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowHeader:       false,
+		ShowProviders:    false,
+		ShowInputs:       false,
+		ShowModuleCalls:  false,
+		ShowOutputs:      false,
+		ShowRequirements: false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-Empty")

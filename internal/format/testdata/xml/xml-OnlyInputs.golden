@@ -244,6 +244,7 @@
       <required>false</required>
     </input>
   </inputs>
+  <modules></modules>
   <outputs></outputs>
   <providers></providers>
   <requirements></requirements>

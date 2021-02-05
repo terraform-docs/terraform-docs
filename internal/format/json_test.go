@@ -123,6 +123,7 @@ func TestJsonNoHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -148,6 +149,7 @@ func TestJsonNoInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -168,11 +170,38 @@ func TestJsonNoInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestJsonNoModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowModuleCalls:  false,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("json", "json-NoModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewJSON(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestJsonNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -198,6 +227,7 @@ func TestJsonNoProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -223,6 +253,7 @@ func TestJsonNoRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -273,6 +304,7 @@ func TestJsonOnlyHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -298,6 +330,7 @@ func TestJsonOnlyInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -318,11 +351,38 @@ func TestJsonOnlyInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestJsonOnlyModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowModuleCalls:  true,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("json", "json-OnlyModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewJSON(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestJsonOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -348,6 +408,7 @@ func TestJsonOnlyProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -373,6 +434,7 @@ func TestJsonOnlyRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -398,6 +460,7 @@ func TestJsonOnlyResources(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -518,10 +581,13 @@ func TestJsonHeaderFromFile(t *testing.T) {
 func TestJsonEmpty(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowModuleCalls:  false,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    false,
 	}).Build()
 
 	expected, err := testutil.GetExpected("json", "json-Empty")

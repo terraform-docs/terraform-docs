@@ -29,6 +29,7 @@ func TestLoadModuleWithOptions(t *testing.T) {
 	assert.Equal(true, module.HasHeader())
 	assert.Equal(true, module.HasInputs())
 	assert.Equal(true, module.HasOutputs())
+	assert.Equal(true, module.HasModuleCalls())
 	assert.Equal(true, module.HasProviders())
 	assert.Equal(true, module.HasRequirements())
 }
@@ -346,6 +347,34 @@ func TestLoadInputs(t *testing.T) {
 			assert.Equal(tt.expected.inputs, len(inputs))
 			assert.Equal(tt.expected.requireds, len(requireds))
 			assert.Equal(tt.expected.optionals, len(optionals))
+		})
+	}
+}
+
+func TestLoadModulecalls(t *testing.T) {
+	tests := []struct {
+		name     string
+		path     string
+		expected int
+	}{
+		{
+			name:     "load modulecalls from path",
+			path:     "full-example",
+			expected: 1,
+		},
+		{
+			name:     "load modulecalls from path",
+			path:     "no-modulecalls",
+			expected: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			modulecalls := loadModulecalls(module)
+
+			assert.Equal(tt.expected, len(modulecalls))
 		})
 	}
 }

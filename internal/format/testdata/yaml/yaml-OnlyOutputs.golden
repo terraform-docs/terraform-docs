@@ -1,5 +1,6 @@
 header: ""
 inputs: []
+modules: []
 outputs:
   - name: unquoted
     description: It's unquoted output.

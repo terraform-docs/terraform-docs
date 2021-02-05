@@ -127,10 +127,28 @@ const (
 	{{ end -}}
 	`
 
+	asciidocTableModulecallsTpl = `
+	{{- if .Settings.ShowModuleCalls -}}
+		{{ indent 0 "=" }} Modules
+		{{ if not .Module.ModuleCalls }}
+			No Modules.
+		{{ else }}
+			[cols="a,a,a",options="header,autowidth"]
+			|===
+			|Name|Source|Version|
+			{{- range .Module.ModuleCalls }}
+				|{{ .Name }}|{{ .Source }}|{{ .Version }}
+			{{- end }}
+			|===
+		{{ end }}
+	{{ end -}}
+	`
+
 	asciidocTableTpl = `
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "modulecalls" . -}}
 	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
@@ -166,6 +184,9 @@ func NewAsciidocTable(settings *print.Settings) print.Engine {
 	}, &template.Item{
 		Name: "outputs",
 		Text: asciidocTableOutputsTpl,
+	}, &template.Item{
+		Name: "modulecalls",
+		Text: asciidocTableModulecallsTpl,
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {

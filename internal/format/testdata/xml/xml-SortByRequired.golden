@@ -244,6 +244,23 @@
       <required>false</required>
     </input>
   </inputs>
+  <modules>
+    <module>
+      <Name>bar</Name>
+      <Source>baz</Source>
+      <Version>4.5.6</Version>
+    </module>
+    <module>
+      <Name>baz</Name>
+      <Source>baz</Source>
+      <Version>4.5.6</Version>
+    </module>
+    <module>
+      <Name>foo</Name>
+      <Source>bar</Source>
+      <Version>1.2.3</Version>
+    </module>
+  </modules>
   <outputs>
     <output>
       <name>output-0.12</name>

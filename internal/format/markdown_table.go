@@ -116,10 +116,26 @@ const (
 	{{ end -}}
 	`
 
+	tableModulecallsTpl = `
+	{{- if .Settings.ShowModuleCalls -}}
+		{{ indent 0 "#" }} Modules
+		{{ if not .Module.ModuleCalls }}
+			No Modules.
+		{{ else }}
+			| Name | Source | Version |
+			|------|--------|---------|
+			{{- range .Module.ModuleCalls }}
+				| {{ .Name }} | {{ .Source }} | {{ .Version }} |
+			{{- end }}
+		{{ end }}
+	{{ end -}}
+	`
+
 	tableTpl = `
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "modulecalls" . -}}
 	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
@@ -154,6 +170,9 @@ func NewMarkdownTable(settings *print.Settings) print.Engine {
 	}, &template.Item{
 		Name: "outputs",
 		Text: tableOutputsTpl,
+	}, &template.Item{
+		Name: "modulecalls",
+		Text: tableModulecallsTpl,
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {

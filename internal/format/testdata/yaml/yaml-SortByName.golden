@@ -220,6 +220,16 @@ inputs:
     description: The description contains url. https://www.domain.com/foo/bar_baz.html
     default: ""
     required: false
+modules:
+  - name: bar
+    source: baz
+    version: 4.5.6
+  - name: baz
+    source: baz
+    version: 4.5.6
+  - name: foo
+    source: bar
+    version: 1.2.3
 outputs:
   - name: output-0.12
     description: terraform 0.12 only

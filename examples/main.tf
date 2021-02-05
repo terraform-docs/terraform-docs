@@ -57,3 +57,18 @@ data "aws_caller_identity" "ident" {
 }
 
 resource "null_resource" "foo" {}
+
+module "foo" {
+  source  = "bar"
+  version = "1.2.3"
+}
+
+module "bar" {
+  source  = "baz"
+  version = "4.5.6"
+}
+
+module "baz" {
+  source  = "baz"
+  version = "4.5.6"
+}

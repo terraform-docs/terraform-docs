@@ -1,0 +1,21 @@
+header = ""
+inputs = []
+outputs = []
+providers = []
+requirements = []
+resources = []
+
+[[modules]]
+  Name = "foo"
+  Source = "bar"
+  Version = "1.2.3"
+
+[[modules]]
+  Name = "bar"
+  Source = "baz"
+  Version = "4.5.6"
+
+[[modules]]
+  Name = "baz"
+  Source = "baz"
+  Version = "4.5.6"
