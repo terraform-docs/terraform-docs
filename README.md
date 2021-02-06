@@ -132,7 +132,7 @@ MIT License - Copyright (c) 2021 The terraform-docs Authors.
 [Homebrew]: https://brew.sh
 [Scoop]: https://scoop.sh/
 [Chocolatey]: https://www.chocolatey.org
-[Slack]: https://terraform-docs.slack.com/
+[Slack]: https://slack.terraform-docs.io/
 [Segment]: https://github.com/segmentio/
 [Martin Etmajer]: https://github.com/metmajer
 [GetCloudnative]: https://github.com/getcloudnative

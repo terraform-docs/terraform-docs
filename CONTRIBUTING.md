@@ -77,7 +77,7 @@ Thank you for reading through our contributing guide! We appreciate you taking
 the time to ensure your contributions are high quality and easy for our community
 to review and accept.
 
-[Slack]: https://terraform-docs.slack.com/
+[Slack]: https://slack.terraform-docs.io/
 [Go]: https://golang.org/
 [goimports]: https://pkg.go.dev/golang.org/x/tools/cmd/goimports
 [golangci-lint]: https://github.com/golangci/golangci-lint
