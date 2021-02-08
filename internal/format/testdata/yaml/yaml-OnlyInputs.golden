@@ -1,4 +1,5 @@
 header: ""
+footer: ""
 inputs:
   - name: unquoted
     type: any

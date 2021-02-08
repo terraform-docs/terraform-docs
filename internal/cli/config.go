@@ -19,6 +19,7 @@ import (
 )
 
 const (
+	sectionFooter       = "footer"
 	sectionHeader       = "header"
 	sectionInputs       = "inputs"
 	sectionModules      = "modules"
@@ -28,7 +29,7 @@ const (
 	sectionResources    = "resources"
 )
 
-var allSections = []string{sectionHeader, sectionInputs, sectionModules, sectionOutputs, sectionProviders, sectionRequirements, sectionResources}
+var allSections = []string{sectionFooter, sectionHeader, sectionInputs, sectionModules, sectionOutputs, sectionProviders, sectionRequirements, sectionResources}
 
 // AllSections list.
 var AllSections = strings.Join(allSections, ", ")
@@ -40,6 +41,7 @@ type sections struct {
 	HideAll bool     `yaml:"hide-all"`
 
 	header       bool `yaml:"-"`
+	footer       bool `yaml:"-"`
 	inputs       bool `yaml:"-"`
 	modulecalls  bool `yaml:"-"`
 	outputs      bool `yaml:"-"`
@@ -56,6 +58,7 @@ func defaultSections() sections {
 		HideAll: false,
 
 		header:       false,
+		footer:       false,
 		inputs:       false,
 		modulecalls:  false,
 		outputs:      false,
@@ -68,14 +71,14 @@ func defaultSections() sections {
 func (s *sections) validate() error {
 	for _, item := range s.Show {
 		switch item {
-		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6]:
+		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
 	}
 	for _, item := range s.Hide {
 		switch item {
-		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6]:
+		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
@@ -273,6 +276,7 @@ type Config struct {
 	File         string       `yaml:"-"`
 	Formatter    string       `yaml:"formatter"`
 	HeaderFrom   string       `yaml:"header-from"`
+	FooterFrom   string       `yaml:"footer-from"`
 	Sections     sections     `yaml:"sections"`
 	Output       output       `yaml:"output"`
 	OutputValues outputvalues `yaml:"output-values"`
@@ -287,6 +291,7 @@ func DefaultConfig() *Config {
 		File:         "",
 		Formatter:    "",
 		HeaderFrom:   "main.tf",
+		FooterFrom:   "",
 		Sections:     defaultSections(),
 		Output:       defaultOutput(),
 		OutputValues: defaultOutputValues(),
@@ -304,13 +309,20 @@ func (c *Config) process() {
 	if !c.Sections.ShowAll && !changedfs["hide-all"] {
 		c.Sections.HideAll = true
 	}
+
 	c.Sections.header = c.Sections.visibility("header")
+	c.Sections.footer = c.Sections.visibility("footer")
 	c.Sections.inputs = c.Sections.visibility("inputs")
 	c.Sections.modulecalls = c.Sections.visibility("modules")
 	c.Sections.outputs = c.Sections.visibility("outputs")
 	c.Sections.providers = c.Sections.visibility("providers")
 	c.Sections.requirements = c.Sections.visibility("requirements")
 	c.Sections.resources = c.Sections.visibility("resources")
+
+	// Footer section optional and should not cause error with --show-all
+	if c.Sections.ShowAll && c.Sections.footer {
+		c.Sections.footer = false
+	}
 }
 
 // validate config and check for any misuse or misconfiguration
@@ -323,6 +335,15 @@ func (c *Config) validate() error {
 	// header-from
 	if c.HeaderFrom == "" {
 		return fmt.Errorf("value of '--header-from' can't be empty")
+	}
+
+	// footer-from, not a 'default' section so can be empty even if show-all enabled
+	if c.Sections.footer && !c.Sections.ShowAll && c.FooterFrom == "" {
+		return fmt.Errorf("value of '--footer-from' can't be empty")
+	}
+
+	if c.FooterFrom == c.HeaderFrom {
+		return fmt.Errorf("value of '--footer-from' can't equal value of '--header-from")
 	}
 
 	// sections
@@ -362,8 +383,13 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options.ShowHeader = settings.ShowHeader
 	options.HeaderFromFile = c.HeaderFrom
 
+	// footer-from
+	options.ShowFooter = settings.ShowFooter
+	options.FooterFromFile = c.FooterFrom
+
 	// sections
 	settings.ShowHeader = c.Sections.header
+	settings.ShowFooter = c.Sections.footer
 	settings.ShowInputs = c.Sections.inputs
 	settings.ShowModuleCalls = c.Sections.modulecalls
 	settings.ShowOutputs = c.Sections.outputs

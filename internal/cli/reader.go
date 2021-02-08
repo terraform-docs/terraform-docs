@@ -63,7 +63,7 @@ func (c *cfgreader) parse() error {
 		}
 
 		switch flag {
-		case "header-from":
+		case "header-from", "footer-from":
 			if err := c.overrideValue(flag, c.config, &c.overrides); err != nil {
 				return err
 			}

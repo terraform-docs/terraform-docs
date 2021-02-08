@@ -19,7 +19,7 @@ indent_size = 4
 [*.md]
 trim_trailing_whitespace = true
 
-[examples/doc.{adoc,md,tf,txt}]
+[examples/doc.{adoc,md,tf,txt};examples/footer.md]
 trim_trailing_whitespace = false
 insert_final_newline = false
 

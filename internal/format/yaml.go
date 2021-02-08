@@ -32,6 +32,7 @@ func NewYAML(settings *print.Settings) print.Engine {
 func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
 	copy := &terraform.Module{
 		Header:       "",
+		Footer:       "",
 		Inputs:       make([]*terraform.Input, 0),
 		ModuleCalls:  make([]*terraform.ModuleCall, 0),
 		Outputs:      make([]*terraform.Output, 0),
@@ -42,6 +43,9 @@ func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string
 
 	if settings.ShowHeader {
 		copy.Header = module.Header
+	}
+	if settings.ShowFooter {
+		copy.Footer = module.Footer
 	}
 	if settings.ShowInputs {
 		copy.Inputs = module.Inputs

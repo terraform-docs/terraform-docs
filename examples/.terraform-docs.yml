@@ -1,5 +1,7 @@
 formatter: markdown table
 header-from: doc.txt
+footer-from: footer.md
+
 sections:
   hide-all: true
   show:
@@ -7,6 +9,7 @@ sections:
     - inputs
     - providers
     - modules
+    - footer
 
 # output:
 #   file: README.md

@@ -1,0 +1,7 @@
+Example of 'foo_bar' module in `foo_bar.tf`.
+
+- list item 1
+- list item 2
+
+Even inline **formatting** in _here_ is possible.
+and some [link](https://domain.com/)

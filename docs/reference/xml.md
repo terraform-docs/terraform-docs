@@ -26,15 +26,16 @@ terraform-docs xml [PATH] [flags]
 
 ```console
   -c, --config string               config file name (default ".terraform-docs.yml")
+      --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
-      --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
+      --hide strings                hide section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-all                    hide all sections (default false)
       --output-file string          File in module directory to insert output into (default "")
       --output-mode string          Output to file method [inject, replace] (default "inject")
       --output-template string      Output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
       --output-values               inject output values into outputs (default false)
       --output-values-from string   inject output values from file into outputs (default "")
-      --show strings                show section [header, inputs, modules, outputs, providers, requirements, resources]
+      --show strings                show section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --show-all                    show all sections (default true)
       --sort                        sort items (default true)
       --sort-by-required            sort items by name and print required ones first (default false)
@@ -46,13 +47,14 @@ terraform-docs xml [PATH] [flags]
 Given the [`examples`][examples] module:
 
 ```shell
-terraform-docs xml ./examples/
+terraform-docs xml --footer-from footer.md ./examples/
 ```
 
 generates the following output:
 
     <module>
       <header>Usage:&#xA;&#xA;Example of &#39;foo_bar&#39; module in `foo_bar.tf`.&#xA;&#xA;- list item 1&#xA;- list item 2&#xA;&#xA;Even inline **formatting** in _here_ is possible.&#xA;and some [link](https://domain.com/)&#xA;&#xA;* list item 3&#xA;* list item 4&#xA;&#xA;```hcl&#xA;module &#34;foo_bar&#34; {&#xA;  source = &#34;github.com/foo/bar&#34;&#xA;&#xA;  id   = &#34;1234567890&#34;&#xA;  name = &#34;baz&#34;&#xA;&#xA;  zones = [&#34;us-east-1&#34;, &#34;us-west-1&#34;]&#xA;&#xA;  tags = {&#xA;    Name         = &#34;baz&#34;&#xA;    Created-By   = &#34;first.last@email.com&#34;&#xA;    Date-Created = &#34;20180101&#34;&#xA;  }&#xA;}&#xA;```&#xA;&#xA;Here is some trailing text after code block,&#xA;followed by another line of text.&#xA;&#xA;| Name | Description     |&#xA;|------|-----------------|&#xA;| Foo  | Foo description |&#xA;| Bar  | Bar description |</header>
+      <footer>## This is an example of a footer&#xA;&#xA;It looks exactly like a header, but is placed at the end of the document</footer>
       <inputs>
         <input>
           <name>bool-1</name>

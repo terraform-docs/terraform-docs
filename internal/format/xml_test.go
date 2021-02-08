@@ -28,7 +28,10 @@ func TestXml(t *testing.T) {
 		// Base
 		"Base": {
 			settings: testutil.WithSections(),
-			options:  terraform.Options{},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"Empty": {
 			settings: testutil.WithSections(),
@@ -61,6 +64,13 @@ func TestXml(t *testing.T) {
 		"OnlyHeader": {
 			settings: print.Settings{ShowHeader: true},
 			options:  terraform.Options{},
+		},
+		"OnlyFooter": {
+			settings: print.Settings{ShowFooter: true},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"OnlyInputs": {
 			settings: print.Settings{ShowInputs: true},

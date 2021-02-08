@@ -346,24 +346,24 @@ func TestBuiltinFunc(t *testing.T) {
 			expected: "",
 		},
 
-		// sanitizeHeader
+		// sanitizeSection
 		{
-			name:     "template builtin functions sanitizeHeader",
-			funcName: "sanitizeHeader",
+			name:     "template builtin functions sanitizeSection",
+			funcName: "sanitizeSection",
 			funcArgs: []string{"\"Example of 'foo_bar' module in `foo_bar.tf`.\n\n| Foo | Bar |\n|-----|-----|\n| foo | bar |\""},
 			escape:   true,
 			expected: "Example of 'foo\\_bar' module in `foo_bar.tf`.\n\n| Foo | Bar |\n|-----|-----|\n| foo | bar |",
 		},
 		{
-			name:     "template builtin functions sanitizeHeader",
-			funcName: "sanitizeHeader",
+			name:     "template builtin functions sanitizeSection",
+			funcName: "sanitizeSection",
 			funcArgs: []string{"\"Example of 'foo_bar' module in `foo_bar.tf`.\n\n| Foo | Bar |\""},
 			escape:   false,
 			expected: "Example of 'foo_bar' module in `foo_bar.tf`.\n\n| Foo | Bar |",
 		},
 		{
-			name:     "template builtin functions sanitizeHeader",
-			funcName: "sanitizeHeader",
+			name:     "template builtin functions sanitizeSection",
+			funcName: "sanitizeSection",
 			funcArgs: []string{`""`},
 			escape:   true,
 			expected: "n/a",

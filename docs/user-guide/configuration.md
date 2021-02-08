@@ -45,6 +45,7 @@ corresponding default values (if applicable).
 ```yaml
 formatter: <FORMATTER_NAME>
 header-from: main.tf
+footer-from: ""
 
 sections:
   hide-all: false
@@ -116,6 +117,11 @@ formatter name must be set to `foo`.
 
 Relative path to a file to extract header for the generated output from. Supported
 file formats are `.adoc`, `.md`, `.tf`, and `.txt`. Default value is `main.tf`.
+
+## footer-from
+
+Relative path to a file to extract footer for the generated output from. Supported
+file formats are `.adoc`, `.md`, `.tf`, and `.txt`. Default value is `""`.
 
 ## Sections
 

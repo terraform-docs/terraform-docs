@@ -28,8 +28,9 @@ terraform-docs asciidoc document [PATH] [flags]
       --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
       --default                     show Default column or section (default true)
+      --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
-      --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
+      --hide strings                hide section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-all                    hide all sections (default false)
       --indent int                  indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
       --output-file string          File in module directory to insert output into (default "")
@@ -39,7 +40,7 @@ terraform-docs asciidoc document [PATH] [flags]
       --output-values-from string   inject output values from file into outputs (default "")
       --required                    show Required column or section (default true)
       --sensitive                   show Sensitive column or section (default true)
-      --show strings                show section [header, inputs, modules, outputs, providers, requirements, resources]
+      --show strings                show section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --show-all                    show all sections (default true)
       --sort                        sort items (default true)
       --sort-by-required            sort items by name and print required ones first (default false)
@@ -52,7 +53,7 @@ terraform-docs asciidoc document [PATH] [flags]
 Given the [`examples`][examples] module:
 
 ```shell
-terraform-docs asciidoc document ./examples/
+terraform-docs asciidoc document --footer-from footer.md ./examples/
 ```
 
 generates the following output:
@@ -468,5 +469,9 @@ generates the following output:
     === [[output_unquoted]] <<output_unquoted,unquoted>>
 
     Description: It's unquoted output.
+
+    ## This is an example of a footer
+
+    It looks exactly like a header, but is placed at the end of the document
 
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples

@@ -52,6 +52,12 @@ type Settings struct {
 	// scope: Asciidoc, Markdown
 	ShowDefault bool
 
+	// ShowFooter show "Footer" module information
+	//
+	// default: false
+	// scope: Global
+	ShowFooter bool
+
 	// ShowHeader show "Header" module information
 	//
 	// default: true
@@ -122,6 +128,7 @@ func DefaultSettings() *Settings {
 		ShowAnchor:       true,
 		ShowColor:        true,
 		ShowDefault:      true,
+		ShowFooter:       false,
 		ShowHeader:       true,
 		ShowInputs:       true,
 		ShowModuleCalls:  true,
@@ -143,6 +150,7 @@ func (s *Settings) Convert() *printsdk.Settings {
 		OutputValues:     s.OutputValues,
 		ShowColor:        s.ShowColor,
 		ShowDefault:      s.ShowDefault,
+		ShowFooter:       s.ShowFooter,
 		ShowHeader:       s.ShowHeader,
 		ShowInputs:       s.ShowInputs,
 		ShowOutputs:      s.ShowOutputs,

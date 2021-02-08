@@ -36,6 +36,7 @@ header: |-
   |------|-----------------|
   | Foo  | Foo description |
   | Bar  | Bar description |
+footer: ""
 inputs: []
 modules: []
 outputs: []
