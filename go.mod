@@ -11,7 +11,7 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.6.1
-	github.com/terraform-docs/plugin-sdk v0.0.0-20210208180642-7974eb48f24e
+	github.com/terraform-docs/plugin-sdk v0.1.0
 	github.com/terraform-docs/terraform-config-inspect v0.0.0-20210126151735-6ef25af8884f
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 	mvdan.cc/xurls/v2 v2.2.0
