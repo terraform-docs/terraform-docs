@@ -1,5 +1,6 @@
 header = ""
 inputs = []
+modules = []
 providers = []
 requirements = []
 resources = []

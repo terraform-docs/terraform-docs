@@ -6,6 +6,7 @@ sections:
     - header
     - inputs
     - providers
+    - modules
 sort:
   enabled: true
   by:

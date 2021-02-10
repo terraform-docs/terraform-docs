@@ -33,6 +33,7 @@ type sections struct {
 
 	header       bool `yaml:"-"`
 	inputs       bool `yaml:"-"`
+	modulecalls  bool `yaml:"-"`
 	outputs      bool `yaml:"-"`
 	providers    bool `yaml:"-"`
 	requirements bool `yaml:"-"`
@@ -55,6 +56,7 @@ func defaultSections() sections {
 
 		header:       false,
 		inputs:       false,
+		modulecalls:  false,
 		outputs:      false,
 		providers:    false,
 		requirements: false,
@@ -63,17 +65,17 @@ func defaultSections() sections {
 }
 
 func (s *sections) validate() error {
-	items := []string{"header", "inputs", "outputs", "providers", "requirements", "resources"}
+	items := []string{"header", "inputs", "modules", "outputs", "providers", "requirements", "resources"}
 	for _, item := range s.Show {
 		switch item {
-		case items[0], items[1], items[2], items[3], items[4], items[5]:
+		case items[0], items[1], items[2], items[3], items[4], items[5], items[6]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
 	}
 	for _, item := range s.Hide {
 		switch item {
-		case items[0], items[1], items[2], items[3], items[4], items[5]:
+		case items[0], items[1], items[2], items[3], items[4], items[5], items[6]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}

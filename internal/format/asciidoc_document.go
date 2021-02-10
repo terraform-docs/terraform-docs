@@ -149,10 +149,30 @@ const (
 	{{ end -}}
 	`
 
+	asciidocDocumentModulecallsTpl = `
+	{{- if .Settings.ShowModuleCalls -}}
+		{{ indent 0 "=" }} Modules
+		{{ if not .Module.ModuleCalls }}
+			No Modules.
+		{{ else }}
+			The following Modules are called:
+			{{- range .Module.ModuleCalls }}
+
+				{{ indent 1 "=" }} {{ name .Name }}
+
+				Source: {{ .Source }}
+
+				Version: {{ .Version }}
+			{{- end }}
+		{{ end }}
+	{{ end -}}
+	`
+
 	asciidocDocumentTpl = `
 	{{- template "header" . -}}
 	{{- template "requirements" . -}}
 	{{- template "providers" . -}}
+	{{- template "modulecalls" . -}}
 	{{- template "resources" . -}}
 	{{- template "inputs" . -}}
 	{{- template "outputs" . -}}
@@ -191,6 +211,9 @@ func NewAsciidocDocument(settings *print.Settings) print.Engine {
 	}, &template.Item{
 		Name: "outputs",
 		Text: asciidocDocumentOutputsTpl,
+	}, &template.Item{
+		Name: "modulecalls",
+		Text: asciidocDocumentModulecallsTpl,
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {

@@ -123,6 +123,7 @@ func TestTomlNoHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -148,6 +149,7 @@ func TestTomlNoInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -168,11 +170,38 @@ func TestTomlNoInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestTomlNoModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowModuleCalls:  false,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+		ShowResources:    true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("toml", "toml-NoModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTOML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestTomlNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -198,6 +227,7 @@ func TestTomlNoProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -223,6 +253,7 @@ func TestTomlNoRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -248,6 +279,7 @@ func TestTomlNoResources(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -273,6 +305,7 @@ func TestTomlOnlyHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -298,6 +331,7 @@ func TestTomlOnlyInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -318,11 +352,38 @@ func TestTomlOnlyInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestTomlOnlyModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowModuleCalls:  true,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+		ShowResources:    false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("toml", "toml-OnlyModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewTOML(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestTomlOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -348,6 +409,7 @@ func TestTomlOnlyProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -373,6 +435,7 @@ func TestTomlOnlyRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -398,6 +461,7 @@ func TestTomlOnlyResources(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -470,6 +534,7 @@ func TestTomlEmpty(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,

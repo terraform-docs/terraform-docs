@@ -244,6 +244,7 @@
       "required": false
     }
   ],
+  "modules": [],
   "outputs": [
     {
       "name": "unquoted",

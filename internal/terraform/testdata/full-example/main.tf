@@ -22,3 +22,8 @@ data "aws_caller_identity" "current" {
 }
 
 resource "null_resource" "foo" {}
+
+module "foo" {
+  source  = "bar"
+  version = "1.2.3"
+}

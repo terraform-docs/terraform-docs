@@ -229,8 +229,8 @@ github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UV
 github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
-github.com/terraform-docs/plugin-sdk v0.0.0-20210202231042-605acf0f17df h1:yUhokDmChf3PV1lHRwT8gaCz5oc2WQnVQQ+VddI2EQI=
-github.com/terraform-docs/plugin-sdk v0.0.0-20210202231042-605acf0f17df/go.mod h1:H9E+yVwyOGLXcR28wcWaDODqmhKanZF/uj1H4uCesVM=
+github.com/terraform-docs/plugin-sdk v0.0.0-20210208180642-7974eb48f24e h1:MUYLCKtUTrvsEh9MlQqvlLnAQ96miDsOzG5dfj7fKrQ=
+github.com/terraform-docs/plugin-sdk v0.0.0-20210208180642-7974eb48f24e/go.mod h1:H9E+yVwyOGLXcR28wcWaDODqmhKanZF/uj1H4uCesVM=
 github.com/terraform-docs/terraform-config-inspect v0.0.0-20210126151735-6ef25af8884f h1:WXgHENMC8JOyj6aRpOlnAnJkZ3ZAkPBOhqYrJ5GOhDE=
 github.com/terraform-docs/terraform-config-inspect v0.0.0-20210126151735-6ef25af8884f/go.mod h1:GtanFwTsRRXScYHOMb5h4K18XQBFeS2tXat9/LrPtPc=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=

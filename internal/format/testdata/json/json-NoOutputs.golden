@@ -244,6 +244,23 @@
       "required": false
     }
   ],
+  "modules": [
+    {
+      "name": "foo",
+      "source": "bar",
+      "version": "1.2.3"
+    },
+    {
+      "name": "bar",
+      "source": "baz",
+      "version": "4.5.6"
+    },
+    {
+      "name": "baz",
+      "source": "baz",
+      "version": "4.5.6"
+    }
+  ],
   "outputs": [],
   "providers": [
     {

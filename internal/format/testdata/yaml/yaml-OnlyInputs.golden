@@ -183,6 +183,7 @@ inputs:
     description: null
     default: {}
     required: false
+modules: []
 outputs: []
 providers: []
 requirements: []

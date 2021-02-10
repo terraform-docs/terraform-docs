@@ -143,6 +143,7 @@ func TestDocumentNoHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -168,6 +169,7 @@ func TestDocumentNoInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -188,11 +190,37 @@ func TestDocumentNoInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestDocumentNoModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       true,
+		ShowInputs:       true,
+		ShowModuleCalls:  false,
+		ShowOutputs:      true,
+		ShowProviders:    true,
+		ShowRequirements: true,
+	}).Build()
+
+	expected, err := testutil.GetExpected("markdown", "document-NoModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewMarkdownDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestDocumentNoOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: true,
@@ -218,6 +246,7 @@ func TestDocumentNoProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -243,6 +272,7 @@ func TestDocumentNoRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       true,
+		ShowModuleCalls:  true,
 		ShowOutputs:      true,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -293,6 +323,7 @@ func TestDocumentOnlyHeader(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       true,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -318,6 +349,7 @@ func TestDocumentOnlyInputs(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       true,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -338,11 +370,37 @@ func TestDocumentOnlyInputs(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestDocumentOnlyModulecalls(t *testing.T) {
+	assert := assert.New(t)
+	settings := testutil.Settings().With(&print.Settings{
+		ShowHeader:       false,
+		ShowInputs:       false,
+		ShowModuleCalls:  true,
+		ShowOutputs:      false,
+		ShowProviders:    false,
+		ShowRequirements: false,
+	}).Build()
+
+	expected, err := testutil.GetExpected("markdown", "document-OnlyModulecalls")
+	assert.Nil(err)
+
+	options := terraform.NewOptions()
+	module, err := testutil.GetModule(options)
+	assert.Nil(err)
+
+	printer := NewMarkdownDocument(settings)
+	actual, err := printer.Print(module, settings)
+
+	assert.Nil(err)
+	assert.Equal(expected, actual)
+}
+
 func TestDocumentOnlyOutputs(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      true,
 		ShowProviders:    false,
 		ShowRequirements: false,
@@ -368,6 +426,7 @@ func TestDocumentOnlyProviders(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    true,
 		ShowRequirements: false,
@@ -393,6 +452,7 @@ func TestDocumentOnlyRequirements(t *testing.T) {
 	settings := testutil.Settings().With(&print.Settings{
 		ShowHeader:       false,
 		ShowInputs:       false,
+		ShowModuleCalls:  false,
 		ShowOutputs:      false,
 		ShowProviders:    false,
 		ShowRequirements: true,
@@ -625,10 +685,11 @@ func TestDocumentOutputValuesNoSensitivity(t *testing.T) {
 func TestDocumentEmpty(t *testing.T) {
 	assert := assert.New(t)
 	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:    false,
-		ShowProviders: false,
-		ShowInputs:    false,
-		ShowOutputs:   false,
+		ShowHeader:      false,
+		ShowProviders:   false,
+		ShowInputs:      false,
+		ShowModuleCalls: false,
+		ShowOutputs:     false,
 	}).Build()
 
 	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{

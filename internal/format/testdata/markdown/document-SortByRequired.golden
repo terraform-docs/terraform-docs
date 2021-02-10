@@ -58,6 +58,28 @@ The following providers are used by this module:
 
 - tls
 
+## Modules
+
+The following Modules are called:
+
+### bar
+
+Source: baz
+
+Version: 4.5.6
+
+### baz
+
+Source: baz
+
+Version: 4.5.6
+
+### foo
+
+Source: bar
+
+Version: 1.2.3
+
 ## Resources
 
 The following resources are used by this module:

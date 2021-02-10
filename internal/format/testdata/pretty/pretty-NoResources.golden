@@ -48,6 +48,11 @@ followed by another line of text.
 [36mprovider.null[0m
 
 
+[36mmodulecall.foo[0m (bar,1.2.3)
+[36mmodulecall.bar[0m (baz,4.5.6)
+[36mmodulecall.baz[0m (baz,4.5.6)
+
+
 [36minput.unquoted[0m (required)
 [90mn/a[0m
 

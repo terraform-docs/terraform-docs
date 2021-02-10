@@ -29,6 +29,28 @@ The following providers are used by this module:
 
 - null
 
+== Modules
+
+The following Modules are called:
+
+=== foo
+
+Source: bar
+
+Version: 1.2.3
+
+=== bar
+
+Source: baz
+
+Version: 4.5.6
+
+=== baz
+
+Source: baz
+
+Version: 4.5.6
+
 == Resources
 
 The following resources are used by this module:

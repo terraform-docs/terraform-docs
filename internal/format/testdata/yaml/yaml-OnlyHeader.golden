@@ -37,6 +37,7 @@ header: |-
   | Foo  | Foo description |
   | Bar  | Bar description |
 inputs: []
+modules: []
 outputs: []
 providers: []
 requirements: []
