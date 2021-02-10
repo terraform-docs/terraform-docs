@@ -11,13 +11,6 @@
 set -o errexit
 set -o pipefail
 
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-if [ -z "${CURRENT_BRANCH}" ] || [ "${CURRENT_BRANCH}" != "master" ]; then
-    echo "Error: The current branch is '${CURRENT_BRANCH}', switch to 'main' to do the release."
-    exit 1
-fi
-
 if [ -n "$(git status --short)" ]; then
     echo "Error: There are untracked/modified changes, commit or discard them before the release."
     exit 1
@@ -32,11 +25,17 @@ fi
 
 PWD=$(cd "$(dirname "$0")" && pwd -P)
 
-# get closest GA tag, ignore alpha, beta and rc tags
+# get closest GA tag immediately before the latest one, ignore alpha, beta and rc tags
 function getClosestVersion() {
+    local latest
+    latest=""
     for t in $(git tag --sort=-creatordate); do
         tag="$t"
         if [[ "$tag" == *"-alpha"* ]] || [[ "$tag" == *"-beta"* ]] || [[ "$tag" == *"-rc"* ]]; then
+            continue
+        fi
+        if [ -z "$latest" ]; then
+            latest="$t"
             continue
         fi
         break
