@@ -418,21 +418,28 @@ func TestEscapeIllegalCharacters(t *testing.T) {
 			input:       "* lorem * ipsum *dolor*consectetur* `adipi * scing *elit*sit*`",
 			escapePipe:  false,
 			escapeChars: true,
-			expected:    "* lorem \\* ipsum *dolor\\*consectetur* `adipi * scing *elit*sit*`",
+			expected:    "* lorem * ipsum *dolor*consectetur* `adipi * scing *elit*sit*`",
 		},
 		{
 			name:        "escape asterisk",
 			input:       "** lorem ** ipsum **dolor**consectetur** `adipi ** scing **elit**sit**`",
 			escapePipe:  false,
 			escapeChars: true,
-			expected:    "** lorem \\*\\* ipsum **dolor\\*\\*consectetur** `adipi ** scing **elit**sit**`",
+			expected:    "** lorem ** ipsum **dolor**consectetur** `adipi ** scing **elit**sit**`",
 		},
 		{
 			name:        "escape asterisk",
 			input:       "*** lorem *** ipsum ***dolor***consectetur*** `adipi *** scing ***elit***sit***`",
 			escapePipe:  false,
 			escapeChars: true,
-			expected:    "*** lorem \\*\\*\\* ipsum ***dolor\\*\\*\\*consectetur*** `adipi *** scing ***elit***sit***`",
+			expected:    "*** lorem *** ipsum ***dolor***consectetur*** `adipi *** scing ***elit***sit***`",
+		},
+		{
+			name:        "escape asterisk",
+			input:       "**lorem ipsum dolor consectetur adipi scing elit sit**",
+			escapePipe:  false,
+			escapeChars: true,
+			expected:    "**lorem ipsum dolor consectetur adipi scing elit sit**",
 		},
 		{
 			name:        "do not escape asterisk",
@@ -454,6 +461,13 @@ func TestEscapeIllegalCharacters(t *testing.T) {
 			escapePipe:  false,
 			escapeChars: false,
 			expected:    "*** lorem *** ipsum ***dolor***consectetur*** `adipi *** scing ***elit***sit***`",
+		},
+		{
+			name:        "do not escape asterisk",
+			input:       "**lorem ipsum dolor consectetur adipi scing elit sit**",
+			escapePipe:  false,
+			escapeChars: false,
+			expected:    "**lorem ipsum dolor consectetur adipi scing elit sit**",
 		},
 	}
 	for _, tt := range tests {

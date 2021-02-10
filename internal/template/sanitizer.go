@@ -187,7 +187,6 @@ func escapeIllegalCharacters(s string, settings *print.Settings) string {
 						line = strings.Replace(line, "‡‡‡DONTESCAPE‡‡‡", char, -1)
 					}
 					escape("_") // Escape underscore
-					escape("*") // Escape asterisk
 					return line
 				})
 			},
