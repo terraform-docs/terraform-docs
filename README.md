@@ -66,12 +66,13 @@ Stable binaries are also available on the [releases] page. To install, download 
 binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.1/terraform-docs-v0.10.1-$(uname)-amd64
-chmod +x ./terraform-docs
-mv ./terraform-docs /some-dir-in-your-PATH/terraform-docs
+curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.10.1/terraform-docs-v0.10.1-$(uname)-amd64.tar.gz
+tar -xzf terraform-docs.tar.gz
+chmod +x terraform-docs
+mv terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
 
-**NOTE:** Windows releases are in `EXE` format.
+**NOTE:** Windows releases are in `ZIP` format.
 
 If you are a Mac OS X user, you can use [Homebrew]:
 
