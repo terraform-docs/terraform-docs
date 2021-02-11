@@ -266,6 +266,7 @@ func (c *Config) process() {
 	}
 	c.Sections.header = c.Sections.visibility("header")
 	c.Sections.inputs = c.Sections.visibility("inputs")
+	c.Sections.modulecalls = c.Sections.visibility("modules")
 	c.Sections.outputs = c.Sections.visibility("outputs")
 	c.Sections.providers = c.Sections.visibility("providers")
 	c.Sections.requirements = c.Sections.visibility("requirements")
@@ -337,6 +338,7 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	// sections
 	settings.ShowHeader = c.Sections.header
 	settings.ShowInputs = c.Sections.inputs
+	settings.ShowModuleCalls = c.Sections.modulecalls
 	settings.ShowOutputs = c.Sections.outputs
 	settings.ShowProviders = c.Sections.providers
 	settings.ShowRequirements = c.Sections.requirements
