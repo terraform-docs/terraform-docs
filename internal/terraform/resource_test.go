@@ -76,11 +76,34 @@ func TestResourcesSortedByType(t *testing.T) {
 
 	sort.Sort(resourcesSortedByType(resources))
 
-	expected := []string{"a_a", "a_f", "b_b", "b_d", "c_c", "c_e"}
+	expected := []string{"a_a", "a_f", "b_b", "b_d", "c_c", "c_e", "z_z", "z_z", "z_z"}
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
 		actual[k] = i.FullType()
+	}
+
+	assert.Equal(expected, actual)
+}
+
+func TestResourcesSortedByTypeAndMode(t *testing.T) {
+	assert := assert.New(t)
+	resources := sampleResources()
+
+	sort.Sort(resourcesSortedByType(resources))
+
+	expected := []string{"a_a_m", "a_f_m", "b_b_m", "b_d_m", "c_c_m", "c_e_m", "z_z", "z_z_d", "z_z_m"}
+	actual := make([]string, len(resources))
+
+	for k, i := range resources {
+		v := i.FullType()
+		switch i.Mode {
+		case "managed":
+			v = v + "_m"
+		case "data":
+			v = v + "_d"
+		}
+		actual[k] = v
 	}
 
 	assert.Equal(expected, actual)
@@ -129,6 +152,27 @@ func sampleResources() []*Resource {
 			ProviderSource: "hashicorp/f",
 			Mode:           "managed",
 			Version:        "1.6.0",
+		},
+		{
+			ProviderName:   "z",
+			Type:           "z",
+			ProviderSource: "hashicorp/a",
+			Mode:           "managed",
+			Version:        "1.5.0",
+		},
+		{
+			ProviderName:   "z",
+			Type:           "z",
+			ProviderSource: "hashicorp/a",
+			Mode:           "data",
+			Version:        "1.5.0",
+		},
+		{
+			ProviderName:   "z",
+			Type:           "z",
+			ProviderSource: "hashicorp/a",
+			Mode:           "",
+			Version:        "1.5.0",
 		},
 	}
 }
