@@ -21,10 +21,11 @@ RUN make build
 
 ################
 
-FROM alpine:3.12.3
+# Use empty base image
+FROM scratch
 
-RUN apk --no-cache add ca-certificates
-
+# Copy static executable for terraform-docs
 COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
 
+# Set entrypoint
 ENTRYPOINT ["terraform-docs"]
