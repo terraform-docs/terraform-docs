@@ -8,7 +8,7 @@
 
 FROM golang:1.15.6-alpine AS builder
 
-RUN apk add --update --no-cache ca-certificates bash make gcc musl-dev git openssh wget curl
+RUN apk add --update --no-cache make
 
 WORKDIR /go/src/terraform-docs
 
