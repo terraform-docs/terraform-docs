@@ -10,7 +10,7 @@ us on [Slack].
 
 ## Development Requirements
 
-- [Go] 1.15+
+- [Go] 1.16+
 - [goimports]
 - [golangci-lint]
 
