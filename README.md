@@ -40,7 +40,7 @@ Visit [docs] folder for all documentation.
 The latest version can be installed using `go get`:
 
 ```bash
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.11.0
+GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.11.1
 ```
 
 **NOTE:** to download any version **before** `v0.9.1` (inclusive) you need to use to
@@ -66,7 +66,7 @@ Stable binaries are also available on the [releases] page. To install, download 
 binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.11.0/terraform-docs-v0.11.0-$(uname)-amd64.tar.gz
+curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.11.1/terraform-docs-v0.11.1-$(uname)-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz
 chmod +x terraform-docs
 mv terraform-docs /some-dir-in-your-PATH/terraform-docs
@@ -102,7 +102,7 @@ choco install terraform-docs
 Alternatively you also can run `terraform-docs` as a container:
 
 ```bash
-docker run quay.io/terraform-docs/terraform-docs:0.11.0
+docker run quay.io/terraform-docs/terraform-docs:0.11.1
 ```
 
 **NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge`
