@@ -47,7 +47,7 @@ jobs:
         run: echo ::set-output name=tag::${GITHUB_REF:11} # tag name without leading 'v'
 
       - name: Update Chocolatey package
-        run: ./scripts/release/update-choco.sh "${{ env.GITHUB_REF }}"
+        run: ./scripts/release/update-choco.sh "${{ steps.vars.outputs.tag }}"
 
       - name: Update Chocolatey package
         uses: drud/action-cross-commit@master
@@ -58,7 +58,7 @@ jobs:
           destination-branch: main
           git-user: terraform-docs-bot
           git-user-email: bot@terraform-docs.io
-          git-commit-message: "Chocolatey update for terraform-docs version v${{ env.GITHUB_REF }}"
+          git-commit-message: "Chocolatey update for terraform-docs version v${{ steps.vars.outputs.tag }}"
           excludes: README.md:LICENSE:.git:.github
 
   homebrew:
