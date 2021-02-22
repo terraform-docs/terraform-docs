@@ -19,6 +19,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
@@ -385,12 +386,10 @@ func loadResources(tfmodule *tfconfig.Module) []*Resource {
 
 	for _, resource := range allResources {
 		for _, r := range resource {
-			version := "latest"
-			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok && len(rv.VersionConstraints) > 0 {
-				versionParts := strings.Split(rv.VersionConstraints[len(rv.VersionConstraints)-1], " ")
-				version = versionParts[len(versionParts)-1]
+			var version string
+			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok {
+				version = resourceVersion(rv.VersionConstraints)
 			}
-
 			var source string
 			if len(tfmodule.RequiredProviders[r.Provider.Name].Source) > 0 {
 				source = tfmodule.RequiredProviders[r.Provider.Name].Source
@@ -414,6 +413,28 @@ func loadResources(tfmodule *tfconfig.Module) []*Resource {
 		resources = append(resources, resource)
 	}
 	return resources
+}
+
+func resourceVersion(constraints []string) string {
+	if len(constraints) == 0 {
+		return "latest"
+	}
+	versionParts := strings.Split(constraints[len(constraints)-1], " ")
+	switch len(versionParts) {
+	case 1:
+		if _, err := strconv.Atoi(versionParts[0][0:1]); err != nil {
+			if versionParts[0][0:1] == "=" {
+				return versionParts[0][1:]
+			}
+			return "latest"
+		}
+		return versionParts[0]
+	case 2:
+		if versionParts[0] == "=" {
+			return versionParts[1]
+		}
+	}
+	return "latest"
 }
 
 func loadComments(filename string, lineNum int) string {

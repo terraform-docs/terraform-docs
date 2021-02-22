@@ -297,7 +297,7 @@ header = "This header comes from a custom file\n\nLorem ipsum dolor sit amet, co
   providerName = "aws"
   providerSource = "hashicorp/aws"
   mode = "data"
-  version = "2.15.0"
+  version = "latest"
 
 [[resources]]
   type = "resource"
