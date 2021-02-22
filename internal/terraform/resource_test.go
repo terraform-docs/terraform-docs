@@ -76,7 +76,7 @@ func TestResourcesSortedByType(t *testing.T) {
 
 	sort.Sort(resourcesSortedByType(resources))
 
-	expected := []string{"a_a", "a_f", "b_b", "b_d", "c_c", "c_e", "z_z", "z_z", "z_z"}
+	expected := []string{"a_a", "a_f", "b_b", "b_d", "c_c", "c_e", "c_e_x", "z_z", "z_z", "z_z"}
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
@@ -92,7 +92,7 @@ func TestResourcesSortedByTypeAndMode(t *testing.T) {
 
 	sort.Sort(resourcesSortedByType(resources))
 
-	expected := []string{"a_a_m", "a_f_m", "b_b_m", "b_d_m", "c_c_m", "c_e_m", "z_z", "z_z_d", "z_z_m"}
+	expected := []string{"a_a_m", "a_f_m", "b_b_m", "b_d_m", "c_c_m", "c_e_m", "c_e_x_m", "z_z", "z_z_d", "z_z_m"}
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
@@ -113,6 +113,13 @@ func sampleResources() []*Resource {
 	return []*Resource{
 		{
 			Type:           "e",
+			ProviderName:   "c",
+			ProviderSource: "hashicorp/e",
+			Mode:           "managed",
+			Version:        "1.5.0",
+		},
+		{
+			Type:           "e_x",
 			ProviderName:   "c",
 			ProviderSource: "hashicorp/e",
 			Mode:           "managed",
