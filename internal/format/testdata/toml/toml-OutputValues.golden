@@ -303,7 +303,7 @@ header = "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 
   providerName = "aws"
   providerSource = "hashicorp/aws"
   mode = "data"
-  version = "2.15.0"
+  version = "latest"
 
 [[resources]]
   type = "resource"

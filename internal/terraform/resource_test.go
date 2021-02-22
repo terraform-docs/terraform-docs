@@ -109,6 +109,72 @@ func TestResourcesSortedByTypeAndMode(t *testing.T) {
 	assert.Equal(expected, actual)
 }
 
+func TestResourceVersion(t *testing.T) {
+	tests := []struct {
+		name       string
+		constraint []string
+		expected   string
+	}{
+		{
+			name:       "exact version, without operator",
+			constraint: []string{"1.2.3"},
+			expected:   "1.2.3",
+		},
+		{
+			name:       "exact version, with operator",
+			constraint: []string{"= 1.2.3"},
+			expected:   "1.2.3",
+		},
+		{
+			name:       "exact version, with operator, without space",
+			constraint: []string{"=1.2.3"},
+			expected:   "1.2.3",
+		},
+		{
+			name:       "exclude exact version, with space",
+			constraint: []string{"!= 1.2.3"},
+			expected:   "latest",
+		},
+		{
+			name:       "exclude exact version, without space",
+			constraint: []string{"!=1.2.3"},
+			expected:   "latest",
+		},
+		{
+			name:       "comparison version, with space",
+			constraint: []string{"> 1.2.3"},
+			expected:   "latest",
+		},
+		{
+			name:       "comparison version, without space",
+			constraint: []string{">1.2.3"},
+			expected:   "latest",
+		},
+		{
+			name:       "range version",
+			constraint: []string{"> 1.2.3, < 2.0.0"},
+			expected:   "latest",
+		},
+		{
+			name:       "pessimistic version, with space",
+			constraint: []string{"~> 1.2.3"},
+			expected:   "latest",
+		},
+		{
+			name:       "pessimistic version, without space",
+			constraint: []string{"~>1.2.3"},
+			expected:   "latest",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			assert.Equal(tt.expected, resourceVersion(tt.constraint))
+		})
+	}
+}
+
 func sampleResources() []*Resource {
 	return []*Resource{
 		{

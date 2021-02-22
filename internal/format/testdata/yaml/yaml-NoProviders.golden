@@ -252,7 +252,7 @@ resources:
     providerName: aws
     providerSource: hashicorp/aws
     mode: data
-    version: 2.15.0
+    version: latest
   - type: resource
     providerName: "null"
     providerSource: hashicorp/null
