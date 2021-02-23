@@ -1,0 +1,66 @@
+---
+title: "{{ .Name }}"
+description: "{{ .Description }}."
+menu:
+  docs:
+    parent: "{{ .Parent }}"
+weight: {{ .Weight }}
+toc: true
+---
+
+## Synopsis
+
+{{ .Synopsis }}.
+
+{{- if .Runnable -}}
+{{ printf "\n" }}
+```console
+{{ .UseLine }}
+```
+{{- end }}
+
+{{- if .Options -}}
+{{ printf "\n" }}
+## Options
+
+```console
+{{ .Options -}}
+```
+{{- end }}
+
+{{- if .InheritedOptions -}}
+{{ printf "\n" }}
+## Inherited Options
+
+```console
+{{ .InheritedOptions -}}
+```
+{{- end }}
+
+{{- if not .HasChildren -}}
+{{ printf "\n" }}
+## Example
+
+Given the [`examples`][examples] module:
+
+```shell
+{{ .Usage }}
+```
+
+generates the following output:
+
+{{ .Example }}
+[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+{{- else -}}
+{{ printf "\n" }}
+## Subcommands
+
+{{- printf "\n" -}}
+{{- range .Subcommands -}}
+{{- printf "\n" -}}
+- [{{ .Name }}]({{"{{"}}< ref "{{ .Link }}" >{{"}}"}})
+{{- range .Children -}}
+{{ printf "\n  " }}- [{{ .Name }}]({{"{{"}}< ref "{{ .Link }}" >{{"}}"}})
+{{- end -}}
+{{- end -}}
+{{- end }}

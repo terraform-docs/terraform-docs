@@ -1,0 +1,51 @@
+---
+title: "terraform-docs"
+description: "A utility to generate documentation from Terraform modules in various output formats."
+menu:
+  docs:
+    parent: "reference"
+weight: 950
+toc: true
+---
+
+## Synopsis
+
+A utility to generate documentation from Terraform modules in various output formats.
+
+```console
+terraform-docs [PATH] [flags]
+```
+
+## Options
+
+```console
+  -c, --config string               config file name (default ".terraform-docs.yml")
+      --header-from string          relative path of a file to read header from (default "main.tf")
+  -h, --help                        help for terraform-docs
+      --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
+      --hide-all                    hide all sections (default false)
+      --output-values               inject output values into outputs (default false)
+      --output-values-from string   inject output values from file into outputs (default "")
+      --show strings                show section [header, inputs, modules, outputs, providers, requirements, resources]
+      --show-all                    show all sections (default true)
+      --sort                        sort items (default true)
+      --sort-by-required            sort items by name and print required ones first (default false)
+      --sort-by-type                sort items by type of them (default false)
+```
+
+## Subcommands
+
+- [terraform-docs asciidoc]({{< ref "asciidoc" >}})
+  - [terraform-docs asciidoc document]({{< ref "asciidoc-document" >}})
+  - [terraform-docs asciidoc table]({{< ref "asciidoc-table" >}})
+- [terraform-docs json]({{< ref "json" >}})
+- [terraform-docs markdown]({{< ref "markdown" >}})
+  - [terraform-docs markdown document]({{< ref "markdown-document" >}})
+  - [terraform-docs markdown table]({{< ref "markdown-table" >}})
+- [terraform-docs pretty]({{< ref "pretty" >}})
+- [terraform-docs tfvars]({{< ref "tfvars" >}})
+  - [terraform-docs tfvars hcl]({{< ref "tfvars-hcl" >}})
+  - [terraform-docs tfvars json]({{< ref "tfvars-json" >}})
+- [terraform-docs toml]({{< ref "toml" >}})
+- [terraform-docs xml]({{< ref "xml" >}})
+- [terraform-docs yaml]({{< ref "yaml" >}})
