@@ -14,5 +14,6 @@ require (
 	github.com/terraform-docs/plugin-sdk v0.1.0
 	github.com/terraform-docs/terraform-config-inspect v0.0.0-20210126151735-6ef25af8884f
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	honnef.co/go/tools v0.1.2
 	mvdan.cc/xurls/v2 v2.2.0
 )
