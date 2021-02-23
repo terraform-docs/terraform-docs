@@ -33,7 +33,7 @@ terraform-docs yaml ./my-terraform-module              # generate yaml
 - **Developers**
   - Read [Contributing Guide] before submitting a pull request
 
-Visit [our webside] for all documentation.
+Visit [our website] for all documentation.
 
 ## Installation
 
@@ -127,7 +127,7 @@ MIT License - Copyright (c) 2021 The terraform-docs Authors.
 [Formats Guide]: ./docs/reference/terraform-docs.md
 [Config File Reference]: ./docs/reference/config-file.md
 [Contributing Guide]: CONTRIBUTING.md
-[our webside]: https://terraform-docs.io/
+[our website]: https://terraform-docs.io/
 [here]: https://golang.org/doc/code.html#GOPATH
 [releases]: https://github.com/terraform-docs/terraform-docs/releases
 [Homebrew]: https://brew.sh
