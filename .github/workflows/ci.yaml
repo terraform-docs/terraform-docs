@@ -71,6 +71,10 @@ jobs:
       - name: Run Staticcheck
         run: make staticcheck
 
+      - name: Check docs
+        if: "!contains(github.ref, 'refs/heads/master')"
+        run: make docs && test -z "$(git status --porcelain)" || exit 1
+
   docker:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
