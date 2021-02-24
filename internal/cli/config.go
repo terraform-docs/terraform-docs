@@ -17,19 +17,11 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-type _sections struct {
-	NoHeader       bool
-	NoInputs       bool
-	NoOutputs      bool
-	NoProviders    bool
-	NoRequirements bool
-}
 type sections struct {
-	Show       []string  `yaml:"show"`
-	Hide       []string  `yaml:"hide"`
-	ShowAll    bool      `yaml:"show-all"`
-	HideAll    bool      `yaml:"hide-all"`
-	Deprecated _sections `yaml:"-"`
+	Show    []string `yaml:"show"`
+	Hide    []string `yaml:"hide"`
+	ShowAll bool     `yaml:"show-all"`
+	HideAll bool     `yaml:"hide-all"`
 
 	header       bool `yaml:"-"`
 	inputs       bool `yaml:"-"`
@@ -46,13 +38,6 @@ func defaultSections() sections {
 		Hide:    []string{},
 		ShowAll: true,
 		HideAll: false,
-		Deprecated: _sections{
-			NoHeader:       false,
-			NoInputs:       false,
-			NoOutputs:      false,
-			NoProviders:    false,
-			NoRequirements: false,
-		},
 
 		header:       false,
 		inputs:       false,
@@ -88,11 +73,6 @@ func (s *sections) validate() error {
 	}
 	if s.HideAll && len(s.Hide) != 0 {
 		return fmt.Errorf("'--hide-all' and '--hide' can't be used together")
-	}
-	for _, section := range items {
-		if changedfs["no-"+section] && contains(s.Hide, section) {
-			return fmt.Errorf("'--no-%s' and '--hide %s' can't be used together", section, section)
-		}
 	}
 	return nil
 }
@@ -145,14 +125,10 @@ type sortby struct {
 	Required bool `name:"required"`
 	Type     bool `name:"type"`
 }
-type _sort struct {
-	NoSort bool
-}
 type sort struct {
-	Enabled    bool     `yaml:"enabled"`
-	ByList     []string `yaml:"by"`
-	By         sortby   `yaml:"-"`
-	Deprecated _sort    `yaml:"-"`
+	Enabled bool     `yaml:"enabled"`
+	ByList  []string `yaml:"by"`
+	By      sortby   `yaml:"-"`
 }
 
 func defaultSort() sort {
@@ -163,19 +139,10 @@ func defaultSort() sort {
 			Required: false,
 			Type:     false,
 		},
-		Deprecated: _sort{
-			NoSort: false,
-		},
 	}
 }
 
 func (s *sort) validate() error {
-	items := []string{"sort"}
-	for _, item := range items {
-		if changedfs[item] && changedfs["no-"+item] {
-			return fmt.Errorf("'--%s' and '--no-%s' can't be used together", item, item)
-		}
-	}
 	types := []string{"required", "type"}
 	for _, item := range s.ByList {
 		switch item {
@@ -190,19 +157,12 @@ func (s *sort) validate() error {
 	return nil
 }
 
-type _settings struct {
-	NoColor     bool
-	NoEscape    bool
-	NoRequired  bool
-	NoSensitive bool
-}
 type settings struct {
-	Color      bool      `yaml:"color"`
-	Escape     bool      `yaml:"escape"`
-	Indent     int       `yaml:"indent"`
-	Required   bool      `yaml:"required"`
-	Sensitive  bool      `yaml:"sensitive"`
-	Deprecated _settings `yaml:"-"`
+	Color     bool `yaml:"color"`
+	Escape    bool `yaml:"escape"`
+	Indent    int  `yaml:"indent"`
+	Required  bool `yaml:"required"`
+	Sensitive bool `yaml:"sensitive"`
 }
 
 func defaultSettings() settings {
@@ -212,22 +172,10 @@ func defaultSettings() settings {
 		Indent:    2,
 		Required:  true,
 		Sensitive: true,
-		Deprecated: _settings{
-			NoColor:     false,
-			NoEscape:    false,
-			NoRequired:  false,
-			NoSensitive: false,
-		},
 	}
 }
 
 func (s *settings) validate() error {
-	items := []string{"escape", "color", "required", "sensitive"}
-	for _, item := range items {
-		if changedfs[item] && changedfs["no-"+item] {
-			return fmt.Errorf("'--%s' and '--no-%s' can't be used together", item, item)
-		}
-	}
 	return nil
 }
 
@@ -271,25 +219,6 @@ func (c *Config) process() {
 	c.Sections.providers = c.Sections.visibility("providers")
 	c.Sections.requirements = c.Sections.visibility("requirements")
 	c.Sections.resources = c.Sections.visibility("resources")
-
-	// sort
-	if !changedfs["sort"] && changedfs["no-sort"] {
-		c.Sort.Enabled = !c.Sort.Deprecated.NoSort
-	}
-
-	// settings
-	if !changedfs["escape"] && changedfs["no-escape"] {
-		c.Settings.Escape = !c.Settings.Deprecated.NoEscape
-	}
-	if !changedfs["color"] && changedfs["no-color"] {
-		c.Settings.Color = !c.Settings.Deprecated.NoColor
-	}
-	if !changedfs["required"] && changedfs["no-required"] {
-		c.Settings.Required = !c.Settings.Deprecated.NoRequired
-	}
-	if !changedfs["sensitive"] && changedfs["no-sensitive"] {
-		c.Settings.Sensitive = !c.Settings.Deprecated.NoSensitive
-	}
 }
 
 // validate config and check for any misuse or misconfiguration
