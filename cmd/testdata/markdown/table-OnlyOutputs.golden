@@ -1,0 +1,8 @@
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| output-0.12 | terraform 0.12 only |
+| output-1 | It's output number one. |
+| output-2 | It's output number two. |
+| unquoted | It's unquoted output. |

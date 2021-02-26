@@ -1,0 +1,8 @@
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | >= 2.15.0 |
+| aws.ident | >= 2.15.0 |
+| null | n/a |
+| tls | n/a |

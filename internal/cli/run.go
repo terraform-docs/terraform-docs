@@ -119,18 +119,35 @@ func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 				Module:   module.Convert(),
 				Settings: settings.Convert(),
 			})
-			return printOrDie(output, cerr)
+
+			if cerr != nil {
+				return cerr
+			}
+			fmt.Fprint(cmd.OutOrStdout(), output)
+			return nil
+
+			// commented for supporting cobra command tests
+			// return printOrDie(cmd.OutOrStdout(), output, cerr)
 		}
 
 		output, err := printer.Print(module, settings)
-		return printOrDie(output, err)
+
+		if err != nil {
+			return err
+		}
+		fmt.Fprint(cmd.OutOrStdout(), output)
+		return nil
+
+		// commented for supporting cobra command tests
+		// return printOrDie(cmd.OutOrStdout(), output, err)
 	}
 }
 
-func printOrDie(output string, err error) error {
-	if err != nil {
-		return err
-	}
-	fmt.Println(output)
-	return nil
-}
+// commented for supporting cobra command tests
+// func printOrDie(output string, err error) error {
+// 	if err != nil {
+// 		return err
+// 	}
+// 	fmt.Println(output)
+// 	return nil
+// }

@@ -1,0 +1,7 @@
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| bar | baz | 4.5.6 |
+| baz | baz | 4.5.6 |
+| foo | bar | 1.2.3 |
