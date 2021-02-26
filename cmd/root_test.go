@@ -91,6 +91,46 @@ func TestMarkdownTableCommandExecute(t *testing.T) {
 			params: []string{"md", "table", "--hide-all", "--show", "resources", filepath.Join("testdata", "example")},
 		},
 		{
+			name:   "table-NoHeader",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--hide", "header", filepath.Join("testdata", "example")},
+		},
+		{
+			name:   "table-NoInputs",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--hide", "inputs", filepath.Join("testdata", "example")},
+		},
+		{
+			name:   "table-NoModules",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--hide", "modules", filepath.Join("testdata", "example")},
+		},
+		{
+			name:   "table-NoOutputs",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--hide", "outputs", filepath.Join("testdata", "example")},
+		},
+		{
+			name:   "table-NoProviders",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--hide", "providers", filepath.Join("testdata", "example")},
+		},
+		{
+			name:   "table-NoRequirements",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--hide", "requirements", filepath.Join("testdata", "example")},
+		},
+		{
+			name:   "table-NoResources",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--hide", "resources", filepath.Join("testdata", "example")},
+		},
+		{
+			name:   "table-NoSort",
+			format: "markdown",
+			params: []string{"md", "table", "--show-all", "--sort=false", filepath.Join("testdata", "example")},
+		},
+		{
 			name:   "table-Minimal",
 			format: "markdown",
 			params: []string{"md", "table", "--show-all", filepath.Join("testdata", "example-minimal")},

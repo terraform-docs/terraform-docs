@@ -1,0 +1,79 @@
+Usage:
+
+Example of 'foo\_bar' module in `foo_bar.tf`.
+
+- list item 1
+- list item 2
+
+Even inline **formatting** in _here_ is possible.  
+and some [link](https://domain.com/)
+
+* list item 3
+* list item 4
+
+```hcl
+module "foo_bar" {
+  source = "github.com/foo/bar"
+
+  id   = "1234567890"
+  name = "baz"
+
+  zones = ["us-east-1", "us-west-1"]
+
+  tags = {
+    Name         = "baz"
+    Created-By   = "first.last@email.com"
+    Date-Created = "20180101"
+  }
+}
+```
+
+Here is some trailing text after code block,  
+followed by another line of text.
+
+| Name | Description     |
+|------|-----------------|
+| Foo  | Foo description |
+| Bar  | Bar description |
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+| aws | >= 2.15.0 |
+| random | >= 2.2.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | >= 2.15.0 |
+| aws.ident | >= 2.15.0 |
+| null | n/a |
+| tls | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| bar | baz | 4.5.6 |
+| baz | baz | 4.5.6 |
+| foo | bar | 1.2.3 |
+
+## Resources
+
+| Name |
+|------|
+| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |
+| [null_resource](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) |
+| [tls_private_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| output-0.12 | terraform 0.12 only |
+| output-1 | It's output number one. |
+| output-2 | It's output number two. |
+| unquoted | It's unquoted output. |
