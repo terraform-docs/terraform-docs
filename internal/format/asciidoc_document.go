@@ -64,7 +64,7 @@ const (
 	{{- if .Settings.ShowProviders -}}
 		{{ indent 0 "=" }} Providers
 		{{ if not .Module.Providers }}
-			No provider.
+			No providers.
 		{{ else }}
 			The following providers are used by this module:
 			{{- range .Module.Providers }}
@@ -80,7 +80,7 @@ const (
 		{{- if .Settings.ShowRequired -}}
 			{{ indent 0 "=" }} Required Inputs
 			{{ if not .Module.RequiredInputs }}
-				No required input.
+				No required inputs.
 			{{ else }}
 				The following input variables are required:
 				{{- range .Module.RequiredInputs }}
@@ -89,7 +89,7 @@ const (
 			{{- end }}
 			{{ indent 0 "=" }} Optional Inputs
 			{{ if not .Module.OptionalInputs }}
-				No optional input.
+				No optional inputs.
 			{{ else }}
 				The following input variables are optional (have default values):
 				{{- range .Module.OptionalInputs }}
@@ -99,7 +99,7 @@ const (
 		{{ else -}}
 			{{ indent 0 "=" }} Inputs
 			{{ if not .Module.Inputs }}
-				No input.
+				No inputs.
 			{{ else }}
 				The following input variables are supported:
 				{{- range .Module.Inputs }}
@@ -127,7 +127,7 @@ const (
 	{{- if .Settings.ShowOutputs -}}
 		{{ indent 0 "=" }} Outputs
 		{{ if not .Module.Outputs }}
-			No output.
+			No outputs.
 		{{ else }}
 			The following outputs are exported:
 			{{- range .Module.Outputs }}
@@ -153,7 +153,7 @@ const (
 	{{- if .Settings.ShowModuleCalls -}}
 		{{ indent 0 "=" }} Modules
 		{{ if not .Module.ModuleCalls }}
-			No Modules.
+			No modules.
 		{{ else }}
 			The following Modules are called:
 			{{- range .Module.ModuleCalls }}

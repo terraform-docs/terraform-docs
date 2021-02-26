@@ -18,7 +18,6 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/testutil"
 )
 
 func TestSanitizeName(t *testing.T) {
@@ -98,9 +97,9 @@ func TestSanitizeName(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
+			settings := &print.Settings{
 				EscapeCharacters: tt.escape,
-			}).Build()
+			}
 			actual := sanitizeName(tt.input, settings)
 
 			assert.Equal(tt.expected, actual)
@@ -110,37 +109,32 @@ func TestSanitizeName(t *testing.T) {
 
 func TestSanitizeItemForDocument(t *testing.T) {
 	tests := []struct {
-		name        string
-		filename    string
-		escapeChars bool
-		escapePipe  bool
+		name     string
+		filename string
+		escape   bool
 	}{
 		{
-			name:        "sanitize document item empty",
-			filename:    "empty",
-			escapeChars: true,
-			escapePipe:  true,
+			name:     "sanitize document item empty",
+			filename: "empty",
+			escape:   true,
 		},
 		{
-			name:        "sanitize document item complex",
-			filename:    "complex",
-			escapeChars: true,
-			escapePipe:  false,
+			name:     "sanitize document item complex",
+			filename: "complex",
+			escape:   true,
 		},
 		{
-			name:        "sanitize document item codeblock",
-			filename:    "codeblock",
-			escapeChars: true,
-			escapePipe:  true,
+			name:     "sanitize document item codeblock",
+			filename: "codeblock",
+			escape:   true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
-				EscapeCharacters: tt.escapeChars,
-			}).Build()
-			settings.EscapePipe = tt.escapePipe
+			settings := &print.Settings{
+				EscapeCharacters: tt.escape,
+			}
 
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".golden"))
 			assert.Nil(err)
@@ -157,32 +151,32 @@ func TestSanitizeItemForDocument(t *testing.T) {
 
 func TestSanitizeItemForTable(t *testing.T) {
 	tests := []struct {
-		name        string
-		filename    string
-		escapeChars bool
+		name     string
+		filename string
+		escape   bool
 	}{
 		{
-			name:        "sanitize table item empty",
-			filename:    "empty",
-			escapeChars: true,
+			name:     "sanitize table item empty",
+			filename: "empty",
+			escape:   true,
 		},
 		{
-			name:        "sanitize table item complex",
-			filename:    "complex",
-			escapeChars: true,
+			name:     "sanitize table item complex",
+			filename: "complex",
+			escape:   true,
 		},
 		{
-			name:        "sanitize table item codeblock",
-			filename:    "codeblock",
-			escapeChars: true,
+			name:     "sanitize table item codeblock",
+			filename: "codeblock",
+			escape:   true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
-				EscapeCharacters: tt.escapeChars,
-			}).Build()
+			settings := &print.Settings{
+				EscapeCharacters: tt.escape,
+			}
 
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
@@ -199,32 +193,32 @@ func TestSanitizeItemForTable(t *testing.T) {
 
 func TestSanitizeItemForAsciidocTable(t *testing.T) {
 	tests := []struct {
-		name        string
-		filename    string
-		escapeChars bool
+		name     string
+		filename string
+		escape   bool
 	}{
 		{
-			name:        "sanitize table item empty",
-			filename:    "empty",
-			escapeChars: false,
+			name:     "sanitize table item empty",
+			filename: "empty",
+			escape:   false,
 		},
 		{
-			name:        "sanitize table item complex",
-			filename:    "complex",
-			escapeChars: false,
+			name:     "sanitize table item complex",
+			filename: "complex",
+			escape:   false,
 		},
 		{
-			name:        "sanitize table item codeblock",
-			filename:    "codeblock",
-			escapeChars: false,
+			name:     "sanitize table item codeblock",
+			filename: "codeblock",
+			escape:   false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
-				EscapeCharacters: tt.escapeChars,
-			}).Build()
+			settings := &print.Settings{
+				EscapeCharacters: tt.escape,
+			}
 
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
@@ -473,11 +467,10 @@ func TestEscapeIllegalCharacters(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
+			settings := &print.Settings{
 				EscapeCharacters: tt.escapeChars,
-			}).Build()
-			settings.EscapePipe = tt.escapePipe
-			actual := escapeIllegalCharacters(tt.input, settings)
+			}
+			actual := escapeIllegalCharacters(tt.input, settings, tt.escapePipe)
 
 			assert.Equal(tt.expected, actual)
 		})
@@ -531,9 +524,9 @@ func TestNormalizeURLs(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
+			settings := &print.Settings{
 				EscapeCharacters: tt.escape,
-			}).Build()
+			}
 			actual := normalizeURLs(tt.input, settings)
 
 			assert.Equal(tt.expected, actual)
@@ -581,9 +574,9 @@ func TestGenerateIndentation(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().With(&print.Settings{
+			settings := &print.Settings{
 				IndentLevel: tt.base,
-			}).Build()
+			}
 			actual := generateIndentation(tt.extra, "#", settings)
 
 			assert.Equal(tt.expected, actual)

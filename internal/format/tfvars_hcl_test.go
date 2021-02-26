@@ -21,136 +21,81 @@ import (
 )
 
 func TestTfvarsHcl(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "hcl")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsHCL(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsHclSortByName(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "hcl-SortByName")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name: true,
+	tests := map[string]struct {
+		settings print.Settings
+		options  terraform.Options
+	}{
+		// Base
+		"Base": {
+			settings: testutil.WithSections(),
+			options:  terraform.Options{},
 		},
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsHCL(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsHclSortByRequired(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "hcl-SortByRequired")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name:     true,
-			Required: true,
+		"Empty": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				Path: "empty",
+			},
 		},
-	})
-	assert.Nil(err)
 
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsHCL(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsHclSortByType(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "hcl-SortByType")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Type: true,
+		// Settings
+		"EscapeCharacters": {
+			settings: print.Settings{EscapeCharacters: true},
+			options:  terraform.Options{},
 		},
-	})
-	assert.Nil(err)
+		"SortByName": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				SortBy: &terraform.SortBy{
+					Name: true,
+				},
+			},
+		},
+		"SortByRequired": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				SortBy: &terraform.SortBy{
+					Name:     true,
+					Required: true,
+				},
+			},
+		},
+		"SortByType": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				SortBy: &terraform.SortBy{
+					Type: true,
+				},
+			},
+		},
 
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
+		// No section
+		"NoInputs": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowInputs: false,
+				},
+			),
+			options: terraform.Options{},
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
 
-	printer := NewTfvarsHCL(settings)
-	actual, err := printer.Print(module, settings)
+			expected, err := testutil.GetExpected("tfvars", "hcl-"+name)
+			assert.Nil(err)
 
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
+			options, err := terraform.NewOptions().With(&tt.options)
+			assert.Nil(err)
 
-func TestTfvarsHclNoInputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       false,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-	}).Build()
+			module, err := testutil.GetModule(options)
+			assert.Nil(err)
 
-	expected, err := testutil.GetExpected("tfvars", "hcl-NoInputs")
-	assert.Nil(err)
+			printer := NewTfvarsHCL(&tt.settings)
+			actual, err := printer.Print(module, &tt.settings)
 
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsHCL(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsHclEscapeCharacters(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		EscapeCharacters: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("tfvars", "hcl-EscapeCharacters")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsHCL(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
+			assert.Nil(err)
+			assert.Equal(expected, actual)
+		})
+	}
 }

@@ -1,4 +1,4 @@
-[36mprovider.tls[0m
-[36mprovider.aws[0m (>= 2.15.0)
-[36mprovider.aws.ident[0m (>= 2.15.0)
-[36mprovider.null[0m
+provider.tls
+provider.aws (>= 2.15.0)
+provider.aws.ident (>= 2.15.0)
+provider.null

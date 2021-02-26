@@ -21,136 +21,81 @@ import (
 )
 
 func TestTfvarsJson(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "json")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsJSON(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsJsonSortByName(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "json-SortByName")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name: true,
+	tests := map[string]struct {
+		settings print.Settings
+		options  terraform.Options
+	}{
+		// Base
+		"Base": {
+			settings: testutil.WithSections(),
+			options:  terraform.Options{},
 		},
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsJSON(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsJsonSortByRequired(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "json-SortByRequired")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name:     true,
-			Required: true,
+		"Empty": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				Path: "empty",
+			},
 		},
-	})
-	assert.Nil(err)
 
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsJSON(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsJsonSortByType(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("tfvars", "json-SortByType")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Type: true,
+		// Settings
+		"EscapeCharacters": {
+			settings: print.Settings{EscapeCharacters: true},
+			options:  terraform.Options{},
 		},
-	})
-	assert.Nil(err)
+		"SortByName": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				SortBy: &terraform.SortBy{
+					Name: true,
+				},
+			},
+		},
+		"SortByRequired": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				SortBy: &terraform.SortBy{
+					Name:     true,
+					Required: true,
+				},
+			},
+		},
+		"SortByType": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				SortBy: &terraform.SortBy{
+					Type: true,
+				},
+			},
+		},
 
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
+		// No section
+		"NoInputs": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowInputs: false,
+				},
+			),
+			options: terraform.Options{},
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
 
-	printer := NewTfvarsJSON(settings)
-	actual, err := printer.Print(module, settings)
+			expected, err := testutil.GetExpected("tfvars", "json-"+name)
+			assert.Nil(err)
 
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
+			options, err := terraform.NewOptions().With(&tt.options)
+			assert.Nil(err)
 
-func TestTfvarsJsonNoInputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       false,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-	}).Build()
+			module, err := testutil.GetModule(options)
+			assert.Nil(err)
 
-	expected, err := testutil.GetExpected("tfvars", "json-NoInputs")
-	assert.Nil(err)
+			printer := NewTfvarsJSON(&tt.settings)
+			actual, err := printer.Print(module, &tt.settings)
 
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsJSON(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTfvarsJsonEscapeCharacters(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		EscapeCharacters: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("tfvars", "json-EscapeCharacters")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTfvarsJSON(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
+			assert.Nil(err)
+			assert.Equal(expected, actual)
+		})
+	}
 }

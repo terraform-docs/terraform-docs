@@ -22,12 +22,6 @@ type Settings struct {
 	// scope: Markdown
 	EscapeCharacters bool
 
-	// EscapePipe escapes pipe character in Markdown
-	//
-	// default: true
-	// scope: Markdown
-	EscapePipe bool
-
 	// IndentLevel control the indentation of AsciiDoc and Markdown headers [available: 1, 2, 3, 4, 5]
 	//
 	// default: 2
@@ -105,7 +99,6 @@ type Settings struct {
 func DefaultSettings() *Settings {
 	return &Settings{
 		EscapeCharacters: true,
-		EscapePipe:       true,
 		IndentLevel:      2,
 		OutputValues:     false,
 		ShowColor:        true,
@@ -125,7 +118,6 @@ func DefaultSettings() *Settings {
 func (s *Settings) Convert() *printsdk.Settings {
 	return &printsdk.Settings{
 		EscapeCharacters: s.EscapeCharacters,
-		EscapePipe:       s.EscapePipe,
 		IndentLevel:      s.IndentLevel,
 		OutputValues:     s.OutputValues,
 		ShowColor:        s.ShowColor,

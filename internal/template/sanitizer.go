@@ -40,7 +40,7 @@ func sanitizeItemForDocument(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string) string {
-			segment = escapeIllegalCharacters(segment, settings)
+			segment = escapeIllegalCharacters(segment, settings, false)
 			segment = convertMultiLineText(segment, false)
 			segment = normalizeURLs(segment, settings)
 			return segment
@@ -67,7 +67,7 @@ func sanitizeItemForTable(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string) string {
-			segment = escapeIllegalCharacters(segment, settings)
+			segment = escapeIllegalCharacters(segment, settings, true)
 			segment = convertMultiLineText(segment, true)
 			segment = normalizeURLs(segment, settings)
 			return segment
@@ -93,7 +93,8 @@ func sanitizeItemForAsciidocTable(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string) string {
-			segment = escapeIllegalCharacters(segment, settings)
+			segment = escapeIllegalCharacters(segment, settings, true)
+			segment = normalizeURLs(segment, settings)
 			return segment
 		},
 		func(segment string) string {
@@ -137,9 +138,9 @@ func convertMultiLineText(s string, isTable bool) string {
 }
 
 // escapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
-func escapeIllegalCharacters(s string, settings *print.Settings) string {
-	// Escape pipe
-	if settings.EscapePipe {
+func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool) string {
+	// Escape pipe (only for 'markdown table' or 'asciidoc table')
+	if escapePipe {
 		s = processSegments(
 			s,
 			"`",

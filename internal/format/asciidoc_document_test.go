@@ -21,668 +21,117 @@ import (
 )
 
 func TestAsciidocDocument(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentWithRequired(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		ShowRequired: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-WithRequired")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentSortByName(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-SortByName")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name: true,
-		},
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentSortByRequired(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-SortByRequired")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name:     true,
-			Required: true,
-		},
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentSortByType(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-SortByType")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Type: true,
-		},
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentNoHeader(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-NoHeader")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentNoInputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       false,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-NoInputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentNoModulecalls(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  false,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-NoModulecalls")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentNoOutputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      false,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-NoOutputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentNoProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    false,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-NoProviders")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentNoRequirements(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: false,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-NoRequirements")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentNoResources(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-NoResources")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOnlyHeader(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OnlyHeader")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOnlyInputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       true,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OnlyInputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOnlyModulecalls(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  true,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OnlyModulecalls")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOnlyOutputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      true,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OnlyOutputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOnlyProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    true,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OnlyProviders")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOnlyRequirements(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: true,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OnlyRequirements")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOnlyResources(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OnlyResources")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentIndentationBelowAllowed(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		IndentLevel: 0,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-IndentationBelowAllowed")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentIndentationAboveAllowed(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		IndentLevel: 10,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-IndentationAboveAllowed")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentIndentationOfFour(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		IndentLevel: 4,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-IndentationOfFour")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentOutputValues(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		OutputValues:    true,
-		ShowSensitivity: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OutputValues")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		OutputValues:     true,
-		OutputValuesPath: "output_values.json",
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentHeaderFromFile(t *testing.T) {
-	tests := []struct {
-		name   string
-		golden string
-		file   string
+	tests := map[string]struct {
+		settings print.Settings
+		options  terraform.Options
 	}{
-		{
-			name:   "load module header from .adoc",
-			golden: "document-HeaderFromADOCFile",
-			file:   "doc.adoc",
+		// Base
+		"Base": {
+			settings: testutil.WithSections(),
+			options:  terraform.Options{},
 		},
-		{
-			name:   "load module header from .md",
-			golden: "document-HeaderFromMDFile",
-			file:   "doc.md",
+		"Empty": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				Path: "empty",
+			},
 		},
-		{
-			name:   "load module header from .tf",
-			golden: "document-HeaderFromTFFile",
-			file:   "doc.tf",
+		"HideAll": {
+			settings: print.Settings{},
+			options: terraform.Options{
+				ShowHeader:     false, // Since we don't show the header, the file won't be loaded at all
+				HeaderFromFile: "bad.tf",
+			},
 		},
-		{
-			name:   "load module header from .txt",
-			golden: "document-HeaderFromTXTFile",
-			file:   "doc.txt",
+
+		// Settings
+		"WithRequired": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowRequired: true,
+				},
+			),
+			options: terraform.Options{},
+		},
+		"IndentationOfFour": {
+			settings: testutil.WithSections(
+				print.Settings{
+					IndentLevel: 4,
+				},
+			),
+			options: terraform.Options{},
+		},
+		"OutputValues": {
+			settings: print.Settings{
+				ShowOutputs:     true,
+				OutputValues:    true,
+				ShowSensitivity: true,
+			},
+			options: terraform.Options{
+				OutputValues:     true,
+				OutputValuesPath: "output_values.json",
+			},
+		},
+		"OutputValuesNoSensitivity": {
+			settings: print.Settings{
+				ShowOutputs:     true,
+				OutputValues:    true,
+				ShowSensitivity: false,
+			},
+			options: terraform.Options{
+				OutputValues:     true,
+				OutputValuesPath: "output_values.json",
+			},
+		},
+
+		// Only section
+		"OnlyHeader": {
+			settings: print.Settings{ShowHeader: true},
+			options:  terraform.Options{},
+		},
+		"OnlyInputs": {
+			settings: print.Settings{ShowInputs: true},
+			options:  terraform.Options{},
+		},
+		"OnlyOutputs": {
+			settings: print.Settings{ShowOutputs: true},
+			options:  terraform.Options{},
+		},
+		"OnlyModulecalls": {
+			settings: print.Settings{ShowModuleCalls: true},
+			options:  terraform.Options{},
+		},
+		"OnlyProviders": {
+			settings: print.Settings{ShowProviders: true},
+			options:  terraform.Options{},
+		},
+		"OnlyRequirements": {
+			settings: print.Settings{ShowRequirements: true},
+			options:  terraform.Options{},
+		},
+		"OnlyResources": {
+			settings: print.Settings{ShowResources: true},
+			options:  terraform.Options{},
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := testutil.Settings().WithSections().Build()
 
-			expected, err := testutil.GetExpected("asciidoc", tt.golden)
+			expected, err := testutil.GetExpected("asciidoc", "document-"+name)
 			assert.Nil(err)
 
-			options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
-				HeaderFromFile: tt.file,
-			})
+			options, err := terraform.NewOptions().With(&tt.options)
 			assert.Nil(err)
 
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			printer := NewAsciidocDocument(settings)
-			actual, err := printer.Print(module, settings)
+			printer := NewAsciidocDocument(&tt.settings)
+			actual, err := printer.Print(module, &tt.settings)
 
 			assert.Nil(err)
 			assert.Equal(expected, actual)
 		})
 	}
-}
-
-func TestAsciidocDocumentOutputValuesNoSensitivity(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		OutputValues:    true,
-		ShowSensitivity: false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("asciidoc", "document-OutputValuesNoSensitivity")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		OutputValues:     true,
-		OutputValuesPath: "output_values.json",
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestAsciidocDocumentEmpty(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
-		HeaderFromFile: "bad.tf",
-	})
-	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewAsciidocDocument(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal("", actual)
 }
