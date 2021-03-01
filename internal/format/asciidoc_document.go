@@ -11,6 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
+	_ "embed" //nolint
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
@@ -18,166 +19,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-const (
-	asciidocDocumentHeaderTpl = `
-	{{- if .Settings.ShowHeader -}}
-		{{- with .Module.Header -}}
-			{{ sanitizeHeader . }}
-			{{ printf "\n" }}
-		{{- end -}}
-	{{ end -}}
-	`
-	asciidocDocumentResourcesTpl = `
-	{{- if .Settings.ShowResources -}}
-		{{ indent 0 "=" }} Resources
-		{{ if not .Module.Resources }}
-			No resources.
-		{{ else }}
-			The following resources are used by this module:
-			{{ range .Module.Resources }}
-				{{ if eq (len .URL) 0 }}
-				- {{ .FullType }}
-				{{- else -}}
-				- {{ .URL }}[{{ .FullType }}]
-				{{- end }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocDocumentRequirementsTpl = `
-	{{- if .Settings.ShowRequirements -}}
-		{{ indent 0 "=" }} Requirements
-		{{ if not .Module.Requirements }}
-			No requirements.
-		{{ else }}
-			The following requirements are needed by this module:
-			{{- range .Module.Requirements }}
-				{{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				- {{ name .Name }}{{ $version }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocDocumentProvidersTpl = `
-	{{- if .Settings.ShowProviders -}}
-		{{ indent 0 "=" }} Providers
-		{{ if not .Module.Providers }}
-			No providers.
-		{{ else }}
-			The following providers are used by this module:
-			{{- range .Module.Providers }}
-				{{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				- {{ name .FullName }}{{ $version }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocDocumentInputsTpl = `
-	{{- if .Settings.ShowInputs -}}
-		{{- if .Settings.ShowRequired -}}
-			{{ indent 0 "=" }} Required Inputs
-			{{ if not .Module.RequiredInputs }}
-				No required inputs.
-			{{ else }}
-				The following input variables are required:
-				{{- range .Module.RequiredInputs }}
-					{{ template "input" . }}
-				{{- end }}
-			{{- end }}
-			{{ indent 0 "=" }} Optional Inputs
-			{{ if not .Module.OptionalInputs }}
-				No optional inputs.
-			{{ else }}
-				The following input variables are optional (have default values):
-				{{- range .Module.OptionalInputs }}
-					{{ template "input" . }}
-				{{- end }}
-			{{ end }}
-		{{ else -}}
-			{{ indent 0 "=" }} Inputs
-			{{ if not .Module.Inputs }}
-				No inputs.
-			{{ else }}
-				The following input variables are supported:
-				{{- range .Module.Inputs }}
-					{{ template "input" . }}
-				{{- end }}
-			{{ end }}
-		{{- end }}
-	{{ end -}}
-	`
-
-	asciidocDocumentInputTpl = `
-	{{ printf "\n" }}
-	{{ indent 1 "=" }} {{ name .Name }}
-
-	Description: {{ tostring .Description | sanitizeDoc }}
-
-	Type: {{ tostring .Type | type }}
-
-	{{ if or .HasDefault (not isRequired) }}
-		Default: {{ default "n/a" .GetValue | value }}
-	{{- end }}
-	`
-
-	asciidocDocumentOutputsTpl = `
-	{{- if .Settings.ShowOutputs -}}
-		{{ indent 0 "=" }} Outputs
-		{{ if not .Module.Outputs }}
-			No outputs.
-		{{ else }}
-			The following outputs are exported:
-			{{- range .Module.Outputs }}
-
-				{{ indent 1 "=" }} {{ name .Name }}
-
-				Description: {{ tostring .Description | sanitizeDoc }}
-
-				{{ if $.Settings.OutputValues }}
-					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
-					Value: {{ value $sensitive | sanitizeDoc }}
-
-					{{ if $.Settings.ShowSensitivity -}}
-						Sensitive: {{ ternary (.Sensitive) "yes" "no" }}
-					{{- end }}
-				{{ end }}
-			{{ end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocDocumentModulecallsTpl = `
-	{{- if .Settings.ShowModuleCalls -}}
-		{{ indent 0 "=" }} Modules
-		{{ if not .Module.ModuleCalls }}
-			No modules.
-		{{ else }}
-			The following Modules are called:
-			{{- range .Module.ModuleCalls }}
-
-				{{ indent 1 "=" }} {{ name .Name }}
-
-				Source: {{ .Source }}
-
-				Version: {{ .Version }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocDocumentTpl = `
-	{{- template "header" . -}}
-	{{- template "requirements" . -}}
-	{{- template "providers" . -}}
-	{{- template "modulecalls" . -}}
-	{{- template "resources" . -}}
-	{{- template "inputs" . -}}
-	{{- template "outputs" . -}}
-	`
-)
+//go:embed templates/asciidoc_document.tmpl
+var asciidocDocumentTpl []byte
 
 // AsciidocDocument represents AsciiDoc Document format.
 type AsciidocDocument struct {
@@ -189,31 +32,7 @@ func NewAsciidocDocument(settings *print.Settings) print.Engine {
 	settings.EscapeCharacters = false
 	tt := template.New(settings, &template.Item{
 		Name: "document",
-		Text: asciidocDocumentTpl,
-	}, &template.Item{
-		Name: "header",
-		Text: asciidocDocumentHeaderTpl,
-	}, &template.Item{
-		Name: "requirements",
-		Text: asciidocDocumentRequirementsTpl,
-	}, &template.Item{
-		Name: "providers",
-		Text: asciidocDocumentProvidersTpl,
-	}, &template.Item{
-		Name: "resources",
-		Text: asciidocDocumentResourcesTpl,
-	}, &template.Item{
-		Name: "inputs",
-		Text: asciidocDocumentInputsTpl,
-	}, &template.Item{
-		Name: "input",
-		Text: asciidocDocumentInputTpl,
-	}, &template.Item{
-		Name: "outputs",
-		Text: asciidocDocumentOutputsTpl,
-	}, &template.Item{
-		Name: "modulecalls",
-		Text: asciidocDocumentModulecallsTpl,
+		Text: string(asciidocDocumentTpl),
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {

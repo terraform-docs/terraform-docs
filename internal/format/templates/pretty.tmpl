@@ -1,0 +1,73 @@
+{{- if .Settings.ShowHeader -}}
+    {{- with .Module.Header -}}
+        {{ colorize "\033[90m" . }}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if .Settings.ShowRequirements -}}
+    {{- with .Module.Requirements }}
+        {{- range . }}
+            {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+            {{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if .Settings.ShowProviders -}}
+    {{- with .Module.Providers }}
+        {{- range . }}
+            {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+            {{- printf "provider.%s" .FullName | colorize "\033[36m" }}{{ $version }}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if .Settings.ShowModuleCalls -}}
+    {{- with .Module.ModuleCalls }}
+        {{- range . }}
+            {{- printf "modulecall.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
+        {{ end -}}
+        {{- printf "\n\n" -}}
+    {{ end -}}
+{{ end -}}
+
+{{- if .Settings.ShowResources -}}
+    {{- with .Module.Resources }}
+        {{- range . }}
+            {{- if eq (len .URL) 0 }}
+                {{- printf "resource.%s" .FullType | colorize "\033[36m" }}
+            {{- else -}}
+                {{- printf "resource.%s" .FullType | colorize "\033[36m" }} ({{ .URL}})
+            {{- end }}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if .Settings.ShowInputs -}}
+    {{- with .Module.Inputs }}
+        {{- range . }}
+            {{- printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
+            {{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
+            {{- printf "\n\n" -}}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n" -}}
+{{ end -}}
+
+{{- if .Settings.ShowOutputs -}}
+    {{- with .Module.Outputs }}
+        {{- range . }}
+            {{- printf "output.%s" .Name | colorize "\033[36m" }}
+            {{- if $.Settings.OutputValues -}}
+                {{- printf " " -}}
+                ({{ ternary .Sensitive "<sensitive>" .GetValue }})
+            {{- end }}
+            {{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
+            {{- printf "\n\n" -}}
+        {{ end -}}
+    {{ end -}}
+{{ end -}}

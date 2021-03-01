@@ -11,6 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
+	_ "embed" //nolint
 	"fmt"
 	"reflect"
 	"strings"
@@ -21,15 +22,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-const (
-	tfvarsHCLTpl = `
-	{{- if .Module.Inputs -}}
-		{{- range $i, $k := .Module.Inputs -}}
-			{{ align $k.Name $i }} = {{ value $k.GetValue }}
-		{{ end -}}
-	{{- end -}}
-	`
-)
+//go:embed templates/tfvars_hcl.tmpl
+var tfvarsHCLTpl []byte
 
 // TfvarsHCL represents Terraform tfvars HCL format.
 type TfvarsHCL struct {
@@ -42,7 +36,7 @@ var padding []int
 func NewTfvarsHCL(settings *print.Settings) print.Engine {
 	tt := template.New(settings, &template.Item{
 		Name: "tfvars",
-		Text: tfvarsHCLTpl,
+		Text: string(tfvarsHCLTpl),
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"align": func(s string, i int) string {

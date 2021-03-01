@@ -11,6 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
+	_ "embed" //nolint
 	"fmt"
 	"regexp"
 	gotemplate "text/template"
@@ -20,105 +21,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-const (
-	prettyHeaderTpl = `
-	{{- if .Settings.ShowHeader -}}
-		{{- with .Module.Header -}}
-			{{ colorize "\033[90m" . }}
-		{{ end -}}
-		{{- printf "\n\n" -}}
-	{{ end -}}
-	`
-
-	prettyResourcesTpl = `
-	{{- if .Settings.ShowResources -}}
-		{{- with .Module.Resources }}
-			{{- range . }}
-				{{- if eq (len .URL) 0 }}
-					{{- printf "resource.%s" .FullType | colorize "\033[36m" }}
-				{{- else -}}
-					{{- printf "resource.%s" .FullType | colorize "\033[36m" }} ({{ .URL}})
-				{{- end }}
-			{{ end -}}
-		{{ end -}}
-		{{- printf "\n\n" -}}
-	{{ end -}}
-	`
-
-	prettyRequirementsTpl = `
-	{{- if .Settings.ShowRequirements -}}
-		{{- with .Module.Requirements }}
-			{{- range . }}
-				{{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				{{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
-			{{ end -}}
-		{{ end -}}
-		{{- printf "\n\n" -}}
-	{{ end -}}
-	`
-
-	prettyProvidersTpl = `
-	{{- if .Settings.ShowProviders -}}
-		{{- with .Module.Providers }}
-			{{- range . }}
-				{{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				{{- printf "provider.%s" .FullName | colorize "\033[36m" }}{{ $version }}
-			{{ end -}}
-		{{ end -}}
-		{{- printf "\n\n" -}}
-	{{ end -}}
-	`
-
-	prettyInputsTpl = `
-	{{- if .Settings.ShowInputs -}}
-		{{- with .Module.Inputs }}
-			{{- range . }}
-				{{- printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
-				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
-				{{- printf "\n\n" -}}
-			{{ end -}}
-		{{ end -}}
-		{{- printf "\n" -}}
-	{{ end -}}
-	`
-
-	prettyOutputsTpl = `
-	{{- if .Settings.ShowOutputs -}}
-		{{- with .Module.Outputs }}
-			{{- range . }}
-				{{- printf "output.%s" .Name | colorize "\033[36m" }}
-				{{- if $.Settings.OutputValues -}}
-					{{- printf " " -}}
-					({{ ternary .Sensitive "<sensitive>" .GetValue }})
-				{{- end }}
-				{{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
-				{{- printf "\n\n" -}}
-			{{ end -}}
-		{{ end -}}
-	{{ end -}}
-	`
-
-	prettyModulecallsTpl = `
-	{{- if .Settings.ShowModuleCalls -}}
-		{{- with .Module.ModuleCalls }}
-			{{- range . }}
-				{{- printf "modulecall.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
-			{{ end -}}
-			{{- printf "\n\n" -}}
-		{{ end -}}
-	{{ end -}}
-	`
-
-	prettyTpl = `
-	{{- template "header" . -}}
-	{{- template "requirements" . -}}
-	{{- template "providers" . -}}
-	{{- template "modulecalls" . -}}
-	{{- template "resources" . -}}
-	{{- template "inputs" . -}}
-	{{- template "outputs" . -}}
-	`
-)
+//go:embed templates/pretty.tmpl
+var prettyTpl []byte
 
 // Pretty represents colorized pretty format.
 type Pretty struct {
@@ -129,28 +33,7 @@ type Pretty struct {
 func NewPretty(settings *print.Settings) print.Engine {
 	tt := template.New(settings, &template.Item{
 		Name: "pretty",
-		Text: prettyTpl,
-	}, &template.Item{
-		Name: "header",
-		Text: prettyHeaderTpl,
-	}, &template.Item{
-		Name: "requirements",
-		Text: prettyRequirementsTpl,
-	}, &template.Item{
-		Name: "providers",
-		Text: prettyProvidersTpl,
-	}, &template.Item{
-		Name: "resources",
-		Text: prettyResourcesTpl,
-	}, &template.Item{
-		Name: "inputs",
-		Text: prettyInputsTpl,
-	}, &template.Item{
-		Name: "outputs",
-		Text: prettyOutputsTpl,
-	}, &template.Item{
-		Name: "modulecalls",
-		Text: prettyModulecallsTpl,
+		Text: string(prettyTpl),
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"colorize": func(c string, s string) string {
