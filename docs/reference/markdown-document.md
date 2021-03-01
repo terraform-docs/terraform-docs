@@ -246,7 +246,7 @@ generates the following output:
 
     ### input-with-pipe
 
-    Description: It includes v1 \| v2 \| v3
+    Description: It includes v1 | v2 | v3
 
     Type: `string`
 
