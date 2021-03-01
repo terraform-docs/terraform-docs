@@ -11,6 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
+	_ "embed" //nolint
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
@@ -18,142 +19,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-const (
-	asciidocTableHeaderTpl = `
-	{{- if .Settings.ShowHeader -}}
-		{{- with .Module.Header -}}
-			{{ sanitizeHeader . }}
-			{{ printf "\n" }}
-		{{- end -}}
-	{{ end -}}
-	`
-	asciidocTableResourcesTpl = `
-	{{- if .Settings.ShowResources -}}
-		{{ indent 0 "=" }} Resources
-		{{ if not .Module.Resources }}
-			No resources.
-		{{ else }}
-			[cols="a",options="header,autowidth"]
-			|===
-			|Name
-			{{- range .Module.Resources }}
-				{{ if eq (len .URL) 0 }}
-				|{{ .FullType }}
-				{{- else -}}
-				|{{ .URL }}[{{ .FullType }}]
-				{{- end }}
-			{{- end }}
-			|===
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocTableRequirementsTpl = `
-	{{- if .Settings.ShowRequirements -}}
-		{{ indent 0 "=" }} Requirements
-		{{ if not .Module.Requirements }}
-			No requirements.
-		{{ else }}
-			[cols="a,a",options="header,autowidth"]
-			|===
-			|Name |Version
-			{{- range .Module.Requirements }}
-				|{{ .Name }} |{{ tostring .Version | default "n/a" }}
-			{{- end }}
-			|===
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocTableProvidersTpl = `
-	{{- if .Settings.ShowProviders -}}
-		{{ indent 0 "=" }} Providers
-		{{ if not .Module.Providers }}
-			No providers.
-		{{ else }}
-			[cols="a,a",options="header,autowidth"]
-			|===
-			|Name |Version
-			{{- range .Module.Providers }}
-				|{{ .FullName }} |{{ tostring .Version | default "n/a" }}
-			{{- end }}
-			|===
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocTableInputsTpl = `
-	{{- if .Settings.ShowInputs -}}
-		{{ indent 0 "=" }} Inputs
-		{{ if not .Module.Inputs }}
-			No inputs.
-		{{ else }}
-			[cols="a,a,a,a{{ if .Settings.ShowRequired }},a{{ end }}",options="header,autowidth"]
-			|===
-			|Name |Description |Type |Default{{ if .Settings.ShowRequired }} |Required{{ end }}
-			{{- range .Module.Inputs }}
-				|{{ .Name }}
-				|{{ tostring .Description | sanitizeAsciidocTbl }}
-				|{{ tostring .Type | type | sanitizeAsciidocTbl }}
-				|{{ value .GetValue | sanitizeAsciidocTbl }}
-				{{ if $.Settings.ShowRequired }}|{{ ternary .Required "yes" "no" }}{{ end }}
-			{{ end }}
-			|===
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocTableOutputsTpl = `
-	{{- if .Settings.ShowOutputs -}}
-		{{ indent 0 "=" }} Outputs
-		{{ if not .Module.Outputs }}
-			No outputs.
-		{{ else }}
-			[cols="a,a{{ if .Settings.OutputValues }},a{{ if $.Settings.ShowSensitivity }},a{{ end }}{{ end }}",options="header,autowidth"]
-			|===
-			|Name |Description{{ if .Settings.OutputValues }} |Value{{ if $.Settings.ShowSensitivity }} |Sensitive{{ end }}{{ end }}
-			{{- range .Module.Outputs }}
-				|{{ .Name }} |{{ tostring .Description | sanitizeAsciidocTbl }}
-				{{- if $.Settings.OutputValues -}}
-					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
-					{{ printf " " }}|{{ value $sensitive }}
-					{{- if $.Settings.ShowSensitivity -}}
-						{{ printf " " }}|{{ ternary .Sensitive "yes" "no" }}
-					{{- end -}}
-				{{- end -}}
-			{{- end }}
-			|===
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocTableModulecallsTpl = `
-	{{- if .Settings.ShowModuleCalls -}}
-		{{ indent 0 "=" }} Modules
-		{{ if not .Module.ModuleCalls }}
-			No modules.
-		{{ else }}
-			[cols="a,a,a",options="header,autowidth"]
-			|===
-			|Name|Source|Version|
-			{{- range .Module.ModuleCalls }}
-				|{{ .Name }}|{{ .Source }}|{{ .Version }}
-			{{- end }}
-			|===
-		{{ end }}
-	{{ end -}}
-	`
-
-	asciidocTableTpl = `
-	{{- template "header" . -}}
-	{{- template "requirements" . -}}
-	{{- template "providers" . -}}
-	{{- template "modulecalls" . -}}
-	{{- template "resources" . -}}
-	{{- template "inputs" . -}}
-	{{- template "outputs" . -}}
-	`
-)
+//go:embed templates/asciidoc_table.tmpl
+var asciidocTableTpl []byte
 
 // AsciidocTable represents AsciiDoc Table format.
 type AsciidocTable struct {
@@ -165,28 +32,7 @@ func NewAsciidocTable(settings *print.Settings) print.Engine {
 	settings.EscapeCharacters = false
 	tt := template.New(settings, &template.Item{
 		Name: "table",
-		Text: asciidocTableTpl,
-	}, &template.Item{
-		Name: "header",
-		Text: asciidocTableHeaderTpl,
-	}, &template.Item{
-		Name: "resources",
-		Text: asciidocTableResourcesTpl,
-	}, &template.Item{
-		Name: "requirements",
-		Text: asciidocTableRequirementsTpl,
-	}, &template.Item{
-		Name: "providers",
-		Text: asciidocTableProvidersTpl,
-	}, &template.Item{
-		Name: "inputs",
-		Text: asciidocTableInputsTpl,
-	}, &template.Item{
-		Name: "outputs",
-		Text: asciidocTableOutputsTpl,
-	}, &template.Item{
-		Name: "modulecalls",
-		Text: asciidocTableModulecallsTpl,
+		Text: string(asciidocTableTpl),
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {

@@ -1,0 +1,5 @@
+{{- if .Module.Inputs -}}
+    {{- range $i, $k := .Module.Inputs -}}
+        {{ align $k.Name $i }} = {{ value $k.GetValue }}
+    {{ end -}}
+{{- end -}}

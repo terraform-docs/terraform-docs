@@ -16,7 +16,7 @@ insert_final_newline = true
 indent_style = tab
 indent_size = 4
 
-[*.golden]
+[*.{golden,tmpl}]
 trim_trailing_whitespace = false
 insert_final_newline = false
 

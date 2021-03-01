@@ -11,6 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
+	_ "embed" //nolint
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
@@ -18,167 +19,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-const (
-	documentHeaderTpl = `
-	{{- if .Settings.ShowHeader -}}
-		{{- with .Module.Header -}}
-			{{ sanitizeHeader . }}
-			{{ printf "\n" }}
-		{{- end -}}
-	{{ end -}}
-	`
-	documentResourcesTpl = `
-	{{- if .Settings.ShowResources -}}
-		{{ indent 0 "#" }} Resources
-		{{ if not .Module.Resources }}
-			No resources.
-		{{ else }}
-			The following resources are used by this module:
-			{{ range .Module.Resources }}
-				{{ if eq (len .URL) 0 }}
-				- {{ .FullType }}
-				{{- else -}}
-				- [{{ .FullType }}]({{ .URL }})
-				{{- end }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	documentRequirementsTpl = `
-	{{- if .Settings.ShowRequirements -}}
-		{{ indent 0 "#" }} Requirements
-		{{ if not .Module.Requirements }}
-			No requirements.
-		{{ else }}
-			The following requirements are needed by this module:
-			{{- range .Module.Requirements }}
-				{{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				- {{ name .Name }}{{ $version }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	documentProvidersTpl = `
-	{{- if .Settings.ShowProviders -}}
-		{{ indent 0 "#" }} Providers
-		{{ if not .Module.Providers }}
-			No providers.
-		{{ else }}
-			The following providers are used by this module:
-			{{- range .Module.Providers }}
-				{{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-				- {{ name .FullName }}{{ $version }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	documentInputsTpl = `
-	{{- if .Settings.ShowInputs -}}
-		{{- if .Settings.ShowRequired -}}
-			{{ indent 0 "#" }} Required Inputs
-			{{ if not .Module.RequiredInputs }}
-				No required inputs.
-			{{ else }}
-				The following input variables are required:
-				{{- range .Module.RequiredInputs }}
-					{{ template "input" . }}
-				{{- end }}
-			{{- end }}
-			{{ indent 0 "#" }} Optional Inputs
-			{{ if not .Module.OptionalInputs }}
-				No optional inputs.
-			{{ else }}
-				The following input variables are optional (have default values):
-				{{- range .Module.OptionalInputs }}
-					{{ template "input" . }}
-				{{- end }}
-			{{ end }}
-		{{ else -}}
-			{{ indent 0 "#" }} Inputs
-			{{ if not .Module.Inputs }}
-				No inputs.
-			{{ else }}
-				The following input variables are supported:
-				{{- range .Module.Inputs }}
-					{{ template "input" . }}
-				{{- end }}
-			{{ end }}
-		{{- end }}
-	{{ end -}}
-	`
-
-	documentInputTpl = `
-	{{ printf "\n" }}
-	{{ indent 1 "#" }} {{ name .Name }}
-
-	Description: {{ tostring .Description | sanitizeDoc }}
-
-	Type: {{ tostring .Type | type }}
-
-	{{ if or .HasDefault (not isRequired) }}
-		Default: {{ default "n/a" .GetValue | value }}
-	{{- end }}
-	`
-
-	documentOutputsTpl = `
-	{{- if .Settings.ShowOutputs -}}
-		{{ indent 0 "#" }} Outputs
-		{{ if not .Module.Outputs }}
-			No outputs.
-		{{ else }}
-			The following outputs are exported:
-			{{- range .Module.Outputs }}
-
-				{{ indent 1 "#" }} {{ name .Name }}
-
-				Description: {{ tostring .Description | sanitizeDoc }}
-
-				{{ if $.Settings.OutputValues }}
-					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
-					Value: {{ value $sensitive | sanitizeDoc }}
-
-					{{ if $.Settings.ShowSensitivity -}}
-						Sensitive: {{ ternary (.Sensitive) "yes" "no" }}
-					{{- end }}
-				{{ end }}
-			{{ end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	documentModulecallsTpl = `
-	{{- if .Settings.ShowModuleCalls -}}
-		{{ indent 0 "#" }} Modules
-		{{ if not .Module.ModuleCalls }}
-			No modules.
-		{{ else }}
-			The following Modules are called:
-			{{- range .Module.ModuleCalls }}
-
-				{{ indent 1 "#" }} {{ name .Name }}
-
-				Source: {{ .Source }}
-
-				Version: {{ .Version }}
-
-			{{ end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	documentTpl = `
-	{{- template "header" . -}}
-	{{- template "requirements" . -}}
-	{{- template "providers" . -}}
-	{{- template "modulecalls" . -}}
-	{{- template "resources" . -}}
-	{{- template "inputs" . -}}
-	{{- template "outputs" . -}}
-	`
-)
+//go:embed templates/markdown_document.tmpl
+var markdownDocumentTpl []byte
 
 // MarkdownDocument represents Markdown Document format.
 type MarkdownDocument struct {
@@ -189,31 +31,7 @@ type MarkdownDocument struct {
 func NewMarkdownDocument(settings *print.Settings) print.Engine {
 	tt := template.New(settings, &template.Item{
 		Name: "document",
-		Text: documentTpl,
-	}, &template.Item{
-		Name: "header",
-		Text: documentHeaderTpl,
-	}, &template.Item{
-		Name: "requirements",
-		Text: documentRequirementsTpl,
-	}, &template.Item{
-		Name: "providers",
-		Text: documentProvidersTpl,
-	}, &template.Item{
-		Name: "resources",
-		Text: documentResourcesTpl,
-	}, &template.Item{
-		Name: "inputs",
-		Text: documentInputsTpl,
-	}, &template.Item{
-		Name: "input",
-		Text: documentInputTpl,
-	}, &template.Item{
-		Name: "outputs",
-		Text: documentOutputsTpl,
-	}, &template.Item{
-		Name: "modulecalls",
-		Text: documentModulecallsTpl,
+		Text: string(markdownDocumentTpl),
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {

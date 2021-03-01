@@ -11,6 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
+	_ "embed" //nolint
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
@@ -18,129 +19,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-const (
-	tableHeaderTpl = `
-	{{- if .Settings.ShowHeader -}}
-		{{- with .Module.Header -}}
-			{{ sanitizeHeader . }}
-			{{ printf "\n" }}
-		{{- end -}}
-	{{ end -}}
-	`
-	tableResourcesTpl = `
-	{{- if .Settings.ShowResources -}}
-		{{ indent 0 "#" }} Resources
-		{{ if not .Module.Resources }}
-			No resources.
-		{{ else }}
-			| Name |
-			|------|
-			{{- range .Module.Resources }}
-			{{ if eq (len .URL) 0 }}
-				| {{ .FullType }}
-			{{- else -}}
-				| [{{ .FullType }}]({{ .URL }}) |
-			{{- end }}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	tableRequirementsTpl = `
-	{{- if .Settings.ShowRequirements -}}
-		{{ indent 0 "#" }} Requirements
-		{{ if not .Module.Requirements }}
-			No requirements.
-		{{ else }}
-			| Name | Version |
-			|------|---------|
-			{{- range .Module.Requirements }}
-				| {{ name .Name }} | {{ tostring .Version | default "n/a" }} |
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	tableProvidersTpl = `
-	{{- if .Settings.ShowProviders -}}
-		{{ indent 0 "#" }} Providers
-		{{ if not .Module.Providers }}
-			No providers.
-		{{ else }}
-			| Name | Version |
-			|------|---------|
-			{{- range .Module.Providers }}
-				| {{ name .FullName }} | {{ tostring .Version | default "n/a" }} |
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	tableInputsTpl = `
-	{{- if .Settings.ShowInputs -}}
-		{{ indent 0 "#" }} Inputs
-		{{ if not .Module.Inputs }}
-			No inputs.
-		{{ else }}
-			| Name | Description | Type | Default |{{ if .Settings.ShowRequired }} Required |{{ end }}
-			|------|-------------|------|---------|{{ if .Settings.ShowRequired }}:--------:|{{ end }}
-			{{- range .Module.Inputs }}
-				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .GetValue | sanitizeTbl }} |
-				{{- if $.Settings.ShowRequired -}}
-					{{ printf " " }}{{ ternary .Required "yes" "no" }} |
-				{{- end -}}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	tableOutputsTpl = `
-	{{- if .Settings.ShowOutputs -}}
-		{{ indent 0 "#" }} Outputs
-		{{ if not .Module.Outputs }}
-			No outputs.
-		{{ else }}
-			| Name | Description |{{ if .Settings.OutputValues }} Value |{{ if $.Settings.ShowSensitivity }} Sensitive |{{ end }}{{ end }}
-			|------|-------------|{{ if .Settings.OutputValues }}-------|{{ if $.Settings.ShowSensitivity }}:---------:|{{ end }}{{ end }}
-			{{- range .Module.Outputs }}
-				| {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |
-				{{- if $.Settings.OutputValues -}}
-					{{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
-					{{ printf " " }}{{ value $sensitive | sanitizeTbl }} |
-					{{- if $.Settings.ShowSensitivity -}}
-						{{ printf " " }}{{ ternary .Sensitive "yes" "no" }} |
-					{{- end -}}
-				{{- end -}}
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	tableModulecallsTpl = `
-	{{- if .Settings.ShowModuleCalls -}}
-		{{ indent 0 "#" }} Modules
-		{{ if not .Module.ModuleCalls }}
-			No modules.
-		{{ else }}
-			| Name | Source | Version |
-			|------|--------|---------|
-			{{- range .Module.ModuleCalls }}
-				| {{ .Name }} | {{ .Source }} | {{ .Version }} |
-			{{- end }}
-		{{ end }}
-	{{ end -}}
-	`
-
-	tableTpl = `
-	{{- template "header" . -}}
-	{{- template "requirements" . -}}
-	{{- template "providers" . -}}
-	{{- template "modulecalls" . -}}
-	{{- template "resources" . -}}
-	{{- template "inputs" . -}}
-	{{- template "outputs" . -}}
-	`
-)
+//go:embed templates/markdown_table.tmpl
+var markdownTableTpl []byte
 
 // MarkdownTable represents Markdown Table format.
 type MarkdownTable struct {
@@ -151,28 +31,7 @@ type MarkdownTable struct {
 func NewMarkdownTable(settings *print.Settings) print.Engine {
 	tt := template.New(settings, &template.Item{
 		Name: "table",
-		Text: tableTpl,
-	}, &template.Item{
-		Name: "header",
-		Text: tableHeaderTpl,
-	}, &template.Item{
-		Name: "requirements",
-		Text: tableRequirementsTpl,
-	}, &template.Item{
-		Name: "providers",
-		Text: tableProvidersTpl,
-	}, &template.Item{
-		Name: "resources",
-		Text: tableResourcesTpl,
-	}, &template.Item{
-		Name: "inputs",
-		Text: tableInputsTpl,
-	}, &template.Item{
-		Name: "outputs",
-		Text: tableOutputsTpl,
-	}, &template.Item{
-		Name: "modulecalls",
-		Text: tableModulecallsTpl,
+		Text: string(markdownTableTpl),
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
