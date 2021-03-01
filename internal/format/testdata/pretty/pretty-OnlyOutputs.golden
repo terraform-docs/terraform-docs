@@ -1,11 +1,11 @@
-[36moutput.unquoted[0m
-[90mIt's unquoted output.[0m
+output.unquoted
+It's unquoted output.
 
-[36moutput.output-2[0m
-[90mIt's output number two.[0m
+output.output-2
+It's output number two.
 
-[36moutput.output-1[0m
-[90mIt's output number one.[0m
+output.output-1
+It's output number one.
 
-[36moutput.output-0.12[0m
-[90mterraform 0.12 only[0m
+output.output-0.12
+terraform 0.12 only

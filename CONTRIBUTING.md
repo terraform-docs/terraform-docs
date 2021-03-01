@@ -53,6 +53,13 @@ All codes must be formatted properly, we use `goimports` which wrappes around
 and `make fmt` to format your code. Make sure your code doesn't have issues with
 `make checkfmt` and `make lint` before submission.
 
+Formatter tests are separated into different groups in order to be able to improve
+and maintain the code coverage and also prevent duplicating and running redundant
+test cases. For example there are `OnlyXXX` tests which makes sure all sections are
+hidden and only one is visible. This removes the need to test for `NotXXX` (which is
+no deprecated and removed). Please make sure when a new feature is added or an issue
+is fixed the corresponding `.golden` files and test cases are also update accordingly.
+
 Once your change is written, tested, and documented the final step is to have it
 reviewed! You'll be presented with a template and a small checklist when you
 open a PR. Please read the template and fill out the checklist. Please make all

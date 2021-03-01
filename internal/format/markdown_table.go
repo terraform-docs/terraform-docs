@@ -65,7 +65,7 @@ const (
 	{{- if .Settings.ShowProviders -}}
 		{{ indent 0 "#" }} Providers
 		{{ if not .Module.Providers }}
-			No provider.
+			No providers.
 		{{ else }}
 			| Name | Version |
 			|------|---------|
@@ -80,7 +80,7 @@ const (
 	{{- if .Settings.ShowInputs -}}
 		{{ indent 0 "#" }} Inputs
 		{{ if not .Module.Inputs }}
-			No input.
+			No inputs.
 		{{ else }}
 			| Name | Description | Type | Default |{{ if .Settings.ShowRequired }} Required |{{ end }}
 			|------|-------------|------|---------|{{ if .Settings.ShowRequired }}:--------:|{{ end }}
@@ -98,7 +98,7 @@ const (
 	{{- if .Settings.ShowOutputs -}}
 		{{ indent 0 "#" }} Outputs
 		{{ if not .Module.Outputs }}
-			No output.
+			No outputs.
 		{{ else }}
 			| Name | Description |{{ if .Settings.OutputValues }} Value |{{ if $.Settings.ShowSensitivity }} Sensitive |{{ end }}{{ end }}
 			|------|-------------|{{ if .Settings.OutputValues }}-------|{{ if $.Settings.ShowSensitivity }}:---------:|{{ end }}{{ end }}
@@ -120,7 +120,7 @@ const (
 	{{- if .Settings.ShowModuleCalls -}}
 		{{ indent 0 "#" }} Modules
 		{{ if not .Module.ModuleCalls }}
-			No Modules.
+			No modules.
 		{{ else }}
 			| Name | Source | Version |
 			|------|--------|---------|

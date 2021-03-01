@@ -69,7 +69,7 @@ const (
 	{{- if .Settings.ShowProviders -}}
 		{{ indent 0 "=" }} Providers
 		{{ if not .Module.Providers }}
-			No provider.
+			No providers.
 		{{ else }}
 			[cols="a,a",options="header,autowidth"]
 			|===
@@ -86,7 +86,7 @@ const (
 	{{- if .Settings.ShowInputs -}}
 		{{ indent 0 "=" }} Inputs
 		{{ if not .Module.Inputs }}
-			No input.
+			No inputs.
 		{{ else }}
 			[cols="a,a,a,a{{ if .Settings.ShowRequired }},a{{ end }}",options="header,autowidth"]
 			|===
@@ -107,7 +107,7 @@ const (
 	{{- if .Settings.ShowOutputs -}}
 		{{ indent 0 "=" }} Outputs
 		{{ if not .Module.Outputs }}
-			No output.
+			No outputs.
 		{{ else }}
 			[cols="a,a{{ if .Settings.OutputValues }},a{{ if $.Settings.ShowSensitivity }},a{{ end }}{{ end }}",options="header,autowidth"]
 			|===
@@ -131,7 +131,7 @@ const (
 	{{- if .Settings.ShowModuleCalls -}}
 		{{ indent 0 "=" }} Modules
 		{{ if not .Module.ModuleCalls }}
-			No Modules.
+			No modules.
 		{{ else }}
 			[cols="a,a,a",options="header,autowidth"]
 			|===

@@ -1,83 +1,83 @@
-[36minput.unquoted[0m (required)
-[90mn/a[0m
+input.unquoted (required)
+n/a
 
-[36minput.bool-3[0m (true)
-[90mn/a[0m
+input.bool-3 (true)
+n/a
 
-[36minput.bool-2[0m (false)
-[90mIt's bool number two.[0m
+input.bool-2 (false)
+It's bool number two.
 
-[36minput.bool-1[0m (true)
-[90mIt's bool number one.[0m
+input.bool-1 (true)
+It's bool number one.
 
-[36minput.string-3[0m ("")
-[90mn/a[0m
+input.string-3 ("")
+n/a
 
-[36minput.string-2[0m (required)
-[90mIt's string number two.[0m
+input.string-2 (required)
+It's string number two.
 
-[36minput.string-1[0m ("bar")
-[90mIt's string number one.[0m
+input.string-1 ("bar")
+It's string number one.
 
-[36minput.string-special-chars[0m ("\\.<>[]{}_-")
-[90mn/a[0m
+input.string-special-chars ("\\.<>[]{}_-")
+n/a
 
-[36minput.number-3[0m ("19")
-[90mn/a[0m
+input.number-3 ("19")
+n/a
 
-[36minput.number-4[0m (15.75)
-[90mn/a[0m
+input.number-4 (15.75)
+n/a
 
-[36minput.number-2[0m (required)
-[90mIt's number number two.[0m
+input.number-2 (required)
+It's number number two.
 
-[36minput.number-1[0m (42)
-[90mIt's number number one.[0m
+input.number-1 (42)
+It's number number one.
 
-[36minput.map-3[0m ({})
-[90mn/a[0m
+input.map-3 ({})
+n/a
 
-[36minput.map-2[0m (required)
-[90mIt's map number two.[0m
+input.map-2 (required)
+It's map number two.
 
-[36minput.map-1[0m ({
+input.map-1 ({
   "a": 1,
   "b": 2,
   "c": 3
 })
-[90mIt's map number one.[0m
+It's map number one.
 
-[36minput.list-3[0m ([])
-[90mn/a[0m
+input.list-3 ([])
+n/a
 
-[36minput.list-2[0m (required)
-[90mIt's list number two.[0m
+input.list-2 (required)
+It's list number two.
 
-[36minput.list-1[0m ([
+input.list-1 ([
   "a",
   "b",
   "c"
 ])
-[90mIt's list number one.[0m
+It's list number one.
 
-[36minput.input_with_underscores[0m (required)
-[90mA variable with underscores.[0m
+input.input_with_underscores (required)
+A variable with underscores.
 
-[36minput.input-with-pipe[0m ("v1")
-[90mIt includes v1 | v2 | v3[0m
+input.input-with-pipe ("v1")
+It includes v1 | v2 | v3
 
-[36minput.input-with-code-block[0m ([
+input.input-with-code-block ([
   "name rack:location"
 ])
-[90mThis is a complicated one. We need a newline.  
+This is a complicated one. We need a newline.  
 And an example in a code block
 ```
 default     = [
   "machine rack01:neptune"
 ]
-```[0m
+```
 
-[36minput.long_type[0m ({
+input.long_type ({
   "bar": {
     "bar": "bar",
     "foo": "bar"
@@ -93,33 +93,33 @@ default     = [
   },
   "name": "hello"
 })
-[90mThis description is itself markdown.
+This description is itself markdown.
 
-It spans over multiple lines.[0m
+It spans over multiple lines.
 
-[36minput.no-escape-default-value[0m ("VALUE_WITH_UNDERSCORE")
-[90mThe description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.[0m
+input.no-escape-default-value ("VALUE_WITH_UNDERSCORE")
+The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
 
-[36minput.with-url[0m ("")
-[90mThe description contains url. https://www.domain.com/foo/bar_baz.html[0m
+input.with-url ("")
+The description contains url. https://www.domain.com/foo/bar_baz.html
 
-[36minput.string_default_empty[0m ("")
-[90mn/a[0m
+input.string_default_empty ("")
+n/a
 
-[36minput.string_default_null[0m (null)
-[90mn/a[0m
+input.string_default_null (null)
+n/a
 
-[36minput.string_no_default[0m (required)
-[90mn/a[0m
+input.string_no_default (required)
+n/a
 
-[36minput.number_default_zero[0m (0)
-[90mn/a[0m
+input.number_default_zero (0)
+n/a
 
-[36minput.bool_default_false[0m (false)
-[90mn/a[0m
+input.bool_default_false (false)
+n/a
 
-[36minput.list_default_empty[0m ([])
-[90mn/a[0m
+input.list_default_empty ([])
+n/a
 
-[36minput.object_default_empty[0m ({})
-[90mn/a[0m
+input.object_default_empty ({})
+n/a

@@ -47,25 +47,16 @@ func New(settings *print.Settings, items ...*Item) *Template {
 			return string(s)
 		},
 		"sanitizeHeader": func(s string) string {
-			copy := *settings
-			copy.EscapePipe = false
-			s = sanitizeItemForDocument(s, &copy)
-			return s
+			return sanitizeItemForDocument(s, settings)
 		},
 		"sanitizeDoc": func(s string) string {
 			return sanitizeItemForDocument(s, settings)
 		},
 		"sanitizeTbl": func(s string) string {
-			copy := *settings
-			copy.EscapePipe = true
-			s = sanitizeItemForTable(s, &copy)
-			return s
+			return sanitizeItemForTable(s, settings)
 		},
 		"sanitizeAsciidocTbl": func(s string) string {
-			copy := *settings
-			copy.EscapePipe = true
-			s = sanitizeItemForAsciidocTable(s, &copy)
-			return s
+			return sanitizeItemForAsciidocTable(s, settings)
 		},
 	})
 

@@ -21,7 +21,7 @@ import (
 
 // GetModule returns 'example' Module
 func GetModule(options *terraform.Options) (*terraform.Module, error) {
-	path, err := getExampleFolder()
+	path, err := getExampleFolder(options.Path)
 	if err != nil {
 		return nil, err
 	}
@@ -46,9 +46,14 @@ func GetExpected(format, name string) (string, error) {
 	return string(bytes), nil
 }
 
-func getExampleFolder() (string, error) {
+func getExampleFolder(folder string) (string, error) {
 	_, b, _, _ := runtime.Caller(0)
-	path := filepath.Join(filepath.Dir(b), "..", "..", "examples")
+	var path string
+	if folder != "" {
+		path = filepath.Join(filepath.Dir(b), "..", "testutil", "testdata", folder)
+	} else {
+		path = filepath.Join(filepath.Dir(b), "..", "..", "examples")
+	}
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return "", err
 	}

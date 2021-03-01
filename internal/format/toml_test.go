@@ -21,540 +21,90 @@ import (
 )
 
 func TestToml(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("toml", "toml")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlSortByName(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-SortByName")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name: true,
+	tests := map[string]struct {
+		settings print.Settings
+		options  terraform.Options
+	}{
+		// Base
+		"Base": {
+			settings: testutil.WithSections(),
+			options:  terraform.Options{},
 		},
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlSortByRequired(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-SortByRequired")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Name:     true,
-			Required: true,
+		"Empty": {
+			settings: testutil.WithSections(),
+			options: terraform.Options{
+				Path: "empty",
+			},
 		},
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlSortByType(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-SortByType")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		SortBy: &terraform.SortBy{
-			Type: true,
+		"HideAll": {
+			settings: print.Settings{},
+			options: terraform.Options{
+				ShowHeader:     false, // Since we don't show the header, the file won't be loaded at all
+				HeaderFromFile: "bad.tf",
+			},
 		},
-	})
-	assert.Nil(err)
 
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlNoHeader(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-NoHeader")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlNoInputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       false,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-NoInputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlNoModulecalls(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  false,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-NoModulecalls")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlNoOutputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      false,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-NoOutputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlNoProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    false,
-		ShowRequirements: true,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-NoProviders")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlNoRequirements(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: false,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-NoRequirements")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlNoResources(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       true,
-		ShowModuleCalls:  true,
-		ShowOutputs:      true,
-		ShowProviders:    true,
-		ShowRequirements: true,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-NoResources")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOnlyHeader(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       true,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OnlyHeader")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOnlyInputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       true,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OnlyInputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOnlyModulecalls(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  true,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OnlyModulecalls")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOnlyOutputs(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      true,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OnlyOutputs")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOnlyProviders(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    true,
-		ShowRequirements: false,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OnlyProviders")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOnlyRequirements(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: true,
-		ShowResources:    false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OnlyRequirements")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOnlyResources(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-		ShowResources:    true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OnlyResources")
-	assert.Nil(err)
-
-	options := terraform.NewOptions()
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlOutputValues(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		OutputValues: true,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-OutputValues")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().With(&terraform.Options{
-		OutputValues:     true,
-		OutputValuesPath: "output_values.json",
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlHeaderFromFile(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-HeaderFromFile")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
-		HeaderFromFile: "doc.tf",
-	})
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
-}
-
-func TestTomlEmpty(t *testing.T) {
-	assert := assert.New(t)
-	settings := testutil.Settings().With(&print.Settings{
-		ShowHeader:       false,
-		ShowInputs:       false,
-		ShowModuleCalls:  false,
-		ShowOutputs:      false,
-		ShowProviders:    false,
-		ShowRequirements: false,
-	}).Build()
-
-	expected, err := testutil.GetExpected("toml", "toml-Empty")
-	assert.Nil(err)
-
-	options, err := terraform.NewOptions().WithOverwrite(&terraform.Options{
-		HeaderFromFile: "bad.tf",
-	})
-	options.ShowHeader = false // Since we don't show the header, the file won't be loaded at all
-	assert.Nil(err)
-
-	module, err := testutil.GetModule(options)
-	assert.Nil(err)
-
-	printer := NewTOML(settings)
-	actual, err := printer.Print(module, settings)
-
-	assert.Nil(err)
-	assert.Equal(expected, actual)
+		// Settings
+		"OutputValues": {
+			settings: print.Settings{
+				ShowOutputs:     true,
+				OutputValues:    true,
+				ShowSensitivity: true,
+			},
+			options: terraform.Options{
+				OutputValues:     true,
+				OutputValuesPath: "output_values.json",
+			},
+		},
+
+		// Only section
+		"OnlyHeader": {
+			settings: print.Settings{ShowHeader: true},
+			options:  terraform.Options{},
+		},
+		"OnlyInputs": {
+			settings: print.Settings{ShowInputs: true},
+			options:  terraform.Options{},
+		},
+		"OnlyOutputs": {
+			settings: print.Settings{ShowOutputs: true},
+			options:  terraform.Options{},
+		},
+		"OnlyModulecalls": {
+			settings: print.Settings{ShowModuleCalls: true},
+			options:  terraform.Options{},
+		},
+		"OnlyProviders": {
+			settings: print.Settings{ShowProviders: true},
+			options:  terraform.Options{},
+		},
+		"OnlyRequirements": {
+			settings: print.Settings{ShowRequirements: true},
+			options:  terraform.Options{},
+		},
+		"OnlyResources": {
+			settings: print.Settings{ShowResources: true},
+			options:  terraform.Options{},
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			expected, err := testutil.GetExpected("toml", "toml-"+name)
+			assert.Nil(err)
+
+			options, err := terraform.NewOptions().With(&tt.options)
+			assert.Nil(err)
+
+			module, err := testutil.GetModule(options)
+			assert.Nil(err)
+
+			printer := NewTOML(&tt.settings)
+			actual, err := printer.Print(module, &tt.settings)
+
+			assert.Nil(err)
+			assert.Equal(expected, actual)
+		})
+	}
 }
