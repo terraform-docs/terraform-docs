@@ -460,42 +460,43 @@ func loadComments(filename string, lineNum int) string {
 }
 
 func sortItems(tfmodule *Module, sortby *SortBy) {
+	// inputs
 	if sortby.Type {
 		sort.Sort(inputsSortedByType(tfmodule.Inputs))
 		sort.Sort(inputsSortedByType(tfmodule.RequiredInputs))
 		sort.Sort(inputsSortedByType(tfmodule.OptionalInputs))
+	} else if sortby.Required {
+		sort.Sort(inputsSortedByRequired(tfmodule.Inputs))
+		sort.Sort(inputsSortedByRequired(tfmodule.RequiredInputs))
+		sort.Sort(inputsSortedByRequired(tfmodule.OptionalInputs))
 	} else if sortby.Name {
-		if sortby.Required {
-			sort.Sort(inputsSortedByRequired(tfmodule.Inputs))
-			sort.Sort(inputsSortedByRequired(tfmodule.RequiredInputs))
-			sort.Sort(inputsSortedByRequired(tfmodule.OptionalInputs))
-		} else {
-			sort.Sort(inputsSortedByName(tfmodule.Inputs))
-			sort.Sort(inputsSortedByName(tfmodule.RequiredInputs))
-			sort.Sort(inputsSortedByName(tfmodule.OptionalInputs))
-		}
+		sort.Sort(inputsSortedByName(tfmodule.Inputs))
+		sort.Sort(inputsSortedByName(tfmodule.RequiredInputs))
+		sort.Sort(inputsSortedByName(tfmodule.OptionalInputs))
 	} else {
 		sort.Sort(inputsSortedByPosition(tfmodule.Inputs))
 		sort.Sort(inputsSortedByPosition(tfmodule.RequiredInputs))
 		sort.Sort(inputsSortedByPosition(tfmodule.OptionalInputs))
 	}
 
+	// outputs
 	if sortby.Name || sortby.Type {
 		sort.Sort(outputsSortedByName(tfmodule.Outputs))
-		sort.Sort(providersSortedByName(tfmodule.Providers))
 	} else {
 		sort.Sort(outputsSortedByPosition(tfmodule.Outputs))
+	}
+
+	// providers
+	if sortby.Name || sortby.Type {
+		sort.Sort(providersSortedByName(tfmodule.Providers))
+	} else {
 		sort.Sort(providersSortedByPosition(tfmodule.Providers))
 	}
 
 	// Always sort resources
 	sort.Sort(resourcesSortedByType(tfmodule.Resources))
-	if sortby.Name {
-		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
-	} else {
-		sort.Sort(modulecallsSortedBySource(tfmodule.ModuleCalls))
-	}
 
+	// modules
 	if sortby.Name {
 		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
 	} else {

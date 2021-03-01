@@ -40,9 +40,7 @@ func TestPretty(t *testing.T) {
 
 func TestPrettySortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().WithColor().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().WithColor().Build()
 
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByName")
 	assert.Nil(err)
@@ -66,10 +64,7 @@ func TestPrettySortByName(t *testing.T) {
 
 func TestPrettySortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().WithColor().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().WithColor().Build()
 
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByRequired")
 	assert.Nil(err)
@@ -94,9 +89,7 @@ func TestPrettySortByRequired(t *testing.T) {
 
 func TestPrettySortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().WithColor().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().WithColor().Build()
 
 	expected, err := testutil.GetExpected("pretty", "pretty-SortByType")
 	assert.Nil(err)

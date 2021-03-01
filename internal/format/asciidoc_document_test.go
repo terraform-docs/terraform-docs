@@ -60,9 +60,7 @@ func TestAsciidocDocumentWithRequired(t *testing.T) {
 
 func TestAsciidocDocumentSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-SortByName")
 	assert.Nil(err)
@@ -86,10 +84,7 @@ func TestAsciidocDocumentSortByName(t *testing.T) {
 
 func TestAsciidocDocumentSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-SortByRequired")
 	assert.Nil(err)
@@ -114,9 +109,7 @@ func TestAsciidocDocumentSortByRequired(t *testing.T) {
 
 func TestAsciidocDocumentSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "document-SortByType")
 	assert.Nil(err)

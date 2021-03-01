@@ -40,9 +40,7 @@ func TestTfvarsHcl(t *testing.T) {
 
 func TestTfvarsHclSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("tfvars", "hcl-SortByName")
 	assert.Nil(err)
@@ -66,10 +64,7 @@ func TestTfvarsHclSortByName(t *testing.T) {
 
 func TestTfvarsHclSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("tfvars", "hcl-SortByRequired")
 	assert.Nil(err)
@@ -94,9 +89,7 @@ func TestTfvarsHclSortByRequired(t *testing.T) {
 
 func TestTfvarsHclSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("tfvars", "hcl-SortByType")
 	assert.Nil(err)

@@ -60,9 +60,7 @@ func TestAsciidocTableWithRequired(t *testing.T) {
 
 func TestAsciidocTableSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-SortByName")
 	assert.Nil(err)
@@ -86,10 +84,7 @@ func TestAsciidocTableSortByName(t *testing.T) {
 
 func TestAsciidocTableSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-SortByRequired")
 	assert.Nil(err)
@@ -114,9 +109,7 @@ func TestAsciidocTableSortByRequired(t *testing.T) {
 
 func TestAsciidocTableSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("asciidoc", "table-SortByType")
 	assert.Nil(err)

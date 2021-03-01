@@ -40,9 +40,7 @@ func TestYaml(t *testing.T) {
 
 func TestYamlSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByName")
 	assert.Nil(err)
@@ -66,10 +64,7 @@ func TestYamlSortByName(t *testing.T) {
 
 func TestYamlSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByRequired")
 	assert.Nil(err)
@@ -94,9 +89,7 @@ func TestYamlSortByRequired(t *testing.T) {
 
 func TestYamlSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("yaml", "yaml-SortByType")
 	assert.Nil(err)

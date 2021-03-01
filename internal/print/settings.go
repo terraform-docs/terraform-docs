@@ -99,24 +99,6 @@ type Settings struct {
 	// default: true
 	// scope: Global
 	ShowResources bool
-
-	// SortByName sorted rendering of inputs and outputs
-	//
-	// default: true
-	// scope: Global
-	SortByName bool
-
-	// SortByRequired sort items (inputs, providers) by name and prints required ones first
-	//
-	// default: false
-	// scope: Global
-	SortByRequired bool
-
-	// SortByType sort items (inputs, outputs) by type alphabetically
-	//
-	// default: false
-	// scope: Global
-	SortByType bool
 }
 
 // DefaultSettings returns new instance of Settings
@@ -136,9 +118,6 @@ func DefaultSettings() *Settings {
 		ShowSensitivity:  true,
 		ShowRequirements: true,
 		ShowResources:    true,
-		SortByName:       true,
-		SortByRequired:   false,
-		SortByType:       false,
 	}
 }
 
@@ -159,8 +138,5 @@ func (s *Settings) Convert() *printsdk.Settings {
 		ShowSensitivity:  s.ShowSensitivity,
 		ShowRequirements: s.ShowRequirements,
 		ShowResources:    s.ShowResources,
-		SortByName:       s.SortByName,
-		SortByRequired:   s.SortByRequired,
-		SortByType:       s.SortByType,
 	}
 }

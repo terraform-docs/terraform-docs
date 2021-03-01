@@ -60,9 +60,7 @@ func TestDocumentWithRequired(t *testing.T) {
 
 func TestDocumentSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-SortByName")
 	assert.Nil(err)
@@ -86,10 +84,7 @@ func TestDocumentSortByName(t *testing.T) {
 
 func TestDocumentSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-SortByRequired")
 	assert.Nil(err)
@@ -114,9 +109,7 @@ func TestDocumentSortByRequired(t *testing.T) {
 
 func TestDocumentSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("markdown", "document-SortByType")
 	assert.Nil(err)

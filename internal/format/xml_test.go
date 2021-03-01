@@ -40,9 +40,7 @@ func TestXml(t *testing.T) {
 
 func TestXmlSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-SortByName")
 	assert.Nil(err)
@@ -66,10 +64,7 @@ func TestXmlSortByName(t *testing.T) {
 
 func TestXmlSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-SortByRequired")
 	assert.Nil(err)
@@ -94,9 +89,7 @@ func TestXmlSortByRequired(t *testing.T) {
 
 func TestXmlSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("xml", "xml-SortByType")
 	assert.Nil(err)

@@ -60,9 +60,7 @@ func TestTableWithRequired(t *testing.T) {
 
 func TestTableSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-SortByName")
 	assert.Nil(err)
@@ -86,10 +84,7 @@ func TestTableSortByName(t *testing.T) {
 
 func TestTableSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-SortByRequired")
 	assert.Nil(err)
@@ -114,9 +109,7 @@ func TestTableSortByRequired(t *testing.T) {
 
 func TestTableSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("markdown", "table-SortByType")
 	assert.Nil(err)

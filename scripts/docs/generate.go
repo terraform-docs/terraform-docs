@@ -179,8 +179,8 @@ func example(ref *reference) error {
 		ShowHeader:     true,
 		HeaderFromFile: "main.tf",
 		SortBy: &terraform.SortBy{
-			Name:     settings.SortByName,
-			Required: settings.SortByRequired,
+			Name:     true,
+			Required: true,
 		},
 	}
 

@@ -639,9 +639,9 @@ func TestSortItems(t *testing.T) {
 			path: "full-example",
 			sort: &SortBy{Name: false, Required: true, Type: false},
 			expected: expected{
-				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
+				inputs:    []string{"A", "F", "B", "C", "D", "E", "G"},
 				required:  []string{"A", "F"},
-				optional:  []string{"D", "B", "E", "C", "G"},
+				optional:  []string{"B", "C", "D", "E", "G"},
 				outputs:   []string{"C", "A", "B"},
 				providers: []string{"tls", "aws", "null"},
 			},

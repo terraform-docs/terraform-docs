@@ -280,12 +280,9 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options.OutputValuesPath = c.OutputValues.From
 
 	// sort
-	settings.SortByName = c.Sort.Enabled
-	settings.SortByRequired = c.Sort.Enabled && c.Sort.By.Required
-	settings.SortByType = c.Sort.Enabled && c.Sort.By.Type
-	options.SortBy.Name = settings.SortByName
-	options.SortBy.Required = settings.SortByRequired
-	options.SortBy.Type = settings.SortByType
+	options.SortBy.Name = c.Sort.Enabled
+	options.SortBy.Required = c.Sort.Enabled && c.Sort.By.Required
+	options.SortBy.Type = c.Sort.Enabled && c.Sort.By.Type
 
 	// settings
 	settings.EscapeCharacters = c.Settings.Escape

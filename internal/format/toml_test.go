@@ -40,9 +40,7 @@ func TestToml(t *testing.T) {
 
 func TestTomlSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("toml", "toml-SortByName")
 	assert.Nil(err)
@@ -66,10 +64,7 @@ func TestTomlSortByName(t *testing.T) {
 
 func TestTomlSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("toml", "toml-SortByRequired")
 	assert.Nil(err)
@@ -94,9 +89,7 @@ func TestTomlSortByRequired(t *testing.T) {
 
 func TestTomlSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("toml", "toml-SortByType")
 	assert.Nil(err)

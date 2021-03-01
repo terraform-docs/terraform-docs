@@ -40,9 +40,7 @@ func TestJson(t *testing.T) {
 
 func TestJsonSortByName(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("json", "json-SortByName")
 	assert.Nil(err)
@@ -66,10 +64,7 @@ func TestJsonSortByName(t *testing.T) {
 
 func TestJsonSortByRequired(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByName:     true,
-		SortByRequired: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("json", "json-SortByRequired")
 	assert.Nil(err)
@@ -94,9 +89,7 @@ func TestJsonSortByRequired(t *testing.T) {
 
 func TestJsonSortByType(t *testing.T) {
 	assert := assert.New(t)
-	settings := testutil.Settings().WithSections().With(&print.Settings{
-		SortByType: true,
-	}).Build()
+	settings := testutil.Settings().WithSections().Build()
 
 	expected, err := testutil.GetExpected("json", "json-SortByType")
 	assert.Nil(err)
