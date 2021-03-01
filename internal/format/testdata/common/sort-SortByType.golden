@@ -1,0 +1,62 @@
+{
+  "inputs": [
+    "input_with_underscores",
+    "unquoted",
+    "bool-1",
+    "bool-2",
+    "bool-3",
+    "bool_default_false",
+    "input-with-code-block",
+    "list-1",
+    "list-2",
+    "list-3",
+    "list_default_empty",
+    "map-1",
+    "map-2",
+    "map-3",
+    "number-1",
+    "number-2",
+    "number-3",
+    "number-4",
+    "number_default_zero",
+    "long_type",
+    "object_default_empty",
+    "input-with-pipe",
+    "no-escape-default-value",
+    "string-1",
+    "string-2",
+    "string-3",
+    "string-special-chars",
+    "string_default_empty",
+    "string_default_null",
+    "string_no_default",
+    "with-url"
+  ],
+  "modules": [
+    "foo-bar",
+    "bar-baz",
+    "baz-baz"
+  ],
+  "outputs": [
+    "output-0.12",
+    "output-1",
+    "output-2",
+    "unquoted"
+  ],
+  "providers": [
+    "aws",
+    "aws.ident",
+    "null",
+    "tls"
+  ],
+  "requirements": [
+    "terraform",
+    "aws",
+    "random"
+  ],
+  "resources": [
+    "aws_caller_identity__data",
+    "null_resource__managed",
+    "tls_private_key__managed"
+  ]
+}

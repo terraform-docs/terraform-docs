@@ -480,14 +480,14 @@ func sortItems(tfmodule *Module, sortby *SortBy) {
 	}
 
 	// outputs
-	if sortby.Name || sortby.Type {
+	if sortby.Name || sortby.Required || sortby.Type {
 		sort.Sort(outputsSortedByName(tfmodule.Outputs))
 	} else {
 		sort.Sort(outputsSortedByPosition(tfmodule.Outputs))
 	}
 
 	// providers
-	if sortby.Name || sortby.Type {
+	if sortby.Name || sortby.Required || sortby.Type {
 		sort.Sort(providersSortedByName(tfmodule.Providers))
 	} else {
 		sort.Sort(providersSortedByPosition(tfmodule.Providers))
@@ -497,7 +497,7 @@ func sortItems(tfmodule *Module, sortby *SortBy) {
 	sort.Sort(resourcesSortedByType(tfmodule.Resources))
 
 	// modules
-	if sortby.Name {
+	if sortby.Name || sortby.Required {
 		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
 	} else {
 		sort.Sort(modulecallsSortedBySource(tfmodule.ModuleCalls))

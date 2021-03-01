@@ -216,25 +216,6 @@ func normalizeURLs(s string, settings *print.Settings) string {
 	return s
 }
 
-// generateIndentation generates indentation of Markdown and AsciiDoc headers
-// with base level of provided 'settings.IndentLevel' plus any
-// extra level needed for subsection (e.g. 'Required Inputs' which
-// is a subsection of 'Inputs' section)
-func generateIndentation(extra int, char string, settings *print.Settings) string {
-	if char == "" {
-		return ""
-	}
-	var base = settings.IndentLevel
-	if base < 1 || base > 5 {
-		base = 2
-	}
-	var indent string
-	for i := 0; i < base+extra; i++ {
-		indent += char
-	}
-	return indent
-}
-
 func processSegments(s string, prefix string, normalFn func(segment string) string, codeFn func(segment string) string) string {
 	// Isolate blocks of code. Dont escape anything inside them
 	nextIsInCodeBlock := strings.HasPrefix(s, prefix)

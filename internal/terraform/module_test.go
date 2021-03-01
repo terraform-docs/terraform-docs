@@ -642,8 +642,8 @@ func TestSortItems(t *testing.T) {
 				inputs:    []string{"A", "F", "B", "C", "D", "E", "G"},
 				required:  []string{"A", "F"},
 				optional:  []string{"B", "C", "D", "E", "G"},
-				outputs:   []string{"C", "A", "B"},
-				providers: []string{"tls", "aws", "null"},
+				outputs:   []string{"A", "B", "C"},
+				providers: []string{"aws", "null", "tls"},
 			},
 		},
 		{
