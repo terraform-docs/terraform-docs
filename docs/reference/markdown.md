@@ -20,11 +20,13 @@ terraform-docs markdown [PATH] [flags]
 
 ```console
       --anchor       create anchor links (default true)
+      --default      show Default column or section (default true)
       --escape       escape special characters (default true)
   -h, --help         help for markdown
       --indent int   indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --required     show Required column or section (default true)
       --sensitive    show Sensitive column or section (default true)
+      --type         show Type column or section (default true)
 ```
 
 ## Inherited Options

@@ -66,10 +66,22 @@
     {{ if not .Module.Inputs }}
         No inputs.
     {{ else }}
-        | Name | Description | Type | Default |{{ if .Settings.ShowRequired }} Required |{{ end }}
-        |------|-------------|------|---------|{{ if .Settings.ShowRequired }}:--------:|{{ end }}
+        | Name | Description |
+        {{- if .Settings.ShowType }} Type |{{ end }}
+        {{- if .Settings.ShowDefault }} Default |{{ end }}
+        {{- if .Settings.ShowRequired }} Required |{{ end }}
+        |------|-------------|
+        {{- if .Settings.ShowType }}------|{{ end }}
+        {{- if .Settings.ShowDefault }}---------|{{ end }}
+        {{- if .Settings.ShowRequired }}:--------:|{{ end }}
         {{- range .Module.Inputs }}
-            | {{ anchorName "input" .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .GetValue | sanitizeTbl }} |
+            | {{ anchorName "input" .Name }} | {{ tostring .Description | sanitizeTbl }} |
+            {{- if $.Settings.ShowType -}}
+                {{ printf " " }}{{ tostring .Type | type | sanitizeTbl }} |
+            {{- end -}}
+            {{- if $.Settings.ShowDefault -}}
+                {{ printf " " }}{{ value .GetValue | sanitizeTbl }} |
+            {{- end -}}
             {{- if $.Settings.ShowRequired -}}
                 {{ printf " " }}{{ ternary .Required "yes" "no" }} |
             {{- end -}}

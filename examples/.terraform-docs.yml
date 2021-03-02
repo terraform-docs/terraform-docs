@@ -14,3 +14,6 @@ sort:
 settings:
   indent: 4
   escape: false
+  default: false
+  required: false
+  type: true

@@ -61,6 +61,22 @@ func TestAsciidocDocument(t *testing.T) {
 			),
 			options: terraform.Options{},
 		},
+		"WithoutDefault": {
+			settings: print.Settings{
+				ShowInputs:  true,
+				ShowDefault: false,
+				ShowType:    true,
+			},
+			options: terraform.Options{},
+		},
+		"WithoutType": {
+			settings: print.Settings{
+				ShowInputs:  true,
+				ShowDefault: true,
+				ShowType:    false,
+			},
+			options: terraform.Options{},
+		},
 		"IndentationOfFour": {
 			settings: testutil.WithSections(
 				print.Settings{
@@ -98,8 +114,12 @@ func TestAsciidocDocument(t *testing.T) {
 			options:  terraform.Options{},
 		},
 		"OnlyInputs": {
-			settings: print.Settings{ShowInputs: true},
-			options:  terraform.Options{},
+			settings: print.Settings{
+				ShowInputs:  true,
+				ShowDefault: true,
+				ShowType:    true,
+			},
+			options: terraform.Options{},
 		},
 		"OnlyOutputs": {
 			settings: print.Settings{ShowOutputs: true},

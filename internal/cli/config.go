@@ -160,20 +160,24 @@ func (s *sort) validate() error {
 type settings struct {
 	Anchor    bool `yaml:"anchor"`
 	Color     bool `yaml:"color"`
+	Default   bool `yaml:"default"`
 	Escape    bool `yaml:"escape"`
 	Indent    int  `yaml:"indent"`
 	Required  bool `yaml:"required"`
 	Sensitive bool `yaml:"sensitive"`
+	Type      bool `yaml:"type"`
 }
 
 func defaultSettings() settings {
 	return settings{
 		Anchor:    true,
 		Color:     true,
+		Default:   true,
 		Escape:    true,
 		Indent:    2,
 		Required:  true,
 		Sensitive: true,
+		Type:      true,
 	}
 }
 
@@ -289,10 +293,12 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	// settings
 	settings.EscapeCharacters = c.Settings.Escape
 	settings.IndentLevel = c.Settings.Indent
+	settings.ShowAnchor = c.Settings.Anchor
 	settings.ShowColor = c.Settings.Color
+	settings.ShowDefault = c.Settings.Default
 	settings.ShowRequired = c.Settings.Required
 	settings.ShowSensitivity = c.Settings.Sensitive
-	settings.ShowAnchor = c.Settings.Anchor
+	settings.ShowType = c.Settings.Type
 
 	return settings, options
 }

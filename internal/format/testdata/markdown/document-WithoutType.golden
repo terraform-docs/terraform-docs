@@ -1,0 +1,238 @@
+## Inputs
+
+The following input variables are supported:
+
+### unquoted
+
+Description: n/a
+
+Default: n/a
+
+### bool-3
+
+Description: n/a
+
+Default: `true`
+
+### bool-2
+
+Description: It's bool number two.
+
+Default: `false`
+
+### bool-1
+
+Description: It's bool number one.
+
+Default: `true`
+
+### string-3
+
+Description: n/a
+
+Default: `""`
+
+### string-2
+
+Description: It's string number two.
+
+Default: n/a
+
+### string-1
+
+Description: It's string number one.
+
+Default: `"bar"`
+
+### string-special-chars
+
+Description: n/a
+
+Default: `"\\.<>[]{}_-"`
+
+### number-3
+
+Description: n/a
+
+Default: `"19"`
+
+### number-4
+
+Description: n/a
+
+Default: `15.75`
+
+### number-2
+
+Description: It's number number two.
+
+Default: n/a
+
+### number-1
+
+Description: It's number number one.
+
+Default: `42`
+
+### map-3
+
+Description: n/a
+
+Default: `{}`
+
+### map-2
+
+Description: It's map number two.
+
+Default: n/a
+
+### map-1
+
+Description: It's map number one.
+
+Default:
+
+```json
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+```
+
+### list-3
+
+Description: n/a
+
+Default: `[]`
+
+### list-2
+
+Description: It's list number two.
+
+Default: n/a
+
+### list-1
+
+Description: It's list number one.
+
+Default:
+
+```json
+[
+  "a",
+  "b",
+  "c"
+]
+```
+
+### input_with_underscores
+
+Description: A variable with underscores.
+
+Default: n/a
+
+### input-with-pipe
+
+Description: It includes v1 | v2 | v3
+
+Default: `"v1"`
+
+### input-with-code-block
+
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+
+Default:
+
+```json
+[
+  "name rack:location"
+]
+```
+
+### long_type
+
+Description: This description is itself markdown.
+
+It spans over multiple lines.
+
+Default:
+
+```json
+{
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+```
+
+### no-escape-default-value
+
+Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
+
+Default: `"VALUE_WITH_UNDERSCORE"`
+
+### with-url
+
+Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+
+Default: `""`
+
+### string_default_empty
+
+Description: n/a
+
+Default: `""`
+
+### string_default_null
+
+Description: n/a
+
+Default: `null`
+
+### string_no_default
+
+Description: n/a
+
+Default: n/a
+
+### number_default_zero
+
+Description: n/a
+
+Default: `0`
+
+### bool_default_false
+
+Description: n/a
+
+Default: `false`
+
+### list_default_empty
+
+Description: n/a
+
+Default: `[]`
+
+### object_default_empty
+
+Description: n/a
+
+Default: `{}`

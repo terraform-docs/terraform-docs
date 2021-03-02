@@ -22,7 +22,7 @@ type Settings struct {
 	// scope: Markdown
 	EscapeCharacters bool
 
-	// IndentLevel control the indentation of AsciiDoc and Markdown headers [available: 1, 2, 3, 4, 5]
+	// IndentLevel control the indentation of headers [available: 1, 2, 3, 4, 5]
 	//
 	// default: 2
 	// scope: Asciidoc, Markdown
@@ -46,6 +46,12 @@ type Settings struct {
 	// scope: Pretty
 	ShowColor bool
 
+	// ShowDefault show "Default" column
+	//
+	// default: true
+	// scope: Asciidoc, Markdown
+	ShowDefault bool
+
 	// ShowHeader show "Header" module information
 	//
 	// default: true
@@ -58,7 +64,7 @@ type Settings struct {
 	// scope: Global
 	ShowInputs bool
 
-	// ShowModuleCalls show "ModuleCalls" information (default: true)
+	// ShowModuleCalls show "ModuleCalls" information
 	//
 	// default: true
 	// scope: Global
@@ -76,16 +82,16 @@ type Settings struct {
 	// scope: Global
 	ShowProviders bool
 
-	// ShowRequired show "Required" column when generating Markdown
+	// ShowRequired show "Required" column
 	//
 	// default: true
-	// scope: Markdown
+	// scope: Asciidoc, Markdown
 	ShowRequired bool
 
-	// ShowSensitivity show "Sensitive" column when generating Markdown
+	// ShowSensitivity show "Sensitive" column
 	//
 	// default: true
-	// scope: Markdown
+	// scope: Asciidoc, Markdown
 	ShowSensitivity bool
 
 	// ShowRequirements show "Requirements" section
@@ -99,6 +105,12 @@ type Settings struct {
 	// default: true
 	// scope: Global
 	ShowResources bool
+
+	// ShowType show "Type" column
+	//
+	// default: true
+	// scope: Asciidoc, Markdown
+	ShowType bool
 }
 
 // DefaultSettings returns new instance of Settings
@@ -109,6 +121,7 @@ func DefaultSettings() *Settings {
 		OutputValues:     false,
 		ShowAnchor:       true,
 		ShowColor:        true,
+		ShowDefault:      true,
 		ShowHeader:       true,
 		ShowInputs:       true,
 		ShowModuleCalls:  true,
@@ -118,6 +131,7 @@ func DefaultSettings() *Settings {
 		ShowSensitivity:  true,
 		ShowRequirements: true,
 		ShowResources:    true,
+		ShowType:         true,
 	}
 }
 
@@ -128,6 +142,7 @@ func (s *Settings) Convert() *printsdk.Settings {
 		IndentLevel:      s.IndentLevel,
 		OutputValues:     s.OutputValues,
 		ShowColor:        s.ShowColor,
+		ShowDefault:      s.ShowDefault,
 		ShowHeader:       s.ShowHeader,
 		ShowInputs:       s.ShowInputs,
 		ShowOutputs:      s.ShowOutputs,
@@ -137,5 +152,6 @@ func (s *Settings) Convert() *printsdk.Settings {
 		ShowSensitivity:  s.ShowSensitivity,
 		ShowRequirements: s.ShowRequirements,
 		ShowResources:    s.ShowResources,
+		ShowType:         s.ShowType,
 	}
 }

@@ -26,6 +26,9 @@ func WithSections(override ...print.Settings) print.Settings {
 		ShowProviders:    true,
 		ShowRequirements: true,
 		ShowResources:    true,
+
+		ShowDefault: true,
+		ShowType:    true,
 	}
 	if len(override) != 1 {
 		return base

@@ -74,15 +74,18 @@
     {{ if not .Module.Inputs }}
         No inputs.
     {{ else }}
-        [cols="a,a,a,a{{ if .Settings.ShowRequired }},a{{ end }}",options="header,autowidth"]
+        [cols="a,a{{ if .Settings.ShowType }},a{{ end }}{{ if .Settings.ShowDefault }},a{{ end }}{{ if .Settings.ShowRequired }},a{{ end }}",options="header,autowidth"]
         |===
-        |Name |Description |Type |Default{{ if .Settings.ShowRequired }} |Required{{ end }}
+        |Name |Description
+        {{- if .Settings.ShowType }} |Type{{ end }}
+        {{- if .Settings.ShowDefault }} |Default{{ end }}
+        {{- if .Settings.ShowRequired }} |Required{{ end }}
         {{- range .Module.Inputs }}
             |{{ anchorNameAsciidoc "input" .Name }}
             |{{ tostring .Description | sanitizeAsciidocTbl }}
-            |{{ tostring .Type | type | sanitizeAsciidocTbl }}
-            |{{ value .GetValue | sanitizeAsciidocTbl }}
-            {{ if $.Settings.ShowRequired }}|{{ ternary .Required "yes" "no" }}{{ end }}
+            {{- if $.Settings.ShowType }}{{ printf "\n" }}|{{ tostring .Type | type | sanitizeAsciidocTbl }}{{ end }}
+            {{- if $.Settings.ShowDefault }}{{ printf "\n" }}|{{ value .GetValue | sanitizeAsciidocTbl }}{{ end }}
+            {{- if $.Settings.ShowRequired }}{{ printf "\n" }}|{{ ternary .Required "yes" "no" }}{{ end }}
         {{ end }}
         |===
     {{ end }}
