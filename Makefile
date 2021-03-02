@@ -21,16 +21,17 @@ CUR_VERSION  ?= $(shell git describe --tags --exact-match 2>/dev/null || git des
 COVERAGE_OUT := coverage.out
 
 # Go variables
+GO          ?= go
 GO_PACKAGE  := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
-GOOS        ?= $(shell go env GOOS)
-GOARCH      ?= $(shell go env GOARCH)
+GOOS        ?= $(shell $(GO) env GOOS)
+GOARCH      ?= $(shell $(GO) env GOARCH)
 
 GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.version=$(CUR_VERSION)
 GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.commitHash=$(COMMIT_HASH)
 GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
 
-GOBUILD     ?= CGO_ENABLED=0 go build -ldflags="$(GOLDFLAGS)"
-GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
+GOBUILD     ?= CGO_ENABLED=0 $(GO) build -ldflags="$(GOLDFLAGS)"
+GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) run
 
 GOIMPORTS_LOCAL_ARG := -local github.com/terraform-docs
 
@@ -71,17 +72,17 @@ lint: ## Run linter
 .PHONY: staticcheck
 staticcheck: ## Run staticcheck
 	@ $(MAKE) --no-print-directory log-$@
-	go run honnef.co/go/tools/cmd/staticcheck -- ./...
+	$(GO) run honnef.co/go/tools/cmd/staticcheck -- ./...
 
 .PHONY: test
 test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
-	go test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v ./...
+	$(GO) test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v ./...
 
 .PHONY: verify
 verify: ## Verify 'vendor' dependencies
 	@ $(MAKE) --no-print-directory log-$@
-	go mod verify
+	$(GO) mod verify
 
 # removed and gitignoreed 'vendor/', not needed anymore #
 .PHONY: vendor deps
@@ -156,19 +157,19 @@ changelog: ## Generate Changelog
 .PHONY: git-chglog
 git-chglog:
 ifeq (, $(shell which git-chglog))
-	GO111MODULE=off go get -u github.com/terraform-docs/git-chglog/cmd/git-chglog
+	GO111MODULE=off $(GO) get -u github.com/terraform-docs/git-chglog/cmd/git-chglog
 endif
 
 .PHONY: goimports
 goimports:
 ifeq (, $(shell which goimports))
-	GO111MODULE=off go get -u golang.org/x/tools/cmd/goimports
+	GO111MODULE=off $(GO) get -u golang.org/x/tools/cmd/goimports
 endif
 
 .PHONY: golangci
 golangci:
 ifeq (, $(shell which golangci-lint))
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell go env GOPATH)/bin $(GOLANGCI_VERSION)
+	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell $(GO) env GOPATH)/bin $(GOLANGCI_VERSION)
 endif
 
 .PHONY: tools
