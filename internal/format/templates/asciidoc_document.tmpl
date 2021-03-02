@@ -77,10 +77,14 @@
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
-                Type: {{ tostring .Type | type }}
+                {{ if $.Settings.ShowType -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
 
-                {{ if or .HasDefault (not isRequired) }}
-                    Default: {{ default "n/a" .GetValue | value }}
+                {{ if $.Settings.ShowDefault }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
                 {{- end }}
             {{- end }}
         {{- end }}
@@ -95,10 +99,14 @@
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
-                Type: {{ tostring .Type | type }}
+                {{ if $.Settings.ShowType -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
 
-                {{ if or .HasDefault (not isRequired) }}
-                    Default: {{ default "n/a" .GetValue | value }}
+                {{ if $.Settings.ShowDefault }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
                 {{- end }}
             {{- end }}
         {{ end }}
@@ -114,10 +122,14 @@
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
-                Type: {{ tostring .Type | type }}
+                {{ if $.Settings.ShowType -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
 
-                {{ if or .HasDefault (not isRequired) }}
-                    Default: {{ default "n/a" .GetValue | value }}
+                {{ if $.Settings.ShowDefault }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
                 {{- end }}
             {{- end }}
         {{ end }}

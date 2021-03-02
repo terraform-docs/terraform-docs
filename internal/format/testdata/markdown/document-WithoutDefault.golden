@@ -1,0 +1,207 @@
+## Inputs
+
+The following input variables are supported:
+
+### unquoted
+
+Description: n/a
+
+Type: `any`
+
+### bool-3
+
+Description: n/a
+
+Type: `bool`
+
+### bool-2
+
+Description: It's bool number two.
+
+Type: `bool`
+
+### bool-1
+
+Description: It's bool number one.
+
+Type: `bool`
+
+### string-3
+
+Description: n/a
+
+Type: `string`
+
+### string-2
+
+Description: It's string number two.
+
+Type: `string`
+
+### string-1
+
+Description: It's string number one.
+
+Type: `string`
+
+### string-special-chars
+
+Description: n/a
+
+Type: `string`
+
+### number-3
+
+Description: n/a
+
+Type: `number`
+
+### number-4
+
+Description: n/a
+
+Type: `number`
+
+### number-2
+
+Description: It's number number two.
+
+Type: `number`
+
+### number-1
+
+Description: It's number number one.
+
+Type: `number`
+
+### map-3
+
+Description: n/a
+
+Type: `map`
+
+### map-2
+
+Description: It's map number two.
+
+Type: `map`
+
+### map-1
+
+Description: It's map number one.
+
+Type: `map`
+
+### list-3
+
+Description: n/a
+
+Type: `list`
+
+### list-2
+
+Description: It's list number two.
+
+Type: `list`
+
+### list-1
+
+Description: It's list number one.
+
+Type: `list`
+
+### input_with_underscores
+
+Description: A variable with underscores.
+
+Type: `any`
+
+### input-with-pipe
+
+Description: It includes v1 | v2 | v3
+
+Type: `string`
+
+### input-with-code-block
+
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
+
+Type: `list`
+
+### long_type
+
+Description: This description is itself markdown.
+
+It spans over multiple lines.
+
+Type:
+
+```hcl
+object({
+    name = string,
+    foo  = object({ foo = string, bar = string }),
+    bar  = object({ foo = string, bar = string }),
+    fizz = list(string),
+    buzz = list(string)
+  })
+```
+
+### no-escape-default-value
+
+Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
+
+Type: `string`
+
+### with-url
+
+Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+
+Type: `string`
+
+### string_default_empty
+
+Description: n/a
+
+Type: `string`
+
+### string_default_null
+
+Description: n/a
+
+Type: `string`
+
+### string_no_default
+
+Description: n/a
+
+Type: `string`
+
+### number_default_zero
+
+Description: n/a
+
+Type: `number`
+
+### bool_default_false
+
+Description: n/a
+
+Type: `bool`
+
+### list_default_empty
+
+Description: n/a
+
+Type: `list(string)`
+
+### object_default_empty
+
+Description: n/a
+
+Type: `object({})`

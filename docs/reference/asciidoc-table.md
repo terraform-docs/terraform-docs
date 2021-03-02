@@ -27,6 +27,7 @@ terraform-docs asciidoc table [PATH] [flags]
 ```console
       --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
+      --default                     show Default column or section (default true)
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
       --hide-all                    hide all sections (default false)
@@ -40,6 +41,7 @@ terraform-docs asciidoc table [PATH] [flags]
       --sort                        sort items (default true)
       --sort-by-required            sort items by name and print required ones first (default false)
       --sort-by-type                sort items by type of them (default false)
+      --type                        show Type column or section (default true)
 ```
 
 ## Example

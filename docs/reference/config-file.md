@@ -38,10 +38,12 @@ sort:
 settings:
   anchors: true
   color: true
+  default: true
   escape: true
   indent: 2
   required: true
   sensitive: true
+  type: true
 ```
 
 **Note:** The following options cannot be used together:

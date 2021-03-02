@@ -93,7 +93,7 @@ func (c *cfgreader) parse() error {
 			if err := c.overrideValue(mapping[flag], &c.config.OutputValues, &c.overrides.OutputValues); err != nil {
 				return err
 			}
-		case "anchor", "color", "escape", "indent", "required", "sensitive":
+		case "anchor", "color", "default", "escape", "indent", "required", "sensitive", "type":
 			if err := c.overrideValue(flag, &c.config.Settings, &c.overrides.Settings); err != nil {
 				return err
 			}
