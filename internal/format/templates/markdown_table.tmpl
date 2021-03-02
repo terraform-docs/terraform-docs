@@ -13,7 +13,7 @@
         | Name | Version |
         |------|---------|
         {{- range .Module.Requirements }}
-            | {{ name .Name }} | {{ tostring .Version | default "n/a" }} |
+            | {{ anchorName "requirement" .Name }} | {{ tostring .Version | default "n/a" }} |
         {{- end }}
     {{ end }}
 {{ end -}}
@@ -26,7 +26,7 @@
         | Name | Version |
         |------|---------|
         {{- range .Module.Providers }}
-            | {{ name .FullName }} | {{ tostring .Version | default "n/a" }} |
+            | {{ anchorName "provider" .FullName }} | {{ tostring .Version | default "n/a" }} |
         {{- end }}
     {{ end }}
 {{ end -}}
@@ -39,7 +39,7 @@
         | Name | Source | Version |
         |------|--------|---------|
         {{- range .Module.ModuleCalls }}
-            | {{ .Name }} | {{ .Source }} | {{ .Version }} |
+            | {{ anchorName "module" .Name }} | {{ .Source }} | {{ .Version }} |
         {{- end }}
     {{ end }}
 {{ end -}}
@@ -69,7 +69,7 @@
         | Name | Description | Type | Default |{{ if .Settings.ShowRequired }} Required |{{ end }}
         |------|-------------|------|---------|{{ if .Settings.ShowRequired }}:--------:|{{ end }}
         {{- range .Module.Inputs }}
-            | {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .GetValue | sanitizeTbl }} |
+            | {{ anchorName "input" .Name }} | {{ tostring .Description | sanitizeTbl }} | {{ tostring .Type | type | sanitizeTbl }} | {{ value .GetValue | sanitizeTbl }} |
             {{- if $.Settings.ShowRequired -}}
                 {{ printf " " }}{{ ternary .Required "yes" "no" }} |
             {{- end -}}
@@ -85,7 +85,7 @@
         | Name | Description |{{ if .Settings.OutputValues }} Value |{{ if $.Settings.ShowSensitivity }} Sensitive |{{ end }}{{ end }}
         |------|-------------|{{ if .Settings.OutputValues }}-------|{{ if $.Settings.ShowSensitivity }}:---------:|{{ end }}{{ end }}
         {{- range .Module.Outputs }}
-            | {{ name .Name }} | {{ tostring .Description | sanitizeTbl }} |
+            | {{ anchorName "output" .Name }} | {{ tostring .Description | sanitizeTbl }} |
             {{- if $.Settings.OutputValues -}}
                 {{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
                 {{ printf " " }}{{ value $sensitive | sanitizeTbl }} |

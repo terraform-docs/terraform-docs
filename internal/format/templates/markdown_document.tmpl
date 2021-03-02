@@ -13,7 +13,7 @@
         The following requirements are needed by this module:
         {{- range .Module.Requirements }}
             {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            - {{ name .Name }}{{ $version }}
+            - {{ anchorName "requirement" .Name }}{{ $version }}
         {{- end }}
     {{ end }}
 {{ end -}}
@@ -26,7 +26,7 @@
         The following providers are used by this module:
         {{- range .Module.Providers }}
             {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            - {{ name .FullName }}{{ $version }}
+            - {{ anchorName "provider" .FullName }}{{ $version }}
         {{- end }}
     {{ end }}
 {{ end -}}
@@ -39,7 +39,7 @@
         The following Modules are called:
         {{- range .Module.ModuleCalls }}
 
-            {{ indent 1 "#" }} {{ name .Name }}
+            {{ indent 1 "#" }} {{ anchorName "module" .Name }}
 
             Source: {{ .Source }}
 
@@ -74,7 +74,7 @@
             The following input variables are required:
             {{- range .Module.RequiredInputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ name .Name }}
+                {{ indent 1 "#" }} {{ anchorName "input" .Name }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -92,7 +92,7 @@
             The following input variables are optional (have default values):
             {{- range .Module.OptionalInputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ name .Name }}
+                {{ indent 1 "#" }} {{ anchorName "input" .Name }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -111,7 +111,7 @@
             The following input variables are supported:
             {{- range .Module.Inputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ name .Name }}
+                {{ indent 1 "#" }} {{ anchorName "input" .Name }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -133,7 +133,7 @@
         The following outputs are exported:
         {{- range .Module.Outputs }}
 
-            {{ indent 1 "#" }} {{ name .Name }}
+            {{ indent 1 "#" }} {{ anchorName "output" .Name }}
 
             Description: {{ tostring .Description | sanitizeDoc }}
 

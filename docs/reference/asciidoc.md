@@ -19,6 +19,7 @@ terraform-docs asciidoc [PATH] [flags]
 ## Options
 
 ```console
+      --anchor       create anchor links (default true)
   -h, --help         help for asciidoc
       --indent int   indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
       --required     show Required column or section (default true)

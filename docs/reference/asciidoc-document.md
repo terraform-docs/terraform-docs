@@ -25,6 +25,7 @@ terraform-docs asciidoc document [PATH] [flags]
 ## Inherited Options
 
 ```console
+      --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
@@ -93,41 +94,41 @@ generates the following output:
 
     The following requirements are needed by this module:
 
-    - terraform (>= 0.12)
+    - [[requirement_terraform]] <<requirement_terraform,terraform>> (>= 0.12)
 
-    - aws (>= 2.15.0)
+    - [[requirement_aws]] <<requirement_aws,aws>> (>= 2.15.0)
 
-    - random (>= 2.2.0)
+    - [[requirement_random]] <<requirement_random,random>> (>= 2.2.0)
 
     == Providers
 
     The following providers are used by this module:
 
-    - aws (>= 2.15.0)
+    - [[provider_aws]] <<provider_aws,aws>> (>= 2.15.0)
 
-    - aws.ident (>= 2.15.0)
+    - [[provider_aws.ident]] <<provider_aws.ident,aws.ident>> (>= 2.15.0)
 
-    - null
+    - [[provider_null]] <<provider_null,null>>
 
-    - tls
+    - [[provider_tls]] <<provider_tls,tls>>
 
     == Modules
 
     The following Modules are called:
 
-    === bar
+    === [[module_bar]] <<module_bar,bar>>
 
     Source: baz
 
     Version: 4.5.6
 
-    === baz
+    === [[module_baz]] <<module_baz,baz>>
 
     Source: baz
 
     Version: 4.5.6
 
-    === foo
+    === [[module_foo]] <<module_foo,foo>>
 
     Source: bar
 
@@ -145,43 +146,43 @@ generates the following output:
 
     The following input variables are required:
 
-    === input_with_underscores
+    === [[input_input_with_underscores]] <<input_input_with_underscores,input_with_underscores>>
 
     Description: A variable with underscores.
 
     Type: `any`
 
-    === list-2
+    === [[input_list-2]] <<input_list-2,list-2>>
 
     Description: It's list number two.
 
     Type: `list`
 
-    === map-2
+    === [[input_map-2]] <<input_map-2,map-2>>
 
     Description: It's map number two.
 
     Type: `map`
 
-    === number-2
+    === [[input_number-2]] <<input_number-2,number-2>>
 
     Description: It's number number two.
 
     Type: `number`
 
-    === string-2
+    === [[input_string-2]] <<input_string-2,string-2>>
 
     Description: It's string number two.
 
     Type: `string`
 
-    === string_no_default
+    === [[input_string_no_default]] <<input_string_no_default,string_no_default>>
 
     Description: n/a
 
     Type: `string`
 
-    === unquoted
+    === [[input_unquoted]] <<input_unquoted,unquoted>>
 
     Description: n/a
 
@@ -191,7 +192,7 @@ generates the following output:
 
     The following input variables are optional (have default values):
 
-    === bool-1
+    === [[input_bool-1]] <<input_bool-1,bool-1>>
 
     Description: It's bool number one.
 
@@ -199,7 +200,7 @@ generates the following output:
 
     Default: `true`
 
-    === bool-2
+    === [[input_bool-2]] <<input_bool-2,bool-2>>
 
     Description: It's bool number two.
 
@@ -207,7 +208,7 @@ generates the following output:
 
     Default: `false`
 
-    === bool-3
+    === [[input_bool-3]] <<input_bool-3,bool-3>>
 
     Description: n/a
 
@@ -215,7 +216,7 @@ generates the following output:
 
     Default: `true`
 
-    === bool_default_false
+    === [[input_bool_default_false]] <<input_bool_default_false,bool_default_false>>
 
     Description: n/a
 
@@ -223,7 +224,7 @@ generates the following output:
 
     Default: `false`
 
-    === input-with-code-block
+    === [[input_input-with-code-block]] <<input_input-with-code-block,input-with-code-block>>
 
     Description: This is a complicated one. We need a newline.  
     And an example in a code block
@@ -243,7 +244,7 @@ generates the following output:
     ]
     ----
 
-    === input-with-pipe
+    === [[input_input-with-pipe]] <<input_input-with-pipe,input-with-pipe>>
 
     Description: It includes v1 | v2 | v3
 
@@ -251,7 +252,7 @@ generates the following output:
 
     Default: `"v1"`
 
-    === list-1
+    === [[input_list-1]] <<input_list-1,list-1>>
 
     Description: It's list number one.
 
@@ -267,7 +268,7 @@ generates the following output:
     ]
     ----
 
-    === list-3
+    === [[input_list-3]] <<input_list-3,list-3>>
 
     Description: n/a
 
@@ -275,7 +276,7 @@ generates the following output:
 
     Default: `[]`
 
-    === list_default_empty
+    === [[input_list_default_empty]] <<input_list_default_empty,list_default_empty>>
 
     Description: n/a
 
@@ -283,7 +284,7 @@ generates the following output:
 
     Default: `[]`
 
-    === long_type
+    === [[input_long_type]] <<input_long_type,long_type>>
 
     Description: This description is itself markdown.
 
@@ -322,7 +323,7 @@ generates the following output:
     }
     ----
 
-    === map-1
+    === [[input_map-1]] <<input_map-1,map-1>>
 
     Description: It's map number one.
 
@@ -338,7 +339,7 @@ generates the following output:
     }
     ----
 
-    === map-3
+    === [[input_map-3]] <<input_map-3,map-3>>
 
     Description: n/a
 
@@ -346,7 +347,7 @@ generates the following output:
 
     Default: `{}`
 
-    === no-escape-default-value
+    === [[input_no-escape-default-value]] <<input_no-escape-default-value,no-escape-default-value>>
 
     Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
 
@@ -354,7 +355,7 @@ generates the following output:
 
     Default: `"VALUE_WITH_UNDERSCORE"`
 
-    === number-1
+    === [[input_number-1]] <<input_number-1,number-1>>
 
     Description: It's number number one.
 
@@ -362,7 +363,7 @@ generates the following output:
 
     Default: `42`
 
-    === number-3
+    === [[input_number-3]] <<input_number-3,number-3>>
 
     Description: n/a
 
@@ -370,7 +371,7 @@ generates the following output:
 
     Default: `"19"`
 
-    === number-4
+    === [[input_number-4]] <<input_number-4,number-4>>
 
     Description: n/a
 
@@ -378,7 +379,7 @@ generates the following output:
 
     Default: `15.75`
 
-    === number_default_zero
+    === [[input_number_default_zero]] <<input_number_default_zero,number_default_zero>>
 
     Description: n/a
 
@@ -386,7 +387,7 @@ generates the following output:
 
     Default: `0`
 
-    === object_default_empty
+    === [[input_object_default_empty]] <<input_object_default_empty,object_default_empty>>
 
     Description: n/a
 
@@ -394,7 +395,7 @@ generates the following output:
 
     Default: `{}`
 
-    === string-1
+    === [[input_string-1]] <<input_string-1,string-1>>
 
     Description: It's string number one.
 
@@ -402,7 +403,7 @@ generates the following output:
 
     Default: `"bar"`
 
-    === string-3
+    === [[input_string-3]] <<input_string-3,string-3>>
 
     Description: n/a
 
@@ -410,7 +411,7 @@ generates the following output:
 
     Default: `""`
 
-    === string-special-chars
+    === [[input_string-special-chars]] <<input_string-special-chars,string-special-chars>>
 
     Description: n/a
 
@@ -418,7 +419,7 @@ generates the following output:
 
     Default: `"\\.<>[]{}_-"`
 
-    === string_default_empty
+    === [[input_string_default_empty]] <<input_string_default_empty,string_default_empty>>
 
     Description: n/a
 
@@ -426,7 +427,7 @@ generates the following output:
 
     Default: `""`
 
-    === string_default_null
+    === [[input_string_default_null]] <<input_string_default_null,string_default_null>>
 
     Description: n/a
 
@@ -434,7 +435,7 @@ generates the following output:
 
     Default: `null`
 
-    === with-url
+    === [[input_with-url]] <<input_with-url,with-url>>
 
     Description: The description contains url. https://www.domain.com/foo/bar_baz.html
 
@@ -446,19 +447,19 @@ generates the following output:
 
     The following outputs are exported:
 
-    === output-0.12
+    === [[output_output-0.12]] <<output_output-0.12,output-0.12>>
 
     Description: terraform 0.12 only
 
-    === output-1
+    === [[output_output-1]] <<output_output-1,output-1>>
 
     Description: It's output number one.
 
-    === output-2
+    === [[output_output-2]] <<output_output-2,output-2>>
 
     Description: It's output number two.
 
-    === unquoted
+    === [[output_unquoted]] <<output_unquoted,unquoted>>
 
     Description: It's unquoted output.
 

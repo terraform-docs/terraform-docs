@@ -25,6 +25,7 @@ terraform-docs markdown table [PATH] [flags]
 ## Inherited Options
 
 ```console
+      --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
       --escape                      escape special characters (default true)
       --header-from string          relative path of a file to read header from (default "main.tf")
@@ -94,26 +95,26 @@ generates the following output:
 
     | Name | Version |
     |------|---------|
-    | terraform | >= 0.12 |
-    | aws | >= 2.15.0 |
-    | random | >= 2.2.0 |
+    | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12 |
+    | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 2.15.0 |
+    | <a name="requirement_random"></a> [random](#requirement\_random) | >= 2.2.0 |
 
     ## Providers
 
     | Name | Version |
     |------|---------|
-    | aws | >= 2.15.0 |
-    | aws.ident | >= 2.15.0 |
-    | null | n/a |
-    | tls | n/a |
+    | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 2.15.0 |
+    | <a name="provider_aws.ident"></a> [aws.ident](#provider\_aws.ident) | >= 2.15.0 |
+    | <a name="provider_null"></a> [null](#provider\_null) | n/a |
+    | <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
 
     ## Modules
 
     | Name | Source | Version |
     |------|--------|---------|
-    | bar | baz | 4.5.6 |
-    | baz | baz | 4.5.6 |
-    | foo | bar | 1.2.3 |
+    | <a name="module_bar"></a> [bar](#module\_bar) | baz | 4.5.6 |
+    | <a name="module_baz"></a> [baz](#module\_baz) | baz | 4.5.6 |
+    | <a name="module_foo"></a> [foo](#module\_foo) | bar | 1.2.3 |
 
     ## Resources
 
@@ -127,45 +128,45 @@ generates the following output:
 
     | Name | Description | Type | Default | Required |
     |------|-------------|------|---------|:--------:|
-    | bool-1 | It's bool number one. | `bool` | `true` | no |
-    | bool-2 | It's bool number two. | `bool` | `false` | no |
-    | bool-3 | n/a | `bool` | `true` | no |
-    | bool\_default\_false | n/a | `bool` | `false` | no |
-    | input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<pre>default     = [<br>  "machine rack01:neptune"<br>]</pre> | `list` | <pre>[<br>  "name rack:location"<br>]</pre> | no |
-    | input-with-pipe | It includes v1 \| v2 \| v3 | `string` | `"v1"` | no |
-    | input\_with\_underscores | A variable with underscores. | `any` | n/a | yes |
-    | list-1 | It's list number one. | `list` | <pre>[<br>  "a",<br>  "b",<br>  "c"<br>]</pre> | no |
-    | list-2 | It's list number two. | `list` | n/a | yes |
-    | list-3 | n/a | `list` | `[]` | no |
-    | list\_default\_empty | n/a | `list(string)` | `[]` | no |
-    | long\_type | This description is itself markdown.<br><br>It spans over multiple lines. | <pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })</pre> | <pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}</pre> | no |
-    | map-1 | It's map number one. | `map` | <pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}</pre> | no |
-    | map-2 | It's map number two. | `map` | n/a | yes |
-    | map-3 | n/a | `map` | `{}` | no |
-    | no-escape-default-value | The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` | no |
-    | number-1 | It's number number one. | `number` | `42` | no |
-    | number-2 | It's number number two. | `number` | n/a | yes |
-    | number-3 | n/a | `number` | `"19"` | no |
-    | number-4 | n/a | `number` | `15.75` | no |
-    | number\_default\_zero | n/a | `number` | `0` | no |
-    | object\_default\_empty | n/a | `object({})` | `{}` | no |
-    | string-1 | It's string number one. | `string` | `"bar"` | no |
-    | string-2 | It's string number two. | `string` | n/a | yes |
-    | string-3 | n/a | `string` | `""` | no |
-    | string-special-chars | n/a | `string` | `"\\.<>[]{}_-"` | no |
-    | string\_default\_empty | n/a | `string` | `""` | no |
-    | string\_default\_null | n/a | `string` | `null` | no |
-    | string\_no\_default | n/a | `string` | n/a | yes |
-    | unquoted | n/a | `any` | n/a | yes |
-    | with-url | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` | no |
+    | <a name="input_bool-1"></a> [bool-1](#input\_bool-1) | It's bool number one. | `bool` | `true` | no |
+    | <a name="input_bool-2"></a> [bool-2](#input\_bool-2) | It's bool number two. | `bool` | `false` | no |
+    | <a name="input_bool-3"></a> [bool-3](#input\_bool-3) | n/a | `bool` | `true` | no |
+    | <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false) | n/a | `bool` | `false` | no |
+    | <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block) | This is a complicated one. We need a newline.<br>And an example in a code block<pre>default     = [<br>  "machine rack01:neptune"<br>]</pre> | `list` | <pre>[<br>  "name rack:location"<br>]</pre> | no |
+    | <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe) | It includes v1 \| v2 \| v3 | `string` | `"v1"` | no |
+    | <a name="input_input_with_underscores"></a> [input\_with\_underscores](#input\_input\_with\_underscores) | A variable with underscores. | `any` | n/a | yes |
+    | <a name="input_list-1"></a> [list-1](#input\_list-1) | It's list number one. | `list` | <pre>[<br>  "a",<br>  "b",<br>  "c"<br>]</pre> | no |
+    | <a name="input_list-2"></a> [list-2](#input\_list-2) | It's list number two. | `list` | n/a | yes |
+    | <a name="input_list-3"></a> [list-3](#input\_list-3) | n/a | `list` | `[]` | no |
+    | <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty) | n/a | `list(string)` | `[]` | no |
+    | <a name="input_long_type"></a> [long\_type](#input\_long\_type) | This description is itself markdown.<br><br>It spans over multiple lines. | <pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })</pre> | <pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}</pre> | no |
+    | <a name="input_map-1"></a> [map-1](#input\_map-1) | It's map number one. | `map` | <pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}</pre> | no |
+    | <a name="input_map-2"></a> [map-2](#input\_map-2) | It's map number two. | `map` | n/a | yes |
+    | <a name="input_map-3"></a> [map-3](#input\_map-3) | n/a | `map` | `{}` | no |
+    | <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value) | The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` | no |
+    | <a name="input_number-1"></a> [number-1](#input\_number-1) | It's number number one. | `number` | `42` | no |
+    | <a name="input_number-2"></a> [number-2](#input\_number-2) | It's number number two. | `number` | n/a | yes |
+    | <a name="input_number-3"></a> [number-3](#input\_number-3) | n/a | `number` | `"19"` | no |
+    | <a name="input_number-4"></a> [number-4](#input\_number-4) | n/a | `number` | `15.75` | no |
+    | <a name="input_number_default_zero"></a> [number\_default\_zero](#input\_number\_default\_zero) | n/a | `number` | `0` | no |
+    | <a name="input_object_default_empty"></a> [object\_default\_empty](#input\_object\_default\_empty) | n/a | `object({})` | `{}` | no |
+    | <a name="input_string-1"></a> [string-1](#input\_string-1) | It's string number one. | `string` | `"bar"` | no |
+    | <a name="input_string-2"></a> [string-2](#input\_string-2) | It's string number two. | `string` | n/a | yes |
+    | <a name="input_string-3"></a> [string-3](#input\_string-3) | n/a | `string` | `""` | no |
+    | <a name="input_string-special-chars"></a> [string-special-chars](#input\_string-special-chars) | n/a | `string` | `"\\.<>[]{}_-"` | no |
+    | <a name="input_string_default_empty"></a> [string\_default\_empty](#input\_string\_default\_empty) | n/a | `string` | `""` | no |
+    | <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null) | n/a | `string` | `null` | no |
+    | <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default) | n/a | `string` | n/a | yes |
+    | <a name="input_unquoted"></a> [unquoted](#input\_unquoted) | n/a | `any` | n/a | yes |
+    | <a name="input_with-url"></a> [with-url](#input\_with-url) | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` | no |
 
     ## Outputs
 
     | Name | Description |
     |------|-------------|
-    | output-0.12 | terraform 0.12 only |
-    | output-1 | It's output number one. |
-    | output-2 | It's output number two. |
-    | unquoted | It's unquoted output. |
+    | <a name="output_output-0.12"></a> [output-0.12](#output\_output-0.12) | terraform 0.12 only |
+    | <a name="output_output-1"></a> [output-1](#output\_output-1) | It's output number one. |
+    | <a name="output_output-2"></a> [output-2](#output\_output-2) | It's output number two. |
+    | <a name="output_unquoted"></a> [unquoted](#output\_unquoted) | It's unquoted output. |
 
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples

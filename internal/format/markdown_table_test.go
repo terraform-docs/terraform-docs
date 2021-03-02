@@ -53,6 +53,14 @@ func TestMarkdownTable(t *testing.T) {
 			),
 			options: terraform.Options{},
 		},
+		"WithAnchor": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowAnchor: true,
+				},
+			),
+			options: terraform.Options{},
+		},
 		"EscapeCharacters": {
 			settings: testutil.WithSections(
 				print.Settings{

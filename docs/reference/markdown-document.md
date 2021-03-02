@@ -25,6 +25,7 @@ terraform-docs markdown document [PATH] [flags]
 ## Inherited Options
 
 ```console
+      --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
       --escape                      escape special characters (default true)
       --header-from string          relative path of a file to read header from (default "main.tf")
@@ -94,41 +95,41 @@ generates the following output:
 
     The following requirements are needed by this module:
 
-    - terraform (>= 0.12)
+    - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 0.12)
 
-    - aws (>= 2.15.0)
+    - <a name="requirement_aws"></a> [aws](#requirement\_aws) (>= 2.15.0)
 
-    - random (>= 2.2.0)
+    - <a name="requirement_random"></a> [random](#requirement\_random) (>= 2.2.0)
 
     ## Providers
 
     The following providers are used by this module:
 
-    - aws (>= 2.15.0)
+    - <a name="provider_aws"></a> [aws](#provider\_aws) (>= 2.15.0)
 
-    - aws.ident (>= 2.15.0)
+    - <a name="provider_aws.ident"></a> [aws.ident](#provider\_aws.ident) (>= 2.15.0)
 
-    - null
+    - <a name="provider_null"></a> [null](#provider\_null)
 
-    - tls
+    - <a name="provider_tls"></a> [tls](#provider\_tls)
 
     ## Modules
 
     The following Modules are called:
 
-    ### bar
+    ### <a name="module_bar"></a> [bar](#module\_bar)
 
     Source: baz
 
     Version: 4.5.6
 
-    ### baz
+    ### <a name="module_baz"></a> [baz](#module\_baz)
 
     Source: baz
 
     Version: 4.5.6
 
-    ### foo
+    ### <a name="module_foo"></a> [foo](#module\_foo)
 
     Source: bar
 
@@ -146,43 +147,43 @@ generates the following output:
 
     The following input variables are required:
 
-    ### input\_with\_underscores
+    ### <a name="input_input_with_underscores"></a> [input\_with\_underscores](#input\_input\_with\_underscores)
 
     Description: A variable with underscores.
 
     Type: `any`
 
-    ### list-2
+    ### <a name="input_list-2"></a> [list-2](#input\_list-2)
 
     Description: It's list number two.
 
     Type: `list`
 
-    ### map-2
+    ### <a name="input_map-2"></a> [map-2](#input\_map-2)
 
     Description: It's map number two.
 
     Type: `map`
 
-    ### number-2
+    ### <a name="input_number-2"></a> [number-2](#input\_number-2)
 
     Description: It's number number two.
 
     Type: `number`
 
-    ### string-2
+    ### <a name="input_string-2"></a> [string-2](#input\_string-2)
 
     Description: It's string number two.
 
     Type: `string`
 
-    ### string\_no\_default
+    ### <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default)
 
     Description: n/a
 
     Type: `string`
 
-    ### unquoted
+    ### <a name="input_unquoted"></a> [unquoted](#input\_unquoted)
 
     Description: n/a
 
@@ -192,7 +193,7 @@ generates the following output:
 
     The following input variables are optional (have default values):
 
-    ### bool-1
+    ### <a name="input_bool-1"></a> [bool-1](#input\_bool-1)
 
     Description: It's bool number one.
 
@@ -200,7 +201,7 @@ generates the following output:
 
     Default: `true`
 
-    ### bool-2
+    ### <a name="input_bool-2"></a> [bool-2](#input\_bool-2)
 
     Description: It's bool number two.
 
@@ -208,7 +209,7 @@ generates the following output:
 
     Default: `false`
 
-    ### bool-3
+    ### <a name="input_bool-3"></a> [bool-3](#input\_bool-3)
 
     Description: n/a
 
@@ -216,7 +217,7 @@ generates the following output:
 
     Default: `true`
 
-    ### bool\_default\_false
+    ### <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false)
 
     Description: n/a
 
@@ -224,7 +225,7 @@ generates the following output:
 
     Default: `false`
 
-    ### input-with-code-block
+    ### <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block)
 
     Description: This is a complicated one. We need a newline.  
     And an example in a code block
@@ -244,7 +245,7 @@ generates the following output:
     ]
     ```
 
-    ### input-with-pipe
+    ### <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe)
 
     Description: It includes v1 | v2 | v3
 
@@ -252,7 +253,7 @@ generates the following output:
 
     Default: `"v1"`
 
-    ### list-1
+    ### <a name="input_list-1"></a> [list-1](#input\_list-1)
 
     Description: It's list number one.
 
@@ -268,7 +269,7 @@ generates the following output:
     ]
     ```
 
-    ### list-3
+    ### <a name="input_list-3"></a> [list-3](#input\_list-3)
 
     Description: n/a
 
@@ -276,7 +277,7 @@ generates the following output:
 
     Default: `[]`
 
-    ### list\_default\_empty
+    ### <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty)
 
     Description: n/a
 
@@ -284,7 +285,7 @@ generates the following output:
 
     Default: `[]`
 
-    ### long\_type
+    ### <a name="input_long_type"></a> [long\_type](#input\_long\_type)
 
     Description: This description is itself markdown.
 
@@ -323,7 +324,7 @@ generates the following output:
     }
     ```
 
-    ### map-1
+    ### <a name="input_map-1"></a> [map-1](#input\_map-1)
 
     Description: It's map number one.
 
@@ -339,7 +340,7 @@ generates the following output:
     }
     ```
 
-    ### map-3
+    ### <a name="input_map-3"></a> [map-3](#input\_map-3)
 
     Description: n/a
 
@@ -347,7 +348,7 @@ generates the following output:
 
     Default: `{}`
 
-    ### no-escape-default-value
+    ### <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value)
 
     Description: The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'.
 
@@ -355,7 +356,7 @@ generates the following output:
 
     Default: `"VALUE_WITH_UNDERSCORE"`
 
-    ### number-1
+    ### <a name="input_number-1"></a> [number-1](#input\_number-1)
 
     Description: It's number number one.
 
@@ -363,7 +364,7 @@ generates the following output:
 
     Default: `42`
 
-    ### number-3
+    ### <a name="input_number-3"></a> [number-3](#input\_number-3)
 
     Description: n/a
 
@@ -371,7 +372,7 @@ generates the following output:
 
     Default: `"19"`
 
-    ### number-4
+    ### <a name="input_number-4"></a> [number-4](#input\_number-4)
 
     Description: n/a
 
@@ -379,7 +380,7 @@ generates the following output:
 
     Default: `15.75`
 
-    ### number\_default\_zero
+    ### <a name="input_number_default_zero"></a> [number\_default\_zero](#input\_number\_default\_zero)
 
     Description: n/a
 
@@ -387,7 +388,7 @@ generates the following output:
 
     Default: `0`
 
-    ### object\_default\_empty
+    ### <a name="input_object_default_empty"></a> [object\_default\_empty](#input\_object\_default\_empty)
 
     Description: n/a
 
@@ -395,7 +396,7 @@ generates the following output:
 
     Default: `{}`
 
-    ### string-1
+    ### <a name="input_string-1"></a> [string-1](#input\_string-1)
 
     Description: It's string number one.
 
@@ -403,7 +404,7 @@ generates the following output:
 
     Default: `"bar"`
 
-    ### string-3
+    ### <a name="input_string-3"></a> [string-3](#input\_string-3)
 
     Description: n/a
 
@@ -411,7 +412,7 @@ generates the following output:
 
     Default: `""`
 
-    ### string-special-chars
+    ### <a name="input_string-special-chars"></a> [string-special-chars](#input\_string-special-chars)
 
     Description: n/a
 
@@ -419,7 +420,7 @@ generates the following output:
 
     Default: `"\\.<>[]{}_-"`
 
-    ### string\_default\_empty
+    ### <a name="input_string_default_empty"></a> [string\_default\_empty](#input\_string\_default\_empty)
 
     Description: n/a
 
@@ -427,7 +428,7 @@ generates the following output:
 
     Default: `""`
 
-    ### string\_default\_null
+    ### <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null)
 
     Description: n/a
 
@@ -435,7 +436,7 @@ generates the following output:
 
     Default: `null`
 
-    ### with-url
+    ### <a name="input_with-url"></a> [with-url](#input\_with-url)
 
     Description: The description contains url. https://www.domain.com/foo/bar_baz.html
 
@@ -447,19 +448,19 @@ generates the following output:
 
     The following outputs are exported:
 
-    ### output-0.12
+    ### <a name="output_output-0.12"></a> [output-0.12](#output\_output-0.12)
 
     Description: terraform 0.12 only
 
-    ### output-1
+    ### <a name="output_output-1"></a> [output-1](#output\_output-1)
 
     Description: It's output number one.
 
-    ### output-2
+    ### <a name="output_output-2"></a> [output-2](#output\_output-2)
 
     Description: It's output number two.
 
-    ### unquoted
+    ### <a name="output_unquoted"></a> [unquoted](#output\_unquoted)
 
     Description: It's unquoted output.
 
