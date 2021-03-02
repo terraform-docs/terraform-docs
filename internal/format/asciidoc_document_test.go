@@ -53,6 +53,14 @@ func TestAsciidocDocument(t *testing.T) {
 			),
 			options: terraform.Options{},
 		},
+		"WithAnchor": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowAnchor: true,
+				},
+			),
+			options: terraform.Options{},
+		},
 		"IndentationOfFour": {
 			settings: testutil.WithSections(
 				print.Settings{

@@ -36,6 +36,7 @@ sort:
     - type
 
 settings:
+  anchors: true
   color: true
   escape: true
   indent: 2

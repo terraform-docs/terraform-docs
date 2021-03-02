@@ -19,6 +19,7 @@ terraform-docs markdown [PATH] [flags]
 ## Options
 
 ```console
+      --anchor       create anchor links (default true)
       --escape       escape special characters (default true)
   -h, --help         help for markdown
       --indent int   indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)

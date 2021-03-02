@@ -34,6 +34,12 @@ type Settings struct {
 	// scope: Global
 	OutputValues bool
 
+	// ShowAnchor show html anchor
+	//
+	// default: true
+	// scope: Asciidoc, Markdown
+	ShowAnchor bool
+
 	// ShowColor print "colorized" version of result in the terminal
 	//
 	// default: true
@@ -101,6 +107,7 @@ func DefaultSettings() *Settings {
 		EscapeCharacters: true,
 		IndentLevel:      2,
 		OutputValues:     false,
+		ShowAnchor:       true,
 		ShowColor:        true,
 		ShowHeader:       true,
 		ShowInputs:       true,

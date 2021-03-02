@@ -34,6 +34,7 @@ func NewCommand(config *cli.Config) *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Settings.Required, "required", true, "show Required column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Sensitive, "sensitive", true, "show Sensitive column or section")
 	cmd.PersistentFlags().IntVar(&config.Settings.Indent, "indent", 2, "indention level of AsciiDoc sections [1, 2, 3, 4, 5]")
+	cmd.PersistentFlags().BoolVar(&config.Settings.Anchor, "anchor", true, "create anchor links")
 
 	// subcommands
 	cmd.AddCommand(document.NewCommand(config))

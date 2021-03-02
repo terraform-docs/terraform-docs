@@ -25,6 +25,7 @@ terraform-docs asciidoc table [PATH] [flags]
 ## Inherited Options
 
 ```console
+      --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
@@ -94,9 +95,9 @@ generates the following output:
     [cols="a,a",options="header,autowidth"]
     |===
     |Name |Version
-    |terraform |>= 0.12
-    |aws |>= 2.15.0
-    |random |>= 2.2.0
+    |[[requirement_terraform]] <<requirement_terraform,terraform>> |>= 0.12
+    |[[requirement_aws]] <<requirement_aws,aws>> |>= 2.15.0
+    |[[requirement_random]] <<requirement_random,random>> |>= 2.2.0
     |===
 
     == Providers
@@ -104,10 +105,10 @@ generates the following output:
     [cols="a,a",options="header,autowidth"]
     |===
     |Name |Version
-    |aws |>= 2.15.0
-    |aws.ident |>= 2.15.0
-    |null |n/a
-    |tls |n/a
+    |[[provider_aws]] <<provider_aws,aws>> |>= 2.15.0
+    |[[provider_aws.ident]] <<provider_aws.ident,aws.ident>> |>= 2.15.0
+    |[[provider_null]] <<provider_null,null>> |n/a
+    |[[provider_tls]] <<provider_tls,tls>> |n/a
     |===
 
     == Modules
@@ -115,9 +116,9 @@ generates the following output:
     [cols="a,a,a",options="header,autowidth"]
     |===
     |Name|Source|Version|
-    |bar|baz|4.5.6
-    |baz|baz|4.5.6
-    |foo|bar|1.2.3
+    |[[module_bar]] <<module_bar,bar>>|baz|4.5.6
+    |[[module_baz]] <<module_baz,baz>>|baz|4.5.6
+    |[[module_foo]] <<module_foo,foo>>|bar|1.2.3
     |===
 
     == Resources
@@ -135,31 +136,31 @@ generates the following output:
     [cols="a,a,a,a,a",options="header,autowidth"]
     |===
     |Name |Description |Type |Default |Required
-    |bool-1
+    |[[input_bool-1]] <<input_bool-1,bool-1>>
     |It's bool number one.
     |`bool`
     |`true`
     |no
 
-    |bool-2
+    |[[input_bool-2]] <<input_bool-2,bool-2>>
     |It's bool number two.
     |`bool`
     |`false`
     |no
 
-    |bool-3
+    |[[input_bool-3]] <<input_bool-3,bool-3>>
     |n/a
     |`bool`
     |`true`
     |no
 
-    |bool_default_false
+    |[[input_bool_default_false]] <<input_bool_default_false,bool_default_false>>
     |n/a
     |`bool`
     |`false`
     |no
 
-    |input-with-code-block
+    |[[input_input-with-code-block]] <<input_input-with-code-block,input-with-code-block>>
     |This is a complicated one. We need a newline.  
     And an example in a code block
     [source]
@@ -181,19 +182,19 @@ generates the following output:
 
     |no
 
-    |input-with-pipe
+    |[[input_input-with-pipe]] <<input_input-with-pipe,input-with-pipe>>
     |It includes v1 \| v2 \| v3
     |`string`
     |`"v1"`
     |no
 
-    |input_with_underscores
+    |[[input_input_with_underscores]] <<input_input_with_underscores,input_with_underscores>>
     |A variable with underscores.
     |`any`
     |n/a
     |yes
 
-    |list-1
+    |[[input_list-1]] <<input_list-1,list-1>>
     |It's list number one.
     |`list`
     |
@@ -209,25 +210,25 @@ generates the following output:
 
     |no
 
-    |list-2
+    |[[input_list-2]] <<input_list-2,list-2>>
     |It's list number two.
     |`list`
     |n/a
     |yes
 
-    |list-3
+    |[[input_list-3]] <<input_list-3,list-3>>
     |n/a
     |`list`
     |`[]`
     |no
 
-    |list_default_empty
+    |[[input_list_default_empty]] <<input_list_default_empty,list_default_empty>>
     |n/a
     |`list(string)`
     |`[]`
     |no
 
-    |long_type
+    |[[input_long_type]] <<input_long_type,long_type>>
     |This description is itself markdown.
 
     It spans over multiple lines.
@@ -269,7 +270,7 @@ generates the following output:
 
     |no
 
-    |map-1
+    |[[input_map-1]] <<input_map-1,map-1>>
     |It's map number one.
     |`map`
     |
@@ -285,109 +286,109 @@ generates the following output:
 
     |no
 
-    |map-2
+    |[[input_map-2]] <<input_map-2,map-2>>
     |It's map number two.
     |`map`
     |n/a
     |yes
 
-    |map-3
+    |[[input_map-3]] <<input_map-3,map-3>>
     |n/a
     |`map`
     |`{}`
     |no
 
-    |no-escape-default-value
+    |[[input_no-escape-default-value]] <<input_no-escape-default-value,no-escape-default-value>>
     |The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
     |`string`
     |`"VALUE_WITH_UNDERSCORE"`
     |no
 
-    |number-1
+    |[[input_number-1]] <<input_number-1,number-1>>
     |It's number number one.
     |`number`
     |`42`
     |no
 
-    |number-2
+    |[[input_number-2]] <<input_number-2,number-2>>
     |It's number number two.
     |`number`
     |n/a
     |yes
 
-    |number-3
+    |[[input_number-3]] <<input_number-3,number-3>>
     |n/a
     |`number`
     |`"19"`
     |no
 
-    |number-4
+    |[[input_number-4]] <<input_number-4,number-4>>
     |n/a
     |`number`
     |`15.75`
     |no
 
-    |number_default_zero
+    |[[input_number_default_zero]] <<input_number_default_zero,number_default_zero>>
     |n/a
     |`number`
     |`0`
     |no
 
-    |object_default_empty
+    |[[input_object_default_empty]] <<input_object_default_empty,object_default_empty>>
     |n/a
     |`object({})`
     |`{}`
     |no
 
-    |string-1
+    |[[input_string-1]] <<input_string-1,string-1>>
     |It's string number one.
     |`string`
     |`"bar"`
     |no
 
-    |string-2
+    |[[input_string-2]] <<input_string-2,string-2>>
     |It's string number two.
     |`string`
     |n/a
     |yes
 
-    |string-3
+    |[[input_string-3]] <<input_string-3,string-3>>
     |n/a
     |`string`
     |`""`
     |no
 
-    |string-special-chars
+    |[[input_string-special-chars]] <<input_string-special-chars,string-special-chars>>
     |n/a
     |`string`
     |`"\\.<>[]{}_-"`
     |no
 
-    |string_default_empty
+    |[[input_string_default_empty]] <<input_string_default_empty,string_default_empty>>
     |n/a
     |`string`
     |`""`
     |no
 
-    |string_default_null
+    |[[input_string_default_null]] <<input_string_default_null,string_default_null>>
     |n/a
     |`string`
     |`null`
     |no
 
-    |string_no_default
+    |[[input_string_no_default]] <<input_string_no_default,string_no_default>>
     |n/a
     |`string`
     |n/a
     |yes
 
-    |unquoted
+    |[[input_unquoted]] <<input_unquoted,unquoted>>
     |n/a
     |`any`
     |n/a
     |yes
 
-    |with-url
+    |[[input_with-url]] <<input_with-url,with-url>>
     |The description contains url. https://www.domain.com/foo/bar_baz.html
     |`string`
     |`""`
@@ -400,10 +401,10 @@ generates the following output:
     [cols="a,a",options="header,autowidth"]
     |===
     |Name |Description
-    |output-0.12 |terraform 0.12 only
-    |output-1 |It's output number one.
-    |output-2 |It's output number two.
-    |unquoted |It's unquoted output.
+    |[[output_output-0.12]] <<output_output-0.12,output-0.12>> |terraform 0.12 only
+    |[[output_output-1]] <<output_output-1,output-1>> |It's output number one.
+    |[[output_output-2]] <<output_output-2,output-2>> |It's output number two.
+    |[[output_unquoted]] <<output_unquoted,unquoted>> |It's unquoted output.
     |===
 
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
