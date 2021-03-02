@@ -1,0 +1,10 @@
+[build]
+  publish = "site/public"
+
+[build.environment]
+  HUGO_VERSION = "0.80.0"
+  NODE_VERSION = "15.5.1"
+  NPM_VERSION = "7.3.0"
+
+[context.deploy-preview]
+  command = "./scripts/docs/prepare-site.sh && cd site && npm install && hugo -b ${DEPLOY_PRIME_URL} --gc"
