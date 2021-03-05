@@ -32,3 +32,6 @@ coverage.txt
 
 # goreleaser
 dist/
+
+# website
+site/

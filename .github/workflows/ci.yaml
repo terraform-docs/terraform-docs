@@ -111,16 +111,13 @@ jobs:
 
       - name: Prepare docs
         if: contains(github.ref, 'refs/heads/master')
-        run: |
-          git clone -b main https://github.com/terraform-docs/website scripts/docs/website
-          rm -rf scripts/docs/website/content/
-          cp -r docs/ scripts/docs/website/content/
+        run: ./scripts/docs/prepare-site.sh
 
       - name: Publish to website
         uses: drud/action-cross-commit@master
         if: contains(github.ref, 'refs/heads/master')
         with:
-          source-folder: scripts/docs/website/content
+          source-folder: site/content
           destination-repository: https://${{ secrets.COMMITTER_USERNAME }}:${{ secrets.COMMITTER_TOKEN }}@github.com/terraform-docs/website
           destination-folder: content
           destination-branch: main

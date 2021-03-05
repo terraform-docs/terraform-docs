@@ -1,14 +1,41 @@
 ---
-title: "Config File"
+title: "Configuration"
 description: "terraform-docs configuration file, i.e. .terraform-docs.yml"
 menu:
   docs:
-    parent: "reference"
-weight: 900
+    parent: "user-guide"
+weight: 120
 toc: true
 ---
 
-The `terraform-docs` configuration is a yaml file. Its default name is `.terraform-docs.yml`.
+The `terraform-docs` configuration is a yaml file. This is a convenient way to
+share the configuation amongst teammates, CI, or other toolings. To do so you
+can use `-c` or `--config` flag which accepts name of the config file.
+
+Default name of this file is `.terraform-docs.yml`, and it will get picked it
+up (if existed) without needing to explicitly passing with config flag.
+
+```console
+$ tree
+.
+├── main.tf
+├── ...
+├── ...
+└── .terraform-docs.yml
+$ terraform-docs .
+```
+
+Or you can use a config file with any arbitrary name:
+
+```console
+$ tree
+.
+├── main.tf
+├── ...
+├── ...
+└── .tfdocs-config.yml
+$ terraform-docs -c .tfdocs-config.yml .
+```
 
 ## Options
 
@@ -36,7 +63,7 @@ sort:
     - type
 
 settings:
-  anchors: true
+  anchor: true
   color: true
   default: true
   escape: true
