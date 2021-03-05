@@ -123,9 +123,9 @@ Note that maintainers are unaffiliated with Segment.
 
 MIT License - Copyright (c) 2021 The terraform-docs Authors.
 
-[User Guide]: ./docs/USER_GUIDE.md
+[User Guide]: ./docs/user-guide/introduction.md
 [Formats Guide]: ./docs/reference/terraform-docs.md
-[Config File Reference]: ./docs/reference/config-file.md
+[Config File Reference]: ./docs/user-guide/configuration.md
 [Contributing Guide]: CONTRIBUTING.md
 [our website]: https://terraform-docs.io/
 [here]: https://golang.org/doc/code.html#GOPATH
