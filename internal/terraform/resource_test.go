@@ -76,11 +76,11 @@ func TestResourcesSortedByType(t *testing.T) {
 
 	sort.Sort(resourcesSortedByType(resources))
 
-	expected := []string{"a_a", "a_f", "b_b", "b_d", "c_c", "c_e", "c_e_x", "z_z", "z_z", "z_z"}
+	expected := []string{"a_a.a", "a_a.a", "a_a.a", "a_f.f", "b_b.b", "b_d.d", "c_c.c", "c_e.c", "c_e.d", "c_e_x.c", "c_e_x.d", "z_z.z", "z_z.z", "z_z.z"}
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
-		actual[k] = i.FullType()
+		actual[k] = i.ProviderName + "_" + i.Type + "." + i.Name
 	}
 
 	assert.Equal(expected, actual)
@@ -92,17 +92,19 @@ func TestResourcesSortedByTypeAndMode(t *testing.T) {
 
 	sort.Sort(resourcesSortedByType(resources))
 
-	expected := []string{"a_a_m", "a_f_m", "b_b_m", "b_d_m", "c_c_m", "c_e_m", "c_e_x_m", "z_z", "z_z_d", "z_z_m"}
+	expected := []string{"a_a.a", "a_a_d.a", "a_a_m.a", "a_f_m.f", "b_b_m.b", "b_d_m.d", "c_c_m.c", "c_e_m.c", "c_e_m.d", "c_e_x_m.c", "c_e_x_m.d", "z_z.z", "z_z_d.z", "z_z_m.z"}
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
-		v := i.FullType()
+		v := i.ProviderName + "_" + i.Type
 		switch i.Mode {
 		case "managed":
 			v = v + "_m"
 		case "data":
 			v = v + "_d"
 		}
+		v = v + "." + i.Name
+
 		actual[k] = v
 	}
 
@@ -179,6 +181,15 @@ func sampleResources() []*Resource {
 	return []*Resource{
 		{
 			Type:           "e",
+			Name:           "d",
+			ProviderName:   "c",
+			ProviderSource: "hashicorp/e",
+			Mode:           "managed",
+			Version:        "1.5.0",
+		},
+		{
+			Type:           "e",
+			Name:           "c",
 			ProviderName:   "c",
 			ProviderSource: "hashicorp/e",
 			Mode:           "managed",
@@ -186,6 +197,15 @@ func sampleResources() []*Resource {
 		},
 		{
 			Type:           "e_x",
+			Name:           "d",
+			ProviderName:   "c",
+			ProviderSource: "hashicorp/e",
+			Mode:           "managed",
+			Version:        "1.5.0",
+		},
+		{
+			Type:           "e_x",
+			Name:           "c",
 			ProviderName:   "c",
 			ProviderSource: "hashicorp/e",
 			Mode:           "managed",
@@ -193,6 +213,7 @@ func sampleResources() []*Resource {
 		},
 		{
 			Type:           "a",
+			Name:           "a",
 			ProviderName:   "a",
 			ProviderSource: "hashicorp/a",
 			Mode:           "managed",
@@ -200,6 +221,7 @@ func sampleResources() []*Resource {
 		},
 		{
 			Type:           "d",
+			Name:           "d",
 			ProviderName:   "b",
 			ProviderSource: "hashicorp/d",
 			Mode:           "managed",
@@ -207,6 +229,7 @@ func sampleResources() []*Resource {
 		},
 		{
 			Type:           "b",
+			Name:           "b",
 			ProviderName:   "b",
 			ProviderSource: "hashicorp/b",
 			Mode:           "managed",
@@ -214,6 +237,7 @@ func sampleResources() []*Resource {
 		},
 		{
 			Type:           "c",
+			Name:           "c",
 			ProviderName:   "c",
 			ProviderSource: "hashicorp/c",
 			Mode:           "managed",
@@ -221,6 +245,7 @@ func sampleResources() []*Resource {
 		},
 		{
 			Type:           "f",
+			Name:           "f",
 			ProviderName:   "a",
 			ProviderSource: "hashicorp/f",
 			Mode:           "managed",
@@ -229,6 +254,7 @@ func sampleResources() []*Resource {
 		{
 			ProviderName:   "z",
 			Type:           "z",
+			Name:           "z",
 			ProviderSource: "hashicorp/a",
 			Mode:           "managed",
 			Version:        "1.5.0",
@@ -236,6 +262,15 @@ func sampleResources() []*Resource {
 		{
 			ProviderName:   "z",
 			Type:           "z",
+			Name:           "z",
+			ProviderSource: "hashicorp/a",
+			Mode:           "data",
+			Version:        "1.5.0",
+		},
+		{
+			ProviderName:   "a",
+			Type:           "a",
+			Name:           "a",
 			ProviderSource: "hashicorp/a",
 			Mode:           "data",
 			Version:        "1.5.0",
@@ -243,6 +278,15 @@ func sampleResources() []*Resource {
 		{
 			ProviderName:   "z",
 			Type:           "z",
+			Name:           "z",
+			ProviderSource: "hashicorp/a",
+			Mode:           "",
+			Version:        "1.5.0",
+		},
+		{
+			ProviderName:   "a",
+			Type:           "a",
+			Name:           "a",
 			ProviderSource: "hashicorp/a",
 			Mode:           "",
 			Version:        "1.5.0",

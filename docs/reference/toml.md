@@ -344,6 +344,15 @@ generates the following output:
 
     [[resources]]
       type = "caller_identity"
+      name = "current"
+      providerName = "aws"
+      providerSource = "hashicorp/aws"
+      mode = "data"
+      version = "latest"
+
+    [[resources]]
+      type = "caller_identity"
+      name = "ident"
       providerName = "aws"
       providerSource = "hashicorp/aws"
       mode = "data"
@@ -351,6 +360,7 @@ generates the following output:
 
     [[resources]]
       type = "resource"
+      name = "foo"
       providerName = "null"
       providerSource = "hashicorp/null"
       mode = "managed"
@@ -358,6 +368,7 @@ generates the following output:
 
     [[resources]]
       type = "private_key"
+      name = "baz"
       providerName = "tls"
       providerSource = "hashicorp/tls"
       mode = "managed"

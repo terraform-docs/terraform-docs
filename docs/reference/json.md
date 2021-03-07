@@ -369,6 +369,15 @@ generates the following output:
       "resources": [
         {
           "type": "caller_identity",
+          "name": "current",
+          "providerName": "aws",
+          "provicerSource": "hashicorp/aws",
+          "mode": "data",
+          "version": "latest"
+        },
+        {
+          "type": "caller_identity",
+          "name": "ident",
           "providerName": "aws",
           "provicerSource": "hashicorp/aws",
           "mode": "data",
@@ -376,6 +385,7 @@ generates the following output:
         },
         {
           "type": "resource",
+          "name": "foo",
           "providerName": "null",
           "provicerSource": "hashicorp/null",
           "mode": "managed",
@@ -383,6 +393,7 @@ generates the following output:
         },
         {
           "type": "private_key",
+          "name": "baz",
           "providerName": "tls",
           "provicerSource": "hashicorp/tls",
           "mode": "managed",

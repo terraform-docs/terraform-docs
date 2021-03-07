@@ -311,16 +311,25 @@ generates the following output:
         version: '>= 2.2.0'
     resources:
       - type: caller_identity
+        name: current
+        providerName: aws
+        providerSource: hashicorp/aws
+        mode: data
+        version: latest
+      - type: caller_identity
+        name: ident
         providerName: aws
         providerSource: hashicorp/aws
         mode: data
         version: latest
       - type: resource
+        name: foo
         providerName: "null"
         providerSource: hashicorp/null
         mode: managed
         version: latest
       - type: private_key
+        name: baz
         providerName: tls
         providerSource: hashicorp/tls
         mode: managed

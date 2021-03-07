@@ -55,8 +55,9 @@
     "random"
   ],
   "resources": [
-    "aws_caller_identity__data",
-    "null_resource__managed",
-    "tls_private_key__managed"
+    "aws_caller_identity__data.current",
+    "aws_caller_identity__data.ident",
+    "null_resource__managed.foo",
+    "tls_private_key__managed.baz"
   ]
 }

@@ -53,9 +53,9 @@
         |------|
         {{- range .Module.Resources }}
         {{ if eq (len .URL) 0 }}
-            | {{ .FullType }}
+            | {{ .FullType }}.{{ .Name }} |
         {{- else -}}
-            | [{{ .FullType }}]({{ .URL }}) |
+            | [{{ .FullType }}.{{ .Name }}]({{ .URL }}) |
         {{- end }}
         {{- end }}
     {{ end }}

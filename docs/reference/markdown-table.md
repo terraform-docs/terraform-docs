@@ -122,9 +122,10 @@ generates the following output:
 
     | Name |
     |------|
-    | [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |
-    | [null_resource](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) |
-    | [tls_private_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) |
+    | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |
+    | [aws_caller_identity.ident](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |
+    | [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) |
+    | [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) |
 
     ## Inputs
 

@@ -368,6 +368,15 @@ generates the following output:
       <resources>
         <resource>
           <type>caller_identity</type>
+          <name>current</name>
+          <providerName>aws</providerName>
+          <providerSource>hashicorp/aws</providerSource>
+          <mode>data</mode>
+          <version>latest</version>
+        </resource>
+        <resource>
+          <type>caller_identity</type>
+          <name>ident</name>
           <providerName>aws</providerName>
           <providerSource>hashicorp/aws</providerSource>
           <mode>data</mode>
@@ -375,6 +384,7 @@ generates the following output:
         </resource>
         <resource>
           <type>resource</type>
+          <name>foo</name>
           <providerName>null</providerName>
           <providerSource>hashicorp/null</providerSource>
           <mode>managed</mode>
@@ -382,6 +392,7 @@ generates the following output:
         </resource>
         <resource>
           <type>private_key</type>
+          <name>baz</name>
           <providerName>tls</providerName>
           <providerSource>hashicorp/tls</providerSource>
           <mode>managed</mode>
