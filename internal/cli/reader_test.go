@@ -111,6 +111,15 @@ func TestOverrideValue(t *testing.T) {
 			errMsg:     "",
 		},
 		{
+			name:       "override values of given field",
+			tag:        "mode",
+			to:         func() interface{} { return &config.Output },
+			from:       func() interface{} { return &override.Output },
+			overrideFn: func() { override.Output.Mode = "replace" },
+			wantErr:    false,
+			errMsg:     "",
+		},
+		{
 			name:       "override values of unkwon field tag",
 			tag:        "not-available",
 			to:         func() interface{} { return config },

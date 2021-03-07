@@ -88,6 +88,11 @@ func (c *cfgreader) parse() error {
 			if !el.FieldByName(field).Bool() {
 				c.config.Sort.ByList = remove(c.config.Sort.ByList, mapping[flag])
 			}
+		case "output-file", "output-mode", "output-template":
+			mapping := map[string]string{"output-file": "file", "output-mode": "mode", "output-template": "template"}
+			if err := c.overrideValue(mapping[flag], &c.config.Output, &c.overrides.Output); err != nil {
+				return err
+			}
 		case "output-values", "output-values-from":
 			mapping := map[string]string{"output-values": "enabled", "output-values-from": "from"}
 			if err := c.overrideValue(mapping[flag], &c.config.OutputValues, &c.overrides.OutputValues); err != nil {

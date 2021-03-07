@@ -33,6 +33,9 @@ terraform-docs markdown table [PATH] [flags]
       --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
       --hide-all                    hide all sections (default false)
       --indent int                  indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
+      --output-file string          File in module directory to insert output into (default "")
+      --output-mode string          Output to file method [inject, replace] (default "inject")
+      --output-template string      Output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
       --output-values               inject output values into outputs (default false)
       --output-values-from string   inject output values from file into outputs (default "")
       --required                    show Required column or section (default true)

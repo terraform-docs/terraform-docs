@@ -12,10 +12,26 @@ package cli
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
+
+const (
+	sectionHeader       = "header"
+	sectionInputs       = "inputs"
+	sectionModules      = "modules"
+	sectionOutputs      = "outputs"
+	sectionProviders    = "providers"
+	sectionRequirements = "requirements"
+	sectionResources    = "resources"
+)
+
+var allSections = []string{sectionHeader, sectionInputs, sectionModules, sectionOutputs, sectionProviders, sectionRequirements, sectionResources}
+
+// AllSections list.
+var AllSections = strings.Join(allSections, ", ")
 
 type sections struct {
 	Show    []string `yaml:"show"`
@@ -50,17 +66,16 @@ func defaultSections() sections {
 }
 
 func (s *sections) validate() error {
-	items := []string{"header", "inputs", "modules", "outputs", "providers", "requirements", "resources"}
 	for _, item := range s.Show {
 		switch item {
-		case items[0], items[1], items[2], items[3], items[4], items[5], items[6]:
+		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
 	}
 	for _, item := range s.Hide {
 		switch item {
-		case items[0], items[1], items[2], items[3], items[4], items[5], items[6]:
+		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
@@ -97,6 +112,73 @@ func (s *sections) visibility(section string) bool {
 		}
 	}
 	return false
+}
+
+const (
+	outputModeInject  = "inject"
+	outputModeReplace = "replace"
+
+	outputBeginComment = "<!-- BEGIN_TF_DOCS -->"
+	outputContent      = "{{ .Content }}"
+	outputEndComment   = "<!-- END_TF_DOCS -->"
+)
+
+// Output to file template and modes
+var (
+	OutputTemplate = fmt.Sprintf("%s\n%s\n%s", outputBeginComment, outputContent, outputEndComment)
+	OutputModes    = strings.Join([]string{outputModeInject, outputModeReplace}, ", ")
+)
+
+type output struct {
+	File     string `yaml:"file"`
+	Mode     string `yaml:"mode"`
+	Template string `yaml:"template"`
+
+	BeginComment string `yaml:"-"`
+	EndComment   string `yaml:"-"`
+}
+
+func defaultOutput() output {
+	return output{
+		File:     "",
+		Mode:     outputModeInject,
+		Template: OutputTemplate,
+
+		BeginComment: outputBeginComment,
+		EndComment:   outputEndComment,
+	}
+}
+
+func (o *output) validate() error {
+	if o.File != "" {
+		if o.Mode == "" {
+			return fmt.Errorf("value of '--output-mode' can't be empty")
+		}
+		if o.Template == "" {
+			return fmt.Errorf("value of '--output-template' can't be empty")
+		}
+
+		index := strings.Index(o.Template, outputContent)
+		if index < 0 {
+			return fmt.Errorf("value of '--output-template' doesn't have '{{ .Content }}' (note that spaces inside '{{ }}' are mandatory)")
+		}
+
+		lines := strings.Split(o.Template, "\n")
+		if len(lines) < 3 {
+			return fmt.Errorf("value of '--output-template' should contain at least 3 lines (begin comment, {{ .Content }}, and end comment)")
+		}
+
+		if !strings.Contains(lines[0], "<!--") || !strings.Contains(lines[0], "-->") {
+			return fmt.Errorf("value of '--output-template' is missing begin comment")
+		}
+		o.BeginComment = strings.TrimSpace(lines[0])
+
+		if !strings.Contains(lines[len(lines)-1], "<!--") || !strings.Contains(lines[len(lines)-1], "-->") {
+			return fmt.Errorf("value of '--output-template' is missing end comment")
+		}
+		o.EndComment = strings.TrimSpace(lines[len(lines)-1])
+	}
+	return nil
 }
 
 type outputvalues struct {
@@ -187,10 +269,12 @@ func (s *settings) validate() error {
 
 // Config represents all the available config options that can be accessed and passed through CLI
 type Config struct {
+	BaseDir      string       `yaml:"-"`
 	File         string       `yaml:"-"`
 	Formatter    string       `yaml:"formatter"`
 	HeaderFrom   string       `yaml:"header-from"`
 	Sections     sections     `yaml:"sections"`
+	Output       output       `yaml:"output"`
 	OutputValues outputvalues `yaml:"output-values"`
 	Sort         sort         `yaml:"sort"`
 	Settings     settings     `yaml:"settings"`
@@ -199,10 +283,12 @@ type Config struct {
 // DefaultConfig returns new instance of Config with default values set
 func DefaultConfig() *Config {
 	return &Config{
+		BaseDir:      "",
 		File:         "",
 		Formatter:    "",
 		HeaderFrom:   "main.tf",
 		Sections:     defaultSections(),
+		Output:       defaultOutput(),
 		OutputValues: defaultOutputValues(),
 		Sort:         defaultSort(),
 		Settings:     defaultSettings(),
@@ -241,6 +327,11 @@ func (c *Config) validate() error {
 
 	// sections
 	if err := c.Sections.validate(); err != nil {
+		return err
+	}
+
+	// output
+	if err := c.Output.validate(); err != nil {
 		return err
 	}
 

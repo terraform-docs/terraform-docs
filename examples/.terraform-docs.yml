@@ -7,10 +7,26 @@ sections:
     - inputs
     - providers
     - modules
+
+# output:
+#   file: README.md
+#   mode: inject
+#   template: |-
+#     <!-- BEGIN_TF_DOCS -->
+#     The template can be customized with aribitrary markdown content.
+#     For example this can be shown before the actual content generated
+#     by formatters.
+
+#     {{ .Content }}
+
+#     You can also show something after it!
+#     <!-- END_TF_DOCS -->
+
 sort:
   enabled: true
   by:
     - required
+
 settings:
   indent: 4
   escape: false

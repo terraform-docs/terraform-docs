@@ -12,6 +12,7 @@ package cli
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -86,6 +87,9 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 			return err
 		}
 
+		// set the base moduel directory
+		config.BaseDir = args[0]
+
 		return nil
 	}
 }
@@ -94,9 +98,9 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 // This functions extract print.Settings and terraform.Options from generated and
 // normalized Config and initializes required print.Format instance and executes it.
 func RunEFunc(config *Config) func(*cobra.Command, []string) error {
-	return func(cmd *cobra.Command, args []string) error {
+	return func(cmd *cobra.Command, _ []string) error {
 		settings, options := config.extract()
-		options.Path = args[0]
+		options.Path = config.BaseDir
 
 		module, err := terraform.LoadWithOptions(options)
 		if err != nil {
@@ -115,22 +119,47 @@ func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 				return fmt.Errorf("formatter '%s' not found", config.Formatter)
 			}
 
-			output, cerr := client.Execute(pluginsdk.ExecuteArgs{
+			content, cerr := client.Execute(pluginsdk.ExecuteArgs{
 				Module:   module.Convert(),
 				Settings: settings.Convert(),
 			})
-			return printOrDie(output, cerr)
+			if cerr != nil {
+				return cerr
+			}
+			return writeContent(config, content)
 		}
 
-		output, err := printer.Print(module, settings)
-		return printOrDie(output, err)
+		content, err := printer.Print(module, settings)
+		if err != nil {
+			return err
+		}
+		return writeContent(config, content)
 	}
 }
 
-func printOrDie(output string, err error) error {
-	if err != nil {
-		return err
+// writeContent to a Writer. This can either be os.Stdout or specific
+// file (e.g. README.md) if '--output-file' is provided.
+func writeContent(config *Config, content string) error {
+	var w io.Writer
+
+	// writing to a file (either inject or replace)
+	if config.Output.File != "" {
+		w = &fileWriter{
+			file: config.Output.File,
+			dir:  config.BaseDir,
+
+			mode: config.Output.Mode,
+
+			template: config.Output.Template,
+			begin:    config.Output.BeginComment,
+			end:      config.Output.EndComment,
+		}
+	} else {
+		// writing to stdout
+		w = &stdoutWriter{}
 	}
-	fmt.Println(output)
-	return nil
+
+	_, err := io.WriteString(w, content)
+
+	return err
 }
