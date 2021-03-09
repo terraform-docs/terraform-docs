@@ -57,6 +57,16 @@ resource "foo" "bar" { ... }
 **Note:** This comment must start at the immediate first line of the `.tf` file
 before any `resource`, `variable`, `module`, etc.
 
+## Insert Output To File
+
+Since `v0.12.0` generated output can be insterted directly into the file. There
+are two modes of insersion: `inject` (default) or `replace`. Take a look at [output]
+configuration for all the details.
+
+```console
+terraform-docs markdown table --output-file README.md --output-mode inject /path/to/module
+```
+
 ## Generate terraform.tfvars
 
 You can generate `terraform.tfvars` in both `hcl` and `json` format by executing
@@ -122,6 +132,7 @@ done
 Please refer to it for complete examples and guides.
 
 [sections]: {{< ref "configuration/#sections" >}}
+[output]: {{< ref "configuration/#output" >}}
 [terraform-docs GitHub Action]: https://github.com/terraform-docs/gh-actions
 [git hooks]: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
 [pre-commit-terraform]: https://github.com/antonbabenko/pre-commit-terraform

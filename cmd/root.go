@@ -57,10 +57,14 @@ func NewCommand() *cobra.Command {
 	// flags
 	cmd.PersistentFlags().StringVarP(&config.File, "config", "c", ".terraform-docs.yml", "config file name")
 
-	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section [header, inputs, modules, outputs, providers, requirements, resources]")
-	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section [header, inputs, modules, outputs, providers, requirements, resources]")
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+cli.AllSections+"]")
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+cli.AllSections+"]")
 	cmd.PersistentFlags().BoolVar(&config.Sections.ShowAll, "show-all", true, "show all sections")
 	cmd.PersistentFlags().BoolVar(&config.Sections.HideAll, "hide-all", false, "hide all sections (default false)")
+
+	cmd.PersistentFlags().StringVar(&config.Output.File, "output-file", "", "File in module directory to insert output into (default \"\")")
+	cmd.PersistentFlags().StringVar(&config.Output.Mode, "output-mode", "inject", "Output to file method ["+cli.OutputModes+"]")
+	cmd.PersistentFlags().StringVar(&config.Output.Template, "output-template", cli.OutputTemplate, "Output template")
 
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
 	cmd.PersistentFlags().BoolVar(&config.Sort.By.Required, "sort-by-required", false, "sort items by name and print required ones first (default false)")
