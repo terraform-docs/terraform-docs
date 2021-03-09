@@ -56,9 +56,9 @@
         The following resources are used by this module:
         {{ range .Module.Resources }}
             {{ if eq (len .URL) 0 }}
-            - {{ .FullType }}
+            - {{ .FullType }}.{{ .Name }}
             {{- else -}}
-            - {{ .URL }}[{{ .FullType }}]
+            - {{ .URL }}[{{ .FullType }}.{{ .Name }}]
             {{- end }}
         {{- end }}
     {{ end }}

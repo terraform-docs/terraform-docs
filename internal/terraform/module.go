@@ -397,9 +397,10 @@ func loadResources(tfmodule *tfconfig.Module) []*Resource {
 				source = fmt.Sprintf("%s/%s", "hashicorp", r.Provider.Name)
 			}
 			rType := strings.TrimPrefix(r.Type, r.Provider.Name+"_")
-			key := fmt.Sprintf("%s.%s.%s", r.Provider.Name, r.Mode, rType)
+			key := fmt.Sprintf("%s.%s.%s.%s", r.Provider.Name, r.Mode, rType, r.Name)
 			discovered[key] = &Resource{
 				Type:           rType,
+				Name:           r.Name,
 				Mode:           r.Mode.String(),
 				ProviderName:   r.Provider.Name,
 				ProviderSource: source,
