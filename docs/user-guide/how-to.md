@@ -111,11 +111,9 @@ make a commit. See also [git hooks] documentation.
 #!/bin/sh
 
 # Keep module docs up to date
-for d in $(ls -1 modules)
-do
-  terraform-docs md modules/$d > modules/$d/README.md
-  if [ $? -eq 0 ] ; then
-    git add "./modules/$d/README.md"
+for d in modules/*; do
+  if terraform-docs md "$d" > "$d/README.md"; then
+    git add "./$d/README.md"
   fi
 done
 ```
