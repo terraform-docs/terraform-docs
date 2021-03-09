@@ -39,7 +39,7 @@ jobs:
           draft: false
           prerelease: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
 
   docker:
     runs-on: ubuntu-latest
