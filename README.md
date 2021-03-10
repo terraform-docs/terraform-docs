@@ -8,22 +8,6 @@
 
 A utility to generate documentation from Terraform modules in various output formats.
 
-```bash
-terraform-docs asciidoc ./my-terraform-module          # generate asciidoc table
-terraform-docs asciidoc table ./my-terraform-module    # generate asciidoc table
-terraform-docs asciidoc document ./my-terraform-module # generate asciidoc document
-terraform-docs json ./my-terraform-module              # generate json
-terraform-docs markdown ./my-terraform-module          # generate markdown table
-terraform-docs markdown table ./my-terraform-module    # generate markdown table
-terraform-docs markdown document ./my-terraform-module # generate markdown document
-terraform-docs pretty ./my-terraform-module            # generate colorized pretty
-terraform-docs tfvars hcl ./my-terraform-module        # generate hcl format of terraform.tfvars
-terraform-docs tfvars json ./my-terraform-module       # generate json format of terraform.tfvars
-terraform-docs toml ./my-terraform-module              # generate toml
-terraform-docs xml ./my-terraform-module               # generate xml
-terraform-docs yaml ./my-terraform-module              # generate yaml
-```
-
 ## Documentation
 
 - **Users**
@@ -112,13 +96,6 @@ refers to HEAD of `master` at any given point in time.
 
 - Discuss terraform-docs on [Slack]
 
-## Maintenance
-
-This project was originally developed by [Segment] but now is no longer maintained
-by them. Instead, [Martin Etmajer] from [GetCloudnative] and [Khosrow Moossavi] from
-[CloudOps] are maintaining the project with help from these awesome [contributors].
-Note that maintainers are unaffiliated with Segment.
-
 ## License
 
 MIT License - Copyright (c) 2021 The terraform-docs Authors.
@@ -134,9 +111,3 @@ MIT License - Copyright (c) 2021 The terraform-docs Authors.
 [Scoop]: https://scoop.sh/
 [Chocolatey]: https://www.chocolatey.org
 [Slack]: https://slack.terraform-docs.io/
-[Segment]: https://github.com/segmentio/
-[Martin Etmajer]: https://github.com/metmajer
-[GetCloudnative]: https://github.com/getcloudnative
-[Khosrow Moossavi]: https://github.com/khos2ow
-[CloudOps]: https://github.com/cloudops
-[contributors]: AUTHORS

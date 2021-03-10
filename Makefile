@@ -141,10 +141,6 @@ major: release ## Prepare Major release
 ####################
 ## Helper targets ##
 ####################
-.PHONY: authors
-authors: ## Generate Authors
-	git log --all --format='%aN <%aE>' | sort -u | egrep -v noreply > AUTHORS
-
 .PHONY: goimports
 goimports:
 ifeq (, $(shell which goimports))
