@@ -145,21 +145,6 @@ major: release ## Prepare Major release
 authors: ## Generate Authors
 	git log --all --format='%aN <%aE>' | sort -u | egrep -v noreply > AUTHORS
 
-.PHONY: changelog
-changelog: NEXT ?=
-changelog: ## Generate Changelog
-	@ $(MAKE) --no-print-directory log-$@
-	git-chglog --config ./scripts/chglog/config-full-history.yml --tag-filter-pattern v[0-9]+.[0-9]+.[0-9]+$$ --output CHANGELOG.md $(NEXT)
-	@ git add CHANGELOG.md
-	@ git commit -m "Update Changelog"
-	@ git push origin master
-
-.PHONY: git-chglog
-git-chglog:
-ifeq (, $(shell which git-chglog))
-	GO111MODULE=off $(GO) get -u github.com/terraform-docs/git-chglog/cmd/git-chglog
-endif
-
 .PHONY: goimports
 goimports:
 ifeq (, $(shell which goimports))
@@ -175,7 +160,7 @@ endif
 .PHONY: tools
 tools: ## Install required tools
 	@ $(MAKE) --no-print-directory log-$@
-	@ $(MAKE) --no-print-directory git-chglog goimports golangci
+	@ $(MAKE) --no-print-directory goimports golangci
 
 ########################################################################
 ## Self-Documenting Makefile Help                                     ##
