@@ -128,13 +128,13 @@ generates the following output:
 
     == Resources
 
-    [cols="a",options="header,autowidth"]
+    [cols="a,a",options="header,autowidth"]
     |===
-    |Name
-    |https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current]
-    |https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.ident]
-    |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo]
-    |https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz]
+    |Name |Type
+    |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] |resource
+    |https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] |resource
+    |https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] |data source
+    |https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.ident] |data source
     |===
 
     == Inputs

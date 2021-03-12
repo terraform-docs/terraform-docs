@@ -49,14 +49,14 @@
     {{ if not .Module.Resources }}
         No resources.
     {{ else }}
-        | Name |
-        |------|
+        | Name | Type |
+        |------|------|
         {{- range .Module.Resources }}
-        {{ if eq (len .URL) 0 }}
-            | {{ .FullType }}.{{ .Name }} |
-        {{- else -}}
-            | [{{ .FullType }}.{{ .Name }}]({{ .URL }}) |
-        {{- end }}
+            {{ if eq (len .URL) 0 }}
+                | {{ .Spec }} | {{ .GetMode }} |
+            {{- else -}}
+                | [{{ .Spec }}]({{ .URL }}) | {{ .GetMode }} |
+            {{- end }}
         {{- end }}
     {{ end }}
 {{ end -}}
