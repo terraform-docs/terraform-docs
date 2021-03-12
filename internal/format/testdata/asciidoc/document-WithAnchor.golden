@@ -5,7 +5,7 @@ Example of 'foo_bar' module in `foo_bar.tf`.
 - list item 1
 - list item 2
 
-Even inline **formatting** in _here_ is possible.  
+Even inline **formatting** in _here_ is possible.
 and some [link](https://domain.com/)
 
 * list item 3
@@ -28,7 +28,7 @@ module "foo_bar" {
 }
 ```
 
-Here is some trailing text after code block,  
+Here is some trailing text after code block,
 followed by another line of text.
 
 | Name | Description     |

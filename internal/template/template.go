@@ -47,16 +47,16 @@ func New(settings *print.Settings, items ...*Item) *Template {
 			return string(s)
 		},
 		"sanitizeHeader": func(s string) string {
-			return sanitizeItemForDocument(s, settings)
+			return sanitizeHeader(s, settings)
 		},
 		"sanitizeDoc": func(s string) string {
-			return sanitizeItemForDocument(s, settings)
+			return sanitizeDocument(s, settings)
 		},
-		"sanitizeTbl": func(s string) string {
-			return sanitizeItemForTable(s, settings)
+		"sanitizeMarkdownTbl": func(s string) string {
+			return sanitizeMarkdownTable(s, settings)
 		},
 		"sanitizeAsciidocTbl": func(s string) string {
-			return sanitizeItemForAsciidocTable(s, settings)
+			return sanitizeAsciidocTable(s, settings)
 		},
 		"anchorName": func(s string, t string) string {
 			return createAnchorMarkdown(s, t, settings)

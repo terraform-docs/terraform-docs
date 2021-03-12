@@ -77,22 +77,22 @@ func TestCommonSort(t *testing.T) {
 			assert.Nil(err)
 
 			for ii, i := range module.Inputs {
-				assert.Equal(i.Name, expected.Inputs[ii])
+				assert.Equal(expected.Inputs[ii], i.Name)
 			}
 			for ii, m := range module.ModuleCalls {
-				assert.Equal(m.Name+"-"+m.Source, expected.Modules[ii])
+				assert.Equal(expected.Modules[ii], m.Name+"-"+m.Source)
 			}
 			for ii, o := range module.Outputs {
-				assert.Equal(o.Name, expected.Outputs[ii])
+				assert.Equal(expected.Outputs[ii], o.Name)
 			}
 			for ii, p := range module.Providers {
-				assert.Equal(p.FullName(), expected.Providers[ii])
+				assert.Equal(expected.Providers[ii], p.FullName())
 			}
 			for ii, r := range module.Requirements {
-				assert.Equal(r.Name, expected.Requirements[ii])
+				assert.Equal(expected.Requirements[ii], r.Name)
 			}
 			for ii, r := range module.Resources {
-				assert.Equal(r.FullType()+"__"+r.Mode+"."+r.Name, expected.Resources[ii])
+				assert.Equal(expected.Resources[ii], r.FullType()+"__"+r.Mode+"."+r.Name)
 			}
 		})
 	}
@@ -136,7 +136,7 @@ func TestCommonHeaderFrom(t *testing.T) {
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			assert.Equal(module.Header, expected)
+			assert.Equal(expected, module.Header)
 		})
 	}
 }

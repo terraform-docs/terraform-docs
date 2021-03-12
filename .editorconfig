@@ -16,6 +16,13 @@ insert_final_newline = true
 indent_style = tab
 indent_size = 4
 
+[*.md]
+trim_trailing_whitespace = true
+
+[examples/doc.{adoc,md,tf,txt}]
+trim_trailing_whitespace = false
+insert_final_newline = false
+
 [*.{golden,tmpl}]
 trim_trailing_whitespace = false
 insert_final_newline = false
