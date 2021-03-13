@@ -205,13 +205,15 @@ func loadHeader(options *Options) (string, error) {
 			return strings.HasPrefix(line, "/*") || strings.HasPrefix(line, "*") || strings.HasPrefix(line, "*/")
 		},
 		Parser: func(line string) (string, bool) {
-			line = strings.TrimSpace(line)
-			if strings.HasPrefix(line, "/*") || strings.HasPrefix(line, "*/") {
+			tmp := strings.TrimSpace(line)
+			if strings.HasPrefix(tmp, "/*") || strings.HasPrefix(tmp, "*/") {
 				return "", false
 			}
-			if line == "*" {
+			if tmp == "*" {
 				return "", true
 			}
+			line = strings.TrimLeft(line, " ")
+			line = strings.TrimRight(line, "\r\n")
 			line = strings.TrimPrefix(line, "* ")
 			return line, true
 		},

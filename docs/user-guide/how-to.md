@@ -27,8 +27,9 @@ terraform-docs --hide-all --show inputs --show outputs ... # hide all sections e
 ## Module Header
 
 Module header can be extracted from different sources. Default file to extract
-header from is `main.tf`, otherwise you can specify the file with `--header-from FILE`.
-Supported file formats to read header from are:
+header from is `main.tf`, otherwise you can specify the file with `--header-from FILE`
+or corresponding `header-from` in configuration file. Supported file formats to
+read header from are:
 
 - `.adoc`
 - `.md`
@@ -36,7 +37,7 @@ Supported file formats to read header from are:
 - `.txt`
 
 The whole file content is being extracted as module header when extracting from
-`.adoc`, `.md` or `.txt`. But to extract header from `.tf` file you need to use
+`.adoc`, `.md`, or `.txt`. But to extract header from `.tf` file you need to use
 following javascript, c or java like multi-line comment:
 
 ```tf
@@ -56,6 +57,10 @@ resource "foo" "bar" { ... }
 
 **Note:** This comment must start at the immediate first line of the `.tf` file
 before any `resource`, `variable`, `module`, etc.
+
+**Note:** we will never alter line-endings of extracted header text and will assume
+whatever extracted is intended as is. It's up to you to apply any kind of Markdown
+formatting to them (i.e. adding `<SPACE><SPACE>` at the end of lines for break, etc.)
 
 ## Insert Output To File
 

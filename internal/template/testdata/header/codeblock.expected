@@ -1,0 +1,9 @@
+This is a complicated one. We need a newline.  
+And an example in a code block. Availeble options
+are: foo | bar | baz
+
+```
+default = [
+  "foo"
+]
+```

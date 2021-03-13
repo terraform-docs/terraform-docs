@@ -64,7 +64,7 @@ generates the following output:
     - list item 1
     - list item 2
 
-    Even inline **formatting** in _here_ is possible.  
+    Even inline **formatting** in _here_ is possible.
     and some [link](https://domain.com/)
 
     * list item 3
@@ -87,7 +87,7 @@ generates the following output:
     }
     ```
 
-    Here is some trailing text after code block,  
+    Here is some trailing text after code block,
     followed by another line of text.
 
     | Name | Description     |

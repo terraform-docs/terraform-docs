@@ -392,24 +392,24 @@ func TestBuiltinFunc(t *testing.T) {
 			expected: "n/a",
 		},
 
-		// sanitizeTbl
+		// sanitizeMarkdownTbl
 		{
-			name:     "template builtin functions sanitizeTbl",
-			funcName: "sanitizeTbl",
+			name:     "template builtin functions sanitizeMarkdownTbl",
+			funcName: "sanitizeMarkdownTbl",
 			funcArgs: []string{"\"Example of 'foo_bar' module in `foo_bar.tf`.\n\n| Foo | Bar |\""},
 			escape:   true,
 			expected: "Example of 'foo\\_bar' module in `foo_bar.tf`.<br><br>\\| Foo \\| Bar \\|",
 		},
 		{
-			name:     "template builtin functions sanitizeTbl",
-			funcName: "sanitizeTbl",
+			name:     "template builtin functions sanitizeMarkdownTbl",
+			funcName: "sanitizeMarkdownTbl",
 			funcArgs: []string{"\"Example of 'foo_bar' module in `foo_bar.tf`.\n\n| Foo | Bar |\""},
 			escape:   false,
 			expected: "Example of 'foo_bar' module in `foo_bar.tf`.<br><br>\\| Foo \\| Bar \\|",
 		},
 		{
-			name:     "template builtin functions sanitizeTbl",
-			funcName: "sanitizeTbl",
+			name:     "template builtin functions sanitizeMarkdownTbl",
+			funcName: "sanitizeMarkdownTbl",
 			funcArgs: []string{`""`},
 			escape:   true,
 			expected: "n/a",

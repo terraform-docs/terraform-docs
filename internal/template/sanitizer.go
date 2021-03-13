@@ -30,9 +30,12 @@ func sanitizeName(name string, settings *print.Settings) string {
 	return name
 }
 
-// sanitizeItemForDocument converts passed 'string' to suitable Markdown representation
+// sanitizeHeader converts passed 'string' to suitable Markdown representation
 // for a document. (including line-break, illegal characters, code blocks etc)
-func sanitizeItemForDocument(s string, settings *print.Settings) string {
+//
+// IMPORTANT: sanitizeHeader will never change the line-endings and preserve them
+// as they are provided by the users.
+func sanitizeHeader(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -41,7 +44,7 @@ func sanitizeItemForDocument(s string, settings *print.Settings) string {
 		"```",
 		func(segment string) string {
 			segment = escapeIllegalCharacters(segment, settings, false)
-			segment = convertMultiLineText(segment, false)
+			segment = convertMultiLineText(segment, false, true)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
@@ -57,9 +60,37 @@ func sanitizeItemForDocument(s string, settings *print.Settings) string {
 	return result
 }
 
-// sanitizeItemForTable converts passed 'string' to suitable Markdown representation
+// sanitizeDocument converts passed 'string' to suitable Markdown or AsciiDoc
+// representation for a document. (including line-break, illegal characters,
+// code blocks etc)
+func sanitizeDocument(s string, settings *print.Settings) string {
+	if s == "" {
+		return "n/a"
+	}
+	result := processSegments(
+		s,
+		"```",
+		func(segment string) string {
+			segment = escapeIllegalCharacters(segment, settings, false)
+			segment = convertMultiLineText(segment, false, false)
+			segment = normalizeURLs(segment, settings)
+			return segment
+		},
+		func(segment string) string {
+			lastbreak := ""
+			if !strings.HasSuffix(segment, "\n") {
+				lastbreak = "\n"
+			}
+			segment = fmt.Sprintf("```%s%s```", segment, lastbreak)
+			return segment
+		},
+	)
+	return result
+}
+
+// sanitizeMarkdownTable converts passed 'string' to suitable Markdown representation
 // for a table. (including line-break, illegal characters, code blocks etc)
-func sanitizeItemForTable(s string, settings *print.Settings) string {
+func sanitizeMarkdownTable(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -68,7 +99,7 @@ func sanitizeItemForTable(s string, settings *print.Settings) string {
 		"```",
 		func(segment string) string {
 			segment = escapeIllegalCharacters(segment, settings, true)
-			segment = convertMultiLineText(segment, true)
+			segment = convertMultiLineText(segment, true, false)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
@@ -83,9 +114,9 @@ func sanitizeItemForTable(s string, settings *print.Settings) string {
 	return result
 }
 
-// sanitizeItemForAsciidocTable converts passed 'string' to suitable AsciiDoc representation
+// sanitizeAsciidocTable converts passed 'string' to suitable AsciiDoc representation
 // for a table. (including line-break, illegal characters, code blocks etc)
-func sanitizeItemForAsciidocTable(s string, settings *print.Settings) string {
+func sanitizeAsciidocTable(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -107,7 +138,7 @@ func sanitizeItemForAsciidocTable(s string, settings *print.Settings) string {
 }
 
 // convertMultiLineText converts a multi-line text into a suitable Markdown representation.
-func convertMultiLineText(s string, isTable bool) string {
+func convertMultiLineText(s string, isTable bool, isHeader bool) string {
 	if isTable {
 		s = strings.TrimSpace(s)
 	}
@@ -120,9 +151,11 @@ func convertMultiLineText(s string, isTable bool) string {
 	// which is a know convention of Markdown for multi-lines paragprah.
 	// This doesn't apply on a markdown list for example, because all the
 	// consecutive lines start with hyphen which is a special character.
-	s = regexp.MustCompile(`(\S*)(\r?\n)(\s*)(\w+)`).ReplaceAllString(s, "$1  $2$3$4")
-	s = strings.Replace(s, "    \n", "  \n", -1)
-	s = strings.Replace(s, "<br>  \n", "\n\n", -1)
+	if !isHeader {
+		s = regexp.MustCompile(`(\S*)(\r?\n)(\s*)(\w+)`).ReplaceAllString(s, "$1  $2$3$4")
+		s = strings.Replace(s, "    \n", "  \n", -1)
+		s = strings.Replace(s, "<br>  \n", "\n\n", -1)
+	}
 
 	if isTable {
 		// Convert space-space-newline to <br>

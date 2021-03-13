@@ -107,7 +107,49 @@ func TestSanitizeName(t *testing.T) {
 	}
 }
 
-func TestSanitizeItemForDocument(t *testing.T) {
+func TestSanitizeHeader(t *testing.T) {
+	tests := []struct {
+		name     string
+		filename string
+		escape   bool
+	}{
+		{
+			name:     "sanitize header item empty",
+			filename: "empty",
+			escape:   true,
+		},
+		{
+			name:     "sanitize header item complex",
+			filename: "complex",
+			escape:   true,
+		},
+		{
+			name:     "sanitize header item codeblock",
+			filename: "codeblock",
+			escape:   true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			settings := &print.Settings{
+				EscapeCharacters: tt.escape,
+			}
+
+			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "header", tt.filename+".golden"))
+			assert.Nil(err)
+
+			actual := sanitizeHeader(string(bytes), settings)
+
+			expected, err := ioutil.ReadFile(filepath.Join("testdata", "header", tt.filename+".expected"))
+			assert.Nil(err)
+
+			assert.Equal(string(expected), actual)
+		})
+	}
+}
+
+func TestSanitizeDocument(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
@@ -139,7 +181,7 @@ func TestSanitizeItemForDocument(t *testing.T) {
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeItemForDocument(string(bytes), settings)
+			actual := sanitizeDocument(string(bytes), settings)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".expected"))
 			assert.Nil(err)
@@ -149,7 +191,7 @@ func TestSanitizeItemForDocument(t *testing.T) {
 	}
 }
 
-func TestSanitizeItemForTable(t *testing.T) {
+func TestSanitizeMarkdownTable(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
@@ -181,7 +223,7 @@ func TestSanitizeItemForTable(t *testing.T) {
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeItemForTable(string(bytes), settings)
+			actual := sanitizeMarkdownTable(string(bytes), settings)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".expected"))
 			assert.Nil(err)
@@ -191,7 +233,7 @@ func TestSanitizeItemForTable(t *testing.T) {
 	}
 }
 
-func TestSanitizeItemForAsciidocTable(t *testing.T) {
+func TestSanitizeAsciidocTable(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
@@ -223,7 +265,7 @@ func TestSanitizeItemForAsciidocTable(t *testing.T) {
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeItemForAsciidocTable(string(bytes), settings)
+			actual := sanitizeAsciidocTable(string(bytes), settings)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".asciidoc.expected"))
 			assert.Nil(err)
@@ -309,7 +351,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			bytes, err := ioutil.ReadFile(path)
 			assert.Nil(err)
 
-			actual := convertMultiLineText(string(bytes), tt.isTable)
+			actual := convertMultiLineText(string(bytes), tt.isTable, false)
 			assert.Equal(tt.expected, actual)
 		})
 	}
