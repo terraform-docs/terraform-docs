@@ -19,24 +19,73 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
-func TestResourceFullType(t *testing.T) {
+func TestResourceSpec(t *testing.T) {
 	assert := assert.New(t)
 	resource := Resource{
 		Type:           "private_key",
+		Name:           "baz",
 		ProviderName:   "tls",
 		ProviderSource: "hashicorp/tls",
 		Mode:           "managed",
 		Version:        types.String("latest"),
 	}
-	assert.Equal("tls_private_key", resource.FullType())
+	assert.Equal("tls_private_key.baz", resource.Spec())
+}
+
+func TestResourceMode(t *testing.T) {
+	tests := []struct {
+		name        string
+		resource    Resource
+		expectValue string
+	}{
+		{
+			name: "resource mode as managed",
+			resource: Resource{
+				Type:           "private_key",
+				ProviderName:   "tls",
+				ProviderSource: "hashicorp/tls",
+				Mode:           "managed",
+				Version:        types.String("latest"),
+			},
+			expectValue: "resource",
+		},
+		{
+			name: "resource mode as data source",
+			resource: Resource{
+				Type:           "caller_identity",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "data",
+				Version:        types.String("latest"),
+			},
+			expectValue: "data source",
+		},
+		{
+			name: "resource mode as invalid",
+			resource: Resource{
+				Type:           "caller_identity",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "",
+				Version:        types.String("latest"),
+			},
+			expectValue: "invalid",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			assert.Equal(tt.expectValue, tt.resource.GetMode())
+		})
+	}
 }
 
 func TestResourceURL(t *testing.T) {
 	tests := []struct {
-		name          string
-		resource      Resource
-		expectValue   string
-		expectDefault bool
+		name        string
+		resource    Resource
+		expectValue string
 	}{
 		{
 			name: "generic URL construction",
@@ -76,11 +125,11 @@ func TestResourcesSortedByType(t *testing.T) {
 
 	sort.Sort(resourcesSortedByType(resources))
 
-	expected := []string{"a_a.a", "a_a.a", "a_a.a", "a_f.f", "b_b.b", "b_d.d", "c_c.c", "c_e.c", "c_e.d", "c_e_x.c", "c_e_x.d", "z_z.z", "z_z.z", "z_z.z"}
+	expected := []string{"a_a.a", "a_f.f", "b_b.b", "b_d.d", "c_c.c", "c_e.c", "c_e.d", "c_e_x.c", "c_e_x.d", "z_z.z", "a_a.a", "z_z.z", "a_a.a", "z_z.z"}
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
-		actual[k] = i.ProviderName + "_" + i.Type + "." + i.Name
+		actual[k] = i.Spec()
 	}
 
 	assert.Equal(expected, actual)
@@ -92,20 +141,18 @@ func TestResourcesSortedByTypeAndMode(t *testing.T) {
 
 	sort.Sort(resourcesSortedByType(resources))
 
-	expected := []string{"a_a.a", "a_a_d.a", "a_a_m.a", "a_f_m.f", "b_b_m.b", "b_d_m.d", "c_c_m.c", "c_e_m.c", "c_e_m.d", "c_e_x_m.c", "c_e_x_m.d", "z_z.z", "z_z_d.z", "z_z_m.z"}
+	expected := []string{"a_a.a (r)", "a_f.f (r)", "b_b.b (r)", "b_d.d (r)", "c_c.c (r)", "c_e.c (r)", "c_e.d (r)", "c_e_x.c (r)", "c_e_x.d (r)", "z_z.z (r)", "a_a.a (d)", "z_z.z (d)", "a_a.a", "z_z.z"}
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
-		v := i.ProviderName + "_" + i.Type
+		mode := ""
 		switch i.Mode {
 		case "managed":
-			v = v + "_m"
+			mode = " (r)"
 		case "data":
-			v = v + "_d"
+			mode = " (d)"
 		}
-		v = v + "." + i.Name
-
-		actual[k] = v
+		actual[k] = i.Spec() + mode
 	}
 
 	assert.Equal(expected, actual)

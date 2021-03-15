@@ -371,22 +371,6 @@ generates the following output:
       ],
       "resources": [
         {
-          "type": "caller_identity",
-          "name": "current",
-          "providerName": "aws",
-          "provicerSource": "hashicorp/aws",
-          "mode": "data",
-          "version": "latest"
-        },
-        {
-          "type": "caller_identity",
-          "name": "ident",
-          "providerName": "aws",
-          "provicerSource": "hashicorp/aws",
-          "mode": "data",
-          "version": "latest"
-        },
-        {
           "type": "resource",
           "name": "foo",
           "providerName": "null",
@@ -400,6 +384,22 @@ generates the following output:
           "providerName": "tls",
           "provicerSource": "hashicorp/tls",
           "mode": "managed",
+          "version": "latest"
+        },
+        {
+          "type": "caller_identity",
+          "name": "current",
+          "providerName": "aws",
+          "provicerSource": "hashicorp/aws",
+          "mode": "data",
+          "version": "latest"
+        },
+        {
+          "type": "caller_identity",
+          "name": "ident",
+          "providerName": "aws",
+          "provicerSource": "hashicorp/aws",
+          "mode": "data",
           "version": "latest"
         }
       ]

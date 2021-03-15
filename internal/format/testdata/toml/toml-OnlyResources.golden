@@ -6,22 +6,6 @@ providers = []
 requirements = []
 
 [[resources]]
-  type = "caller_identity"
-  name = "current"
-  providerName = "aws"
-  providerSource = "hashicorp/aws"
-  mode = "data"
-  version = "latest"
-
-[[resources]]
-  type = "caller_identity"
-  name = "ident"
-  providerName = "aws"
-  providerSource = "hashicorp/aws"
-  mode = "data"
-  version = "latest"
-
-[[resources]]
   type = "resource"
   name = "foo"
   providerName = "null"
@@ -35,4 +19,20 @@ requirements = []
   providerName = "tls"
   providerSource = "hashicorp/tls"
   mode = "managed"
+  version = "latest"
+
+[[resources]]
+  type = "caller_identity"
+  name = "current"
+  providerName = "aws"
+  providerSource = "hashicorp/aws"
+  mode = "data"
+  version = "latest"
+
+[[resources]]
+  type = "caller_identity"
+  name = "ident"
+  providerName = "aws"
+  providerSource = "hashicorp/aws"
+  mode = "data"
   version = "latest"

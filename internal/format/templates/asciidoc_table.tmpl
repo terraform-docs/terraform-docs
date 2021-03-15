@@ -55,14 +55,14 @@
     {{ if not .Module.Resources }}
         No resources.
     {{ else }}
-        [cols="a",options="header,autowidth"]
+        [cols="a,a",options="header,autowidth"]
         |===
-        |Name
+        |Name |Type
         {{- range .Module.Resources }}
             {{ if eq (len .URL) 0 }}
-            |{{ .FullType }}.{{ .Name }}
+                |{{ .Spec }} |{{ .GetMode }}
             {{- else -}}
-            |{{ .URL }}[{{ .FullType }}.{{ .Name }}]
+                |{{ .URL }}[{{ .Spec }}] |{{ .GetMode }}
             {{- end }}
         {{- end }}
         |===

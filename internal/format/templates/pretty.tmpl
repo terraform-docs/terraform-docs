@@ -38,9 +38,9 @@
     {{- with .Module.Resources }}
         {{- range . }}
             {{- if eq (len .URL) 0 }}
-                {{- printf "resource.%s.%s" .FullType .Name | colorize "\033[36m" }}
+                {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}
             {{- else -}}
-                {{- printf "resource.%s.%s" .FullType .Name | colorize "\033[36m" }} ({{ .URL}})
+                {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }} ({{ .URL}})
             {{- end }}
         {{ end -}}
     {{ end -}}

@@ -293,22 +293,6 @@ header = "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 
   Version = ">= 2.2.0"
 
 [[resources]]
-  type = "caller_identity"
-  name = "current"
-  providerName = "aws"
-  providerSource = "hashicorp/aws"
-  mode = "data"
-  version = "latest"
-
-[[resources]]
-  type = "caller_identity"
-  name = "ident"
-  providerName = "aws"
-  providerSource = "hashicorp/aws"
-  mode = "data"
-  version = "latest"
-
-[[resources]]
   type = "resource"
   name = "foo"
   providerName = "null"
@@ -322,4 +306,20 @@ header = "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 
   providerName = "tls"
   providerSource = "hashicorp/tls"
   mode = "managed"
+  version = "latest"
+
+[[resources]]
+  type = "caller_identity"
+  name = "current"
+  providerName = "aws"
+  providerSource = "hashicorp/aws"
+  mode = "data"
+  version = "latest"
+
+[[resources]]
+  type = "caller_identity"
+  name = "ident"
+  providerName = "aws"
+  providerSource = "hashicorp/aws"
+  mode = "data"
   version = "latest"

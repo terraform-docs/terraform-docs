@@ -346,22 +346,6 @@ generates the following output:
       Version = ">= 2.2.0"
 
     [[resources]]
-      type = "caller_identity"
-      name = "current"
-      providerName = "aws"
-      providerSource = "hashicorp/aws"
-      mode = "data"
-      version = "latest"
-
-    [[resources]]
-      type = "caller_identity"
-      name = "ident"
-      providerName = "aws"
-      providerSource = "hashicorp/aws"
-      mode = "data"
-      version = "latest"
-
-    [[resources]]
       type = "resource"
       name = "foo"
       providerName = "null"
@@ -375,6 +359,22 @@ generates the following output:
       providerName = "tls"
       providerSource = "hashicorp/tls"
       mode = "managed"
+      version = "latest"
+
+    [[resources]]
+      type = "caller_identity"
+      name = "current"
+      providerName = "aws"
+      providerSource = "hashicorp/aws"
+      mode = "data"
+      version = "latest"
+
+    [[resources]]
+      type = "caller_identity"
+      name = "ident"
+      providerName = "aws"
+      providerSource = "hashicorp/aws"
+      mode = "data"
       version = "latest"
 
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples

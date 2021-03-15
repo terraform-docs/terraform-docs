@@ -28,9 +28,24 @@ type Resource struct {
 	Version        types.String `json:"version" toml:"version" xml:"version" yaml:"version"`
 }
 
-// FullType returns full name of the type of the resource, including the provider name
-func (r *Resource) FullType() string {
-	return r.ProviderName + "_" + r.Type
+// Spec returns the resource spec addresses a specific resource in the config.
+// It takes the form: resource_type.resource_name[resource index]
+// For more details, see:
+// https://www.terraform.io/docs/cli/state/resource-addressing.html#resource-spec
+func (r *Resource) Spec() string {
+	return r.ProviderName + "_" + r.Type + "." + r.Name
+}
+
+// GetMode returns normalized resource type as "resource" or "data source"
+func (r *Resource) GetMode() string {
+	switch r.Mode {
+	case "managed":
+		return "resource"
+	case "data":
+		return "data source"
+	default:
+		return "invalid"
+	}
 }
 
 // URL returns a best guess at the URL for resource documentation
@@ -64,6 +79,7 @@ func (rr resources) convert() []*terraformsdk.Resource {
 			Version:        fmt.Sprintf("%v", r.Version.Raw()),
 		})
 	}
+
 	return list
 }
 
@@ -72,5 +88,11 @@ type resourcesSortedByType []*Resource
 func (a resourcesSortedByType) Len() int      { return len(a) }
 func (a resourcesSortedByType) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 func (a resourcesSortedByType) Less(i, j int) bool {
-	return a[i].FullType() < a[j].FullType() || (a[i].FullType() == a[j].FullType() && a[i].Mode <= a[j].Mode && a[i].Name <= a[j].Name)
+	if a[i].Mode == a[j].Mode {
+		if a[i].Spec() == a[j].Spec() {
+			return a[i].Name <= a[j].Name
+		}
+		return a[i].Spec() < a[j].Spec()
+	}
+	return a[i].Mode > a[j].Mode
 }
