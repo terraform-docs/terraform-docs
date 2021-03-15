@@ -428,12 +428,14 @@ func loadResources(tfmodule *tfconfig.Module) []*Resource {
 			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok {
 				version = resourceVersion(rv.VersionConstraints)
 			}
+
 			var source string
 			if len(tfmodule.RequiredProviders[r.Provider.Name].Source) > 0 {
 				source = tfmodule.RequiredProviders[r.Provider.Name].Source
 			} else {
 				source = fmt.Sprintf("%s/%s", "hashicorp", r.Provider.Name)
 			}
+
 			rType := strings.TrimPrefix(r.Type, r.Provider.Name+"_")
 			key := fmt.Sprintf("%s.%s.%s.%s", r.Provider.Name, r.Mode, rType, r.Name)
 			discovered[key] = &Resource{
@@ -443,6 +445,10 @@ func loadResources(tfmodule *tfconfig.Module) []*Resource {
 				ProviderName:   r.Provider.Name,
 				ProviderSource: source,
 				Version:        types.String(version),
+				Position: Position{
+					Filename: r.Pos.Filename,
+					Line:     r.Pos.Line,
+				},
 			}
 		}
 	}
@@ -532,7 +538,7 @@ func sortItems(tfmodule *Module, sortby *SortBy) {
 		sort.Sort(providersSortedByPosition(tfmodule.Providers))
 	}
 
-	// Always sort resources
+	// resources (always sorted)
 	sort.Sort(resourcesSortedByType(tfmodule.Resources))
 
 	// modules

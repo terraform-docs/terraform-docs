@@ -22,10 +22,11 @@ import (
 type Resource struct {
 	Type           string       `json:"type" toml:"type" xml:"type" yaml:"type"`
 	Name           string       `json:"name" toml:"name" xml:"name" yaml:"name"`
-	ProviderName   string       `json:"providerName" toml:"providerName" xml:"providerName" yaml:"providerName"`
-	ProviderSource string       `json:"provicerSource" toml:"providerSource" xml:"providerSource" yaml:"providerSource"`
+	ProviderName   string       `json:"provider" toml:"provider" xml:"provider" yaml:"provider"`
+	ProviderSource string       `json:"source" toml:"source" xml:"source" yaml:"source"`
 	Mode           string       `json:"mode" toml:"mode" xml:"mode" yaml:"mode"`
 	Version        types.String `json:"version" toml:"version" xml:"version" yaml:"version"`
+	Position       Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 
 // Spec returns the resource spec addresses a specific resource in the config.
@@ -66,23 +67,6 @@ func (r *Resource) URL() string {
 	return fmt.Sprintf("https://registry.terraform.io/providers/%s/%s/docs/%s/%s", r.ProviderSource, r.Version, kind, r.Type)
 }
 
-type resources []*Resource
-
-func (rr resources) convert() []*terraformsdk.Resource {
-	list := []*terraformsdk.Resource{}
-	for _, r := range rr {
-		list = append(list, &terraformsdk.Resource{
-			Type:           r.Type,
-			Name:           r.Name,
-			ProviderName:   r.ProviderName,
-			ProviderSource: r.ProviderSource,
-			Version:        fmt.Sprintf("%v", r.Version.Raw()),
-		})
-	}
-
-	return list
-}
-
 type resourcesSortedByType []*Resource
 
 func (a resourcesSortedByType) Len() int      { return len(a) }
@@ -95,4 +79,25 @@ func (a resourcesSortedByType) Less(i, j int) bool {
 		return a[i].Spec() < a[j].Spec()
 	}
 	return a[i].Mode > a[j].Mode
+}
+
+type resources []*Resource
+
+func (rr resources) convert() []*terraformsdk.Resource {
+	list := []*terraformsdk.Resource{}
+	for _, r := range rr {
+		list = append(list, &terraformsdk.Resource{
+			Type:           r.Type,
+			Name:           r.Name,
+			ProviderName:   r.ProviderName,
+			ProviderSource: r.ProviderSource,
+			Version:        fmt.Sprintf("%v", r.Version.Raw()),
+			Position: terraformsdk.Position{
+				Filename: r.Position.Filename,
+				Line:     r.Position.Line,
+			},
+		})
+	}
+
+	return list
 }
