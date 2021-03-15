@@ -292,15 +292,19 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
 }
 
 func loadModulecalls(tfmodule *tfconfig.Module) []*ModuleCall {
-	var modulecalls = make([]*ModuleCall, 0)
-	for _, modulecall := range tfmodule.ModuleCalls {
-		modulecalls = append(modulecalls, &ModuleCall{
-			Name:    modulecall.Name,
-			Source:  modulecall.Source,
-			Version: modulecall.Version,
+	var modules = make([]*ModuleCall, 0)
+	for _, m := range tfmodule.ModuleCalls {
+		modules = append(modules, &ModuleCall{
+			Name:    m.Name,
+			Source:  m.Source,
+			Version: m.Version,
+			Position: Position{
+				Filename: m.Pos.Filename,
+				Line:     m.Pos.Line,
+			},
 		})
 	}
-	return modulecalls
+	return modules
 }
 
 func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*Output, error) {
@@ -534,7 +538,9 @@ func sortItems(tfmodule *Module, sortby *SortBy) {
 	// modules
 	if sortby.Name || sortby.Required {
 		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
-	} else {
+	} else if sortby.Type {
 		sort.Sort(modulecallsSortedBySource(tfmodule.ModuleCalls))
+	} else {
+		sort.Sort(modulecallsSortedByPosition(tfmodule.ModuleCalls))
 	}
 }

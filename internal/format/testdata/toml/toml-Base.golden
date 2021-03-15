@@ -231,14 +231,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   [inputs.default]
 
 [[modules]]
-  Name = "foo"
-  Source = "bar"
-  Version = "1.2.3"
-
-[[modules]]
   Name = "bar"
   Source = "baz"
   Version = "4.5.6"
+
+[[modules]]
+  Name = "foo"
+  Source = "bar"
+  Version = "1.2.3"
 
 [[modules]]
   Name = "baz"

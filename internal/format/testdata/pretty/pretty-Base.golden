@@ -48,8 +48,8 @@ provider.aws.ident (>= 2.15.0)
 provider.null
 
 
-modulecall.foo (bar,1.2.3)
 modulecall.bar (baz,4.5.6)
+modulecall.foo (bar,1.2.3)
 modulecall.baz (baz,4.5.6)
 
 
