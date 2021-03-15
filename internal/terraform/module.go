@@ -13,6 +13,7 @@ package terraform
 import (
 	"encoding/json"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -30,7 +31,8 @@ import (
 
 // Module represents a Terraform module. It consists of
 //
-// - Header       ('header' json key):        Module header found in shape of multi line comments at the beginning of 'main.tf'
+// - Header       ('header' json key):        Module header found in shape of multi line '*.tf' comments or an entire file
+// - Footer       ('footer' json key):        Module footer found in shape of multi line '*.tf' comments or an entire file
 // - Inputs       ('inputs' json key):        List of input 'variables' extracted from the Terraform module .tf files
 // - ModuleCalls  ('modules' json key):       List of 'modules' extracted from the Terraform module .tf files
 // - Outputs      ('outputs' json key):       List of 'outputs' extracted from Terraform module .tf files
@@ -41,6 +43,7 @@ type Module struct {
 	XMLName xml.Name `json:"-" toml:"-" xml:"module" yaml:"-"`
 
 	Header       string         `json:"header" toml:"header" xml:"header" yaml:"header"`
+	Footer       string         `json:"footer" toml:"footer" xml:"footer" yaml:"footer"`
 	Inputs       []*Input       `json:"inputs" toml:"inputs" xml:"inputs>input" yaml:"inputs"`
 	ModuleCalls  []*ModuleCall  `json:"modules" toml:"modules" xml:"modules>module" yaml:"modules"`
 	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
@@ -55,6 +58,11 @@ type Module struct {
 // HasHeader indicates if the module has header.
 func (m *Module) HasHeader() bool {
 	return len(m.Header) > 0
+}
+
+// HasFooter indicates if the module has footer.
+func (m *Module) HasFooter() bool {
+	return len(m.Footer) > 0
 }
 
 // HasInputs indicates if the module has inputs.
@@ -91,6 +99,7 @@ func (m *Module) HasResources() bool {
 func (m *Module) Convert() terraformsdk.Module {
 	return terraformsdk.NewModule(
 		terraformsdk.WithHeader(m.Header),
+		terraformsdk.WithFooter(m.Footer),
 		terraformsdk.WithInputs(inputs(m.Inputs).convert()),
 		terraformsdk.WithModuleCalls(modulecalls(m.ModuleCalls).convert()),
 		terraformsdk.WithOutputs(outputs(m.Outputs).convert()),
@@ -131,6 +140,11 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 		return nil, err
 	}
 
+	footer, err := loadFooter(options)
+	if err != nil {
+		return nil, err
+	}
+
 	inputs, required, optional := loadInputs(tfmodule)
 	modulecalls := loadModulecalls(tfmodule)
 	outputs, err := loadOutputs(tfmodule, options)
@@ -143,6 +157,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 
 	return &Module{
 		Header:       header,
+		Footer:       footer,
 		Inputs:       inputs,
 		ModuleCalls:  modulecalls,
 		Outputs:      outputs,
@@ -165,32 +180,49 @@ func getFileFormat(filename string) string {
 	}
 	return filename[last:]
 }
-func isFileFormatSupported(filename string) (bool, error) {
+func isFileFormatSupported(filename string, section string) (bool, error) {
+	if section == "" {
+		return false, errors.New("section is missing")
+	}
 	if filename == "" {
-		return false, fmt.Errorf("--header-from value is missing")
+		return false, fmt.Errorf("--%s-from value is missing", section)
 	}
 	switch getFileFormat(filename) {
 	case ".adoc", ".md", ".tf", ".txt":
 		return true, nil
 	}
-	return false, fmt.Errorf("only .adoc, .md, .tf and .txt formats are supported to read header from")
+	return false, fmt.Errorf("only .adoc, .md, .tf and .txt formats are supported to read %s from", section)
 }
 
 func loadHeader(options *Options) (string, error) {
 	if !options.ShowHeader {
 		return "", nil
 	}
-	if ok, err := isFileFormatSupported(options.HeaderFromFile); !ok {
+	return loadSection(options, options.HeaderFromFile, "header")
+}
+
+func loadFooter(options *Options) (string, error) {
+	if !options.ShowFooter {
+		return "", nil
+	}
+	return loadSection(options, options.FooterFromFile, "footer")
+}
+
+func loadSection(options *Options, file string, section string) (string, error) {
+	if section == "" {
+		return "", errors.New("section is missing")
+	}
+	filename := filepath.Join(options.Path, file)
+	if ok, err := isFileFormatSupported(file, section); !ok {
 		return "", err
 	}
-	filename := filepath.Join(options.Path, options.HeaderFromFile)
 	if info, err := os.Stat(filename); os.IsNotExist(err) || info.IsDir() {
-		if options.HeaderFromFile != "main.tf" {
-			return "", err // user explicitly asked for a file which doesn't exist
+		if section == "header" && file == "main.tf" {
+			return "", nil // absorb the error to not break workflow for default value of header and missing 'main.tf'
 		}
-		return "", nil // absorb the error to not break workflow of users who don't have 'main.tf at all
+		return "", err // user explicitly asked for a file which doesn't exist
 	}
-	if getFileFormat(options.HeaderFromFile) != ".tf" {
+	if getFileFormat(file) != ".tf" {
 		content, err := ioutil.ReadFile(filename)
 		if err != nil {
 			return "", err
@@ -218,11 +250,11 @@ func loadHeader(options *Options) (string, error) {
 			return line, true
 		},
 	}
-	header, err := lines.Extract()
+	sectionText, err := lines.Extract()
 	if err != nil {
 		return "", err
 	}
-	return strings.Join(header, "\n"), nil
+	return strings.Join(sectionText, "\n"), nil
 }
 
 func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {

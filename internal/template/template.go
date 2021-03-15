@@ -46,8 +46,8 @@ func New(settings *print.Settings, items ...*Item) *Template {
 		"tostring": func(s types.String) string {
 			return string(s)
 		},
-		"sanitizeHeader": func(s string) string {
-			return sanitizeHeader(s, settings)
+		"sanitizeSection": func(s string) string {
+			return sanitizeSection(s, settings)
 		},
 		"sanitizeDoc": func(s string) string {
 			return sanitizeDocument(s, settings)

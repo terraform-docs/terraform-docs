@@ -164,20 +164,23 @@ func generateMarkdown(cmd *cobra.Command, weight int, w io.Writer) error {
 }
 
 func example(ref *reference) error {
-	flag := ""
+	flag := " --footer-from footer.md"
 	switch ref.Name {
 	case "pretty":
-		flag = " --no-color"
+		flag += " --no-color"
 	}
 
 	ref.Usage = fmt.Sprintf("%s%s ./examples/", ref.Command, flag)
 
 	settings := print.DefaultSettings()
 	settings.ShowColor = false
+	settings.ShowFooter = true
 	options := &terraform.Options{
 		Path:           "./examples",
 		ShowHeader:     true,
 		HeaderFromFile: "main.tf",
+		ShowFooter:     true,
+		FooterFromFile: "footer.md",
 		SortBy: &terraform.SortBy{
 			Name: true,
 		},

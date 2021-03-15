@@ -318,3 +318,7 @@ object({
 |output-1 |It's output number one.
 |output-0.12 |terraform 0.12 only
 |===
+
+## This is an example of a footer
+
+It looks exactly like a header, but is placed at the end of the document

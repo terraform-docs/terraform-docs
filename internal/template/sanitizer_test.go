@@ -107,24 +107,24 @@ func TestSanitizeName(t *testing.T) {
 	}
 }
 
-func TestSanitizeHeader(t *testing.T) {
+func TestSanitizeSection(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
 		escape   bool
 	}{
 		{
-			name:     "sanitize header item empty",
+			name:     "sanitize section item empty",
 			filename: "empty",
 			escape:   true,
 		},
 		{
-			name:     "sanitize header item complex",
+			name:     "sanitize section item complex",
 			filename: "complex",
 			escape:   true,
 		},
 		{
-			name:     "sanitize header item codeblock",
+			name:     "sanitize section item codeblock",
 			filename: "codeblock",
 			escape:   true,
 		},
@@ -136,12 +136,12 @@ func TestSanitizeHeader(t *testing.T) {
 				EscapeCharacters: tt.escape,
 			}
 
-			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "header", tt.filename+".golden"))
+			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeHeader(string(bytes), settings)
+			actual := sanitizeSection(string(bytes), settings)
 
-			expected, err := ioutil.ReadFile(filepath.Join("testdata", "header", tt.filename+".expected"))
+			expected, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".expected"))
 			assert.Nil(err)
 
 			assert.Equal(string(expected), actual)

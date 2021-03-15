@@ -1,0 +1,10 @@
+<module>
+  <header></header>
+  <footer>## This is an example of a footer&#xA;&#xA;It looks exactly like a header, but is placed at the end of the document</footer>
+  <inputs></inputs>
+  <modules></modules>
+  <outputs></outputs>
+  <providers></providers>
+  <requirements></requirements>
+  <resources></resources>
+</module>

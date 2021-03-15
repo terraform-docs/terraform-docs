@@ -20,16 +20,17 @@ terraform-docs [PATH] [flags]
 
 ```console
   -c, --config string               config file name (default ".terraform-docs.yml")
+      --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
   -h, --help                        help for terraform-docs
-      --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
+      --hide strings                hide section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-all                    hide all sections (default false)
       --output-file string          File in module directory to insert output into (default "")
       --output-mode string          Output to file method [inject, replace] (default "inject")
       --output-template string      Output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
       --output-values               inject output values into outputs (default false)
       --output-values-from string   inject output values from file into outputs (default "")
-      --show strings                show section [header, inputs, modules, outputs, providers, requirements, resources]
+      --show strings                show section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --show-all                    show all sections (default true)
       --sort                        sort items (default true)
       --sort-by-required            sort items by name and print required ones first (default false)

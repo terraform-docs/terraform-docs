@@ -28,7 +28,10 @@ func TestMarkdownDocument(t *testing.T) {
 		// Base
 		"Base": {
 			settings: testutil.WithSections(),
-			options:  terraform.Options{},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"Empty": {
 			settings: testutil.WithSections(),
@@ -51,7 +54,10 @@ func TestMarkdownDocument(t *testing.T) {
 					ShowRequired: true,
 				},
 			),
-			options: terraform.Options{},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"WithAnchor": {
 			settings: testutil.WithSections(
@@ -59,7 +65,10 @@ func TestMarkdownDocument(t *testing.T) {
 					ShowAnchor: true,
 				},
 			),
-			options: terraform.Options{},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"WithoutDefault": {
 			settings: print.Settings{
@@ -83,7 +92,10 @@ func TestMarkdownDocument(t *testing.T) {
 					EscapeCharacters: true,
 				},
 			),
-			options: terraform.Options{},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"IndentationOfFour": {
 			settings: testutil.WithSections(
@@ -91,7 +103,10 @@ func TestMarkdownDocument(t *testing.T) {
 					IndentLevel: 4,
 				},
 			),
-			options: terraform.Options{},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"OutputValues": {
 			settings: print.Settings{
@@ -120,6 +135,13 @@ func TestMarkdownDocument(t *testing.T) {
 		"OnlyHeader": {
 			settings: print.Settings{ShowHeader: true},
 			options:  terraform.Options{},
+		},
+		"OnlyFooter": {
+			settings: print.Settings{ShowFooter: true},
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
 		},
 		"OnlyInputs": {
 			settings: print.Settings{

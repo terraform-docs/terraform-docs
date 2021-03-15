@@ -27,15 +27,16 @@ terraform-docs json [PATH] [flags]
 
 ```console
   -c, --config string               config file name (default ".terraform-docs.yml")
+      --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
-      --hide strings                hide section [header, inputs, modules, outputs, providers, requirements, resources]
+      --hide strings                hide section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-all                    hide all sections (default false)
       --output-file string          File in module directory to insert output into (default "")
       --output-mode string          Output to file method [inject, replace] (default "inject")
       --output-template string      Output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
       --output-values               inject output values into outputs (default false)
       --output-values-from string   inject output values from file into outputs (default "")
-      --show strings                show section [header, inputs, modules, outputs, providers, requirements, resources]
+      --show strings                show section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --show-all                    show all sections (default true)
       --sort                        sort items (default true)
       --sort-by-required            sort items by name and print required ones first (default false)
@@ -47,13 +48,14 @@ terraform-docs json [PATH] [flags]
 Given the [`examples`][examples] module:
 
 ```shell
-terraform-docs json ./examples/
+terraform-docs json --footer-from footer.md ./examples/
 ```
 
 generates the following output:
 
     {
       "header": "Usage:\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n\nEven inline **formatting** in _here_ is possible.\nand some [link](https://domain.com/)\n\n* list item 3\n* list item 4\n\n```hcl\nmodule \"foo_bar\" {\n  source = \"github.com/foo/bar\"\n\n  id   = \"1234567890\"\n  name = \"baz\"\n\n  zones = [\"us-east-1\", \"us-west-1\"]\n\n  tags = {\n    Name         = \"baz\"\n    Created-By   = \"first.last@email.com\"\n    Date-Created = \"20180101\"\n  }\n}\n```\n\nHere is some trailing text after code block,\nfollowed by another line of text.\n\n| Name | Description     |\n|------|-----------------|\n| Foo  | Foo description |\n| Bar  | Bar description |",
+      "footer": "## This is an example of a footer\n\nIt looks exactly like a header, but is placed at the end of the document",
       "inputs": [
         {
           "name": "bool-1",

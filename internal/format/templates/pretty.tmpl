@@ -71,3 +71,10 @@
         {{ end -}}
     {{ end -}}
 {{ end -}}
+
+{{- if .Settings.ShowFooter -}}
+    {{- with .Module.Footer -}}
+        {{ colorize "\033[90m" . }}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}

@@ -1,6 +1,6 @@
 {{- if .Settings.ShowHeader -}}
     {{- with .Module.Header -}}
-        {{ sanitizeHeader . }}
+        {{ sanitizeSection . }}
         {{ printf "\n" }}
     {{- end -}}
 {{ end -}}
@@ -159,4 +159,11 @@
             {{ end }}
         {{ end }}
     {{ end }}
+{{ end -}}
+
+{{- if .Settings.ShowFooter -}}
+    {{- with .Module.Footer -}}
+        {{ sanitizeSection . }}
+        {{ printf "\n" }}
+    {{- end -}}
 {{ end -}}

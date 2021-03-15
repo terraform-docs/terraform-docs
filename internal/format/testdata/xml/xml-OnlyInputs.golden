@@ -1,5 +1,6 @@
 <module>
   <header></header>
+  <footer></footer>
   <inputs>
     <input>
       <name>unquoted</name>

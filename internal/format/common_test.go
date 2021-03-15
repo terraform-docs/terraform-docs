@@ -140,3 +140,50 @@ func TestCommonHeaderFrom(t *testing.T) {
 		})
 	}
 }
+
+func TestCommonFooterFrom(t *testing.T) {
+	tests := map[string]struct {
+		options terraform.Options
+	}{
+		"FooterFromADOCFile": {
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "doc.adoc",
+			},
+		},
+		"FooterFromMDFile": {
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "doc.md",
+			},
+		},
+		"FooterFromTFFile": {
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "doc.tf",
+			},
+		},
+		"FooterFromTXTFile": {
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "doc.txt",
+			},
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			expected, err := testutil.GetExpected("common", "footer-"+name)
+			assert.Nil(err)
+
+			options, err := terraform.NewOptions().WithOverwrite(&tt.options)
+			assert.Nil(err)
+
+			module, err := testutil.GetModule(options)
+			assert.Nil(err)
+
+			assert.Equal(expected, module.Footer)
+		})
+	}
+}

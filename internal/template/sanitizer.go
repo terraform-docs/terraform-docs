@@ -30,12 +30,13 @@ func sanitizeName(name string, settings *print.Settings) string {
 	return name
 }
 
-// sanitizeHeader converts passed 'string' to suitable Markdown representation
-// for a document. (including line-break, illegal characters, code blocks etc)
+// sanitizeSection converts passed 'string' to suitable Markdown or AsciiDoc
+// representation for a document. (including line-break, illegal characters,
+// code blocks etc). This is in particular being used for header and footer.
 //
-// IMPORTANT: sanitizeHeader will never change the line-endings and preserve them
-// as they are provided by the users.
-func sanitizeHeader(s string, settings *print.Settings) string {
+// IMPORTANT: sanitizeSection will never change the line-endings and preserve
+// them as they are provided by the users.
+func sanitizeSection(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}

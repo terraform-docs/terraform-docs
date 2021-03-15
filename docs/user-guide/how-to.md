@@ -62,6 +62,13 @@ before any `resource`, `variable`, `module`, etc.
 whatever extracted is intended as is. It's up to you to apply any kind of Markdown
 formatting to them (i.e. adding `<SPACE><SPACE>` at the end of lines for break, etc.)
 
+## Module Footer
+
+Extracting module footer works exactly like header with one exception. There is no
+default file to attempt extraction from, you need to explicitly specify desired file
+to extract content from with `--footer-from FILE` or corresponding `footer-from` in
+configuration file.
+
 ## Insert Output To File
 
 Since `v0.12.0` generated output can be insterted directly into the file. There

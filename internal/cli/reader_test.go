@@ -94,6 +94,15 @@ func TestOverrideValue(t *testing.T) {
 		},
 		{
 			name:       "override values of given field",
+			tag:        "footer-from",
+			to:         func() interface{} { return config },
+			from:       func() interface{} { return override },
+			overrideFn: func() { override.FooterFrom = "bar.txt" },
+			wantErr:    false,
+			errMsg:     "",
+		},
+		{
+			name:       "override values of given field",
 			tag:        "enabled",
 			to:         func() interface{} { return &config.Sort },
 			from:       func() interface{} { return &override.Sort },
