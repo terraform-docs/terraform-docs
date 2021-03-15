@@ -247,19 +247,19 @@
   </inputs>
   <modules>
     <module>
-      <Name>bar</Name>
-      <Source>baz</Source>
-      <Version>4.5.6</Version>
+      <name>bar</name>
+      <source>baz</source>
+      <version>4.5.6</version>
     </module>
     <module>
-      <Name>foo</Name>
-      <Source>bar</Source>
-      <Version>1.2.3</Version>
+      <name>foo</name>
+      <source>bar</source>
+      <version>1.2.3</version>
     </module>
     <module>
-      <Name>baz</Name>
-      <Source>baz</Source>
-      <Version>4.5.6</Version>
+      <name>baz</name>
+      <source>baz</source>
+      <version>4.5.6</version>
     </module>
   </modules>
   <outputs>

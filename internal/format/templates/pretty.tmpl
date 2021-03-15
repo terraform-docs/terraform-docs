@@ -28,7 +28,7 @@
 {{- if .Settings.ShowModuleCalls -}}
     {{- with .Module.ModuleCalls }}
         {{- range . }}
-            {{- printf "modulecall.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
+            {{- printf "module.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
         {{ end -}}
         {{- printf "\n\n" -}}
     {{ end -}}

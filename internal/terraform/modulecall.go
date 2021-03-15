@@ -18,9 +18,9 @@ import (
 
 // ModuleCall represents a submodule called by Terraform module.
 type ModuleCall struct {
-	Name     string   `json:"name"`
-	Source   string   `json:"source"`
-	Version  string   `json:"version,omitempty"`
+	Name     string   `json:"name" toml:"name" xml:"name" yaml:"name"`
+	Source   string   `json:"source" toml:"source" xml:"source" yaml:"source"`
+	Version  string   `json:"version" toml:"version" xml:"version" yaml:"version"`
 	Position Position `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 

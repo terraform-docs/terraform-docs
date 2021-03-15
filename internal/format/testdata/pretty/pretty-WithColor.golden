@@ -48,9 +48,9 @@ followed by another line of text.
 [36mprovider.null[0m
 
 
-[36mmodulecall.bar[0m (baz,4.5.6)
-[36mmodulecall.foo[0m (bar,1.2.3)
-[36mmodulecall.baz[0m (baz,4.5.6)
+[36mmodule.bar[0m (baz,4.5.6)
+[36mmodule.foo[0m (bar,1.2.3)
+[36mmodule.baz[0m (baz,4.5.6)
 
 
 [36mresource.null_resource.foo (resource)[0m (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
