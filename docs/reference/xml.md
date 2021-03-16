@@ -301,19 +301,19 @@ generates the following output:
       </inputs>
       <modules>
         <module>
-          <Name>bar</Name>
-          <Source>baz</Source>
-          <Version>4.5.6</Version>
+          <name>bar</name>
+          <source>baz</source>
+          <version>4.5.6</version>
         </module>
         <module>
-          <Name>baz</Name>
-          <Source>baz</Source>
-          <Version>4.5.6</Version>
+          <name>baz</name>
+          <source>baz</source>
+          <version>4.5.6</version>
         </module>
         <module>
-          <Name>foo</Name>
-          <Source>bar</Source>
-          <Version>1.2.3</Version>
+          <name>foo</name>
+          <source>bar</source>
+          <version>1.2.3</version>
         </module>
       </modules>
       <outputs>
@@ -374,32 +374,32 @@ generates the following output:
         <resource>
           <type>resource</type>
           <name>foo</name>
-          <providerName>null</providerName>
-          <providerSource>hashicorp/null</providerSource>
+          <provider>null</provider>
+          <source>hashicorp/null</source>
           <mode>managed</mode>
           <version>latest</version>
         </resource>
         <resource>
           <type>private_key</type>
           <name>baz</name>
-          <providerName>tls</providerName>
-          <providerSource>hashicorp/tls</providerSource>
+          <provider>tls</provider>
+          <source>hashicorp/tls</source>
           <mode>managed</mode>
           <version>latest</version>
         </resource>
         <resource>
           <type>caller_identity</type>
           <name>current</name>
-          <providerName>aws</providerName>
-          <providerSource>hashicorp/aws</providerSource>
+          <provider>aws</provider>
+          <source>hashicorp/aws</source>
           <mode>data</mode>
           <version>latest</version>
         </resource>
         <resource>
           <type>caller_identity</type>
           <name>ident</name>
-          <providerName>aws</providerName>
-          <providerSource>hashicorp/aws</providerSource>
+          <provider>aws</provider>
+          <source>hashicorp/aws</source>
           <mode>data</mode>
           <version>latest</version>
         </resource>

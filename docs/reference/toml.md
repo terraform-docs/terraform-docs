@@ -285,19 +285,19 @@ generates the following output:
       required = false
 
     [[modules]]
-      Name = "bar"
-      Source = "baz"
-      Version = "4.5.6"
+      name = "bar"
+      source = "baz"
+      version = "4.5.6"
 
     [[modules]]
-      Name = "baz"
-      Source = "baz"
-      Version = "4.5.6"
+      name = "baz"
+      source = "baz"
+      version = "4.5.6"
 
     [[modules]]
-      Name = "foo"
-      Source = "bar"
-      Version = "1.2.3"
+      name = "foo"
+      source = "bar"
+      version = "1.2.3"
 
     [[outputs]]
       name = "output-0.12"
@@ -336,46 +336,46 @@ generates the following output:
       version = ""
 
     [[requirements]]
-      Name = "terraform"
-      Version = ">= 0.12"
+      name = "terraform"
+      version = ">= 0.12"
 
     [[requirements]]
-      Name = "aws"
-      Version = ">= 2.15.0"
+      name = "aws"
+      version = ">= 2.15.0"
 
     [[requirements]]
-      Name = "random"
-      Version = ">= 2.2.0"
+      name = "random"
+      version = ">= 2.2.0"
 
     [[resources]]
       type = "resource"
       name = "foo"
-      providerName = "null"
-      providerSource = "hashicorp/null"
+      provider = "null"
+      source = "hashicorp/null"
       mode = "managed"
       version = "latest"
 
     [[resources]]
       type = "private_key"
       name = "baz"
-      providerName = "tls"
-      providerSource = "hashicorp/tls"
+      provider = "tls"
+      source = "hashicorp/tls"
       mode = "managed"
       version = "latest"
 
     [[resources]]
       type = "caller_identity"
       name = "current"
-      providerName = "aws"
-      providerSource = "hashicorp/aws"
+      provider = "aws"
+      source = "hashicorp/aws"
       mode = "data"
       version = "latest"
 
     [[resources]]
       type = "caller_identity"
       name = "ident"
-      providerName = "aws"
-      providerSource = "hashicorp/aws"
+      provider = "aws"
+      source = "hashicorp/aws"
       mode = "data"
       version = "latest"
 

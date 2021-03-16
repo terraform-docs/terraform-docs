@@ -375,32 +375,32 @@ generates the following output:
         {
           "type": "resource",
           "name": "foo",
-          "providerName": "null",
-          "provicerSource": "hashicorp/null",
+          "provider": "null",
+          "source": "hashicorp/null",
           "mode": "managed",
           "version": "latest"
         },
         {
           "type": "private_key",
           "name": "baz",
-          "providerName": "tls",
-          "provicerSource": "hashicorp/tls",
+          "provider": "tls",
+          "source": "hashicorp/tls",
           "mode": "managed",
           "version": "latest"
         },
         {
           "type": "caller_identity",
           "name": "current",
-          "providerName": "aws",
-          "provicerSource": "hashicorp/aws",
+          "provider": "aws",
+          "source": "hashicorp/aws",
           "mode": "data",
           "version": "latest"
         },
         {
           "type": "caller_identity",
           "name": "ident",
-          "providerName": "aws",
-          "provicerSource": "hashicorp/aws",
+          "provider": "aws",
+          "source": "hashicorp/aws",
           "mode": "data",
           "version": "latest"
         }

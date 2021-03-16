@@ -320,26 +320,26 @@ generates the following output:
     resources:
       - type: resource
         name: foo
-        providerName: "null"
-        providerSource: hashicorp/null
+        provider: "null"
+        source: hashicorp/null
         mode: managed
         version: latest
       - type: private_key
         name: baz
-        providerName: tls
-        providerSource: hashicorp/tls
+        provider: tls
+        source: hashicorp/tls
         mode: managed
         version: latest
       - type: caller_identity
         name: current
-        providerName: aws
-        providerSource: hashicorp/aws
+        provider: aws
+        source: hashicorp/aws
         mode: data
         version: latest
       - type: caller_identity
         name: ident
-        providerName: aws
-        providerSource: hashicorp/aws
+        provider: aws
+        source: hashicorp/aws
         mode: data
         version: latest
 
