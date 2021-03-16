@@ -68,7 +68,11 @@ func defaultSections() sections {
 	}
 }
 
-func (s *sections) validate() error {
+func (s *sections) validate() error { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	for _, item := range s.Show {
 		switch item {
 		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7]:
@@ -326,7 +330,11 @@ func (c *Config) process() {
 }
 
 // validate config and check for any misuse or misconfiguration
-func (c *Config) validate() error {
+func (c *Config) validate() error { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	// formatter
 	if c.Formatter == "" {
 		return fmt.Errorf("value of 'formatter' can't be empty")

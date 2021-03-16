@@ -39,7 +39,7 @@ func GetModule(options *terraform.Options) (*terraform.Module, error) {
 // GetExpected returns 'example' Module and expected Golden file content
 func GetExpected(format, name string) (string, error) {
 	path := filepath.Join(testDataPath(), format, name+".golden")
-	bytes, err := ioutil.ReadFile(path)
+	bytes, err := ioutil.ReadFile(filepath.Clean(path))
 	if err != nil {
 		return "", err
 	}

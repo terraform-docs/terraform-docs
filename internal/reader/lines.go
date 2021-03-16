@@ -41,7 +41,11 @@ func (l *Lines) Extract() ([]string, error) {
 	return l.extract(f)
 }
 
-func (l *Lines) extract(r io.Reader) ([]string, error) {
+func (l *Lines) extract(r io.Reader) ([]string, error) { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	bf := bufio.NewReader(r)
 	var lines = make([]string, 0)
 	for lnum := 0; ; lnum++ {
@@ -49,7 +53,7 @@ func (l *Lines) extract(r io.Reader) ([]string, error) {
 			break
 		}
 		line, err := bf.ReadString('\n')
-		if err == io.EOF && line == "" {
+		if errors.Is(err, io.EOF) && line == "" {
 			switch lnum {
 			case 0:
 				return nil, errors.New("no lines in file")
@@ -62,6 +66,8 @@ func (l *Lines) extract(r io.Reader) ([]string, error) {
 				return nil, fmt.Errorf("only %d lines", lnum)
 			}
 		}
+
+		//nolint:gocritic
 		if l.Condition(line) {
 			if extracted, capture := l.Parser(line); capture {
 				lines = append(lines, extracted)

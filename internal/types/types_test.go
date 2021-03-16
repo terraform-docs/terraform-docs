@@ -45,7 +45,8 @@ type testmap struct {
 }
 
 func testPrimitive(t *testing.T, tests []testprimitive) {
-	for _, tt := range tests {
+	for i := range tests {
+		tt := tests[i]
 		for _, tv := range tt.values {
 			t.Run(tt.name, func(t *testing.T) {
 				assert := assert.New(t)

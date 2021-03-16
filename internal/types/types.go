@@ -43,6 +43,10 @@ func ValueOf(v interface{}) Value {
 		return new(Nil)
 	}
 	value := reflect.ValueOf(v)
+
+	// We don't really care about all the other kinds.
+	//
+	//nolint:exhaustive
 	switch value.Kind() {
 	case reflect.String:
 		if value.IsZero() {
@@ -70,6 +74,9 @@ func TypeOf(t string, v interface{}) String {
 		return String(t)
 	}
 	if v != nil {
+		// We don't really care about all the other kinds.
+		//
+		//nolint:exhaustive
 		switch reflect.ValueOf(v).Kind() {
 		case reflect.String:
 			return String("string")
@@ -295,7 +302,7 @@ func (l List) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		return err
 	}
 	for _, i := range l {
-		e.Encode(xmllistentry{XMLName: xml.Name{Local: "item"}, Value: i}) //nolint: errcheck
+		e.Encode(xmllistentry{XMLName: xml.Name{Local: "item"}, Value: i}) //nolint:errcheck,gosec
 	}
 	return e.EncodeToken(start.End())
 }
@@ -374,15 +381,18 @@ func (m Map) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	}
 	sort.Sort(sortmapkeys(keys))
 	for _, k := range keys {
+		// We don't really care about all the other kinds.
+		//
+		//nolint:exhaustive
 		switch reflect.TypeOf(m[k]).Kind() {
 		case reflect.Map:
 			is := xml.StartElement{Name: xml.Name{Local: k}}
-			Map(m[k].(map[string]interface{})).MarshalXML(e, is) //nolint: errcheck
+			Map(m[k].(map[string]interface{})).MarshalXML(e, is) //nolint:errcheck,gosec
 		case reflect.Slice:
 			is := xml.StartElement{Name: xml.Name{Local: k}}
-			List(m[k].([]interface{})).MarshalXML(e, is) //nolint: errcheck
+			List(m[k].([]interface{})).MarshalXML(e, is) //nolint:errcheck,gosec
 		default:
-			e.Encode(xmlmapentry{XMLName: xml.Name{Local: k}, Value: m[k]}) //nolint: errcheck
+			e.Encode(xmlmapentry{XMLName: xml.Name{Local: k}, Value: m[k]}) //nolint:errcheck,gosec
 		}
 	}
 	return e.EncodeToken(start.End())
