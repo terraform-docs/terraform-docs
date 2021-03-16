@@ -33,13 +33,11 @@ func TestResourceSpec(t *testing.T) {
 }
 
 func TestResourceMode(t *testing.T) {
-	tests := []struct {
-		name        string
+	tests := map[string]struct {
 		resource    Resource
 		expectValue string
 	}{
-		{
-			name: "resource mode as managed",
+		"Managed": {
 			resource: Resource{
 				Type:           "private_key",
 				ProviderName:   "tls",
@@ -49,8 +47,7 @@ func TestResourceMode(t *testing.T) {
 			},
 			expectValue: "resource",
 		},
-		{
-			name: "resource mode as data source",
+		"Data Source": {
 			resource: Resource{
 				Type:           "caller_identity",
 				ProviderName:   "aws",
@@ -60,8 +57,7 @@ func TestResourceMode(t *testing.T) {
 			},
 			expectValue: "data source",
 		},
-		{
-			name: "resource mode as invalid",
+		"Invalid": {
 			resource: Resource{
 				Type:           "caller_identity",
 				ProviderName:   "aws",
@@ -72,8 +68,8 @@ func TestResourceMode(t *testing.T) {
 			expectValue: "invalid",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
 			assert.Equal(tt.expectValue, tt.resource.GetMode())
@@ -82,13 +78,11 @@ func TestResourceMode(t *testing.T) {
 }
 
 func TestResourceURL(t *testing.T) {
-	tests := []struct {
-		name        string
+	tests := map[string]struct {
 		resource    Resource
 		expectValue string
 	}{
-		{
-			name: "generic URL construction",
+		"Generic URL construction": {
 			resource: Resource{
 				Type:           "private_key",
 				ProviderName:   "tls",
@@ -98,8 +92,7 @@ func TestResourceURL(t *testing.T) {
 			},
 			expectValue: "https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key",
 		},
-		{
-			name: "unable to construct URL",
+		"Unable to construct URL": {
 			resource: Resource{
 				Type:           "custom",
 				ProviderName:   "nih",
@@ -110,8 +103,8 @@ func TestResourceURL(t *testing.T) {
 			expectValue: "",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
 			assert.Equal(tt.expectValue, tt.resource.URL())
@@ -159,64 +152,53 @@ func TestResourcesSortedByTypeAndMode(t *testing.T) {
 }
 
 func TestResourceVersion(t *testing.T) {
-	tests := []struct {
-		name       string
+	tests := map[string]struct {
 		constraint []string
 		expected   string
 	}{
-		{
-			name:       "exact version, without operator",
+		"exact version, without operator": {
 			constraint: []string{"1.2.3"},
 			expected:   "1.2.3",
 		},
-		{
-			name:       "exact version, with operator",
+		"exact version, with operator": {
 			constraint: []string{"= 1.2.3"},
 			expected:   "1.2.3",
 		},
-		{
-			name:       "exact version, with operator, without space",
+		"exact version, with operator, without space": {
 			constraint: []string{"=1.2.3"},
 			expected:   "1.2.3",
 		},
-		{
-			name:       "exclude exact version, with space",
+		"exclude exact version, with space": {
 			constraint: []string{"!= 1.2.3"},
 			expected:   "latest",
 		},
-		{
-			name:       "exclude exact version, without space",
+		"exclude exact version, without space": {
 			constraint: []string{"!=1.2.3"},
 			expected:   "latest",
 		},
-		{
-			name:       "comparison version, with space",
+		"comparison version, with space": {
 			constraint: []string{"> 1.2.3"},
 			expected:   "latest",
 		},
-		{
-			name:       "comparison version, without space",
+		"comparison version, without space": {
 			constraint: []string{">1.2.3"},
 			expected:   "latest",
 		},
-		{
-			name:       "range version",
+		"range version": {
 			constraint: []string{"> 1.2.3, < 2.0.0"},
 			expected:   "latest",
 		},
-		{
-			name:       "pessimistic version, with space",
+		"pessimistic version, with space": {
 			constraint: []string{"~> 1.2.3"},
 			expected:   "latest",
 		},
-		{
-			name:       "pessimistic version, without space",
+		"pessimistic version, without space": {
 			constraint: []string{"~>1.2.3"},
 			expected:   "latest",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
 			assert.Equal(tt.expected, resourceVersion(tt.constraint))

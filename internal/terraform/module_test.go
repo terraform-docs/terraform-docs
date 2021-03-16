@@ -169,7 +169,7 @@ func TestIsFileFormatSupported(t *testing.T) {
 			filename: "main.doc",
 			expected: false,
 			wantErr:  true,
-			errText:  "only .adoc, .md, .tf and .txt formats are supported to read header from",
+			errText:  "only .adoc, .md, .tf, and .txt formats are supported to read header from",
 			section:  "header",
 		},
 		{
@@ -184,7 +184,7 @@ func TestIsFileFormatSupported(t *testing.T) {
 			filename: "main.doc",
 			expected: false,
 			wantErr:  true,
-			errText:  "only .adoc, .md, .tf and .txt formats are supported to read footer from",
+			errText:  "only .adoc, .md, .tf, and .txt formats are supported to read footer from",
 			section:  "footer",
 		},
 		{
@@ -398,7 +398,7 @@ func TestLoadSections(t *testing.T) {
 			file:     "wrong-formate.docx",
 			expected: "",
 			wantErr:  true,
-			errText:  "only .adoc, .md, .tf and .txt formats are supported to read footer from",
+			errText:  "only .adoc, .md, .tf, and .txt formats are supported to read footer from",
 			section:  "footer",
 		},
 		{

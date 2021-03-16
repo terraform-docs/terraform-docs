@@ -103,9 +103,9 @@ generates the following output:
     provider.tls
 
 
-    modulecall.bar (baz,4.5.6)
-    modulecall.baz (baz,4.5.6)
-    modulecall.foo (bar,1.2.3)
+    module.bar (baz,4.5.6)
+    module.baz (baz,4.5.6)
+    module.foo (bar,1.2.3)
 
 
     resource.null_resource.foo (resource) (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)

@@ -33,8 +33,8 @@
     "object_default_empty"
   ],
   "modules": [
-    "foo-bar",
     "bar-baz",
+    "foo-bar",
     "baz-baz"
   ],
   "outputs": [

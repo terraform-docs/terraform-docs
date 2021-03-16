@@ -7,13 +7,13 @@ providers = []
 resources = []
 
 [[requirements]]
-  Name = "terraform"
-  Version = ">= 0.12"
+  name = "terraform"
+  version = ">= 0.12"
 
 [[requirements]]
-  Name = "aws"
-  Version = ">= 2.15.0"
+  name = "aws"
+  version = ">= 2.15.0"
 
 [[requirements]]
-  Name = "random"
-  Version = ">= 2.2.0"
+  name = "random"
+  version = ">= 2.2.0"

@@ -10,32 +10,32 @@
     <resource>
       <type>resource</type>
       <name>foo</name>
-      <providerName>null</providerName>
-      <providerSource>hashicorp/null</providerSource>
+      <provider>null</provider>
+      <source>hashicorp/null</source>
       <mode>managed</mode>
       <version>latest</version>
     </resource>
     <resource>
       <type>private_key</type>
       <name>baz</name>
-      <providerName>tls</providerName>
-      <providerSource>hashicorp/tls</providerSource>
+      <provider>tls</provider>
+      <source>hashicorp/tls</source>
       <mode>managed</mode>
       <version>latest</version>
     </resource>
     <resource>
       <type>caller_identity</type>
       <name>current</name>
-      <providerName>aws</providerName>
-      <providerSource>hashicorp/aws</providerSource>
+      <provider>aws</provider>
+      <source>hashicorp/aws</source>
       <mode>data</mode>
       <version>latest</version>
     </resource>
     <resource>
       <type>caller_identity</type>
       <name>ident</name>
-      <providerName>aws</providerName>
-      <providerSource>hashicorp/aws</providerSource>
+      <provider>aws</provider>
+      <source>hashicorp/aws</source>
       <mode>data</mode>
       <version>latest</version>
     </resource>

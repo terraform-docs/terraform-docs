@@ -28,7 +28,7 @@
 {{- if .Settings.ShowModuleCalls -}}
     {{- with .Module.ModuleCalls }}
         {{- range . }}
-            {{- printf "modulecall.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
+            {{- printf "module.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
         {{ end -}}
         {{- printf "\n\n" -}}
     {{ end -}}
@@ -37,11 +37,8 @@
 {{- if .Settings.ShowResources -}}
     {{- with .Module.Resources }}
         {{- range . }}
-            {{- if eq (len .URL) 0 }}
-                {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}
-            {{- else -}}
-                {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }} ({{ .URL}})
-            {{- end }}
+            {{- $url := ternary .URL (printf " (%s)" .URL) "" }}
+            {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}{{ $url }}
         {{ end -}}
     {{ end -}}
     {{- printf "\n\n" -}}

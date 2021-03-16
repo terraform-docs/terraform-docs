@@ -11,26 +11,114 @@ the root directory of this source tree.
 package terraform
 
 import (
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestModulecallNameWithoutVersion(t *testing.T) {
-	assert := assert.New(t)
-	modulecall := ModuleCall{
-		Name:   "provider",
-		Source: "bar",
+func TestModulecallName(t *testing.T) {
+	tests := map[string]struct {
+		module   ModuleCall
+		expected string
+	}{
+		"WithoutVersion": {
+			module: ModuleCall{
+				Name:   "provider",
+				Source: "bar",
+			},
+			expected: "bar",
+		},
+		"WithVersion": {
+			module: ModuleCall{
+				Name:    "provider",
+				Source:  "bar",
+				Version: "1.2.3",
+			},
+			expected: "bar,1.2.3",
+		},
 	}
-	assert.Equal("bar", modulecall.FullName())
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, tt.module.FullName())
+		})
+	}
 }
 
-func TestModulecallNameWithVersion(t *testing.T) {
-	assert := assert.New(t)
-	modulecall := ModuleCall{
-		Name:    "provider",
-		Source:  "bar",
-		Version: "1.2.3",
+func TestModulecallSort(t *testing.T) {
+	modules := sampleModulecalls()
+	tests := map[string]struct {
+		sortType sort.Interface
+		expected []string
+	}{
+		"ByName": {
+			sortType: modulecallsSortedByName(modules),
+			expected: []string{"a", "b", "c", "d", "e", "f"},
+		},
+		"BySource": {
+			sortType: modulecallsSortedBySource(modules),
+			expected: []string{"f", "d", "c", "e", "a", "b"},
+		},
+		"ByPosition": {
+			sortType: modulecallsSortedByPosition(modules),
+			expected: []string{"b", "c", "a", "e", "d", "f"},
+		},
 	}
-	assert.Equal("bar,1.2.3", modulecall.FullName())
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			sort.Sort(tt.sortType)
+
+			actual := make([]string, len(modules))
+
+			for k, i := range modules {
+				actual[k] = i.Name
+			}
+
+			assert.Equal(tt.expected, actual)
+		})
+	}
+}
+
+func sampleModulecalls() []*ModuleCall {
+	return []*ModuleCall{
+		{
+			Name:     "a",
+			Source:   "z",
+			Version:  "1.2.3",
+			Position: Position{Filename: "foo/main.tf", Line: 35},
+		},
+		{
+			Name:     "b",
+			Source:   "z",
+			Version:  "1.2.3",
+			Position: Position{Filename: "foo/main.tf", Line: 10},
+		},
+		{
+			Name:     "c",
+			Source:   "m",
+			Version:  "1.2.3",
+			Position: Position{Filename: "foo/main.tf", Line: 23},
+		},
+		{
+			Name:     "e",
+			Source:   "x",
+			Version:  "1.2.3",
+			Position: Position{Filename: "foo/main.tf", Line: 42},
+		},
+		{
+			Name:     "d",
+			Source:   "l",
+			Version:  "1.2.3",
+			Position: Position{Filename: "foo/main.tf", Line: 51},
+		},
+		{
+			Name:     "f",
+			Source:   "a",
+			Version:  "1.2.3",
+			Position: Position{Filename: "foo/main.tf", Line: 59},
+		},
+	}
 }
