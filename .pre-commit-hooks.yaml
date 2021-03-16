@@ -1,0 +1,31 @@
+---
+# Build and run the Go binary from the repo
+# REQUIRES: Go v1.16+ installed
+- id: terraform-docs-go
+  name: terraform-docs
+  description: Generate documentation for Terraform modules (via Go binary)
+  language: golang
+  entry: terraform-docs
+  pass_filenames: false
+  types: [terraform]
+
+# Build and run `terraform-docs` assuming it was installed manually
+# or via package manager
+# REQUIRES: terraform-docs to be installed and on the $PATH
+- id: terraform-docs-system
+  name: terraform-docs
+  description: Generate documentation for Terraform modules (via locally-installed CLI)
+  language: system
+  entry: terraform-docs
+  pass_filenames: false
+  types: [terraform]
+
+# Builds and runs the Docker image from the repo
+# REQUIRES: Docker installed
+- id: terraform-docs-docker
+  name: terraform-docs
+  description: Generate documentation for Terraform modules (via Docker build)
+  language: docker
+  entry: terraform-docs
+  pass_filenames: false
+  types: [terraform]

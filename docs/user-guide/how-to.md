@@ -123,6 +123,54 @@ jobs:
 Read more about [terraform-docs GitHub Action] and its configuration and
 examples.
 
+## Pre-commit Hook
+
+With [`pre-commit`], you can ensure your Terraform module documentation is kept
+up-to-date each time you make a commit.
+
+First, simply create or update a `.pre-commit-config.yaml`
+in the root of your Git repo with at least the following content:
+
+```yaml
+repos:
+  - repo: https://github.com/terraform-docs/terraform-docs
+    rev: <VERSION TAG OR SHA TO USE> # For example: "v0.11.2"
+    hooks:
+      - id: terraform-docs-go
+        args: [<ARGS TO PASS INCLUDING PATH>]  # For example: ["--output-file", "README.md", "./mymodule/path"]
+```
+
+(You can also include more than one entry under `hooks:` to update multiple docs.
+Just be sure to adjust the `args:` to pass the path you want terraform-docs to scan.)
+
+Second, install [`pre-commit`] and run `pre-commit` to activate the hooks.
+
+Then, make a Terraform change, `git add` and `git commit`!
+Pre-commit will regenerate your Terraform docs, after which you can
+rerun `git add` and `git commit` to commit the code and doc changes together.
+
+You can also regenerate the docs manually by running `pre-commit -a terraform-docs`.
+
+### Pre-commit via Docker
+
+The pre-commit hook can also be run via Docker, for those who don't have Go installed.
+Just use `id: terraform-docs-docker` in the previous example.
+
+This will build the Docker image from the repo, which can be quite slow.
+To download the pre-built image instead, change your `.pre-commit-config.yaml` to:
+
+```yaml
+repos:
+  - repo: local
+    hooks:
+      - id: terraform-docs
+        name: terraform-docs
+        language: docker_image
+        entry: quay.io/terraform-docs/terraform-docs:latest  # Or, change latest to pin to a specific version
+        args: [<ARGS TO PASS INCLUDING PATH>]  # For example: ["--output-file", "README.md", "./mymodule/path"]
+        pass_filenames: false
+```
+
 ## Git Hook
 
 A simple git hook (`.git/hooks/pre-commit`) added to your local terraform
@@ -146,5 +194,6 @@ Please refer to it for complete examples and guides.
 [sections]: {{< ref "configuration/#sections" >}}
 [output]: {{< ref "configuration/#output" >}}
 [terraform-docs GitHub Action]: https://github.com/terraform-docs/gh-actions
+[`pre-commit`]: https://pre-commit.com/
 [git hooks]: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
 [pre-commit-terraform]: https://github.com/antonbabenko/pre-commit-terraform
