@@ -210,7 +210,11 @@ func loadFooter(options *Options) (string, error) {
 	return loadSection(options, options.FooterFromFile, "footer")
 }
 
-func loadSection(options *Options, file string, section string) (string, error) {
+func loadSection(options *Options, file string, section string) (string, error) { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	if section == "" {
 		return "", errors.New("section is missing")
 	}
@@ -225,7 +229,7 @@ func loadSection(options *Options, file string, section string) (string, error) 
 		return "", err // user explicitly asked for a file which doesn't exist
 	}
 	if getFileFormat(file) != ".tf" {
-		content, err := ioutil.ReadFile(filename)
+		content, err := ioutil.ReadFile(filepath.Clean(filename))
 		if err != nil {
 			return "", err
 		}
@@ -266,7 +270,7 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
 
 	for _, input := range tfmodule.Variables {
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
-		inputDescription := strings.Replace(input.Description, "\r\n", "\n", -1)
+		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
 		if inputDescription == "" {
 			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
@@ -355,12 +359,10 @@ func loadOutputValues(options *Options) (map[string]*output, error) {
 		cmd := exec.Command("terraform", "output", "-json")
 		cmd.Dir = options.Path
 		if out, err = cmd.Output(); err != nil {
-			return nil, fmt.Errorf("caught error while reading the terraform outputs: %v", err)
+			return nil, fmt.Errorf("caught error while reading the terraform outputs: %w", err)
 		}
-	} else {
-		if out, err = ioutil.ReadFile(options.OutputValuesPath); err != nil {
-			return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %v", options.OutputValuesPath, err)
-		}
+	} else if out, err = ioutil.ReadFile(options.OutputValuesPath); err != nil {
+		return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %w", options.OutputValuesPath, err)
 	}
 	var terraformOutputs map[string]*output
 	err = json.Unmarshal(out, &terraformOutputs)
@@ -514,21 +516,26 @@ func loadComments(filename string, lineNum int) string {
 	return strings.Join(comment, " ")
 }
 
-func sortItems(tfmodule *Module, sortby *SortBy) {
+func sortItems(tfmodule *Module, sortby *SortBy) { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	// inputs
-	if sortby.Type {
+	switch {
+	case sortby.Type:
 		sort.Sort(inputsSortedByType(tfmodule.Inputs))
 		sort.Sort(inputsSortedByType(tfmodule.RequiredInputs))
 		sort.Sort(inputsSortedByType(tfmodule.OptionalInputs))
-	} else if sortby.Required {
+	case sortby.Required:
 		sort.Sort(inputsSortedByRequired(tfmodule.Inputs))
 		sort.Sort(inputsSortedByRequired(tfmodule.RequiredInputs))
 		sort.Sort(inputsSortedByRequired(tfmodule.OptionalInputs))
-	} else if sortby.Name {
+	case sortby.Name:
 		sort.Sort(inputsSortedByName(tfmodule.Inputs))
 		sort.Sort(inputsSortedByName(tfmodule.RequiredInputs))
 		sort.Sort(inputsSortedByName(tfmodule.OptionalInputs))
-	} else {
+	default:
 		sort.Sort(inputsSortedByPosition(tfmodule.Inputs))
 		sort.Sort(inputsSortedByPosition(tfmodule.RequiredInputs))
 		sort.Sort(inputsSortedByPosition(tfmodule.OptionalInputs))
@@ -552,11 +559,12 @@ func sortItems(tfmodule *Module, sortby *SortBy) {
 	sort.Sort(resourcesSortedByType(tfmodule.Resources))
 
 	// modules
-	if sortby.Name || sortby.Required {
+	switch {
+	case sortby.Name || sortby.Required:
 		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
-	} else if sortby.Type {
+	case sortby.Type:
 		sort.Sort(modulecallsSortedBySource(tfmodule.ModuleCalls))
-	} else {
+	default:
 		sort.Sort(modulecallsSortedByPosition(tfmodule.ModuleCalls))
 	}
 }

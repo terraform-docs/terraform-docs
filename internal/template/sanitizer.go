@@ -25,7 +25,7 @@ import (
 func sanitizeName(name string, settings *print.Settings) string {
 	if settings.EscapeCharacters {
 		// Escape underscore
-		name = strings.Replace(name, "_", "\\_", -1)
+		name = strings.ReplaceAll(name, "_", "\\_")
 	}
 	return name
 }
@@ -106,8 +106,8 @@ func sanitizeMarkdownTable(s string, settings *print.Settings) string {
 		},
 		func(segment string) string {
 			segment = strings.TrimSpace(segment)
-			segment = strings.Replace(segment, "\n", "<br>", -1)
-			segment = strings.Replace(segment, "\r", "", -1)
+			segment = strings.ReplaceAll(segment, "\n", "<br>")
+			segment = strings.ReplaceAll(segment, "\r", "")
 			segment = fmt.Sprintf("<pre>%s</pre>", segment)
 			return segment
 		},
@@ -145,7 +145,7 @@ func convertMultiLineText(s string, isTable bool, isHeader bool) string {
 	}
 
 	// Convert double newlines to <br><br>.
-	s = strings.Replace(s, "\n\n", "<br><br>", -1)
+	s = strings.ReplaceAll(s, "\n\n", "<br><br>")
 
 	// Convert line-break on a non-empty line followed by another line
 	// starting with "alphanumeric" word into space-space-newline
@@ -154,18 +154,18 @@ func convertMultiLineText(s string, isTable bool, isHeader bool) string {
 	// consecutive lines start with hyphen which is a special character.
 	if !isHeader {
 		s = regexp.MustCompile(`(\S*)(\r?\n)(\s*)(\w+)`).ReplaceAllString(s, "$1  $2$3$4")
-		s = strings.Replace(s, "    \n", "  \n", -1)
-		s = strings.Replace(s, "<br>  \n", "\n\n", -1)
+		s = strings.ReplaceAll(s, "    \n", "  \n")
+		s = strings.ReplaceAll(s, "<br>  \n", "\n\n")
 	}
 
 	if isTable {
 		// Convert space-space-newline to <br>
-		s = strings.Replace(s, "  \n", "<br>", -1)
+		s = strings.ReplaceAll(s, "  \n", "<br>")
 
 		// Convert single newline to <br>.
-		s = strings.Replace(s, "\n", "<br>", -1)
+		s = strings.ReplaceAll(s, "\n", "<br>")
 	} else {
-		s = strings.Replace(s, "<br>", "\n", -1)
+		s = strings.ReplaceAll(s, "<br>", "\n")
 	}
 
 	return s
@@ -179,7 +179,7 @@ func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool
 			s,
 			"`",
 			func(segment string) string {
-				return strings.Replace(segment, "|", "\\|", -1)
+				return strings.ReplaceAll(segment, "|", "\\|")
 			},
 			func(segment string) string {
 				return fmt.Sprintf("`%s`", segment)
@@ -194,7 +194,7 @@ func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool
 			func(segment string) string {
 				return executePerLine(segment, func(line string) string {
 					escape := func(char string) {
-						c := strings.Replace(char, "*", "\\*", -1)
+						c := strings.ReplaceAll(char, "*", "\\*")
 						cases := []struct {
 							pattern string
 							index   []int
@@ -208,18 +208,19 @@ func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool
 								index:   []int{6, 2},
 							},
 						}
-						for _, c := range cases {
+						for i := range cases {
+							c := cases[i]
 							r := regexp.MustCompile(c.pattern)
 							m := r.FindAllStringSubmatch(line, -1)
 							i := r.FindAllStringSubmatchIndex(line, -1)
 							for j := range m {
 								for _, k := range c.index {
-									line = line[:i[j][k*2]] + strings.Replace(m[j][k], char, "‡‡‡DONTESCAPE‡‡‡", -1) + line[i[j][(k*2)+1]:]
+									line = line[:i[j][k*2]] + strings.ReplaceAll(m[j][k], char, "‡‡‡DONTESCAPE‡‡‡") + line[i[j][(k*2)+1]:]
 								}
 							}
 						}
-						line = strings.Replace(line, char, "\\"+char, -1)
-						line = strings.Replace(line, "‡‡‡DONTESCAPE‡‡‡", char, -1)
+						line = strings.ReplaceAll(line, char, "\\"+char)
+						line = strings.ReplaceAll(line, "‡‡‡DONTESCAPE‡‡‡", char)
 					}
 					escape("_") // Escape underscore
 					return line
@@ -242,8 +243,8 @@ func normalizeURLs(s string, settings *print.Settings) string {
 	if settings.EscapeCharacters {
 		if urls := xurls.Strict().FindAllString(s, -1); len(urls) > 0 {
 			for _, url := range urls {
-				normalized := strings.Replace(url, "\\", "", -1)
-				s = strings.Replace(s, url, normalized, -1)
+				normalized := strings.ReplaceAll(url, "\\", "")
+				s = strings.ReplaceAll(s, url, normalized)
 			}
 		}
 	}

@@ -74,7 +74,7 @@ func generate(cmd *cobra.Command, weight int, basename string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close() //nolint:errcheck
+	defer f.Close() //nolint:errcheck,gosec
 
 	if _, err := io.WriteString(f, ""); err != nil {
 		return err
@@ -113,7 +113,7 @@ func generateMarkdown(cmd *cobra.Command, weight int, w io.Writer) error {
 	cmd.InitDefaultHelpFlag()
 
 	command := cmd.CommandPath()
-	name := strings.Replace(command, "terraform-docs ", "", -1)
+	name := strings.ReplaceAll(command, "terraform-docs ", "")
 
 	short := cmd.Short
 	long := cmd.Long
@@ -152,7 +152,7 @@ func generateMarkdown(cmd *cobra.Command, weight int, w io.Writer) error {
 	if ref.HasChildren {
 		subcommands(ref, cmd.Commands())
 	} else {
-		example(ref) //nolint:errcheck
+		example(ref) //nolint:errcheck,gosec
 	}
 
 	file := "format.tmpl"
@@ -165,8 +165,7 @@ func generateMarkdown(cmd *cobra.Command, weight int, w io.Writer) error {
 
 func example(ref *reference) error {
 	flag := " --footer-from footer.md"
-	switch ref.Name {
-	case "pretty":
+	if ref.Name == "pretty" {
 		flag += " --no-color"
 	}
 
@@ -238,7 +237,7 @@ func subcommands(ref *reference, children []*cobra.Command) {
 }
 
 func extractFilename(s string) string {
-	s = strings.Replace(s, " ", "-", -1)
-	s = strings.Replace(s, "terraform-docs-", "", -1)
+	s = strings.ReplaceAll(s, " ", "-")
+	s = strings.ReplaceAll(s, "terraform-docs-", "")
 	return s
 }

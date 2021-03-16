@@ -25,7 +25,7 @@ type List struct {
 
 // All returns all registered plugins.
 func (l *List) All() []*pluginsdk.Client {
-	all := make([]*pluginsdk.Client, len(l.formatters)-1)
+	all := make([]*pluginsdk.Client, 0)
 	for _, f := range l.formatters {
 		all = append(all, f)
 	}

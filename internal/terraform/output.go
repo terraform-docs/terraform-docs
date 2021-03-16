@@ -99,11 +99,11 @@ func (o *Output) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err != nil {
 		return err
 	}
-	fn(o.Name, "name")               //nolint: errcheck
-	fn(o.Description, "description") //nolint: errcheck
+	fn(o.Name, "name")               //nolint:errcheck,gosec
+	fn(o.Description, "description") //nolint:errcheck,gosec
 	if o.ShowValue {
-		fn(o.Value, "value")         //nolint: errcheck
-		fn(o.Sensitive, "sensitive") //nolint: errcheck
+		fn(o.Value, "value")         //nolint:errcheck,gosec
+		fn(o.Sensitive, "sensitive") //nolint:errcheck,gosec
 	}
 	return e.EncodeToken(start.End())
 }

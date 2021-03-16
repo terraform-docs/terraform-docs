@@ -52,12 +52,16 @@ func findPlugins(dir string) (*List, error) {
 	}
 
 	for _, f := range files {
-		name := strings.Replace(f.Name(), namePrefix, "", -1)
+		name := strings.ReplaceAll(f.Name(), namePrefix, "")
 		path, err := getPluginPath(dir, name)
 		if err != nil {
 			return nil, err
 		}
 
+		// Accepting variables here is intentional; we need to determine the
+		// path on the fly per directory.
+		//
+		// nolint:gosec
 		cmd := exec.Command(path)
 
 		client := pluginsdk.NewClient(&pluginsdk.ClientOpts{

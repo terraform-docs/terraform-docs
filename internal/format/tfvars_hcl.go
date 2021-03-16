@@ -79,10 +79,8 @@ func alignments(inputs []*terraform.Input) {
 			padding[i] = l
 			maxlen = 0
 			index = i + 1
-		} else {
-			if l > maxlen {
-				maxlen = l
-			}
+		} else if l > maxlen {
+			maxlen = l
 		}
 	}
 	for i := index; i < len(inputs); i++ {

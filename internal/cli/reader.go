@@ -35,7 +35,11 @@ func (c *cfgreader) exist() (bool, error) {
 	return true, nil
 }
 
-func (c *cfgreader) parse() error {
+func (c *cfgreader) parse() error { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	if ok, err := c.exist(); !ok {
 		return err
 	}

@@ -100,7 +100,7 @@ func (fw *fileWriter) Write(p []byte) (int, error) {
 		if after < before {
 			return 0, errors.New(errEndCommentBeforeBegin)
 		}
-		content = content + fc[after+len(fw.end):]
+		content += fc[after+len(fw.end):]
 	}
 
 	n := len(content)

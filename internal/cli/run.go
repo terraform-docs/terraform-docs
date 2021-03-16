@@ -37,7 +37,7 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 
 		// root command must have an argument, otherwise we're going to show help
 		if formatter == "root" && len(args) == 0 {
-			cmd.Help() //nolint:errcheck
+			cmd.Help() //nolint:errcheck,gosec
 			os.Exit(0)
 		}
 
@@ -63,14 +63,12 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 			}
 			// config is not provided and file not found, only show an error for the root command
 			if formatter == "root" {
-				cmd.Help() //nolint:errcheck
+				cmd.Help() //nolint:errcheck,gosec
 				os.Exit(0)
 			}
-		} else {
+		} else if err := cfgreader.parse(); err != nil {
 			// config file is found, we're now going to parse it
-			if err := cfgreader.parse(); err != nil {
-				return err
-			}
+			return err
 		}
 
 		// explicitly setting formatter to Config for non-root commands this
