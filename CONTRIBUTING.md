@@ -17,7 +17,6 @@ us on [Slack].
 For releasing:
 
 - [goreleaser]
-- [git-chlog]
 
 You can install all the required tools with `make tools` or individually with
 their own make targets. (please refer to Makefile for more details)
@@ -89,7 +88,6 @@ to review and accept.
 [goimports]: https://pkg.go.dev/golang.org/x/tools/cmd/goimports
 [golangci-lint]: https://github.com/golangci/golangci-lint
 [goreleaser]: https://goreleaser.com/
-[git-chlog]: https://github.com/terraform-docs/git-chglog
 [good git commit hygiene]: https://www.futurelearn.com/info/blog/telling-stories-with-your-git-history
 [Developer Certificate of Origin]: https://github.com/apps/dco
 [gofmt]: https://blog.golang.org/go-fmt-your-code
