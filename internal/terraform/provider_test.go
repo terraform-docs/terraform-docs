@@ -19,58 +19,68 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
-func TestProviderNameWithoutAlias(t *testing.T) {
-	assert := assert.New(t)
-	provider := Provider{
-		Name:     "provider",
-		Alias:    types.String(""),
-		Version:  types.String(">= 1.2.3"),
-		Position: Position{Filename: "foo.tf", Line: 13},
+func TestProviderName(t *testing.T) {
+	tests := map[string]struct {
+		provider Provider
+		expected string
+	}{
+		"WithoutAlias": {
+			provider: Provider{
+				Name:     "provider",
+				Alias:    types.String(""),
+				Version:  types.String(">= 1.2.3"),
+				Position: Position{Filename: "foo.tf", Line: 13},
+			},
+			expected: "provider",
+		},
+		"WithAlias": {
+			provider: Provider{
+				Name:     "provider",
+				Alias:    types.String("alias"),
+				Version:  types.String(">= 1.2.3"),
+				Position: Position{Filename: "foo.tf", Line: 13},
+			},
+			expected: "provider.alias",
+		},
 	}
-	assert.Equal("provider", provider.FullName())
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+			assert.Equal(tt.expected, tt.provider.FullName())
+		})
+	}
 }
 
-func TestProviderNameWithAlias(t *testing.T) {
-	assert := assert.New(t)
-	provider := Provider{
-		Name:     "provider",
-		Alias:    types.String("alias"),
-		Version:  types.String(">= 1.2.3"),
-		Position: Position{Filename: "foo.tf", Line: 13},
-	}
-	assert.Equal("provider.alias", provider.FullName())
-}
-
-func TestProvidersSortedByName(t *testing.T) {
-	assert := assert.New(t)
+func TestProvidersSort(t *testing.T) {
 	providers := sampleProviders()
-
-	sort.Sort(providersSortedByName(providers))
-
-	expected := []string{"a", "b", "c", "d", "d.a", "e", "e.a"}
-	actual := make([]string, len(providers))
-
-	for k, p := range providers {
-		actual[k] = p.FullName()
+	tests := map[string]struct {
+		sortType sort.Interface
+		expected []string
+	}{
+		"ByName": {
+			sortType: providersSortedByName(providers),
+			expected: []string{"a", "b", "c", "d", "d.a", "e", "e.a"},
+		},
+		"ByPosition": {
+			sortType: providersSortedByPosition(providers),
+			expected: []string{"e.a", "b", "d", "d.a", "a", "e", "c"},
+		},
 	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
 
-	assert.Equal(expected, actual)
-}
+			sort.Sort(tt.sortType)
 
-func TestProvidersSortedByPosition(t *testing.T) {
-	assert := assert.New(t)
-	providers := sampleProviders()
+			actual := make([]string, len(providers))
 
-	sort.Sort(providersSortedByPosition(providers))
+			for k, p := range providers {
+				actual[k] = p.FullName()
+			}
 
-	expected := []string{"e.a", "b", "d", "d.a", "a", "e", "c"}
-	actual := make([]string, len(providers))
-
-	for k, p := range providers {
-		actual[k] = p.FullName()
+			assert.Equal(tt.expected, actual)
+		})
 	}
-
-	assert.Equal(expected, actual)
 }
 
 func sampleProviders() []*Provider {

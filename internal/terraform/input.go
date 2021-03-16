@@ -57,26 +57,6 @@ func (i *Input) HasDefault() bool {
 	return i.Default.HasDefault() || !i.Required
 }
 
-type inputs []*Input
-
-func (ii inputs) convert() []*terraformsdk.Input {
-	list := []*terraformsdk.Input{}
-	for _, i := range ii {
-		list = append(list, &terraformsdk.Input{
-			Name:        i.Name,
-			Type:        fmt.Sprintf("%v", i.Type.Raw()),
-			Description: fmt.Sprintf("%v", i.Description.Raw()),
-			Default:     i.Default.Raw(),
-			Required:    i.Required,
-			Position: terraformsdk.Position{
-				Filename: i.Position.Filename,
-				Line:     i.Position.Line,
-			},
-		})
-	}
-	return list
-}
-
 type inputsSortedByName []*Input
 
 func (a inputsSortedByName) Len() int           { return len(a) }
@@ -111,4 +91,24 @@ func (a inputsSortedByType) Less(i, j int) bool {
 		return a[i].Name < a[j].Name
 	}
 	return a[i].Type < a[j].Type
+}
+
+type inputs []*Input
+
+func (ii inputs) convert() []*terraformsdk.Input {
+	list := []*terraformsdk.Input{}
+	for _, i := range ii {
+		list = append(list, &terraformsdk.Input{
+			Name:        i.Name,
+			Type:        fmt.Sprintf("%v", i.Type.Raw()),
+			Description: fmt.Sprintf("%v", i.Description.Raw()),
+			Default:     i.Default.Raw(),
+			Required:    i.Required,
+			Position: terraformsdk.Position{
+				Filename: i.Position.Filename,
+				Line:     i.Position.Line,
+			},
+		})
+	}
+	return list
 }

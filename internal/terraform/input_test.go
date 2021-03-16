@@ -211,52 +211,40 @@ func TestInputValue(t *testing.T) {
 	}
 }
 
-func TestInputsSortedByName(t *testing.T) {
-	assert := assert.New(t)
+func TestInputsSorted(t *testing.T) {
 	inputs := sampleInputs()
-
-	sort.Sort(inputsSortedByName(inputs))
-
-	expected := []string{"a", "b", "c", "d", "e", "f"}
-	actual := make([]string, len(inputs))
-
-	for k, i := range inputs {
-		actual[k] = i.Name
+	tests := map[string]struct {
+		sortType sort.Interface
+		expected []string
+	}{
+		"ByName": {
+			sortType: inputsSortedByName(inputs),
+			expected: []string{"a", "b", "c", "d", "e", "f"},
+		},
+		"ByRequired": {
+			sortType: inputsSortedByRequired(inputs),
+			expected: []string{"b", "d", "a", "c", "e", "f"},
+		},
+		"ByPosition": {
+			sortType: inputsSortedByPosition(inputs),
+			expected: []string{"a", "d", "e", "b", "c", "f"},
+		},
 	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
 
-	assert.Equal(expected, actual)
-}
+			sort.Sort(tt.sortType)
 
-func TestInputsSortedByRequired(t *testing.T) {
-	assert := assert.New(t)
-	inputs := sampleInputs()
+			actual := make([]string, len(inputs))
 
-	sort.Sort(inputsSortedByRequired(inputs))
+			for k, i := range inputs {
+				actual[k] = i.Name
+			}
 
-	expected := []string{"b", "d", "a", "c", "e", "f"}
-	actual := make([]string, len(inputs))
-
-	for k, i := range inputs {
-		actual[k] = i.Name
+			assert.Equal(tt.expected, actual)
+		})
 	}
-
-	assert.Equal(expected, actual)
-}
-
-func TestInputsSortedByPosition(t *testing.T) {
-	assert := assert.New(t)
-	inputs := sampleInputs()
-
-	sort.Sort(inputsSortedByPosition(inputs))
-
-	expected := []string{"a", "d", "e", "b", "c", "f"}
-	actual := make([]string, len(inputs))
-
-	for k, i := range inputs {
-		actual[k] = i.Name
-	}
-
-	assert.Equal(expected, actual)
 }
 
 func sampleInputs() []*Input {

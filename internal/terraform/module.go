@@ -118,6 +118,7 @@ func LoadWithOptions(options *Options) (*Module, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	module, err := loadModuleItems(tfmodule, options)
 	if err != nil {
 		return nil, err
@@ -180,6 +181,7 @@ func getFileFormat(filename string) string {
 	}
 	return filename[last:]
 }
+
 func isFileFormatSupported(filename string, section string) (bool, error) {
 	if section == "" {
 		return false, errors.New("section is missing")
@@ -191,7 +193,7 @@ func isFileFormatSupported(filename string, section string) (bool, error) {
 	case ".adoc", ".md", ".tf", ".txt":
 		return true, nil
 	}
-	return false, fmt.Errorf("only .adoc, .md, .tf and .txt formats are supported to read %s from", section)
+	return false, fmt.Errorf("only .adoc, .md, .tf, and .txt formats are supported to read %s from", section)
 }
 
 func loadHeader(options *Options) (string, error) {
@@ -282,12 +284,14 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
 		}
 
 		inputs = append(inputs, i)
+
 		if i.HasDefault() {
 			optional = append(optional, i)
 		} else {
 			required = append(required, i)
 		}
 	}
+
 	return inputs, required, optional
 }
 
@@ -369,12 +373,14 @@ func loadOutputValues(options *Options) (map[string]*output, error) {
 func loadProviders(tfmodule *tfconfig.Module) []*Provider {
 	resources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
 	discovered := make(map[string]*Provider)
+
 	for _, resource := range resources {
 		for _, r := range resource {
 			var version = ""
 			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok && len(rv.VersionConstraints) > 0 {
 				version = strings.Join(rv.VersionConstraints, " ")
 			}
+
 			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
 			discovered[key] = &Provider{
 				Name:    r.Provider.Name,
@@ -387,6 +393,7 @@ func loadProviders(tfmodule *tfconfig.Module) []*Provider {
 			}
 		}
 	}
+
 	providers := make([]*Provider, 0, len(discovered))
 	for _, provider := range discovered {
 		providers = append(providers, provider)
@@ -402,11 +409,14 @@ func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
 			Version: types.String(core),
 		})
 	}
+
 	names := make([]string, 0, len(tfmodule.RequiredProviders))
 	for n := range tfmodule.RequiredProviders {
 		names = append(names, n)
 	}
+
 	sort.Strings(names)
+
 	for _, name := range names {
 		for _, version := range tfmodule.RequiredProviders[name].VersionConstraints {
 			requirements = append(requirements, &Requirement{
