@@ -134,7 +134,7 @@ in the root of your Git repo with at least the following content:
 ```yaml
 repos:
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: <VERSION TAG OR SHA TO USE> # For example: "v0.11.2"
+    rev: <VERSION TAG OR SHA TO USE> # For example: "v0.12.0"
     hooks:
       - id: terraform-docs-go
         args: [<ARGS TO PASS INCLUDING PATH>]  # For example: ["--output-file", "README.md", "./mymodule/path"]
