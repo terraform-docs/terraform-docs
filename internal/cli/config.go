@@ -156,18 +156,33 @@ func defaultOutput() output {
 	}
 }
 
-func (o *output) validate() error {
+func (o *output) validate() error { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	if o.File != "" {
 		if o.Mode == "" {
 			return fmt.Errorf("value of '--output-mode' can't be empty")
 		}
+
+		// Template is optional for mode 'replace'
+		if o.Mode == outputModeReplace && o.Template == "" {
+			return nil
+		}
+
 		if o.Template == "" {
 			return fmt.Errorf("value of '--output-template' can't be empty")
 		}
 
-		index := strings.Index(o.Template, outputContent)
-		if index < 0 {
+		if index := strings.Index(o.Template, outputContent); index < 0 {
 			return fmt.Errorf("value of '--output-template' doesn't have '{{ .Content }}' (note that spaces inside '{{ }}' are mandatory)")
+		}
+
+		// No extra validation is needed for mode 'replace',
+		// the followings only apply for every other modes.
+		if o.Mode == outputModeReplace {
+			return nil
 		}
 
 		lines := strings.Split(o.Template, "\n")

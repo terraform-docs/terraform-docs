@@ -13,6 +13,7 @@ package cli
 import (
 	"bytes"
 	"errors"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -55,12 +56,20 @@ type fileWriter struct {
 	template string
 	begin    string
 	end      string
+
+	writer io.Writer
 }
 
 func (fw *fileWriter) Write(p []byte) (int, error) {
+	filename := filepath.Join(fw.dir, fw.file)
+
 	var buf bytes.Buffer
 
 	if fw.template == "" {
+		// template is optional for mode replace
+		if fw.mode == outputModeReplace {
+			return fw.write(filename, p)
+		}
 		return 0, errors.New(errTemplateEmpty)
 	}
 
@@ -73,38 +82,45 @@ func (fw *fileWriter) Write(p []byte) (int, error) {
 		return 0, err
 	}
 
-	content := buf.String()
-	filename := filepath.Join(fw.dir, fw.file)
-
-	if fw.mode == outputModeInject {
-		f, err := os.ReadFile(filename)
-		if err != nil {
-			return 0, err
-		}
-
-		fc := string(f)
-		if fc == "" {
-			return 0, errors.New(errFileEmpty)
-		}
-
-		before := strings.Index(fc, fw.begin)
-		if before < 0 {
-			return 0, errors.New(errBeginCommentMissing)
-		}
-		content = fc[:before] + content
-
-		after := strings.Index(fc, fw.end)
-		if after < 0 {
-			return 0, errors.New(errEndCommentMissing)
-		}
-		if after < before {
-			return 0, errors.New(errEndCommentBeforeBegin)
-		}
-		content += fc[after+len(fw.end):]
+	// Replace the content of 'filename' with generated output,
+	// no further processing is reequired for mode 'replace'.
+	if fw.mode == outputModeReplace {
+		return fw.write(filename, buf.Bytes())
 	}
 
-	n := len(content)
-	err := os.WriteFile(filename, []byte(content), 0644)
+	content := buf.String()
 
-	return n, err
+	f, err := os.ReadFile(filename)
+	if err != nil {
+		return 0, err
+	}
+
+	fc := string(f)
+	if fc == "" {
+		return 0, errors.New(errFileEmpty)
+	}
+
+	before := strings.Index(fc, fw.begin)
+	if before < 0 {
+		return 0, errors.New(errBeginCommentMissing)
+	}
+	content = fc[:before] + content
+
+	after := strings.Index(fc, fw.end)
+	if after < 0 {
+		return 0, errors.New(errEndCommentMissing)
+	}
+	if after < before {
+		return 0, errors.New(errEndCommentBeforeBegin)
+	}
+	content += fc[after+len(fw.end):]
+
+	return fw.write(filename, []byte(content))
+}
+
+func (fw *fileWriter) write(filename string, p []byte) (int, error) {
+	if fw.writer != nil {
+		return fw.writer.Write(p)
+	}
+	return len(p), os.WriteFile(filename, p, 0644)
 }

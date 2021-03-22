@@ -71,7 +71,7 @@ configuration file.
 
 ## Insert Output To File
 
-Since `v0.12.0` generated output can be insterted directly into the file. There
+Since `v0.12.0`, generated output can be insterted directly into the file. There
 are two modes of insersion: `inject` (default) or `replace`. Take a look at [output]
 configuration for all the details.
 
