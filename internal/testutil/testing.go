@@ -15,6 +15,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
@@ -43,7 +44,7 @@ func GetExpected(format, name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return string(bytes), nil
+	return strings.ReplaceAll(string(bytes), "\r\n", "\n"), nil
 }
 
 func getExampleFolder(folder string) (string, error) {

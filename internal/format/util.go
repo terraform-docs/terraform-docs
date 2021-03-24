@@ -37,6 +37,9 @@ func sanitize(markdown string) string {
 	result = regexp.MustCompile(`(\r?\n){3,}`).ReplaceAllString(result, "$1$1")
 	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "")
 
+	// Convert CRLF to LF all the time
+	result = regexp.MustCompile(`(\r?\n)$`).ReplaceAllString(result, "\n")
+
 	return result
 }
 
