@@ -35,7 +35,8 @@
   "modules": [
     "bar-baz",
     "baz-baz",
-    "foo-bar"
+    "foo-bar",
+    "foobar-git@github.com:module/path"
   ],
   "outputs": [
     "output-0.12",

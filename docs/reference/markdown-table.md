@@ -118,6 +118,7 @@ generates the following output:
     | <a name="module_bar"></a> [bar](#module\_bar) | baz | 4.5.6 |
     | <a name="module_baz"></a> [baz](#module\_baz) | baz | 4.5.6 |
     | <a name="module_foo"></a> [foo](#module\_foo) | bar | 1.2.3 |
+    | <a name="module_foobar"></a> [foobar](#module\_foobar) | git@github.com:module/path | v7.8.9 |
 
     ## Resources
 

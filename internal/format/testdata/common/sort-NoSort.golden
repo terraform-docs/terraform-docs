@@ -35,7 +35,8 @@
   "modules": [
     "bar-baz",
     "foo-bar",
-    "baz-baz"
+    "baz-baz",
+    "foobar-git@github.com:module/path"
   ],
   "outputs": [
     "unquoted",

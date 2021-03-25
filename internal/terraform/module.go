@@ -299,13 +299,39 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
 	return inputs, required, optional
 }
 
+func formatSource(s, v string) (source, version string) {
+	substr := "?ref="
+
+	if v != "" {
+		return s, v
+	}
+
+	pos := strings.LastIndex(s, substr)
+	if pos == -1 {
+		return s, version
+	}
+
+	adjustedPos := pos + len(substr)
+	if adjustedPos >= len(s) {
+		return s, version
+	}
+
+	source = s[0:pos]
+	version = s[adjustedPos:]
+
+	return source, version
+}
+
 func loadModulecalls(tfmodule *tfconfig.Module) []*ModuleCall {
 	var modules = make([]*ModuleCall, 0)
+	var source, version string
+
 	for _, m := range tfmodule.ModuleCalls {
+		source, version = formatSource(m.Source, m.Version)
 		modules = append(modules, &ModuleCall{
 			Name:    m.Name,
-			Source:  m.Source,
-			Version: m.Version,
+			Source:  source,
+			Version: version,
 			Position: Position{
 				Filename: m.Pos.Filename,
 				Line:     m.Pos.Line,

@@ -18,6 +18,11 @@
       <source>baz</source>
       <version>4.5.6</version>
     </module>
+    <module>
+      <name>foobar</name>
+      <source>git@github.com:module/path</source>
+      <version>v7.8.9</version>
+    </module>
   </modules>
   <outputs></outputs>
   <providers></providers>

@@ -72,3 +72,7 @@ module "baz" {
   source  = "baz"
   version = "4.5.6"
 }
+
+module "foobar" {
+  source  = "git@github.com:module/path?ref=v7.8.9"
+}

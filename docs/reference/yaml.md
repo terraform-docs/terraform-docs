@@ -285,6 +285,9 @@ generates the following output:
       - name: foo
         source: bar
         version: 1.2.3
+      - name: foobar
+        source: git@github.com:module/path
+        version: v7.8.9
     outputs:
       - name: output-0.12
         description: terraform 0.12 only

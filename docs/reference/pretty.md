@@ -103,6 +103,7 @@ generates the following output:
     module.bar (baz,4.5.6)
     module.baz (baz,4.5.6)
     module.foo (bar,1.2.3)
+    module.foobar (git@github.com:module/path,v7.8.9)
 
 
     resource.null_resource.foo (resource) (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
