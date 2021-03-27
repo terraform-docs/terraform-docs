@@ -338,8 +338,9 @@ func (c *Config) process() {
 	c.Sections.requirements = c.Sections.visibility("requirements")
 	c.Sections.resources = c.Sections.visibility("resources")
 
-	// Footer section optional and should not cause error with --show-all
-	if c.Sections.ShowAll && c.Sections.footer {
+	// Footer section is optional and should only be enabled if --footer-from
+	// is explicitly set, either via CLI or config file.
+	if c.FooterFrom == "" && !changedfs["footer-from"] {
 		c.Sections.footer = false
 	}
 }
@@ -403,16 +404,16 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options := terraform.NewOptions()
 
 	// header-from
+	settings.ShowHeader = c.Sections.header
 	options.ShowHeader = settings.ShowHeader
 	options.HeaderFromFile = c.HeaderFrom
 
 	// footer-from
+	settings.ShowFooter = c.Sections.footer
 	options.ShowFooter = settings.ShowFooter
 	options.FooterFromFile = c.FooterFrom
 
 	// sections
-	settings.ShowHeader = c.Sections.header
-	settings.ShowFooter = c.Sections.footer
 	settings.ShowInputs = c.Sections.inputs
 	settings.ShowModuleCalls = c.Sections.modulecalls
 	settings.ShowOutputs = c.Sections.outputs
