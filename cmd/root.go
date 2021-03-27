@@ -12,6 +12,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 
@@ -32,7 +33,7 @@ import (
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() error {
 	if err := NewCommand().Execute(); err != nil {
-		fmt.Printf("Error: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 		return err
 	}
 	return nil
