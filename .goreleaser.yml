@@ -33,9 +33,6 @@ archives:
     files:
       - LICENSE
       - README.md
-  - format: binary
-    id: deprecated
-    name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
 
 checksum:
   name_template: "{{ .ProjectName }}-{{ .Tag }}.sha256sum"
