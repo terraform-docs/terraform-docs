@@ -58,6 +58,7 @@ func TestFileWriter(t *testing.T) {
 	tests := map[string]struct {
 		file     string
 		mode     string
+		check    bool
 		template string
 		begin    string
 		end      string
@@ -71,6 +72,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeInject": {
 			file:     "mode-inject.md",
 			mode:     "inject",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -83,6 +85,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeInjectEmptyFile": {
 			file:     "empty-file.md",
 			mode:     "inject",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -95,6 +98,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeInjectNoCommentAppend": {
 			file:     "mode-inject-no-comment.md",
 			mode:     "inject",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -107,6 +111,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeInjectFileMissing": {
 			file:     "file-missing.md",
 			mode:     "inject",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -119,6 +124,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeReplaceWithComment": {
 			file:     "mode-replace.md",
 			mode:     "replace",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -131,6 +137,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeReplaceWithCommentEmptyFile": {
 			file:     "mode-replace.md",
 			mode:     "replace",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -143,6 +150,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeReplaceWithCommentFileMissing": {
 			file:     "file-missing.md",
 			mode:     "replace",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -155,6 +163,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeReplaceWithoutComment": {
 			file:     "mode-replace.md",
 			mode:     "replace",
+			check:    false,
 			template: outputContent,
 			begin:    "",
 			end:      "",
@@ -167,6 +176,7 @@ func TestFileWriter(t *testing.T) {
 		"ModeReplaceWithoutTemplate": {
 			file:     "mode-replace.md",
 			mode:     "replace",
+			check:    false,
 			template: "",
 			begin:    "",
 			end:      "",
@@ -181,6 +191,7 @@ func TestFileWriter(t *testing.T) {
 		"EmptyTemplate": {
 			file:     "not-applicable.md",
 			mode:     "inject",
+			check:    false,
 			template: "",
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -193,6 +204,7 @@ func TestFileWriter(t *testing.T) {
 		"BeginCommentMissing": {
 			file:     "begin-comment-missing.md",
 			mode:     "inject",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -205,6 +217,7 @@ func TestFileWriter(t *testing.T) {
 		"EndCommentMissing": {
 			file:     "end-comment-missing.md",
 			mode:     "inject",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -217,6 +230,7 @@ func TestFileWriter(t *testing.T) {
 		"EndCommentBeforeBegin": {
 			file:     "end-comment-before-begin.md",
 			mode:     "inject",
+			check:    false,
 			template: OutputTemplate,
 			begin:    outputBeginComment,
 			end:      outputEndComment,
@@ -225,6 +239,19 @@ func TestFileWriter(t *testing.T) {
 			expected: "",
 			wantErr:  true,
 			errMsg:   "end comment is before begin comment",
+		},
+		"ModeReplaceOutOfDate": {
+			file:     "mode-replace.md",
+			mode:     "replace",
+			check:    true,
+			template: OutputTemplate,
+			begin:    outputBeginComment,
+			end:      outputEndComment,
+			writer:   nil,
+
+			expected: "",
+			wantErr:  true,
+			errMsg:   "testdata/writer/mode-replace.md is out of date",
 		},
 	}
 	for name, tt := range tests {
@@ -236,6 +263,8 @@ func TestFileWriter(t *testing.T) {
 				dir:  filepath.Join("testdata", "writer"),
 
 				mode: tt.mode,
+
+				check: tt.check,
 
 				template: tt.template,
 				begin:    tt.begin,
