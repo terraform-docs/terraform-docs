@@ -20,9 +20,7 @@ COPY . .
 RUN make build
 
 ################
-
-# Use empty base image
-FROM scratch
+FROM alpine:3.13.3
 
 # Copy static executable for terraform-docs
 COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
