@@ -6,7 +6,6 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-# Use empty base image
 FROM alpine:3.13.3
 
 # Copy static executable for terraform-docs
