@@ -42,6 +42,19 @@ func TestTfvarsHcl(t *testing.T) {
 			settings: print.Settings{EscapeCharacters: true},
 			options:  terraform.Options{},
 		},
+		"PrintDescription": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowDescription: true,
+				},
+			),
+			options: terraform.Options{
+				SortBy: &terraform.SortBy{
+					Name:     true,
+					Required: true,
+				},
+			},
+		},
 		"SortByName": {
 			settings: testutil.WithSections(),
 			options: terraform.Options{

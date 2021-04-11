@@ -26,5 +26,6 @@ func NewCommand(config *cli.Config) *cobra.Command {
 		PreRunE:     cli.PreRunEFunc(config),
 		RunE:        cli.RunEFunc(config),
 	}
+	cmd.PersistentFlags().BoolVar(&config.Settings.Description, "description", false, "show Descriptions on variables")
 	return cmd
 }

@@ -262,26 +262,28 @@ func (s *sort) validate() error {
 }
 
 type settings struct {
-	Anchor    bool `yaml:"anchor"`
-	Color     bool `yaml:"color"`
-	Default   bool `yaml:"default"`
-	Escape    bool `yaml:"escape"`
-	Indent    int  `yaml:"indent"`
-	Required  bool `yaml:"required"`
-	Sensitive bool `yaml:"sensitive"`
-	Type      bool `yaml:"type"`
+	Anchor      bool `yaml:"anchor"`
+	Color       bool `yaml:"color"`
+	Default     bool `yaml:"default"`
+	Escape      bool `yaml:"escape"`
+	Indent      int  `yaml:"indent"`
+	Required    bool `yaml:"required"`
+	Sensitive   bool `yaml:"sensitive"`
+	Type        bool `yaml:"type"`
+	Description bool `yaml:"description"`
 }
 
 func defaultSettings() settings {
 	return settings{
-		Anchor:    true,
-		Color:     true,
-		Default:   true,
-		Escape:    true,
-		Indent:    2,
-		Required:  true,
-		Sensitive: true,
-		Type:      true,
+		Anchor:      true,
+		Color:       true,
+		Default:     true,
+		Escape:      true,
+		Indent:      2,
+		Required:    true,
+		Sensitive:   true,
+		Type:        true,
+		Description: false,
 	}
 }
 
@@ -435,6 +437,7 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings.EscapeCharacters = c.Settings.Escape
 	settings.IndentLevel = c.Settings.Indent
 	settings.ShowAnchor = c.Settings.Anchor
+	settings.ShowDescription = c.Settings.Description
 	settings.ShowColor = c.Settings.Color
 	settings.ShowDefault = c.Settings.Default
 	settings.ShowRequired = c.Settings.Required

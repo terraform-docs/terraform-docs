@@ -19,7 +19,8 @@ terraform-docs tfvars hcl [PATH] [flags]
 ## Options
 
 ```console
-  -h, --help   help for hcl
+      --description   show Descriptions on variables
+  -h, --help          help for hcl
 ```
 
 ## Inherited Options

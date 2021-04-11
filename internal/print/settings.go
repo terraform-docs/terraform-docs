@@ -46,6 +46,12 @@ type Settings struct {
 	// scope: Pretty
 	ShowColor bool
 
+	// ShowDescription show "Descriptions on variables" column
+	//
+	// default: false
+	// scope: tfvars hcl
+	ShowDescription bool
+
 	// ShowDefault show "Default" column
 	//
 	// default: true
@@ -128,6 +134,7 @@ func DefaultSettings() *Settings {
 		ShowAnchor:       true,
 		ShowColor:        true,
 		ShowDefault:      true,
+		ShowDescription:  false,
 		ShowFooter:       false,
 		ShowHeader:       true,
 		ShowInputs:       true,
