@@ -29,7 +29,16 @@ const (
 	sectionResources    = "resources"
 )
 
-var allSections = []string{sectionFooter, sectionHeader, sectionInputs, sectionModules, sectionOutputs, sectionProviders, sectionRequirements, sectionResources}
+var allSections = []string{
+	sectionFooter,
+	sectionHeader,
+	sectionInputs,
+	sectionModules,
+	sectionOutputs,
+	sectionProviders,
+	sectionRequirements,
+	sectionResources,
+}
 
 // AllSections list.
 var AllSections = strings.Join(allSections, ", ")
@@ -225,21 +234,38 @@ func (o *outputvalues) validate() error {
 	return nil
 }
 
+const (
+	sortName     = "name"
+	sortRequired = "required"
+	sortType     = "type"
+)
+
+var allSorts = []string{
+	sortName,
+	sortRequired,
+	sortType,
+}
+
+// SortTypes list.
+var SortTypes = strings.Join(allSorts, ", ")
+
 type sortby struct {
+	Name     bool `name:"name"`
 	Required bool `name:"required"`
 	Type     bool `name:"type"`
 }
 type sort struct {
-	Enabled bool     `yaml:"enabled"`
-	ByList  []string `yaml:"by"`
-	By      sortby   `yaml:"-"`
+	Enabled  bool   `yaml:"enabled"`
+	By       string `yaml:"by"`
+	Criteria sortby `yaml:"-"`
 }
 
 func defaultSort() sort {
 	return sort{
 		Enabled: true,
-		ByList:  []string{},
-		By: sortby{
+		By:      sortName,
+		Criteria: sortby{
+			Name:     true,
 			Required: false,
 			Type:     false,
 		},
@@ -247,15 +273,17 @@ func defaultSort() sort {
 }
 
 func (s *sort) validate() error {
-	types := []string{"required", "type"}
-	for _, item := range s.ByList {
-		switch item {
-		case types[0], types[1]:
-		default:
-			return fmt.Errorf("'%s' is not a valid sort type", item)
+	found := false
+	for _, item := range allSorts {
+		if item == s.By {
+			found = true
+			break
 		}
 	}
-	if s.By.Required && s.By.Type {
+	if !found {
+		return fmt.Errorf("'%s' is not a valid sort type", s.By)
+	}
+	if s.Criteria.Required && s.Criteria.Type {
 		return fmt.Errorf("'--sort-by-required' and '--sort-by-type' can't be used together")
 	}
 	return nil
@@ -343,6 +371,11 @@ func (c *Config) process() {
 	if c.FooterFrom == "" && !changedfs["footer-from"] {
 		c.Sections.footer = false
 	}
+
+	// Enable specified sort criteria
+	c.Sort.Criteria.Name = c.Sort.Enabled && c.Sort.By == sortName
+	c.Sort.Criteria.Required = c.Sort.Enabled && c.Sort.By == sortRequired
+	c.Sort.Criteria.Type = c.Sort.Enabled && c.Sort.By == sortType
 }
 
 // validate config and check for any misuse or misconfiguration
@@ -427,9 +460,9 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options.OutputValuesPath = c.OutputValues.From
 
 	// sort
-	options.SortBy.Name = c.Sort.Enabled
-	options.SortBy.Required = c.Sort.Enabled && c.Sort.By.Required
-	options.SortBy.Type = c.Sort.Enabled && c.Sort.By.Type
+	options.SortBy.Name = c.Sort.Enabled && c.Sort.Criteria.Name
+	options.SortBy.Required = c.Sort.Enabled && c.Sort.Criteria.Required
+	options.SortBy.Type = c.Sort.Enabled && c.Sort.Criteria.Type
 
 	// settings
 	settings.EscapeCharacters = c.Settings.Escape

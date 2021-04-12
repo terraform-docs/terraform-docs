@@ -27,8 +27,7 @@ sections:
 
 sort:
   enabled: true
-  by:
-    - required
+  by: required
 
 settings:
   indent: 4

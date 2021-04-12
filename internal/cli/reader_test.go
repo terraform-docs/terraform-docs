@@ -318,62 +318,6 @@ func TestOverrideHide(t *testing.T) {
 	}
 }
 
-func TestUpdateSortTypes(t *testing.T) {
-	tests := []struct {
-		name       string
-		appendFn   func(config *Config)
-		expectedFn func(config *Config) bool
-		wantErr    bool
-		errMsg     string
-	}{
-		{
-			name:       "override values of given field",
-			appendFn:   func(config *Config) { config.Sort.ByList = append(config.Sort.ByList, "required") },
-			expectedFn: func(config *Config) bool { return config.Sort.By.Required },
-			wantErr:    false,
-			errMsg:     "",
-		},
-		{
-			name:       "override values of given field",
-			appendFn:   func(config *Config) { config.Sort.ByList = append(config.Sort.ByList, "type") },
-			expectedFn: func(config *Config) bool { return config.Sort.By.Type },
-			wantErr:    false,
-			errMsg:     "",
-		},
-		{
-			name:       "override values of given field",
-			appendFn:   func(config *Config) { config.Sort.ByList = append(config.Sort.ByList, "unknown") },
-			expectedFn: func(config *Config) bool { return false },
-			wantErr:    true,
-			errMsg:     "field with tag: 'name', value; 'unknown' not found or not readable",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert := assert.New(t)
-			config := DefaultConfig()
-			c := cfgreader{config: config}
-
-			tt.appendFn(config)
-
-			// make sure before values is false
-			assert.Equal(false, tt.expectedFn(config))
-
-			// then update sort types
-			err := c.updateSortTypes()
-
-			if tt.wantErr {
-				assert.NotNil(err)
-				assert.Equal(tt.errMsg, err.Error())
-			} else {
-				// then make sure values is true
-				assert.Nil(err)
-				assert.Equal(true, tt.expectedFn(config))
-			}
-		})
-	}
-}
-
 func TestFindField(t *testing.T) {
 	type sample struct {
 		A string `foo:"a"`
