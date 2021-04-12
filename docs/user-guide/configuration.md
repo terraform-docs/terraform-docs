@@ -68,9 +68,7 @@ output-values:
 
 sort:
   enabled: true
-  by:
-    - required
-    - type
+  by: name
 
 settings:
   anchor: true
@@ -89,7 +87,6 @@ settings:
 - `sections.hide-all` and `sections.show-all`
 - `sections.hide-all` and `sections.hide`
 - `sections.show-all` and `sections.show`
-- `sort.by.required` and `sort.by.type`
 
 ## Formatters
 
@@ -199,3 +196,14 @@ output:
     
     {{ .Content }}
 ```
+
+## Sort
+
+To enable sorting of elements `sort.enabled` (or `--sort bool` CLI flag) can be
+used. This will indicate sorting is enabled or not, but consecutively type of
+sorting can also be specified with `sort.by` (or `--sort-by string` CLI flag).
+The following sort types are supported:
+
+- `name` (default): name of items
+- `required`: by name of inputs AND show required ones first
+- `type`: type of inputs

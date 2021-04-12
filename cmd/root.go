@@ -68,8 +68,14 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.Output.Template, "output-template", cli.OutputTemplate, "Output template")
 
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
-	cmd.PersistentFlags().BoolVar(&config.Sort.By.Required, "sort-by-required", false, "sort items by name and print required ones first (default false)")
-	cmd.PersistentFlags().BoolVar(&config.Sort.By.Type, "sort-by-type", false, "sort items by type of them (default false)")
+	cmd.PersistentFlags().StringVar(&config.Sort.By, "sort-by", "name", "sort items by criteria ["+cli.SortTypes+"]")
+
+	// deprecated flags ==>
+	cmd.PersistentFlags().BoolVar(&config.Sort.Criteria.Required, "sort-by-required", false, "sort items by name and print required ones first (default false)")
+	cmd.PersistentFlags().BoolVar(&config.Sort.Criteria.Type, "sort-by-type", false, "sort items by type of them (default false)")
+	cmd.PersistentFlags().MarkDeprecated("sort-by-required", "use '--sort-by required' instead") //nolint:errcheck,gosec
+	cmd.PersistentFlags().MarkDeprecated("sort-by-type", "use '--sort-by type' instead")         //nolint:errcheck,gosec
+	// <==
 
 	cmd.PersistentFlags().StringVar(&config.HeaderFrom, "header-from", "main.tf", "relative path of a file to read header from")
 	cmd.PersistentFlags().StringVar(&config.FooterFrom, "footer-from", "", "relative path of a file to read footer from (default \"\")")

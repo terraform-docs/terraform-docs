@@ -44,8 +44,7 @@ terraform-docs markdown document [PATH] [flags]
       --show strings                show section [footer, header, inputs, modules, outputs, providers, requirements, resources]
       --show-all                    show all sections (default true)
       --sort                        sort items (default true)
-      --sort-by-required            sort items by name and print required ones first (default false)
-      --sort-by-type                sort items by type of them (default false)
+      --sort-by string              sort items by criteria [name, required, type] (default "name")
       --type                        show Type column or section (default true)
 ```
 

@@ -75,23 +75,14 @@ func (c *cfgreader) parse() error { //nolint:gocyclo
 			c.overrideShow()
 		case "hide":
 			c.overrideHide()
-		case "sort":
-			if err := c.overrideValue("enabled", &c.config.Sort, &c.overrides.Sort); err != nil {
+		case "sort", "sort-by":
+			mapping := map[string]string{"sort": "enabled", "sort-by": "by"}
+			if err := c.overrideValue(mapping[flag], &c.config.Sort, &c.overrides.Sort); err != nil {
 				return err
 			}
 		case "sort-by-required", "sort-by-type":
 			mapping := map[string]string{"sort-by-required": "required", "sort-by-type": "type"}
-			if !contains(c.config.Sort.ByList, mapping[flag]) {
-				c.config.Sort.ByList = append(c.config.Sort.ByList, mapping[flag])
-			}
-			el := reflect.ValueOf(&c.overrides.Sort.By).Elem()
-			field, err := c.findField(el, "name", mapping[flag])
-			if err != nil {
-				return err
-			}
-			if !el.FieldByName(field).Bool() {
-				c.config.Sort.ByList = remove(c.config.Sort.ByList, mapping[flag])
-			}
+			c.config.Sort.By = mapping[flag]
 		case "output-file", "output-mode", "output-template":
 			mapping := map[string]string{"output-file": "file", "output-mode": "mode", "output-template": "template"}
 			if err := c.overrideValue(mapping[flag], &c.config.Output, &c.overrides.Output); err != nil {
@@ -107,10 +98,6 @@ func (c *cfgreader) parse() error { //nolint:gocyclo
 				return err
 			}
 		}
-	}
-
-	if err := c.updateSortTypes(); err != nil {
-		return err
 	}
 
 	return nil
@@ -158,18 +145,6 @@ func (c *cfgreader) overrideHide() {
 			}
 		}
 	}
-}
-
-func (c *cfgreader) updateSortTypes() error {
-	for _, item := range c.config.Sort.ByList {
-		el := reflect.ValueOf(&c.config.Sort.By).Elem()
-		field, err := c.findField(el, "name", item)
-		if err != nil {
-			return err
-		}
-		el.FieldByName(field).Set(reflect.ValueOf(true))
-	}
-	return nil
 }
 
 func (c *cfgreader) findField(el reflect.Value, tag string, value string) (string, error) {
