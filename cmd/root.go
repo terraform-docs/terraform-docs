@@ -60,8 +60,6 @@ func NewCommand() *cobra.Command {
 
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+cli.AllSections+"]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+cli.AllSections+"]")
-	cmd.PersistentFlags().BoolVar(&config.Sections.ShowAll, "show-all", true, "show all sections")
-	cmd.PersistentFlags().BoolVar(&config.Sections.HideAll, "hide-all", false, "hide all sections (default false)")
 
 	cmd.PersistentFlags().StringVar(&config.Output.File, "output-file", "", "File in module directory to insert output into (default \"\")")
 	cmd.PersistentFlags().StringVar(&config.Output.Mode, "output-mode", "inject", "Output to file method ["+cli.OutputModes+"]")
@@ -71,10 +69,15 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.Sort.By, "sort-by", "name", "sort items by criteria ["+cli.SortTypes+"]")
 
 	// deprecated flags ==>
+	cmd.PersistentFlags().BoolVar(new(bool), "show-all", true, "show all sections")
+	cmd.PersistentFlags().BoolVar(new(bool), "hide-all", false, "hide all sections (default false)")
+	cmd.PersistentFlags().MarkDeprecated("show-all", "more information: https://terraform-docs.io/user-guide/how-to/#visibility-of-sections\n\n") //nolint:errcheck,gosec
+	cmd.PersistentFlags().MarkDeprecated("hide-all", "more information: https://terraform-docs.io/user-guide/how-to/#visibility-of-sections\n\n") //nolint:errcheck,gosec
+
 	cmd.PersistentFlags().BoolVar(&config.Sort.Criteria.Required, "sort-by-required", false, "sort items by name and print required ones first (default false)")
 	cmd.PersistentFlags().BoolVar(&config.Sort.Criteria.Type, "sort-by-type", false, "sort items by type of them (default false)")
-	cmd.PersistentFlags().MarkDeprecated("sort-by-required", "use '--sort-by required' instead") //nolint:errcheck,gosec
-	cmd.PersistentFlags().MarkDeprecated("sort-by-type", "use '--sort-by type' instead")         //nolint:errcheck,gosec
+	cmd.PersistentFlags().MarkDeprecated("sort-by-required", "use '--sort-by required' instead\n\n") //nolint:errcheck,gosec
+	cmd.PersistentFlags().MarkDeprecated("sort-by-type", "use '--sort-by type' instead\n\n")         //nolint:errcheck,gosec
 	// <==
 
 	cmd.PersistentFlags().StringVar(&config.HeaderFrom, "header-from", "main.tf", "relative path of a file to read header from")

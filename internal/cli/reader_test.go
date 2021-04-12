@@ -189,34 +189,30 @@ func TestOverrideShow(t *testing.T) {
 		name         string
 		show         []string
 		hide         []string
-		showall      bool
 		overrideShow []string
 		expectedShow []string
 		expectedHide []string
 	}{
 		{
 			name:         "override section show",
-			show:         []string{""},
+			show:         []string{},
 			hide:         []string{"inputs", "outputs"},
-			showall:      true,
 			overrideShow: []string{"inputs"},
-			expectedShow: []string{""},
-			expectedHide: []string{"outputs"},
+			expectedShow: []string{"inputs"},
+			expectedHide: []string{"inputs", "outputs"},
 		},
 		{
 			name:         "override section show",
 			show:         []string{"providers"},
 			hide:         []string{"inputs"},
-			showall:      true,
 			overrideShow: []string{"outputs"},
-			expectedShow: []string{"providers"},
+			expectedShow: []string{"providers", "outputs"},
 			expectedHide: []string{"inputs"},
 		},
 		{
 			name:         "override section show",
 			show:         []string{"inputs"},
 			hide:         []string{"providers"},
-			showall:      false,
 			overrideShow: []string{"outputs"},
 			expectedShow: []string{"inputs", "outputs"},
 			expectedHide: []string{"providers"},
@@ -225,7 +221,6 @@ func TestOverrideShow(t *testing.T) {
 			name:         "override section show",
 			show:         []string{"inputs"},
 			hide:         []string{"inputs"},
-			showall:      false,
 			overrideShow: []string{"inputs"},
 			expectedShow: []string{"inputs"},
 			expectedHide: []string{"inputs"},
@@ -240,7 +235,6 @@ func TestOverrideShow(t *testing.T) {
 
 			c.config.Sections.Show = tt.show
 			c.config.Sections.Hide = tt.hide
-			c.config.Sections.ShowAll = tt.showall
 			c.overrides.Sections.Show = tt.overrideShow
 
 			c.overrideShow()
@@ -256,7 +250,6 @@ func TestOverrideHide(t *testing.T) {
 		name         string
 		show         []string
 		hide         []string
-		hideall      bool
 		overrideHide []string
 		expectedShow []string
 		expectedHide []string
@@ -264,26 +257,23 @@ func TestOverrideHide(t *testing.T) {
 		{
 			name:         "override section hide",
 			show:         []string{"inputs", "outputs"},
-			hide:         []string{""},
-			hideall:      true,
+			hide:         []string{},
 			overrideHide: []string{"inputs"},
-			expectedShow: []string{"outputs"},
-			expectedHide: []string{""},
+			expectedShow: []string{"inputs", "outputs"},
+			expectedHide: []string{"inputs"},
 		},
 		{
 			name:         "override section hide",
 			show:         []string{"inputs"},
 			hide:         []string{"providers"},
-			hideall:      true,
 			overrideHide: []string{"outputs"},
 			expectedShow: []string{"inputs"},
-			expectedHide: []string{"providers"},
+			expectedHide: []string{"providers", "outputs"},
 		},
 		{
 			name:         "override section hide",
 			show:         []string{"providers"},
 			hide:         []string{"inputs"},
-			hideall:      false,
 			overrideHide: []string{"outputs"},
 			expectedShow: []string{"providers"},
 			expectedHide: []string{"inputs", "outputs"},
@@ -292,7 +282,6 @@ func TestOverrideHide(t *testing.T) {
 			name:         "override section hide",
 			show:         []string{"inputs"},
 			hide:         []string{"inputs"},
-			hideall:      false,
 			overrideHide: []string{"inputs"},
 			expectedShow: []string{"inputs"},
 			expectedHide: []string{"inputs"},
@@ -307,7 +296,6 @@ func TestOverrideHide(t *testing.T) {
 
 			c.config.Sections.Show = tt.show
 			c.config.Sections.Hide = tt.hide
-			c.config.Sections.HideAll = tt.hideall
 			c.overrides.Sections.Hide = tt.overrideHide
 
 			c.overrideHide()

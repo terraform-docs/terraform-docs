@@ -49,10 +49,11 @@ header-from: main.tf
 footer-from: ""
 
 sections:
-  hide-all: false
   hide: []
-  show-all: true
   show: []
+
+  hide-all: false # deprecated in v0.13.0
+  show-all: true  # deprecated in v0.13.0
 
 output:
   file: ""
@@ -87,6 +88,9 @@ settings:
 - `sections.hide-all` and `sections.show-all`
 - `sections.hide-all` and `sections.hide`
 - `sections.show-all` and `sections.show`
+
+**Note:** As of `v0.13.0`, `sections.hide-all` and `settings.show-all` are deprecated
+and removed in favor of explicit use of `settings.hide` and `settings.show`.
 
 ## Formatters
 

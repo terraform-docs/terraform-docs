@@ -3,7 +3,6 @@ header-from: doc.txt
 footer-from: footer.md
 
 sections:
-  hide-all: true
   show:
     - header
     - inputs

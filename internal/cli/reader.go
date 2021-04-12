@@ -54,11 +54,121 @@ func (c *cfgreader) parse() error { //nolint:gocyclo
 		return err
 	}
 
-	if c.config.Sections.HideAll && !changedfs["show-all"] {
-		c.config.Sections.ShowAll = false
+	mappings := map[string]struct {
+		flag string
+		from interface{}
+		to   interface{}
+	}{
+		"header-from": {
+			flag: "header-from",
+			from: &c.overrides,
+			to:   c.config,
+		},
+		"footer-from": {
+			flag: "footer-from",
+			from: &c.overrides,
+			to:   c.config,
+		},
+
+		// sort
+		"sort": {
+			flag: "enabled",
+			from: &c.overrides.Sort,
+			to:   &c.config.Sort,
+		},
+		"sort-by": {
+			flag: "by",
+			from: &c.overrides.Sort,
+			to:   &c.config.Sort,
+		},
+		"sort-by-required": {
+			flag: "required",
+			from: nil,
+			to:   nil,
+		},
+		"sort-by-type": {
+			flag: "type",
+			from: nil,
+			to:   nil,
+		},
+
+		// output
+		"output-file": {
+			flag: "file",
+			from: &c.overrides.Output,
+			to:   &c.config.Output,
+		},
+		"output-mode": {
+			flag: "mode",
+			from: &c.overrides.Output,
+			to:   &c.config.Output,
+		},
+		"output-template": {
+			flag: "template",
+			from: &c.overrides.Output,
+			to:   &c.config.Output,
+		},
+
+		// output-values
+		"output-values": {
+			flag: "enabled",
+			from: &c.overrides.OutputValues,
+			to:   &c.config.OutputValues,
+		},
+		"output-values-from": {
+			flag: "from",
+			from: &c.overrides.OutputValues,
+			to:   &c.config.OutputValues,
+		},
+
+		// settings
+		"anchor": {
+			flag: "anchor",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
+		"color": {
+			flag: "color",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
+		"default": {
+			flag: "default",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
+		"escape": {
+			flag: "escape",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
+		"indent": {
+			flag: "indent",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
+		"required": {
+			flag: "required",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
+		"sensitive": {
+			flag: "sensitive",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
+		"type": {
+			flag: "type",
+			from: &c.overrides.Settings,
+			to:   &c.config.Settings,
+		},
 	}
-	if !c.config.Sections.ShowAll && !changedfs["hide-all"] {
-		c.config.Sections.HideAll = true
+
+	// If '--show' or '--hide' CLI flag is used, explicitly override and remove
+	// all items from 'show' and 'hide' set in '.terraform-doc.yml'.
+	if changedfs["show"] || changedfs["hide"] {
+		c.config.Sections.Show = []string{}
+		c.config.Sections.Hide = []string{}
 	}
 
 	for flag, enabled := range changedfs {
@@ -67,34 +177,17 @@ func (c *cfgreader) parse() error { //nolint:gocyclo
 		}
 
 		switch flag {
-		case "header-from", "footer-from":
-			if err := c.overrideValue(flag, c.config, &c.overrides); err != nil {
-				return err
-			}
 		case "show":
 			c.overrideShow()
 		case "hide":
 			c.overrideHide()
-		case "sort", "sort-by":
-			mapping := map[string]string{"sort": "enabled", "sort-by": "by"}
-			if err := c.overrideValue(mapping[flag], &c.config.Sort, &c.overrides.Sort); err != nil {
-				return err
-			}
 		case "sort-by-required", "sort-by-type":
-			mapping := map[string]string{"sort-by-required": "required", "sort-by-type": "type"}
-			c.config.Sort.By = mapping[flag]
-		case "output-file", "output-mode", "output-template":
-			mapping := map[string]string{"output-file": "file", "output-mode": "mode", "output-template": "template"}
-			if err := c.overrideValue(mapping[flag], &c.config.Output, &c.overrides.Output); err != nil {
-				return err
+			c.config.Sort.By = mappings[flag].flag
+		default:
+			if _, ok := mappings[flag]; !ok {
+				continue
 			}
-		case "output-values", "output-values-from":
-			mapping := map[string]string{"output-values": "enabled", "output-values-from": "from"}
-			if err := c.overrideValue(mapping[flag], &c.config.OutputValues, &c.overrides.OutputValues); err != nil {
-				return err
-			}
-		case "anchor", "color", "default", "escape", "indent", "required", "sensitive", "type":
-			if err := c.overrideValue(flag, &c.config.Settings, &c.overrides.Settings); err != nil {
+			if err := c.overrideValue(mappings[flag].flag, mappings[flag].to, mappings[flag].from); err != nil {
 				return err
 			}
 		}
@@ -119,30 +212,16 @@ func (c *cfgreader) overrideValue(name string, to interface{}, from interface{})
 
 func (c *cfgreader) overrideShow() {
 	for _, item := range c.overrides.Sections.Show {
-		if c.config.Sections.ShowAll {
-			if contains(c.config.Sections.Hide, item) {
-				c.config.Sections.Hide = remove(c.config.Sections.Hide, item)
-				c.config.Sections.Show = remove(c.config.Sections.Show, item)
-			}
-		} else {
-			if !contains(c.config.Sections.Show, item) {
-				c.config.Sections.Show = append(c.config.Sections.Show, item)
-			}
+		if !contains(c.config.Sections.Show, item) {
+			c.config.Sections.Show = append(c.config.Sections.Show, item)
 		}
 	}
 }
 
 func (c *cfgreader) overrideHide() {
 	for _, item := range c.overrides.Sections.Hide {
-		if c.config.Sections.HideAll {
-			if contains(c.config.Sections.Show, item) {
-				c.config.Sections.Show = remove(c.config.Sections.Show, item)
-				c.config.Sections.Hide = remove(c.config.Sections.Hide, item)
-			}
-		} else {
-			if !contains(c.config.Sections.Hide, item) {
-				c.config.Sections.Hide = append(c.config.Sections.Hide, item)
-			}
+		if !contains(c.config.Sections.Hide, item) {
+			c.config.Sections.Hide = append(c.config.Sections.Hide, item)
 		}
 	}
 }
