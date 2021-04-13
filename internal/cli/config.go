@@ -19,6 +19,7 @@ import (
 )
 
 const (
+	sectionDataSources  = "data-sources"
 	sectionFooter       = "footer"
 	sectionHeader       = "header"
 	sectionInputs       = "inputs"
@@ -30,6 +31,7 @@ const (
 )
 
 var allSections = []string{
+	sectionDataSources,
 	sectionFooter,
 	sectionHeader,
 	sectionInputs,
@@ -49,6 +51,7 @@ type sections struct {
 	ShowAll bool     `yaml:"show-all"`
 	HideAll bool     `yaml:"hide-all"`
 
+	dataSources  bool `yaml:"-"`
 	header       bool `yaml:"-"`
 	footer       bool `yaml:"-"`
 	inputs       bool `yaml:"-"`
@@ -66,6 +69,7 @@ func defaultSections() sections {
 		ShowAll: true,
 		HideAll: false,
 
+		dataSources:  false,
 		header:       false,
 		footer:       false,
 		inputs:       false,
@@ -84,14 +88,14 @@ func (s *sections) validate() error { //nolint:gocyclo
 
 	for _, item := range s.Show {
 		switch item {
-		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7]:
+		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7], allSections[8]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
 	}
 	for _, item := range s.Hide {
 		switch item {
-		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7]:
+		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7], allSections[8]:
 		default:
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
@@ -359,6 +363,7 @@ func (c *Config) process() {
 		c.Sections.HideAll = true
 	}
 
+	c.Sections.dataSources = c.Sections.visibility("data-sources")
 	c.Sections.header = c.Sections.visibility("header")
 	c.Sections.footer = c.Sections.visibility("footer")
 	c.Sections.inputs = c.Sections.visibility("inputs")
@@ -449,6 +454,7 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options.FooterFromFile = c.FooterFrom
 
 	// sections
+	settings.ShowDataSources = c.Sections.dataSources
 	settings.ShowInputs = c.Sections.inputs
 	settings.ShowModuleCalls = c.Sections.modulecalls
 	settings.ShowOutputs = c.Sections.outputs

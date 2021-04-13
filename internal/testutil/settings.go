@@ -19,6 +19,7 @@ import (
 // WithSections appends show all sections to provided Settings.
 func WithSections(override ...print.Settings) print.Settings {
 	base := print.Settings{
+		ShowDataSources:  true,
 		ShowFooter:       true,
 		ShowHeader:       true,
 		ShowInputs:       true,

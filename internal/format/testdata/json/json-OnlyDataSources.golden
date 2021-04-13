@@ -1,0 +1,27 @@
+{
+  "header": "",
+  "footer": "",
+  "inputs": [],
+  "modules": [],
+  "outputs": [],
+  "providers": [],
+  "requirements": [],
+  "resources": [
+    {
+      "type": "caller_identity",
+      "name": "current",
+      "provider": "aws",
+      "source": "hashicorp/aws",
+      "mode": "data",
+      "version": "latest"
+    },
+    {
+      "type": "caller_identity",
+      "name": "ident",
+      "provider": "aws",
+      "source": "hashicorp/aws",
+      "mode": "data",
+      "version": "latest"
+    }
+  ]
+}

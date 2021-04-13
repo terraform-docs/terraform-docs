@@ -29,14 +29,14 @@ terraform-docs pretty [PATH] [flags]
   -c, --config string               config file name (default ".terraform-docs.yml")
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
-      --hide strings                hide section [footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --hide strings                hide section [data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-all                    hide all sections (default false)
       --output-file string          File in module directory to insert output into (default "")
       --output-mode string          Output to file method [inject, replace] (default "inject")
       --output-template string      Output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
       --output-values               inject output values into outputs (default false)
       --output-values-from string   inject output values from file into outputs (default "")
-      --show strings                show section [footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --show strings                show section [data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --show-all                    show all sections (default true)
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
@@ -109,8 +109,8 @@ generates the following output:
 
     resource.null_resource.foo (resource) (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
     resource.tls_private_key.baz (resource) (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)
-    resource.aws_caller_identity.current (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
-    resource.aws_caller_identity.ident (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
+    data.aws_caller_identity.current (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
+    data.aws_caller_identity.ident (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
 
 
     input.bool-1 (true)

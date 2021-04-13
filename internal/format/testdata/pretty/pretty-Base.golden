@@ -55,8 +55,8 @@ module.baz (baz,4.5.6)
 
 resource.null_resource.foo (resource) (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
 resource.tls_private_key.baz (resource) (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)
-resource.aws_caller_identity.current (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
-resource.aws_caller_identity.ident (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
+data.aws_caller_identity.current (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
+data.aws_caller_identity.ident (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)
 
 
 input.unquoted (required)

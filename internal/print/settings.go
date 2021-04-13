@@ -12,6 +12,7 @@ package print
 
 import (
 	printsdk "github.com/terraform-docs/plugin-sdk/print"
+	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
 // Settings represents all settings.
@@ -46,17 +47,23 @@ type Settings struct {
 	// scope: Pretty
 	ShowColor bool
 
-	// ShowDescription show "Descriptions on variables" column
+	// ShowDatasources show the data sources on the "Resources" section
 	//
-	// default: false
-	// scope: tfvars hcl
-	ShowDescription bool
+	// default: true
+	// scope: Global
+	ShowDataSources bool
 
 	// ShowDefault show "Default" column
 	//
 	// default: true
 	// scope: Asciidoc, Markdown
 	ShowDefault bool
+
+	// ShowDescription show "Descriptions on variables" column
+	//
+	// default: false
+	// scope: tfvars hcl
+	ShowDescription bool
 
 	// ShowFooter show "Footer" module information
 	//
@@ -133,6 +140,7 @@ func DefaultSettings() *Settings {
 		OutputValues:     false,
 		ShowAnchor:       true,
 		ShowColor:        true,
+		ShowDataSources:  true,
 		ShowDefault:      true,
 		ShowDescription:  false,
 		ShowFooter:       false,
@@ -156,6 +164,7 @@ func (s *Settings) Convert() *printsdk.Settings {
 		IndentLevel:      s.IndentLevel,
 		OutputValues:     s.OutputValues,
 		ShowColor:        s.ShowColor,
+		ShowDataSources:  s.ShowDataSources,
 		ShowDefault:      s.ShowDefault,
 		ShowFooter:       s.ShowFooter,
 		ShowHeader:       s.ShowHeader,
@@ -169,4 +178,46 @@ func (s *Settings) Convert() *printsdk.Settings {
 		ShowResources:    s.ShowResources,
 		ShowType:         s.ShowType,
 	}
+}
+
+// CopySections sets the sections that'll be printed
+func CopySections(settings *Settings, src *terraform.Module, dest *terraform.Module) {
+	if settings.ShowHeader {
+		dest.Header = src.Header
+	}
+	if settings.ShowFooter {
+		dest.Footer = src.Footer
+	}
+	if settings.ShowInputs {
+		dest.Inputs = src.Inputs
+	}
+	if settings.ShowModuleCalls {
+		dest.ModuleCalls = src.ModuleCalls
+	}
+	if settings.ShowOutputs {
+		dest.Outputs = src.Outputs
+	}
+	if settings.ShowProviders {
+		dest.Providers = src.Providers
+	}
+	if settings.ShowRequirements {
+		dest.Requirements = src.Requirements
+	}
+	if settings.ShowResources || settings.ShowDataSources {
+		dest.Resources = filterResourcesByMode(settings, src.Resources)
+	}
+}
+
+// filterResourcesByMode returns the managed or data resources defined by the show argument
+func filterResourcesByMode(settings *Settings, module []*terraform.Resource) []*terraform.Resource {
+	resources := make([]*terraform.Resource, 0)
+	for _, r := range module {
+		if settings.ShowResources && r.Mode == "managed" {
+			resources = append(resources, r)
+		}
+		if settings.ShowDataSources && r.Mode == "data" {
+			resources = append(resources, r)
+		}
+	}
+	return resources
 }

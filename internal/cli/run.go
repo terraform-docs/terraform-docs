@@ -85,7 +85,7 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 			return err
 		}
 
-		// set the base moduel directory
+		// set the base module directory
 		config.BaseDir = args[0]
 
 		return nil

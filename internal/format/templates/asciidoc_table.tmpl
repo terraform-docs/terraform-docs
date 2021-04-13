@@ -50,7 +50,7 @@
     {{ end }}
 {{ end -}}
 
-{{- if .Settings.ShowResources -}}
+{{- if or .Settings.ShowResources .Settings.ShowDataSources -}}
     {{ indent 0 "=" }} Resources
     {{ if not .Module.Resources }}
         No resources.
@@ -59,10 +59,14 @@
         |===
         |Name |Type
         {{- range .Module.Resources }}
-            {{ if eq (len .URL) 0 }}
-                |{{ .Spec }} |{{ .GetMode }}
-            {{- else -}}
-                |{{ .URL }}[{{ .Spec }}] |{{ .GetMode }}
+            {{- $isResource := and $.Settings.ShowResources ( eq "resource" (printf "%s" .GetMode)) }}
+            {{- $isDataResource := and $.Settings.ShowDataSources ( eq "data source" (printf "%s" .GetMode)) }}
+            {{- if or $isResource $isDataResource }}
+                {{ if eq (len .URL) 0 }}
+                    |{{ .Spec }} |{{ .GetMode }}
+                {{- else -}}
+                    |{{ .URL }}[{{ .Spec }}] |{{ .GetMode }}
+                {{- end }}
             {{- end }}
         {{- end }}
         |===
