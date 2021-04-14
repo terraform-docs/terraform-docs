@@ -223,6 +223,8 @@ github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/terraform-docs/plugin-sdk v0.2.0 h1:dOoPRe0TSg42ywdv/DFG6UrCZ2XPwnS/z8uZjEgz7ro=
 github.com/terraform-docs/plugin-sdk v0.2.0/go.mod h1:3G+0nZTeaMF1c5CZh8cOEYeNq0kUL6+DlQOVcxK7eCQ=
+github.com/terraform-docs/plugin-sdk v0.2.1-0.20210329203526-90c9fa0bfae9 h1:S9JjFwxoxMJo99hv5mvBNndN/Hu8DEi8qYPJHzSIk4o=
+github.com/terraform-docs/plugin-sdk v0.2.1-0.20210329203526-90c9fa0bfae9/go.mod h1:3G+0nZTeaMF1c5CZh8cOEYeNq0kUL6+DlQOVcxK7eCQ=
 github.com/terraform-docs/terraform-config-inspect v0.0.0-20210126151735-6ef25af8884f h1:WXgHENMC8JOyj6aRpOlnAnJkZ3ZAkPBOhqYrJ5GOhDE=
 github.com/terraform-docs/terraform-config-inspect v0.0.0-20210126151735-6ef25af8884f/go.mod h1:GtanFwTsRRXScYHOMb5h4K18XQBFeS2tXat9/LrPtPc=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=

@@ -61,6 +61,10 @@ func TestToml(t *testing.T) {
 		},
 
 		// Only section
+		"OnlyDataSources": {
+			settings: print.Settings{ShowDataSources: true},
+			options:  terraform.Options{},
+		},
 		"OnlyHeader": {
 			settings: print.Settings{ShowHeader: true},
 			options:  terraform.Options{},

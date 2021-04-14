@@ -1,0 +1,6 @@
+== Resources
+
+The following resources are used by this module:
+
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] (data source)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.ident] (data source)

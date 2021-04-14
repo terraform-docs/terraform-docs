@@ -8,19 +8,19 @@
   <requirements></requirements>
   <resources>
     <resource>
-      <type>resource</type>
-      <name>foo</name>
-      <provider>null</provider>
-      <source>hashicorp/null</source>
-      <mode>managed</mode>
+      <type>caller_identity</type>
+      <name>current</name>
+      <provider>aws</provider>
+      <source>hashicorp/aws</source>
+      <mode>data</mode>
       <version>latest</version>
     </resource>
     <resource>
-      <type>private_key</type>
-      <name>baz</name>
-      <provider>tls</provider>
-      <source>hashicorp/tls</source>
-      <mode>managed</mode>
+      <type>caller_identity</type>
+      <name>ident</name>
+      <provider>aws</provider>
+      <source>hashicorp/aws</source>
+      <mode>data</mode>
       <version>latest</version>
     </resource>
   </resources>

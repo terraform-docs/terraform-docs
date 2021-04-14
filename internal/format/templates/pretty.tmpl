@@ -30,19 +30,25 @@
         {{- range . }}
             {{- printf "module.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
         {{ end -}}
-        {{- printf "\n\n" -}}
-    {{ end -}}
-{{ end -}}
-
-{{- if .Settings.ShowResources -}}
-    {{- with .Module.Resources }}
-        {{- range . }}
-            {{- $url := ternary .URL (printf " (%s)" .URL) "" }}
-            {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}{{ $url }}
-        {{ end -}}
     {{ end -}}
     {{- printf "\n\n" -}}
 {{ end -}}
+
+{{- if or .Settings.ShowResources .Settings.ShowDataSources -}}
+    {{- with .Module.Resources }}
+        {{- range . }}
+            {{- $isResource := and $.Settings.ShowResources ( eq "resource" (printf "%s" .GetMode)) }}
+            {{- $isDataResource := and $.Settings.ShowDataSources ( eq "data source" (printf "%s" .GetMode)) }}
+            {{- $url := ternary .URL (printf " (%s)" .URL) "" }}
+            {{- if $isResource }}
+                {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}{{ $url }}
+            {{ end -}}
+            {{- if $isDataResource }}
+                {{- printf "data.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}{{ $url }}
+            {{ end -}}
+        {{- end }}
+    {{ end }}
+{{ end }}
 
 {{- if .Settings.ShowInputs -}}
     {{- with .Module.Inputs }}

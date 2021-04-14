@@ -40,30 +40,7 @@ func (j *JSON) Print(module *terraform.Module, settings *print.Settings) (string
 		Resources:    make([]*terraform.Resource, 0),
 	}
 
-	if settings.ShowHeader {
-		copy.Header = module.Header
-	}
-	if settings.ShowFooter {
-		copy.Footer = module.Footer
-	}
-	if settings.ShowInputs {
-		copy.Inputs = module.Inputs
-	}
-	if settings.ShowModuleCalls {
-		copy.ModuleCalls = module.ModuleCalls
-	}
-	if settings.ShowOutputs {
-		copy.Outputs = module.Outputs
-	}
-	if settings.ShowProviders {
-		copy.Providers = module.Providers
-	}
-	if settings.ShowRequirements {
-		copy.Requirements = module.Requirements
-	}
-	if settings.ShowResources {
-		copy.Resources = module.Resources
-	}
+	print.CopySections(settings, module, copy)
 
 	buffer := new(bytes.Buffer)
 
