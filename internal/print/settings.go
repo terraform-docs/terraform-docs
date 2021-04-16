@@ -59,7 +59,7 @@ type Settings struct {
 	// scope: Asciidoc, Markdown
 	ShowDefault bool
 
-	// ShowDescription show "Descriptions on variables" column
+	// ShowDescription show "Descriptions" as comment on variables
 	//
 	// default: false
 	// scope: tfvars hcl
@@ -166,6 +166,7 @@ func (s *Settings) Convert() *printsdk.Settings {
 		ShowColor:        s.ShowColor,
 		ShowDataSources:  s.ShowDataSources,
 		ShowDefault:      s.ShowDefault,
+		ShowDescription:  s.ShowDescription,
 		ShowFooter:       s.ShowFooter,
 		ShowHeader:       s.ShowHeader,
 		ShowInputs:       s.ShowInputs,

@@ -126,6 +126,7 @@ file formats are `.adoc`, `.md`, `.tf`, and `.txt`. Default value is `""`.
 The following options are supported and can be used for `sections.show` and
 `sections.hide`:
 
+- `data-sources`
 - `header`
 - `inputs`
 - `modules`
