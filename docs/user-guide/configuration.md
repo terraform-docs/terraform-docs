@@ -198,6 +198,40 @@ output:
     {{ .Content }}
 ```
 
+### Template Comment
+
+Markdown doesn't officially support inline commenting, there are multiple ways
+to do it as a workaround, though. The following formats are supported as begin
+and end comments of a template:
+
+- `<!-- This is a comment -->`
+- `[]: # (This is a comment)`
+- `[]: # "This is a comment"`
+- `[]: # 'This is a comment'`
+- `[//]: # (This is a comment)`
+- `[comment]: # (This is a comment)`
+
+The following is also supported for AsciiDoc format:
+
+- `// This is a comment`
+
+The following can be used where HTML comments are not supported (e.g. Bitbucket
+Cloud):
+
+```yaml
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    [//]: # (BEGIN_TF_DOCS)    
+    {{ .Content }}
+
+    [//]: # (END_TF_DOCS)
+```
+
+Note: The empty line before `[//]: # (END_TF_DOCS)` is mandatory in order for
+Markdown engine to properly process the comment line after the paragraph.
+
 ## Sort
 
 To enable sorting of elements `sort.enabled` (or `--sort bool` CLI flag) can be

@@ -203,17 +203,43 @@ func (o *output) validate() error { //nolint:gocyclo
 			return fmt.Errorf("value of '--output-template' should contain at least 3 lines (begin comment, {{ .Content }}, and end comment)")
 		}
 
-		if !strings.Contains(lines[0], "<!--") || !strings.Contains(lines[0], "-->") {
+		if !isInlineComment(lines[0]) {
 			return fmt.Errorf("value of '--output-template' is missing begin comment")
 		}
 		o.BeginComment = strings.TrimSpace(lines[0])
 
-		if !strings.Contains(lines[len(lines)-1], "<!--") || !strings.Contains(lines[len(lines)-1], "-->") {
+		if !isInlineComment(lines[len(lines)-1]) {
 			return fmt.Errorf("value of '--output-template' is missing end comment")
 		}
 		o.EndComment = strings.TrimSpace(lines[len(lines)-1])
 	}
 	return nil
+}
+
+// Detect if a particular line is a Markdown comment
+//
+// ref: https://www.jamestharpe.com/markdown-comments/
+func isInlineComment(line string) bool {
+	switch {
+	// Markdown specific
+	case strings.HasPrefix(line, "<!--") && strings.HasSuffix(line, "-->"):
+		return true
+	case strings.HasPrefix(line, "[]: # ("):
+		return true
+	case strings.HasPrefix(line, "[]: # \""):
+		return true
+	case strings.HasPrefix(line, "[]: # '"):
+		return true
+	case strings.HasPrefix(line, "[//]: # ("):
+		return true
+	case strings.HasPrefix(line, "[comment]: # ("):
+		return true
+
+	// AsciiDoc specific
+	case strings.HasPrefix(line, "//"):
+		return true
+	}
+	return false
 }
 
 type outputvalues struct {
