@@ -46,10 +46,8 @@ var allSections = []string{
 var AllSections = strings.Join(allSections, ", ")
 
 type sections struct {
-	Show    []string `yaml:"show"`
-	Hide    []string `yaml:"hide"`
-	ShowAll bool     `yaml:"show-all"`
-	HideAll bool     `yaml:"hide-all"`
+	Show []string `yaml:"show"`
+	Hide []string `yaml:"hide"`
 
 	dataSources  bool `yaml:"-"`
 	header       bool `yaml:"-"`
@@ -64,10 +62,8 @@ type sections struct {
 
 func defaultSections() sections {
 	return sections{
-		Show:    []string{},
-		Hide:    []string{},
-		ShowAll: true,
-		HideAll: false,
+		Show: []string{},
+		Hide: []string{},
 
 		dataSources:  false,
 		header:       false,
@@ -81,44 +77,25 @@ func defaultSections() sections {
 	}
 }
 
-func (s *sections) validate() error { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
-
+func (s *sections) validate() error {
+	if len(s.Show) > 0 && len(s.Hide) > 0 {
+		return fmt.Errorf("'--show' and '--hide' can't be used together")
+	}
 	for _, item := range s.Show {
-		switch item {
-		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7], allSections[8]:
-		default:
+		if !contains(allSections, item) {
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
 	}
 	for _, item := range s.Hide {
-		switch item {
-		case allSections[0], allSections[1], allSections[2], allSections[3], allSections[4], allSections[5], allSections[6], allSections[7], allSections[8]:
-		default:
+		if !contains(allSections, item) {
 			return fmt.Errorf("'%s' is not a valid section", item)
 		}
-	}
-	if s.ShowAll && s.HideAll {
-		return fmt.Errorf("'--show-all' and '--hide-all' can't be used together")
-	}
-	if s.ShowAll && len(s.Show) != 0 {
-		return fmt.Errorf("'--show-all' and '--show' can't be used together")
-	}
-	if s.HideAll && len(s.Hide) != 0 {
-		return fmt.Errorf("'--hide-all' and '--hide' can't be used together")
 	}
 	return nil
 }
 
 func (s *sections) visibility(section string) bool {
-	if s.ShowAll && !s.HideAll {
-		for _, n := range s.Hide {
-			if n == section {
-				return false
-			}
-		}
+	if len(s.Show) == 0 && len(s.Hide) == 0 {
 		return true
 	}
 	for _, n := range s.Show {
@@ -131,7 +108,9 @@ func (s *sections) visibility(section string) bool {
 			return false
 		}
 	}
-	return false
+	// hidden : if s.Show NOT empty AND s.Show does NOT contain section
+	// visible: if s.Hide NOT empty AND s.Hide does NOT contain section
+	return len(s.Hide) > 0
 }
 
 const (
@@ -303,14 +282,7 @@ func defaultSort() sort {
 }
 
 func (s *sort) validate() error {
-	found := false
-	for _, item := range allSorts {
-		if item == s.By {
-			found = true
-			break
-		}
-	}
-	if !found {
+	if !contains(allSorts, s.By) {
 		return fmt.Errorf("'%s' is not a valid sort type", s.By)
 	}
 	if s.Criteria.Required && s.Criteria.Type {
@@ -382,13 +354,6 @@ func DefaultConfig() *Config {
 // process provided Config
 func (c *Config) process() {
 	// sections
-	if c.Sections.HideAll && !changedfs["show-all"] {
-		c.Sections.ShowAll = false
-	}
-	if !c.Sections.ShowAll && !changedfs["hide-all"] {
-		c.Sections.HideAll = true
-	}
-
 	c.Sections.dataSources = c.Sections.visibility("data-sources")
 	c.Sections.header = c.Sections.visibility("header")
 	c.Sections.footer = c.Sections.visibility("footer")
@@ -427,8 +392,8 @@ func (c *Config) validate() error { //nolint:gocyclo
 		return fmt.Errorf("value of '--header-from' can't be empty")
 	}
 
-	// footer-from, not a 'default' section so can be empty even if show-all enabled
-	if c.Sections.footer && !c.Sections.ShowAll && c.FooterFrom == "" {
+	// footer-from, not a 'default' section so can be empty
+	if c.Sections.footer && c.FooterFrom == "" {
 		return fmt.Errorf("value of '--footer-from' can't be empty")
 	}
 

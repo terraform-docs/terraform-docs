@@ -32,7 +32,6 @@ terraform-docs markdown table [PATH] [flags]
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
-      --hide-all                    hide all sections (default false)
       --indent int                  indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --output-file string          File in module directory to insert output into (default "")
       --output-mode string          Output to file method [inject, replace] (default "inject")
@@ -42,7 +41,6 @@ terraform-docs markdown table [PATH] [flags]
       --required                    show Required column or section (default true)
       --sensitive                   show Sensitive column or section (default true)
       --show strings                show section [data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
-      --show-all                    show all sections (default true)
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
       --type                        show Type column or section (default true)
