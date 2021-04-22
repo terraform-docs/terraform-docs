@@ -35,7 +35,7 @@ old module namespace (`segmentio`):
 GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
 ```
 
-**NOTE:** please use the latest go to do this, we use 1.16.0 but ideally go 1.15 or greater.
+**NOTE:** please use the latest Go to do this, minimum `go1.16` or greater.
 
 This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error
 `terraform-docs: command not found` after installation then you may need to either add
