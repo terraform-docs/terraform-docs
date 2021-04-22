@@ -326,6 +326,7 @@ type Config struct {
 	BaseDir      string       `yaml:"-"`
 	File         string       `yaml:"-"`
 	Formatter    string       `yaml:"formatter"`
+	Version      string       `yaml:"version"`
 	HeaderFrom   string       `yaml:"header-from"`
 	FooterFrom   string       `yaml:"footer-from"`
 	Sections     sections     `yaml:"sections"`
@@ -341,6 +342,7 @@ func DefaultConfig() *Config {
 		BaseDir:      "",
 		File:         "",
 		Formatter:    "",
+		Version:      "",
 		HeaderFrom:   "main.tf",
 		FooterFrom:   "",
 		Sections:     defaultSections(),

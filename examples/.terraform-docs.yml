@@ -1,4 +1,9 @@
+# # terraform-docs version constraints for execution
+# # more information: https://terraform-docs.io/user-guide/configuration/#version
+# version: ">= 0.10, < 0.12"
+
 formatter: markdown table
+
 header-from: doc.txt
 footer-from: footer.md
 

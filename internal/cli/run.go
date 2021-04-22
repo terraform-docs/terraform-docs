@@ -16,6 +16,7 @@ import (
 	"os"
 	"path/filepath"
 
+	goversion "github.com/hashicorp/go-version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
@@ -23,6 +24,7 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/format"
 	"github.com/terraform-docs/terraform-docs/internal/plugin"
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/internal/version"
 )
 
 // list of flagset items which are explicitly changed from CLI
@@ -31,7 +33,11 @@ var changedfs = make(map[string]bool)
 // PreRunEFunc returns actual 'cobra.Command#PreRunE' function for 'formatter'
 // commands. This functions reads and normalizes flags and arguments passed
 // through CLI execution.
-func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
+func PreRunEFunc(config *Config) func(*cobra.Command, []string) error { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	return func(cmd *cobra.Command, args []string) error {
 		formatter := cmd.Annotations["command"]
 
@@ -68,6 +74,10 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error {
 			}
 		} else if err := cfgreader.parse(); err != nil {
 			// config file is found, we're now going to parse it
+			return err
+		}
+
+		if err := checkConstraint(config.Version, version.Short()); err != nil {
 			return err
 		}
 
@@ -133,6 +143,24 @@ func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 		}
 		return writeContent(config, content)
 	}
+}
+
+func checkConstraint(versionRange string, currentVersion string) error {
+	if versionRange == "" {
+		return nil
+	}
+
+	semver, err := goversion.NewSemver(currentVersion)
+	if err != nil {
+		return err
+	}
+
+	constraint, err := goversion.NewConstraint(versionRange)
+	if err != nil || !constraint.Check(semver) {
+		return fmt.Errorf("current version: %s, constraints: '%s'", semver, constraint)
+	}
+
+	return nil
 }
 
 // writeContent to a Writer. This can either be os.Stdout or specific
