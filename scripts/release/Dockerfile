@@ -8,8 +8,6 @@
 
 FROM alpine:3.13.3
 
-# Copy static executable for terraform-docs
 COPY terraform-docs /usr/local/bin/terraform-docs
 
-# Set entrypoint
 ENTRYPOINT ["terraform-docs"]

@@ -20,10 +20,9 @@ COPY . .
 RUN make build
 
 ################
+
 FROM alpine:3.13.3
 
-# Copy static executable for terraform-docs
 COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
 
-# Set entrypoint
 ENTRYPOINT ["terraform-docs"]
