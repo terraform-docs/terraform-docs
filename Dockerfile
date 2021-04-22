@@ -8,7 +8,7 @@
 
 FROM golang:1.16.3-alpine AS builder
 
-RUN apk add --update --no-cache ca-certificates bash make gcc musl-dev git openssh wget curl
+RUN apk add --update --no-cache make
 
 WORKDIR /go/src/terraform-docs
 
@@ -20,11 +20,10 @@ COPY . .
 RUN make build
 
 ################
+FROM alpine:3.13.3
 
-FROM alpine:3.12.3
-
-RUN apk --no-cache add ca-certificates
-
+# Copy static executable for terraform-docs
 COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
 
+# Set entrypoint
 ENTRYPOINT ["terraform-docs"]

@@ -6,10 +6,10 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-FROM alpine:3.12.3
+FROM alpine:3.13.3
 
-RUN apk --no-cache add ca-certificates
-
+# Copy static executable for terraform-docs
 COPY terraform-docs /usr/local/bin/terraform-docs
 
+# Set entrypoint
 ENTRYPOINT ["terraform-docs"]
