@@ -43,6 +43,11 @@ func init() {
 	}
 }
 
+// Short return the version of the binary
+func Short() string {
+	return version
+}
+
 // Full return the full version of the binary including commit hash and build date
 func Full() string {
 	if !strings.HasSuffix(version, commitHash) {
