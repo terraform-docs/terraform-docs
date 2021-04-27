@@ -39,6 +39,8 @@ $ terraform-docs -c .tfdocs-config.yml .
 
 ## Options
 
+Since `v0.10.0`
+
 Below is a complete list of options that you can use with `terraform-docs`, with their
 corresponding default values (if applicable).
 
@@ -119,6 +121,8 @@ Valid operators are as follow:
 
 ## Formatters
 
+Since `v0.10.0`
+
 The following options are supported out of the box by terraform-docs and can be
 used for `FORMATTER_NAME`:
 
@@ -142,29 +146,38 @@ formatter name must be set to `foo`.
 
 ## header-from
 
+Since `v0.10.0`
+
 Relative path to a file to extract header for the generated output from. Supported
 file formats are `.adoc`, `.md`, `.tf`, and `.txt`. Default value is `main.tf`.
 
 ## footer-from
+
+Since `v0.12.0`
 
 Relative path to a file to extract footer for the generated output from. Supported
 file formats are `.adoc`, `.md`, `.tf`, and `.txt`. Default value is `""`.
 
 ## Sections
 
+Since `v0.10.0`
+
 The following options are supported and can be used for `sections.show` and
 `sections.hide`:
 
-- `data-sources`
+- `data-sources` (since `v0.13.0`)
 - `header`
+- `footer` (since `v0.12.0`)
 - `inputs`
-- `modules`
+- `modules` (since `v0.11.0`)
 - `outputs`
 - `providers`
 - `requirements`
-- `resources`
+- `resources` (since `v0.11.0`)
 
 ## Output
+
+Since `v0.12.0`
 
 Insert generated output to file if `output.file` (or `--output-file string` CLI
 flag) is not empty. Insersion behavior can be controlled by `output.mode` (or
@@ -262,6 +275,8 @@ Note: The empty line before `[//]: # (END_TF_DOCS)` is mandatory in order for
 Markdown engine to properly process the comment line after the paragraph.
 
 ## Sort
+
+Since `v0.10.0`
 
 To enable sorting of elements `sort.enabled` (or `--sort bool` CLI flag) can be
 used. This will indicate sorting is enabled or not, but consecutively type of
