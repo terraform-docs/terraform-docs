@@ -61,7 +61,7 @@ type fileWriter struct {
 }
 
 func (fw *fileWriter) Write(p []byte) (int, error) {
-	filename := filepath.Join(fw.dir, fw.file)
+	filename := fw.fullFilePath()
 
 	var buf bytes.Buffer
 
@@ -123,4 +123,11 @@ func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 		return fw.writer.Write(p)
 	}
 	return len(p), os.WriteFile(filename, p, 0644)
+}
+
+func (fw *fileWriter) fullFilePath() string {
+	if filepath.IsAbs(fw.file) {
+		return fw.file
+	}
+	return filepath.Join(fw.dir, fw.file)
 }
