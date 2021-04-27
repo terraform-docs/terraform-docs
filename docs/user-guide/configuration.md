@@ -185,9 +185,9 @@ flag) is not empty. Insersion behavior can be controlled by `output.mode` (or
 
 - `inject` (default)
 
-  Partially replace the `output-file` with generated output. This will fail if
-  `output-file` doesn't exist. Also will fail if `output-file` doesn't already
-  have surrounding comments.
+  Partially replace the `output-file` with generated output. This will create
+  the `output-file` if it doesn't exist. It will also append to `output-file`
+  if it doesn't have surrounding comments.
 
 - `replace`
 

@@ -80,8 +80,68 @@ func TestFileWriter(t *testing.T) {
 			wantErr:  false,
 			errMsg:   "",
 		},
+		"ModeInjectEmptyFile": {
+			file:     "empty-file.md",
+			mode:     "inject",
+			template: OutputTemplate,
+			begin:    outputBeginComment,
+			end:      outputEndComment,
+			writer:   &bytes.Buffer{},
+
+			expected: "mode-inject-empty-file",
+			wantErr:  false,
+			errMsg:   "",
+		},
+		"ModeInjectNoCommentAppend": {
+			file:     "mode-inject-no-comment.md",
+			mode:     "inject",
+			template: OutputTemplate,
+			begin:    outputBeginComment,
+			end:      outputEndComment,
+			writer:   &bytes.Buffer{},
+
+			expected: "mode-inject-no-comment",
+			wantErr:  false,
+			errMsg:   "",
+		},
+		"ModeInjectFileMissing": {
+			file:     "file-missing.md",
+			mode:     "inject",
+			template: OutputTemplate,
+			begin:    outputBeginComment,
+			end:      outputEndComment,
+			writer:   &bytes.Buffer{},
+
+			expected: "mode-inject-file-missing",
+			wantErr:  false,
+			errMsg:   "",
+		},
 		"ModeReplaceWithComment": {
 			file:     "mode-replace.md",
+			mode:     "replace",
+			template: OutputTemplate,
+			begin:    outputBeginComment,
+			end:      outputEndComment,
+			writer:   &bytes.Buffer{},
+
+			expected: "mode-replace-with-comment",
+			wantErr:  false,
+			errMsg:   "",
+		},
+		"ModeReplaceWithCommentEmptyFile": {
+			file:     "mode-replace.md",
+			mode:     "replace",
+			template: OutputTemplate,
+			begin:    outputBeginComment,
+			end:      outputEndComment,
+			writer:   &bytes.Buffer{},
+
+			expected: "mode-replace-with-comment",
+			wantErr:  false,
+			errMsg:   "",
+		},
+		"ModeReplaceWithCommentFileMissing": {
+			file:     "file-missing.md",
 			mode:     "replace",
 			template: OutputTemplate,
 			begin:    outputBeginComment,
@@ -118,18 +178,6 @@ func TestFileWriter(t *testing.T) {
 		},
 
 		// Error writes
-		"ModeInjectNoFile": {
-			file:     "file-missing.md",
-			mode:     "inject",
-			template: OutputTemplate,
-			begin:    outputBeginComment,
-			end:      outputEndComment,
-			writer:   nil,
-
-			expected: "",
-			wantErr:  true,
-			errMsg:   "open testdata/writer/file-missing.md: no such file or directory",
-		},
 		"EmptyTemplate": {
 			file:     "not-applicable.md",
 			mode:     "inject",
@@ -141,18 +189,6 @@ func TestFileWriter(t *testing.T) {
 			expected: "",
 			wantErr:  true,
 			errMsg:   "template is missing",
-		},
-		"EmptyFile": {
-			file:     "empty-file.md",
-			mode:     "inject",
-			template: OutputTemplate,
-			begin:    outputBeginComment,
-			end:      outputEndComment,
-			writer:   nil,
-
-			expected: "",
-			wantErr:  true,
-			errMsg:   "file content is empty",
 		},
 		"BeginCommentMissing": {
 			file:     "begin-comment-missing.md",
