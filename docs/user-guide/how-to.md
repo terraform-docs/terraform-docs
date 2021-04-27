@@ -125,8 +125,27 @@ Generated output can be insterted directly into the file. There are two modes of
 insersion: `inject` (default) or `replace`. Take a look at [output] configuration
 for all the details.
 
-```console
+```bash
 terraform-docs markdown table --output-file README.md --output-mode inject /path/to/module
+```
+
+Note that `--output-file` can be relative to module path or an absolute path in
+filesystem.
+
+```bash
+$ cd /path/to/module
+$ tree .
+.
+├── docs
+│   └── README.md
+├── ...
+└── main.tf
+
+# this works, relative path
+$ terraform-docs markdown table --output-file ../docs/README.md .
+
+# so does this, absolute path
+$ terraform-docs markdown table --output-file /path/to/module/docs/README.md .
 ```
 
 ## Generate terraform.tfvars

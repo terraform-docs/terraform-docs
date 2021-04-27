@@ -21,6 +21,38 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 )
 
+func TestFileWriterFullPath(t *testing.T) {
+	tests := map[string]struct {
+		file     string
+		dir      string
+		expected string
+	}{
+		"Relative": {
+			file:     "file.md",
+			dir:      "/path/to/module",
+			expected: "/path/to/module/file.md",
+		},
+		"Absolute": {
+			file:     "/path/to/module/file.md",
+			dir:      ".",
+			expected: "/path/to/module/file.md",
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			writer := &fileWriter{
+				file: tt.file,
+				dir:  tt.dir,
+			}
+
+			actual := writer.fullFilePath()
+			assert.Equal(tt.expected, actual)
+		})
+	}
+}
+
 func TestFileWriter(t *testing.T) {
 	content := "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
 	tests := map[string]struct {

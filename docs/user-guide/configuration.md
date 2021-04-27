@@ -199,6 +199,7 @@ inserted into a template, if provided, before getting saved into the file. This
 template can be customized with `output.template` or `--output-template string`
 CLI flag.
 
+**Note:** `output.file` can be relative to module root or an absolute path.  
 **Note:** `output.template` is optional for mode `replace`.
 
 The default template value is:

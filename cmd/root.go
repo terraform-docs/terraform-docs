@@ -61,7 +61,7 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+cli.AllSections+"]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+cli.AllSections+"]")
 
-	cmd.PersistentFlags().StringVar(&config.Output.File, "output-file", "", "File in module directory to insert output into (default \"\")")
+	cmd.PersistentFlags().StringVar(&config.Output.File, "output-file", "", "File path to insert output into (default \"\")")
 	cmd.PersistentFlags().StringVar(&config.Output.Mode, "output-mode", "inject", "Output to file method ["+cli.OutputModes+"]")
 	cmd.PersistentFlags().StringVar(&config.Output.Template, "output-template", cli.OutputTemplate, "Output template")
 
