@@ -18,6 +18,39 @@ use the shorthand `-f [true|false]` as it will result in the following error:
 Error: accepts 1 arg(s), received 2
 ```
 
+## Configuration File
+
+Since `v0.10.0`
+
+Configuration can be loaded with `-c, --config string`, Take a look at [configuration]
+page for all the details.
+
+As of `v0.13.0`, `--config` flag accepts both relative and absolute paths.
+
+```bash
+$ pwd
+/path/to/parent/folder
+
+$ tree
+.
+├── module-a
+│   └── main.tf
+├── module-b
+│   └── main.tf
+├── ...
+└── .terraform-docs.yml
+
+# executing from parent
+$ terraform-docs -c .terraform-docs.yml module-a/
+
+# executing from child
+$ cd module-a/
+$ terraform-docs -c ../.terraform-docs.yml .
+
+# or an absolute path
+$ terraform-docs -c /path/to/parent/folder/.terraform-docs.yml .
+```
+
 ## Visibility of Sections
 
 Since `v0.10.0`
@@ -264,6 +297,7 @@ done
 **Note:** This is very basic and higly simplified version of [pre-commit-terraform].
 Please refer to it for complete examples and guides.
 
+[configuration]: {{< ref "configuration/" >}}
 [sections]: {{< ref "configuration/#sections" >}}
 [output]: {{< ref "configuration/#output" >}}
 [terraform-docs GitHub Action]: https://github.com/terraform-docs/gh-actions

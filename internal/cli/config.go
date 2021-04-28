@@ -18,6 +18,73 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
+// Mappings of CLI flags to Viper config
+var flagMappings = map[string]string{
+	"header-from": "header-from",
+	"footer-from": "footer-from",
+
+	"show": "sections.show",
+	"hide": "sections.hide",
+
+	"output-file":     "output.file",
+	"output-mode":     "output.mode",
+	"output-template": "output.template",
+
+	"output-values":      "output-values.enabled",
+	"output-values-from": "output-values.from",
+
+	"sort":             "sort.enabled",
+	"sort-by":          "sort.by",
+	"sort-by-required": "required",
+	"sort-by-type":     "type",
+
+	"anchor":      "settings.anchor",
+	"color":       "settings.color",
+	"default":     "settings.default",
+	"description": "settings.description",
+	"escape":      "settings.escape",
+	"indent":      "settings.indent",
+	"required":    "settings.required",
+	"sensitive":   "settings.sensitive",
+	"type":        "settings.type",
+}
+
+// Config represents all the available config options that can be accessed and passed through CLI
+type Config struct {
+	File         string       `mapstructure:"-"`
+	Formatter    string       `mapstructure:"formatter"`
+	Version      string       `mapstructure:"version"`
+	HeaderFrom   string       `mapstructure:"header-from"`
+	FooterFrom   string       `mapstructure:"footer-from"`
+	Sections     sections     `mapstructure:"sections"`
+	Output       output       `mapstructure:"output"`
+	OutputValues outputvalues `mapstructure:"output-values"`
+	Sort         sort         `mapstructure:"sort"`
+	Settings     settings     `mapstructure:"settings"`
+
+	moduleRoot    string
+	isFlagChanged func(string) bool
+}
+
+// DefaultConfig returns new instance of Config with default values set
+func DefaultConfig() *Config {
+	return &Config{
+		File:         "",
+		Formatter:    "",
+		Version:      "",
+		HeaderFrom:   "main.tf",
+		FooterFrom:   "",
+		Sections:     defaultSections(),
+		Output:       defaultOutput(),
+		OutputValues: defaultOutputValues(),
+		Sort:         defaultSort(),
+		Settings:     defaultSettings(),
+
+		moduleRoot:    "",
+		isFlagChanged: func(name string) bool { return false },
+	}
+}
+
 const (
 	sectionDataSources  = "data-sources"
 	sectionFooter       = "footer"
@@ -46,18 +113,18 @@ var allSections = []string{
 var AllSections = strings.Join(allSections, ", ")
 
 type sections struct {
-	Show []string `yaml:"show"`
-	Hide []string `yaml:"hide"`
+	Show []string `mapstructure:"show"`
+	Hide []string `mapstructure:"hide"`
 
-	dataSources  bool `yaml:"-"`
-	header       bool `yaml:"-"`
-	footer       bool `yaml:"-"`
-	inputs       bool `yaml:"-"`
-	modulecalls  bool `yaml:"-"`
-	outputs      bool `yaml:"-"`
-	providers    bool `yaml:"-"`
-	requirements bool `yaml:"-"`
-	resources    bool `yaml:"-"`
+	dataSources  bool
+	header       bool
+	footer       bool
+	inputs       bool
+	modulecalls  bool
+	outputs      bool
+	providers    bool
+	requirements bool
+	resources    bool
 }
 
 func defaultSections() sections {
@@ -129,12 +196,12 @@ var (
 )
 
 type output struct {
-	File     string `yaml:"file"`
-	Mode     string `yaml:"mode"`
-	Template string `yaml:"template"`
+	File     string `mapstructure:"file"`
+	Mode     string `mapstructure:"mode"`
+	Template string `mapstructure:"template"`
 
-	BeginComment string `yaml:"-"`
-	EndComment   string `yaml:"-"`
+	beginComment string
+	endComment   string
 }
 
 func defaultOutput() output {
@@ -143,55 +210,73 @@ func defaultOutput() output {
 		Mode:     outputModeInject,
 		Template: OutputTemplate,
 
-		BeginComment: outputBeginComment,
-		EndComment:   outputEndComment,
+		beginComment: outputBeginComment,
+		endComment:   outputEndComment,
 	}
 }
 
-func (o *output) validate() error { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
-
-	if o.File != "" {
-		if o.Mode == "" {
-			return fmt.Errorf("value of '--output-mode' can't be empty")
-		}
-
-		// Template is optional for mode 'replace'
-		if o.Mode == outputModeReplace && o.Template == "" {
-			return nil
-		}
-
-		if o.Template == "" {
-			return fmt.Errorf("value of '--output-template' can't be empty")
-		}
-
-		if index := strings.Index(o.Template, outputContent); index < 0 {
-			return fmt.Errorf("value of '--output-template' doesn't have '{{ .Content }}' (note that spaces inside '{{ }}' are mandatory)")
-		}
-
-		// No extra validation is needed for mode 'replace',
-		// the followings only apply for every other modes.
-		if o.Mode == outputModeReplace {
-			return nil
-		}
-
-		lines := strings.Split(o.Template, "\n")
-		if len(lines) < 3 {
-			return fmt.Errorf("value of '--output-template' should contain at least 3 lines (begin comment, {{ .Content }}, and end comment)")
-		}
-
-		if !isInlineComment(lines[0]) {
-			return fmt.Errorf("value of '--output-template' is missing begin comment")
-		}
-		o.BeginComment = strings.TrimSpace(lines[0])
-
-		if !isInlineComment(lines[len(lines)-1]) {
-			return fmt.Errorf("value of '--output-template' is missing end comment")
-		}
-		o.EndComment = strings.TrimSpace(lines[len(lines)-1])
+func (o *output) validate() error {
+	if o.File == "" {
+		return nil
 	}
+
+	if o.Mode == "" {
+		return fmt.Errorf("value of '--output-mode' can't be empty")
+	}
+
+	// Template is optional for mode 'replace'
+	if o.Mode == outputModeReplace && o.Template == "" {
+		return nil
+	}
+
+	if o.Template == "" {
+		return fmt.Errorf("value of '--output-template' can't be empty")
+	}
+
+	if !strings.Contains(o.Template, outputContent) {
+		return fmt.Errorf("value of '--output-template' doesn't have '{{ .Content }}' (note that spaces inside '{{ }}' are mandatory)")
+	}
+
+	// No extra validation is needed for mode 'replace',
+	// the followings only apply for every other modes.
+	if o.Mode == outputModeReplace {
+		return nil
+	}
+
+	lines := strings.Split(o.Template, "\n")
+	tests := []struct {
+		condition  func() bool
+		errMessage string
+	}{
+		{
+			condition: func() bool {
+				return len(lines) < 3
+			},
+			errMessage: "value of '--output-template' should contain at least 3 lines (begin comment, {{ .Content }}, and end comment)",
+		},
+		{
+			condition: func() bool {
+				return !isInlineComment(lines[0])
+			},
+			errMessage: "value of '--output-template' is missing begin comment",
+		},
+		{
+			condition: func() bool {
+				return !isInlineComment(lines[len(lines)-1])
+			},
+			errMessage: "value of '--output-template' is missing end comment",
+		},
+	}
+
+	for _, t := range tests {
+		if t.condition() {
+			return fmt.Errorf(t.errMessage)
+		}
+	}
+
+	o.beginComment = strings.TrimSpace(lines[0])
+	o.endComment = strings.TrimSpace(lines[len(lines)-1])
+
 	return nil
 }
 
@@ -222,8 +307,8 @@ func isInlineComment(line string) bool {
 }
 
 type outputvalues struct {
-	Enabled bool   `yaml:"enabled"`
-	From    string `yaml:"from"`
+	Enabled bool   `mapstructure:"enabled"`
+	From    string `mapstructure:"from"`
 }
 
 func defaultOutputValues() outputvalues {
@@ -235,9 +320,6 @@ func defaultOutputValues() outputvalues {
 
 func (o *outputvalues) validate() error {
 	if o.Enabled && o.From == "" {
-		if changedfs["output-values-from"] {
-			return fmt.Errorf("value of '--output-values-from' can't be empty")
-		}
 		return fmt.Errorf("value of '--output-values-from' is missing")
 	}
 	return nil
@@ -264,9 +346,9 @@ type sortby struct {
 	Type     bool `name:"type"`
 }
 type sort struct {
-	Enabled  bool   `yaml:"enabled"`
-	By       string `yaml:"by"`
-	Criteria sortby `yaml:"-"`
+	Enabled  bool   `mapstructure:"enabled"`
+	By       string `mapstructure:"by"`
+	Criteria sortby `mapstructure:"-"`
 }
 
 func defaultSort() sort {
@@ -292,15 +374,15 @@ func (s *sort) validate() error {
 }
 
 type settings struct {
-	Anchor      bool `yaml:"anchor"`
-	Color       bool `yaml:"color"`
-	Default     bool `yaml:"default"`
-	Escape      bool `yaml:"escape"`
-	Indent      int  `yaml:"indent"`
-	Required    bool `yaml:"required"`
-	Sensitive   bool `yaml:"sensitive"`
-	Type        bool `yaml:"type"`
-	Description bool `yaml:"description"`
+	Anchor      bool `mapstructure:"anchor"`
+	Color       bool `mapstructure:"color"`
+	Default     bool `mapstructure:"default"`
+	Description bool `mapstructure:"description"`
+	Escape      bool `mapstructure:"escape"`
+	Indent      int  `mapstructure:"indent"`
+	Required    bool `mapstructure:"required"`
+	Sensitive   bool `mapstructure:"sensitive"`
+	Type        bool `mapstructure:"type"`
 }
 
 func defaultSettings() settings {
@@ -308,12 +390,12 @@ func defaultSettings() settings {
 		Anchor:      true,
 		Color:       true,
 		Default:     true,
+		Description: false,
 		Escape:      true,
 		Indent:      2,
 		Required:    true,
 		Sensitive:   true,
 		Type:        true,
-		Description: false,
 	}
 }
 
@@ -321,40 +403,17 @@ func (s *settings) validate() error {
 	return nil
 }
 
-// Config represents all the available config options that can be accessed and passed through CLI
-type Config struct {
-	BaseDir      string       `yaml:"-"`
-	File         string       `yaml:"-"`
-	Formatter    string       `yaml:"formatter"`
-	Version      string       `yaml:"version"`
-	HeaderFrom   string       `yaml:"header-from"`
-	FooterFrom   string       `yaml:"footer-from"`
-	Sections     sections     `yaml:"sections"`
-	Output       output       `yaml:"output"`
-	OutputValues outputvalues `yaml:"output-values"`
-	Sort         sort         `yaml:"sort"`
-	Settings     settings     `yaml:"settings"`
-}
+// process provided Config and check for any misuse or misconfiguration
+func (c *Config) process() error { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
 
-// DefaultConfig returns new instance of Config with default values set
-func DefaultConfig() *Config {
-	return &Config{
-		BaseDir:      "",
-		File:         "",
-		Formatter:    "",
-		Version:      "",
-		HeaderFrom:   "main.tf",
-		FooterFrom:   "",
-		Sections:     defaultSections(),
-		Output:       defaultOutput(),
-		OutputValues: defaultOutputValues(),
-		Sort:         defaultSort(),
-		Settings:     defaultSettings(),
+	// formatter
+	if c.Formatter == "" {
+		return fmt.Errorf("value of 'formatter' can't be empty")
 	}
-}
 
-// process provided Config
-func (c *Config) process() {
 	// sections
 	c.Sections.dataSources = c.Sections.visibility("data-sources")
 	c.Sections.header = c.Sections.visibility("header")
@@ -368,25 +427,8 @@ func (c *Config) process() {
 
 	// Footer section is optional and should only be enabled if --footer-from
 	// is explicitly set, either via CLI or config file.
-	if c.FooterFrom == "" && !changedfs["footer-from"] {
+	if c.FooterFrom == "" && !c.isFlagChanged("footer-from") {
 		c.Sections.footer = false
-	}
-
-	// Enable specified sort criteria
-	c.Sort.Criteria.Name = c.Sort.Enabled && c.Sort.By == sortName
-	c.Sort.Criteria.Required = c.Sort.Enabled && c.Sort.By == sortRequired
-	c.Sort.Criteria.Type = c.Sort.Enabled && c.Sort.By == sortType
-}
-
-// validate config and check for any misuse or misconfiguration
-func (c *Config) validate() error { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
-
-	// formatter
-	if c.Formatter == "" {
-		return fmt.Errorf("value of 'formatter' can't be empty")
 	}
 
 	// header-from
@@ -403,30 +445,22 @@ func (c *Config) validate() error { //nolint:gocyclo
 		return fmt.Errorf("value of '--footer-from' can't equal value of '--header-from")
 	}
 
-	// sections
-	if err := c.Sections.validate(); err != nil {
-		return err
+	for _, fn := range [](func() error){
+		c.Sections.validate,
+		c.Output.validate,
+		c.OutputValues.validate,
+		c.Sort.validate,
+		c.Settings.validate,
+	} {
+		if err := fn(); err != nil {
+			return err
+		}
 	}
 
-	// output
-	if err := c.Output.validate(); err != nil {
-		return err
-	}
-
-	// output values
-	if err := c.OutputValues.validate(); err != nil {
-		return err
-	}
-
-	// sort
-	if err := c.Sort.validate(); err != nil {
-		return err
-	}
-
-	// settings
-	if err := c.Settings.validate(); err != nil {
-		return err
-	}
+	// Enable specified sort criteria
+	c.Sort.Criteria.Name = c.Sort.Enabled && c.Sort.By == sortName
+	c.Sort.Criteria.Required = c.Sort.Enabled && c.Sort.By == sortRequired
+	c.Sort.Criteria.Type = c.Sort.Enabled && c.Sort.By == sortType
 
 	return nil
 }
