@@ -71,6 +71,14 @@ jobs:
       - name: Run Staticcheck
         run: make staticcheck
 
+      - name: Check License headers
+        run: |
+          GO111MODULE=off go get github.com/google/addlicense
+
+          addlicense -check $(find . -type f -name "*.go")
+          addlicense -check $(find . -type f -name "*.sh")
+          addlicense -check $(find . -type f -name "Dockerfile")
+
       - name: Check docs
         if: "!contains(github.ref, 'refs/heads/master')"
         run: make docs && test -z "$(git status --porcelain)" || exit 1
