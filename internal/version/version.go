@@ -18,7 +18,7 @@ import (
 )
 
 // current version
-const dev = "v0.12.1"
+const dev = "v0.13.0"
 
 // Provisioned by ldflags
 var (
