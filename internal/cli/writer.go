@@ -20,13 +20,6 @@ import (
 	"text/template"
 )
 
-const (
-	errTemplateEmpty         = "template is missing"
-	errBeginCommentMissing   = "begin comment is missing"
-	errEndCommentMissing     = "end comment is missing"
-	errEndCommentBeforeBegin = "end comment is before begin comment"
-)
-
 // stdoutWriter writes content to os.Stdout.
 type stdoutWriter struct{}
 
@@ -69,7 +62,7 @@ func (fw *fileWriter) Write(p []byte) (int, error) {
 		if fw.mode == outputModeReplace {
 			return fw.write(filename, p)
 		}
-		return 0, errors.New(errTemplateEmpty)
+		return 0, errors.New("template is missing")
 	}
 
 	// apply template to generated output
@@ -138,19 +131,19 @@ func (fw *fileWriter) inject(filename string, content string, generated string) 
 
 	// begin comment is missing
 	if before < 0 {
-		return 0, errors.New(errBeginCommentMissing)
+		return 0, errors.New("begin comment is missing")
 	}
 
 	generated = content[:before] + generated
 
 	// end comment is missing
 	if after < 0 {
-		return 0, errors.New(errEndCommentMissing)
+		return 0, errors.New("end comment is missing")
 	}
 
 	// end comment is before begin comment
 	if after < before {
-		return 0, errors.New(errEndCommentBeforeBegin)
+		return 0, errors.New("end comment is before begin comment")
 	}
 
 	generated += content[after+len(fw.end):]
