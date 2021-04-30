@@ -38,6 +38,33 @@ which produces:
 
 Read all about available [formats].
 
+## Compatibility
+
+terraform-docs compatiblity matrix with Terraform can be found below:
+
+<table class="table pure-table">
+  <thead>
+    <tr>
+      <th>terraform-docs</th>
+      <th>Terraform</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>&gt;= 0.13</code></td>
+      <td><code>&gt;= 0.15</code></td>
+    </tr>
+    <tr>
+      <td><code>&gt;= 0.8, &lt; 0.13</code></td>
+      <td><code>&gt;= 0.12, &lt; 0.15</code></td>
+    </tr>
+    <tr>
+      <td><code>&lt; 0.8</code></td>
+      <td><code>&lt; 0.12</code></td>
+    </tr>
+  </tbody>
+</table>
+
 [Configuration]: {{< ref "configuration" >}}
 [markdown table]: {{< ref "markdown-table" >}}
 [formats]: {{< ref "terraform-docs" >}}
