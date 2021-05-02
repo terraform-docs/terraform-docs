@@ -22,7 +22,7 @@ Error: accepts 1 arg(s), received 2
 
 Since `v0.10.0`
 
-Configuration can be loaded with `-c, --config string`, Take a look at [configuration]
+Configuration can be loaded with `-c, --config string`. Take a look at [configuration]
 page for all the details.
 
 As of `v0.13.0`, `--config` flag accepts both relative and absolute paths.
@@ -166,7 +166,9 @@ Note that `--output-file` can be relative to module path or an absolute path in
 filesystem.
 
 ```bash
-$ cd /path/to/module
+$ pwd
+/path/to/module
+
 $ tree .
 .
 ├── docs
@@ -175,7 +177,7 @@ $ tree .
 └── main.tf
 
 # this works, relative path
-$ terraform-docs markdown table --output-file ../docs/README.md .
+$ terraform-docs markdown table --output-file ./docs/README.md .
 
 # so does this, absolute path
 $ terraform-docs markdown table --output-file /path/to/module/docs/README.md .
@@ -188,7 +190,7 @@ Since `v0.9.0`
 You can generate `terraform.tfvars` in both `hcl` and `json` format by executing
 the following, respectively:
 
-```console
+```bash
 terraform-docs tfvars hcl /path/to/module
 
 terraform-docs tfvars json /path/to/module
@@ -240,10 +242,10 @@ in the root of your Git repo with at least the following content:
 ```yaml
 repos:
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: <VERSION TAG OR SHA TO USE> # For example: "v0.12.0"
+    rev: "<VERSION, TAG, OR SHA TO USE>"             # e.g. "v0.11.2"
     hooks:
       - id: terraform-docs-go
-        args: [<ARGS TO PASS INCLUDING PATH>]  # For example: ["--output-file", "README.md", "./mymodule/path"]
+        args: ["ARGS", "TO PASS", "INCLUDING PATH"]  # e.g. ["--output-file", "README.md", "./mymodule/path"]
 ```
 
 (You can also include more than one entry under `hooks:` to update multiple docs.
@@ -272,8 +274,8 @@ repos:
       - id: terraform-docs
         name: terraform-docs
         language: docker_image
-        entry: quay.io/terraform-docs/terraform-docs:latest  # Or, change latest to pin to a specific version
-        args: [<ARGS TO PASS INCLUDING PATH>]  # For example: ["--output-file", "README.md", "./mymodule/path"]
+        entry: quay.io/terraform-docs/terraform-docs:latest  # or, change latest to pin to a specific version
+        args: ["ARGS", "TO PASS", "INCLUDING PATH"]          # e.g. ["--output-file", "README.md", "./mymodule/path"]
         pass_filenames: false
 ```
 

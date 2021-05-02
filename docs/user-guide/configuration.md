@@ -15,25 +15,27 @@ can use `-c` or `--config` flag which accepts name of the config file.
 Default name of this file is `.terraform-docs.yml`, and it will get picked up
 (if existed) without needing to explicitly passing with config flag.
 
-```console
+```bash
 $ tree
 .
 ├── main.tf
 ├── ...
 ├── ...
 └── .terraform-docs.yml
+
 $ terraform-docs .
 ```
 
 Or you can use a config file with any arbitrary name:
 
-```console
+```bash
 $ tree
 .
 ├── main.tf
 ├── ...
 ├── ...
 └── .tfdocs-config.yml
+
 $ terraform-docs -c .tfdocs-config.yml .
 ```
 
@@ -216,7 +218,7 @@ CLI flag.
 
 The default template value is:
 
-```go
+```text
 <!-- BEGIN_TF_DOCS -->
 {{ .Content }}
 <!-- END_TF_DOCS -->
@@ -278,7 +280,7 @@ output:
   file: README.md
   mode: inject
   template: |-
-    [//]: # (BEGIN_TF_DOCS)    
+    [//]: # (BEGIN_TF_DOCS)
     {{ .Content }}
 
     [//]: # (END_TF_DOCS)
