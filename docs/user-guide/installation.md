@@ -14,7 +14,7 @@ toc: true
 
 If you are a macOS user, you can use [Homebrew].
 
-```console
+```bash
 brew install terraform-docs
 ```
 
@@ -99,7 +99,7 @@ auto-completion is not available on Windows platform.
 
 ### bash
 
-```console
+```bash
 terraform-docs completion bash > ~/.terraform-docs-completion
 source ~/.terraform-docs-completion
 
@@ -110,7 +110,7 @@ source <(terraform-docs completion bash)
 
 ### zsh
 
-``` bash
+```bash
 terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-docs
 autoload -U compinit && compinit
 ```
