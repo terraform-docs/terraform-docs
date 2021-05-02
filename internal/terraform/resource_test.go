@@ -42,7 +42,12 @@ func TestPluginSdkConversion(t *testing.T) {
 		Version:        types.String("latest"),
 	}
 	sdkResource := resources{&resource}.convert()[0]
+	assert.Equal(resource.Type, sdkResource.Type)
+	assert.Equal(resource.Name, sdkResource.Name)
+	assert.Equal(resource.ProviderName, sdkResource.ProviderName)
+	assert.Equal(resource.ProviderSource, sdkResource.ProviderSource)
 	assert.Equal(resource.Mode, sdkResource.Mode)
+	assert.Equal(resource.Version, types.String(sdkResource.Version))
 }
 
 func TestResourceMode(t *testing.T) {
