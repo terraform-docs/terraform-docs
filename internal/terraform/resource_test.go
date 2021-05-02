@@ -31,6 +31,19 @@ func TestResourceSpec(t *testing.T) {
 	}
 	assert.Equal("tls_private_key.baz", resource.Spec())
 }
+func TestPluginSdkConversion(t *testing.T) {
+	assert := assert.New(t)
+	resource := Resource{
+		Type:           "private_key",
+		Name:           "baz",
+		ProviderName:   "tls",
+		ProviderSource: "hashicorp/tls",
+		Mode:           "managed",
+		Version:        types.String("latest"),
+	}
+	sdkResource := resources{&resource}.convert()[0]
+	assert.Equal(resource.Mode, sdkResource.Mode)
+}
 
 func TestResourceMode(t *testing.T) {
 	tests := map[string]struct {
