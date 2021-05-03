@@ -91,6 +91,7 @@ func (rr resources) convert() []*terraformsdk.Resource {
 			Name:           r.Name,
 			ProviderName:   r.ProviderName,
 			ProviderSource: r.ProviderSource,
+			Mode:           r.Mode,
 			Version:        fmt.Sprintf("%v", r.Version.Raw()),
 			Position: terraformsdk.Position{
 				Filename: r.Position.Filename,
