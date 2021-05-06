@@ -107,8 +107,8 @@ settings:
 - `sections.hide-all` and `sections.hide`
 - `sections.show-all` and `sections.show`
 
-**Note:** As of `v0.13.0`, `sections.hide-all` and `settings.show-all` are deprecated
-and removed in favor of explicit use of `settings.hide` and `settings.show`.
+**Note:** As of `v0.13.0`, `sections.hide-all` and `sections.show-all` are deprecated
+and removed in favor of explicit use of `sections.hide` and `sections.show`.
 
 ## Version
 
@@ -188,6 +188,9 @@ The following options are supported and can be used for `sections.show` and
 - `providers`
 - `requirements`
 - `resources` (since `v0.11.0`)
+
+**Note:** As of `v0.13.0`, `sections.hide-all` and `sections.show-all` are deprecated
+and removed in favor of explicit use of `sections.hide` and `sections.show`.
 
 ## Output
 
@@ -301,3 +304,20 @@ The following sort types are supported:
 - `name` (default): name of items
 - `required`: by name of inputs AND show required ones first
 - `type`: type of inputs
+
+**Note:** As of `v0.13.0`, `sort.by` is converted from `list` to `string`.
+
+```yaml
+sort:
+  enabled: true
+  by: required   # this now only accepts string
+```
+
+The following error is an indicator that `.terraform-docs.yml` still uses
+list for `sort.by`.
+
+```text
+Error: unable to decode config, 1 error(s) decoding:
+
+* 'sort.by' expected type 'string', got unconvertible type '[]interface {}'
+```
