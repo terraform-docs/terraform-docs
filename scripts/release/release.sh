@@ -68,7 +68,8 @@ CLOSEST_VERSION=$(getClosestVersion)
 # Bump the released version in README and version.go
 if [[ $RELEASE_VERSION != *"-alpha"* && $RELEASE_VERSION != *"-beta"* && $RELEASE_VERSION != *"-rc"* ]]; then
     sed -i -E "s|${CLOSEST_VERSION}|${RELEASE_VERSION}|g" README.md
-    git add README.md
+    sed -i -E "s|${CLOSEST_VERSION}|${RELEASE_VERSION}|g" docs/user-guide/installation.md
+    git add README.md docs/user-guide/installation.md
 fi
 
 sed -i -E "s|v${RELEASE_VERSION}-alpha|v${RELEASE_VERSION}|g" internal/version/version.go
