@@ -49,6 +49,10 @@ func Short() string {
 
 // Full return the full version of the binary including commit hash and build date
 func Full() string {
+	fullVersion := version
+	if !strings.HasSuffix(version, commitHash) {
+		fullVersion += " " + commitHash
+	}
 	osArch := runtime.GOOS + "/" + runtime.GOARCH
-	return fmt.Sprintf("%s %s BuildDate: %s", version, osArch, buildDate)
+	return fmt.Sprintf("%s %s BuildDate: %s", fullVersion, osArch, buildDate)
 }
