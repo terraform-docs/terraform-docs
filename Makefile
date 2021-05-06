@@ -46,41 +46,41 @@ GOLANGCI_VERSION  := v1.38.0
 .PHONY: all
 all: clean verify checkfmt lint test build
 
-#########################
-## Development targets ##
-#########################
+###############
+##@ Development
+
 .PHONY: checkfmt
-checkfmt: ## Check formatting of all go files
+checkfmt:   ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
 	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ scripts/docs/ && echo "OK"
 
 .PHONY: clean
-clean: ## Clean workspace
+clean:   ## Clean workspace
 	@ $(MAKE) --no-print-directory log-$@
 	rm -rf ./$(BUILD_DIR) ./$(COVERAGE_OUT)
 
 .PHONY: fmt
-fmt: ## Format all go files
+fmt:   ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
 	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd/ internal/ scripts/docs/
 
 .PHONY: lint
-lint: ## Run linter
+lint:   ## Run linter
 	@ $(MAKE) --no-print-directory log-$@
 	golangci-lint run ./...
 
 .PHONY: staticcheck
-staticcheck: ## Run staticcheck
+staticcheck:   ## Run staticcheck
 	@ $(MAKE) --no-print-directory log-$@
 	$(GO) run honnef.co/go/tools/cmd/staticcheck -- ./...
 
 .PHONY: test
-test: ## Run tests
+test:   ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
 	$(GO) test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v ./...
 
 .PHONY: verify
-verify: ## Verify 'vendor' dependencies
+verify:   ## Verify 'vendor' dependencies
 	@ $(MAKE) --no-print-directory log-$@
 	$(GO) mod verify
 
@@ -89,32 +89,32 @@ verify: ## Verify 'vendor' dependencies
 vendor:
 deps:
 
-###################
-## Build targets ##
-###################
+#########
+##@ Build
+
 .PHONY: build
 build: clean ## Build binary for current OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
 	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(PROJECT_NAME)
 
 .PHONY: docker
-docker: ## Build Docker image
+docker:   ## Build Docker image
 	@ $(MAKE) --no-print-directory log-$@
 	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG) --file Dockerfile .
 
 .PHONY: push
-push: ## Push Docker image
+push:   ## Push Docker image
 	@ $(MAKE) --no-print-directory log-$@
 	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 .PHONY: docs
-docs: ## Generate document of formatter commands
+docs:   ## Generate document of formatter commands
 	@ $(MAKE) --no-print-directory log-$@
 	$(GORUN) ./scripts/docs/generate.go
 
-#####################
-## Release targets ##
-#####################
+###########
+##@ Release
+
 PATTERN =
 
 # if the last relase was alpha, beta or rc, 'release' target has to used with current
@@ -122,39 +122,39 @@ PATTERN =
 # released the following should be executed: "make release version=0.8.0"
 .PHONY: release
 release: VERSION ?= $(shell echo $(CUR_VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
-release: ## Prepare release
+release:   ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
 	@ ./scripts/release/release.sh "$(VERSION)" "$(CUR_VERSION)" "1"
 
 .PHONY: patch
 patch: PATTERN = '\$$1\".\"\$$2\".\"\$$3+1'
-patch: release ## Prepare Patch release
+patch: release   ## Prepare Patch release
 
 .PHONY: minor
 minor: PATTERN = '\$$1\".\"\$$2+1\".0\"'
-minor: release ## Prepare Minor release
+minor: release   ## Prepare Minor release
 
 .PHONY: major
 major: PATTERN = '\$$1+1\".0.0\"'
-major: release ## Prepare Major release
+major: release   ## Prepare Major release
 
-####################
-## Helper targets ##
-####################
+###########
+##@ Helpers
+
 .PHONY: goimports
-goimports:
+goimports:   ## Install goimports
 ifeq (, $(shell which goimports))
 	GO111MODULE=off $(GO) get -u golang.org/x/tools/cmd/goimports
 endif
 
 .PHONY: golangci
-golangci:
+golangci:   ## Install golangci
 ifeq (, $(shell which golangci-lint))
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell $(GO) env GOPATH)/bin $(GOLANGCI_VERSION)
 endif
 
 .PHONY: tools
-tools: ## Install required tools
+tools:   ## Install required tools
 	@ $(MAKE) --no-print-directory log-$@
 	@ $(MAKE) --no-print-directory goimports golangci
 
@@ -162,9 +162,33 @@ tools: ## Install required tools
 ## Self-Documenting Makefile Help                                     ##
 ## https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html ##
 ########################################################################
+
+########
+##@ Help
+
 .PHONY: help
-help:
-	@ grep -h -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+help:   ## Display this help
+	@awk \
+		-v "col=\033[36m" -v "nocol=\033[0m" \
+		' \
+			BEGIN { \
+				FS = ":.*##" ; \
+				printf "Usage:\n  make %s<target>%s\n", col, nocol \
+			} \
+			/^[a-zA-Z_-]+:.*?##/ { \
+				printf "  %s%-12s%s %s\n", col, $$1, nocol, $$2 \
+			} \
+			/^##@/ { \
+				printf "\n%s%s%s\n", nocol, substr($$0, 5), nocol \
+			} \
+		' $(MAKEFILE_LIST)
 
 log-%:
-	@ grep -h -E '^$*:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m==> %s\033[0m\n", $$2}'
+	@grep -h -E '^$*:.*?## .*$$' $(MAKEFILE_LIST) | \
+		awk \
+			'BEGIN { \
+				FS = ":.*?## " \
+			}; \
+			{ \
+				printf "\033[36m==> %s\033[0m\n", $$2 \
+			}'

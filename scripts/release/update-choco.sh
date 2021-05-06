@@ -50,7 +50,11 @@ git clone https://github.com/terraform-docs/chocolatey-package "${PWD}/chocolate
 sed -i -E "s|<version>${CLOSEST_VERSION}</version>|<version>${RELEASE_VERSION}</version>|g" "${PWD}/chocolatey-package/terraform-docs.nuspec"
 
 # Bump version and checksum in tools/chocolateyinstall.ps1
-CHECKSUM=$(grep windows-amd64.exe "${PWD}/../../dist/terraform-docs-v${RELEASE_VERSION}.sha256sum" | awk '{print $1}')
+CHECKSUM=$(grep windows-amd64.zip "${PWD}/../../dist/terraform-docs-v${RELEASE_VERSION}.sha256sum" | awk '{print $1}')
 
 sed -i -E "s|checksum = '.*$|checksum = '${CHECKSUM}'|g" "${PWD}/chocolatey-package/tools/chocolateyinstall.ps1"
 sed -i -E "s|v${CLOSEST_VERSION}|v${RELEASE_VERSION}|g" "${PWD}/chocolatey-package/tools/chocolateyinstall.ps1"
+
+pushd "${PWD}/chocolatey-package/"
+git diff
+popd

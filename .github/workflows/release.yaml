@@ -59,7 +59,7 @@ jobs:
           git-user: terraform-docs-bot
           git-user-email: bot@terraform-docs.io
           git-commit-message: "Chocolatey update for terraform-docs version v${{ steps.vars.outputs.tag }}"
-          excludes: README.md:LICENSE:.git:.github
+          excludes: README.md:LICENSE:DCO:.git:.github
 
   homebrew:
     runs-on: ubuntu-latest
