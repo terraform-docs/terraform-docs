@@ -1,0 +1,12 @@
+{{- if .Settings.ShowModuleCalls -}}
+    {{ indent 0 "#" }} Modules
+    {{ if not .Module.ModuleCalls }}
+        No modules.
+    {{ else }}
+        | Name | Source | Version |
+        |------|--------|---------|
+        {{- range .Module.ModuleCalls }}
+            | {{ anchorName "module" .Name }} | {{ .Source }} | {{ .Version }} |
+        {{- end }}
+    {{ end }}
+{{ end -}}

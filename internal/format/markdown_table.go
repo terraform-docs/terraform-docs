@@ -11,7 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
-	_ "embed" //nolint
+	"embed"
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
@@ -19,20 +19,20 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-//go:embed templates/markdown_table.tmpl
-var markdownTableTpl []byte
+//go:embed templates/markdown_table*.tmpl
+var markdownTableFS embed.FS
 
 // MarkdownTable represents Markdown Table format.
 type MarkdownTable struct {
 	template *template.Template
+	settings *print.Settings
 }
 
 // NewMarkdownTable returns new instance of Table.
 func NewMarkdownTable(settings *print.Settings) print.Engine {
-	tt := template.New(settings, &template.Item{
-		Name: "table",
-		Text: string(markdownTableTpl),
-	})
+	items := readTemplateItems(markdownTableFS, "markdown_table")
+
+	tt := template.New(settings, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			inputType, _ := printFencedCodeBlock(t, "")
@@ -48,16 +48,28 @@ func NewMarkdownTable(settings *print.Settings) print.Engine {
 	})
 	return &MarkdownTable{
 		template: tt,
+		settings: settings,
 	}
 }
 
-// Print a Terraform module as Markdown tables.
-func (t *MarkdownTable) Print(module *terraform.Module, settings *print.Settings) (string, error) {
-	rendered, err := t.template.Render(module)
+// Generate a Terraform module as Markdown tables.
+func (t *MarkdownTable) Generate(module *terraform.Module) (*print.Generator, error) {
+	funcs := []print.GenerateFunc{}
+
+	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
+		rendered, err := t.template.Render(name, module)
+		if err != nil {
+			return err
+		}
+
+		funcs = append(funcs, fn(sanitize(rendered)))
+		return nil
+	})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return sanitize(rendered), nil
+
+	return print.NewGenerator("markdown table", funcs...), nil
 }
 
 func init() {

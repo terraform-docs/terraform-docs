@@ -1,0 +1,71 @@
+{{- if .Settings.ShowInputs -}}
+    {{- if .Settings.ShowRequired -}}
+        {{ indent 0 "=" }} Required Inputs
+        {{ if not .Module.RequiredInputs }}
+            No required inputs.
+        {{ else }}
+            The following input variables are required:
+            {{- range .Module.RequiredInputs }}
+                {{ printf "\n" }}
+                {{ indent 1 "=" }} {{ anchorNameAsciidoc "input" .Name }}
+
+                Description: {{ tostring .Description | sanitizeDoc }}
+
+                {{ if $.Settings.ShowType -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Settings.ShowDefault }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
+                {{- end }}
+            {{- end }}
+        {{- end }}
+        {{ indent 0 "=" }} Optional Inputs
+        {{ if not .Module.OptionalInputs }}
+            No optional inputs.
+        {{ else }}
+            The following input variables are optional (have default values):
+            {{- range .Module.OptionalInputs }}
+                {{ printf "\n" }}
+                {{ indent 1 "=" }} {{ anchorNameAsciidoc "input" .Name }}
+
+                Description: {{ tostring .Description | sanitizeDoc }}
+
+                {{ if $.Settings.ShowType -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Settings.ShowDefault }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
+                {{- end }}
+            {{- end }}
+        {{ end }}
+    {{ else -}}
+        {{ indent 0 "=" }} Inputs
+        {{ if not .Module.Inputs }}
+            No inputs.
+        {{ else }}
+            The following input variables are supported:
+            {{- range .Module.Inputs }}
+                {{ printf "\n" }}
+                {{ indent 1 "=" }} {{ anchorNameAsciidoc "input" .Name }}
+
+                Description: {{ tostring .Description | sanitizeDoc }}
+
+                {{ if $.Settings.ShowType -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Settings.ShowDefault }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
+                {{- end }}
+            {{- end }}
+        {{ end }}
+    {{- end }}
+{{ end -}}

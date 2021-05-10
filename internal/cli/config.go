@@ -56,6 +56,7 @@ type Config struct {
 	Version      string       `mapstructure:"version"`
 	HeaderFrom   string       `mapstructure:"header-from"`
 	FooterFrom   string       `mapstructure:"footer-from"`
+	Content      string       `mapstructure:"content"`
 	Sections     sections     `mapstructure:"sections"`
 	Output       output       `mapstructure:"output"`
 	OutputValues outputvalues `mapstructure:"output-values"`
@@ -74,6 +75,7 @@ func DefaultConfig() *Config {
 		Version:      "",
 		HeaderFrom:   "main.tf",
 		FooterFrom:   "",
+		Content:      "",
 		Sections:     defaultSections(),
 		Output:       defaultOutput(),
 		OutputValues: defaultOutputValues(),

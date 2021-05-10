@@ -1,0 +1,6 @@
+{{- if .Settings.ShowFooter -}}
+    {{- with .Module.Footer -}}
+        {{ sanitizeSection . }}
+        {{ printf "\n" }}
+    {{- end -}}
+{{ end -}}

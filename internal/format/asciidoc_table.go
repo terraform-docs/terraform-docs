@@ -11,7 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
-	_ "embed" //nolint
+	"embed"
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
@@ -19,21 +19,22 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-//go:embed templates/asciidoc_table.tmpl
-var asciidocTableTpl []byte
+//go:embed templates/asciidoc_table*.tmpl
+var asciidocTableFS embed.FS
 
 // AsciidocTable represents AsciiDoc Table format.
 type AsciidocTable struct {
 	template *template.Template
+	settings *print.Settings
 }
 
 // NewAsciidocTable returns new instance of AsciidocTable.
 func NewAsciidocTable(settings *print.Settings) print.Engine {
+	items := readTemplateItems(asciidocTableFS, "asciidoc_table")
+
 	settings.EscapeCharacters = false
-	tt := template.New(settings, &template.Item{
-		Name: "table",
-		Text: string(asciidocTableTpl),
-	})
+
+	tt := template.New(settings, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			inputType, _ := printFencedCodeBlock(t, "")
@@ -49,16 +50,28 @@ func NewAsciidocTable(settings *print.Settings) print.Engine {
 	})
 	return &AsciidocTable{
 		template: tt,
+		settings: settings,
 	}
 }
 
-// Print a Terraform module as AsciiDoc tables.
-func (t *AsciidocTable) Print(module *terraform.Module, settings *print.Settings) (string, error) {
-	rendered, err := t.template.Render(module)
+// Generate a Terraform module as AsciiDoc tables.
+func (t *AsciidocTable) Generate(module *terraform.Module) (*print.Generator, error) {
+	funcs := []print.GenerateFunc{}
+
+	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
+		rendered, err := t.template.Render(name, module)
+		if err != nil {
+			return err
+		}
+
+		funcs = append(funcs, fn(sanitize(rendered)))
+		return nil
+	})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return sanitize(rendered), nil
+
+	return print.NewGenerator("asciidoc table", funcs...), nil
 }
 
 func init() {

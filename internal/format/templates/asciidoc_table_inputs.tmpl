@@ -1,0 +1,21 @@
+{{- if .Settings.ShowInputs -}}
+    {{ indent 0 "=" }} Inputs
+    {{ if not .Module.Inputs }}
+        No inputs.
+    {{ else }}
+        [cols="a,a{{ if .Settings.ShowType }},a{{ end }}{{ if .Settings.ShowDefault }},a{{ end }}{{ if .Settings.ShowRequired }},a{{ end }}",options="header,autowidth"]
+        |===
+        |Name |Description
+        {{- if .Settings.ShowType }} |Type{{ end }}
+        {{- if .Settings.ShowDefault }} |Default{{ end }}
+        {{- if .Settings.ShowRequired }} |Required{{ end }}
+        {{- range .Module.Inputs }}
+            |{{ anchorNameAsciidoc "input" .Name }}
+            |{{ tostring .Description | sanitizeAsciidocTbl }}
+            {{- if $.Settings.ShowType }}{{ printf "\n" }}|{{ tostring .Type | type | sanitizeAsciidocTbl }}{{ end }}
+            {{- if $.Settings.ShowDefault }}{{ printf "\n" }}|{{ value .GetValue | sanitizeAsciidocTbl }}{{ end }}
+            {{- if $.Settings.ShowRequired }}{{ printf "\n" }}|{{ ternary .Required "yes" "no" }}{{ end }}
+        {{ end }}
+        |===
+    {{ end }}
+{{ end -}}

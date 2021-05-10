@@ -185,7 +185,7 @@ func example(ref *reference) error {
 		},
 	}
 
-	printer, err := format.Factory(ref.Name, settings)
+	formatter, err := format.Factory(ref.Name, settings)
 	if err != nil {
 		return err
 	}
@@ -195,7 +195,11 @@ func example(ref *reference) error {
 		log.Fatal(err)
 	}
 
-	output, err := printer.Print(tfmodule, settings)
+	generator, err := formatter.Generate(tfmodule)
+	if err != nil {
+		return err
+	}
+	output, err := generator.ExecuteTemplate("")
 	if err != nil {
 		return err
 	}

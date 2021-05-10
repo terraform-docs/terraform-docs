@@ -1,0 +1,14 @@
+{{- if .Settings.ShowRequirements -}}
+    {{ indent 0 "=" }} Requirements
+    {{ if not .Module.Requirements }}
+        No requirements.
+    {{ else }}
+        [cols="a,a",options="header,autowidth"]
+        |===
+        |Name |Version
+        {{- range .Module.Requirements }}
+            |{{ anchorNameAsciidoc "requirement" .Name }} |{{ tostring .Version | default "n/a" }}
+        {{- end }}
+        |===
+    {{ end }}
+{{ end -}}

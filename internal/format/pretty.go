@@ -27,6 +27,7 @@ var prettyTpl []byte
 // Pretty represents colorized pretty format.
 type Pretty struct {
 	template *template.Template
+	settings *print.Settings
 }
 
 // NewPretty returns new instance of Pretty.
@@ -47,16 +48,21 @@ func NewPretty(settings *print.Settings) print.Engine {
 	})
 	return &Pretty{
 		template: tt,
+		settings: settings,
 	}
 }
 
-// Print a Terraform module document.
-func (p *Pretty) Print(module *terraform.Module, settings *print.Settings) (string, error) {
-	rendered, err := p.template.Render(module)
+// Generate a Terraform module document.
+func (p *Pretty) Generate(module *terraform.Module) (*print.Generator, error) {
+	rendered, err := p.template.Render("pretty", module)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, ""), nil
+
+	return print.NewGenerator(
+		"pretty",
+		print.WithContent(regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, "")),
+	), nil
 }
 
 func init() {

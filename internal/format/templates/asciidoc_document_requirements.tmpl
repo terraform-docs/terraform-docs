@@ -1,0 +1,12 @@
+{{- if .Settings.ShowRequirements -}}
+    {{ indent 0 "=" }} Requirements
+    {{ if not .Module.Requirements }}
+        No requirements.
+    {{ else }}
+        The following requirements are needed by this module:
+        {{- range .Module.Requirements }}
+            {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+            - {{ anchorNameAsciidoc "requirement" .Name }}{{ $version }}
+        {{- end }}
+    {{ end }}
+{{ end -}}

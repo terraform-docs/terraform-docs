@@ -178,8 +178,12 @@ func TestAsciidocTable(t *testing.T) {
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			printer := NewAsciidocTable(&tt.settings)
-			actual, err := printer.Print(module, &tt.settings)
+			formatter := NewAsciidocTable(&tt.settings)
+
+			generator, err := formatter.Generate(module)
+			assert.Nil(err)
+
+			actual, err := generator.ExecuteTemplate("")
 
 			assert.Nil(err)
 			assert.Equal(expected, actual)

@@ -1,12 +1,13 @@
-# # terraform-docs version constraints for execution
-# # more information: https://terraform-docs.io/user-guide/configuration/#version
+# # see: https://terraform-docs.io/user-guide/configuration/#version
 # version: ">= 0.10, < 0.12"
 
+# see: https://terraform-docs.io/user-guide/configuration/#formatters
 formatter: markdown table
 
 header-from: doc.txt
 footer-from: footer.md
 
+# see: https://terraform-docs.io/user-guide/configuration/#sections
 sections:
   show:
     - header
@@ -15,6 +16,23 @@ sections:
     - modules
     - footer
 
+# # see: https://terraform-docs.io/user-guide/configuration/#content
+# content: |-
+#   Any arbitrary text can be placed anywhere in the content
+#
+#   {{ .Header }}
+#
+#   and even in between sections
+#
+#   {{ .Providers }}
+#
+#   and they don't even need to be in the default order
+#
+#   {{ .Outputs }}
+#
+#   {{ .Inputs }}
+
+# # see: https://terraform-docs.io/user-guide/configuration/#output
 # output:
 #   file: README.md
 #   mode: inject
@@ -23,12 +41,13 @@ sections:
 #     The template can be customized with aribitrary markdown content.
 #     For example this can be shown before the actual content generated
 #     by formatters.
-
+#
 #     {{ .Content }}
-
+#
 #     You can also show something after it!
 #     <!-- END_TF_DOCS -->
 
+# see: https://terraform-docs.io/user-guide/configuration/#sort
 sort:
   enabled: true
   by: required

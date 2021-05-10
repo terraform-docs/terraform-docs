@@ -21,15 +21,19 @@ import (
 )
 
 // TOML represents TOML format.
-type TOML struct{}
+type TOML struct {
+	settings *print.Settings
+}
 
 // NewTOML returns new instance of TOML.
 func NewTOML(settings *print.Settings) print.Engine {
-	return &TOML{}
+	return &TOML{
+		settings: settings,
+	}
 }
 
-// Print a Terraform module as toml.
-func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+// Generate a Terraform module as toml.
+func (t *TOML) Generate(module *terraform.Module) (*print.Generator, error) {
 	copy := &terraform.Module{
 		Header:       "",
 		Footer:       "",
@@ -41,16 +45,20 @@ func (t *TOML) Print(module *terraform.Module, settings *print.Settings) (string
 		Resources:    make([]*terraform.Resource, 0),
 	}
 
-	print.CopySections(settings, module, copy)
+	print.CopySections(t.settings, module, copy)
 
 	buffer := new(bytes.Buffer)
 	encoder := toml.NewEncoder(buffer)
 	err := encoder.Encode(copy)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return strings.TrimSuffix(buffer.String(), "\n"), nil
+	return print.NewGenerator(
+		"toml",
+		print.WithContent(strings.TrimSuffix(buffer.String(), "\n")),
+	), nil
+
 }
 
 func init() {
