@@ -150,6 +150,46 @@ default file to attempt extraction from, you need to explicitly specify desired 
 to extract content from with `--footer-from FILE` or corresponding `footer-from` in
 configuration file.
 
+## Include Examples
+
+Since `v0.14.0`
+
+Example can be automatically included into README by using `content` in configuration
+file. There are [multiple variables and function] available in `content`. As an example:
+
+````bash
+$ tree
+.
+├── examples
+│   ├── example-1
+│   │   ├── main.tf
+│   └── example-2
+│       └── main.tf
+├── ...
+├── main.tf
+├── variables.tf
+├── ...
+└── .terraform-docs.yml
+````
+
+and
+
+````yaml
+# .terraform-docs.yml
+content: |-
+  {{ .Header }}
+
+  ## Example
+
+  ```hcl
+  {{ file "example-1/main.tf" }}
+  ```
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+````
+
 ## Insert Output To File
 
 Since `v0.12.0`

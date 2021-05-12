@@ -24,6 +24,12 @@ sections:
 #
 #   and even in between sections
 #
+#   ## Examples
+#
+#   ```hcl
+#   {{ include "relative/path/to/main.tf" }}
+#   ```
+#
 #   {{ .Providers }}
 #
 #   and they don't even need to be in the default order

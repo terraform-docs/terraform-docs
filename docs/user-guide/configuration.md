@@ -160,14 +160,14 @@ used for `FORMATTER_NAME`:
 use the plugin. For example, if plugin binary file is called `tfdocs-format-foo`,
 formatter name must be set to `foo`.
 
-## header-from
+## Header From
 
 Since `v0.10.0`
 
 Relative path to a file to extract header for the generated output from. Supported
 file formats are `.adoc`, `.md`, `.tf`, and `.txt`. Default value is `main.tf`.
 
-## footer-from
+## Footer From
 
 Since `v0.12.0`
 
@@ -211,7 +211,11 @@ Go template with following additional variables:
 - `{{ .Requirements }}`
 - `{{ .Resources }}`
 
-```yaml
+and
+
+- `{{ include "relative/path/to/file" }}`
+
+````yaml
 content: |-
   Any arbitrary text can be placed anywhere in the content
 
@@ -226,7 +230,17 @@ content: |-
   {{ .Outputs }}
 
   {{ .Inputs }}
-```
+
+  and include any relative files
+
+  {{ include "relative/path/to/file" }}
+
+  or examples
+
+  ```hcl
+  {{ include "examples/foo/main.tf" }}
+  ```
+````
 
 These variables are the generated output of individual sections in the selected
 formatter. For example `{{ .Inputs }}` is Markdown Table representation of _inputs_

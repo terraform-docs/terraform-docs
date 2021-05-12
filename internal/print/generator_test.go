@@ -107,6 +107,20 @@ func TestExecuteTemplate(t *testing.T) {
 			expected: "",
 			wantErr:  true,
 		},
+		"Compatible with template include file": {
+			name:     "markdown table",
+			content:  "this is the header\nthis is the footer",
+			template: "{{ include \"testdata/sample-file.txt\" }}",
+			expected: "Sample file to be included.\n",
+			wantErr:  false,
+		},
+		"Compatible with template include unknown file": {
+			name:     "markdown table",
+			content:  "this is the header\nthis is the footer",
+			template: "{{ include \"file-not-found\" }}",
+			expected: "",
+			wantErr:  true,
+		},
 		"Incompatible without template": {
 			name:     "yaml",
 			content:  "header: \"this is the header\"\nfooter: \"this is the footer\"",

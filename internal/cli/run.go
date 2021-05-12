@@ -149,6 +149,7 @@ func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 		if err != nil {
 			return err
 		}
+		generator.Path(config.moduleRoot)
 
 		content, err := generator.ExecuteTemplate(config.Content)
 		if err != nil {

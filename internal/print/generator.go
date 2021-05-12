@@ -12,6 +12,8 @@ package print
 
 import (
 	"bytes"
+	"os"
+	"path/filepath"
 	"text/template"
 )
 
@@ -106,6 +108,7 @@ type Generator struct {
 	Requirements string
 	Resources    string
 
+	path      string // module's path
 	content   string // all the content combined
 	formatter string // name of the formatter
 }
@@ -125,6 +128,11 @@ func NewGenerator(name string, fns ...GenerateFunc) *Generator {
 	return g
 }
 
+// Path of module's directory.
+func (g *Generator) Path(root string) {
+	g.path = root
+}
+
 // ExecuteTemplate applies the template with Generator known items. If template
 // is empty Generator.content is returned as is. If template is not empty this
 // still returns Generator.content for incompatible formatters.
@@ -140,6 +148,15 @@ func (g *Generator) ExecuteTemplate(contentTmpl string) (string, error) {
 	var buf bytes.Buffer
 
 	tmpl := template.New("content")
+	tmpl.Funcs(template.FuncMap{
+		"include": func(s string) string {
+			content, err := os.ReadFile(filepath.Join(g.path, s))
+			if err != nil {
+				panic(err)
+			}
+			return string(content)
+		},
+	})
 	template.Must(tmpl.Parse(contentTmpl))
 
 	if err := tmpl.ExecuteTemplate(&buf, "content", g); err != nil {
