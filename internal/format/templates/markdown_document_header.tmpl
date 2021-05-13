@@ -1,0 +1,6 @@
+{{- if .Settings.ShowHeader -}}
+    {{- with .Module.Header -}}
+        {{ sanitizeSection . }}
+        {{ printf "\n" }}
+    {{- end -}}
+{{ end -}}

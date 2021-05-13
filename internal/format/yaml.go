@@ -21,15 +21,19 @@ import (
 )
 
 // YAML represents YAML format.
-type YAML struct{}
+type YAML struct {
+	settings *print.Settings
+}
 
 // NewYAML returns new instance of YAML.
 func NewYAML(settings *print.Settings) print.Engine {
-	return &YAML{}
+	return &YAML{
+		settings: settings,
+	}
 }
 
-// Print a Terraform module as yaml.
-func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+// Generate a Terraform module as yaml.
+func (y *YAML) Generate(module *terraform.Module) (*print.Generator, error) {
 	copy := &terraform.Module{
 		Header:       "",
 		Footer:       "",
@@ -41,7 +45,7 @@ func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string
 		Resources:    make([]*terraform.Resource, 0),
 	}
 
-	print.CopySections(settings, module, copy)
+	print.CopySections(y.settings, module, copy)
 
 	buffer := new(bytes.Buffer)
 
@@ -50,10 +54,13 @@ func (y *YAML) Print(module *terraform.Module, settings *print.Settings) (string
 
 	err := encoder.Encode(copy)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return strings.TrimSuffix(buffer.String(), "\n"), nil
+	return print.NewGenerator(
+		"yaml",
+		print.WithContent(strings.TrimSuffix(buffer.String(), "\n")),
+	), nil
 }
 
 func init() {

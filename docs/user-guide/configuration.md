@@ -72,6 +72,8 @@ sections:
   hide-all: false # deprecated in v0.13.0
   show-all: true  # deprecated in v0.13.0
 
+content: ""
+
 output:
   file: ""
   mode: inject
@@ -158,14 +160,14 @@ used for `FORMATTER_NAME`:
 use the plugin. For example, if plugin binary file is called `tfdocs-format-foo`,
 formatter name must be set to `foo`.
 
-## header-from
+## Header From
 
 Since `v0.10.0`
 
 Relative path to a file to extract header for the generated output from. Supported
 file formats are `.adoc`, `.md`, `.tf`, and `.txt`. Default value is `main.tf`.
 
-## footer-from
+## Footer From
 
 Since `v0.12.0`
 
@@ -191,6 +193,90 @@ The following options are supported and can be used for `sections.show` and
 
 **Note:** As of `v0.13.0`, `sections.hide-all` and `sections.show-all` are deprecated
 and removed in favor of explicit use of `sections.hide` and `sections.show`.
+
+## Content
+
+Since `v0.14.0`
+
+Generated content can be customized further away with `content` in configuration.
+If the `content` is empty the default orders of section is used. `content` is a
+Go template with following additional variables:
+
+- `{{ .Header }}`
+- `{{ .Footer }}`
+- `{{ .Inputs }}`
+- `{{ .Modules }}`
+- `{{ .Outputs }}`
+- `{{ .Providers }}`
+- `{{ .Requirements }}`
+- `{{ .Resources }}`
+
+and
+
+- `{{ include "relative/path/to/file" }}`
+
+````yaml
+content: |-
+  Any arbitrary text can be placed anywhere in the content
+
+  {{ .Header }}
+
+  and even in between sections
+
+  {{ .Providers }}
+
+  and they don't even need to be in the default order
+
+  {{ .Outputs }}
+
+  {{ .Inputs }}
+
+  and include any relative files
+
+  {{ include "relative/path/to/file" }}
+
+  or examples
+
+  ```hcl
+  {{ include "examples/foo/main.tf" }}
+  ```
+````
+
+These variables are the generated output of individual sections in the selected
+formatter. For example `{{ .Inputs }}` is Markdown Table representation of _inputs_
+when formatter is set to `markdown table` and AsciiDoc Document representation
+when formatter is set to `asciidoc document` and so on.
+
+Compatible formats for customized content are:
+
+- `asciidoc document`
+- `asciidoc table`
+- `markdown document`
+- `markdown table`
+
+**Note:** Sections visibility (i.e. `sections.show` and `sections.hide`) takes
+precedence over the `content`. In the following example although `{{ .Providers }}`
+is used it won't be rendered because `providers` is not set to be shown in
+`sections.show`.
+
+```yaml
+sections:
+  show:
+    - header
+    - inputs
+    - outputs
+
+content: |-
+  {{ .Header }}
+
+  Some more information can go here.
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+```
 
 ## Output
 

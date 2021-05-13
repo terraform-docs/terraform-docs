@@ -1,0 +1,27 @@
+{{- if .Settings.ShowInputs -}}
+    {{ indent 0 "#" }} Inputs
+    {{ if not .Module.Inputs }}
+        No inputs.
+    {{ else }}
+        | Name | Description |
+        {{- if .Settings.ShowType }} Type |{{ end }}
+        {{- if .Settings.ShowDefault }} Default |{{ end }}
+        {{- if .Settings.ShowRequired }} Required |{{ end }}
+        |------|-------------|
+        {{- if .Settings.ShowType }}------|{{ end }}
+        {{- if .Settings.ShowDefault }}---------|{{ end }}
+        {{- if .Settings.ShowRequired }}:--------:|{{ end }}
+        {{- range .Module.Inputs }}
+            | {{ anchorName "input" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
+            {{- if $.Settings.ShowType -}}
+                {{ printf " " }}{{ tostring .Type | type | sanitizeMarkdownTbl }} |
+            {{- end -}}
+            {{- if $.Settings.ShowDefault -}}
+                {{ printf " " }}{{ value .GetValue | sanitizeMarkdownTbl }} |
+            {{- end -}}
+            {{- if $.Settings.ShowRequired -}}
+                {{ printf " " }}{{ ternary .Required "yes" "no" }} |
+            {{- end -}}
+        {{- end }}
+    {{ end }}
+{{ end -}}

@@ -19,15 +19,19 @@ import (
 )
 
 // XML represents XML format.
-type XML struct{}
+type XML struct {
+	settings *print.Settings
+}
 
 // NewXML returns new instance of XML.
 func NewXML(settings *print.Settings) print.Engine {
-	return &XML{}
+	return &XML{
+		settings: settings,
+	}
 }
 
-// Print a Terraform module as xml.
-func (x *XML) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+// Generate a Terraform module as xml.
+func (x *XML) Generate(module *terraform.Module) (*print.Generator, error) {
 	copy := &terraform.Module{
 		Header:       "",
 		Footer:       "",
@@ -39,14 +43,17 @@ func (x *XML) Print(module *terraform.Module, settings *print.Settings) (string,
 		Resources:    make([]*terraform.Resource, 0),
 	}
 
-	print.CopySections(settings, module, copy)
+	print.CopySections(x.settings, module, copy)
 
 	out, err := xml.MarshalIndent(copy, "", "  ")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return strings.TrimSuffix(string(out), "\n"), nil
+	return print.NewGenerator(
+		"xml",
+		print.WithContent(strings.TrimSuffix(string(out), "\n")),
+	), nil
 }
 
 func init() {

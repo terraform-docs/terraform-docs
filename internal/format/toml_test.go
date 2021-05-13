@@ -114,8 +114,12 @@ func TestToml(t *testing.T) {
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			printer := NewTOML(&tt.settings)
-			actual, err := printer.Print(module, &tt.settings)
+			formatter := NewTOML(&tt.settings)
+
+			generator, err := formatter.Generate(module)
+			assert.Nil(err)
+
+			actual, err := generator.ExecuteTemplate("")
 
 			assert.Nil(err)
 			assert.Equal(expected, actual)

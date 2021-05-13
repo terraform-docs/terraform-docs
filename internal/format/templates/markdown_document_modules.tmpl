@@ -1,0 +1,17 @@
+{{- if .Settings.ShowModuleCalls -}}
+    {{ indent 0 "#" }} Modules
+    {{ if not .Module.ModuleCalls }}
+        No modules.
+    {{ else }}
+        The following Modules are called:
+        {{- range .Module.ModuleCalls }}
+
+            {{ indent 1 "#" }} {{ anchorName "module" .Name }}
+
+            Source: {{ .Source }}
+
+            Version: {{ .Version }}
+
+        {{ end }}
+    {{ end }}
+{{ end -}}

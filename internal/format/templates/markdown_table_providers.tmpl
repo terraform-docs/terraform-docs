@@ -1,0 +1,12 @@
+{{- if .Settings.ShowProviders -}}
+    {{ indent 0 "#" }} Providers
+    {{ if not .Module.Providers }}
+        No providers.
+    {{ else }}
+        | Name | Version |
+        |------|---------|
+        {{- range .Module.Providers }}
+            | {{ anchorName "provider" .FullName }} | {{ tostring .Version | default "n/a" }} |
+        {{- end }}
+    {{ end }}
+{{ end -}}

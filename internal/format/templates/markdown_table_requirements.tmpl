@@ -1,0 +1,12 @@
+{{- if .Settings.ShowRequirements -}}
+    {{ indent 0 "#" }} Requirements
+    {{ if not .Module.Requirements }}
+        No requirements.
+    {{ else }}
+        | Name | Version |
+        |------|---------|
+        {{- range .Module.Requirements }}
+            | {{ anchorName "requirement" .Name }} | {{ tostring .Version | default "n/a" }} |
+        {{- end }}
+    {{ end }}
+{{ end -}}

@@ -11,9 +11,14 @@ the root directory of this source tree.
 package format
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
+	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/terraform-docs/terraform-docs/internal/template"
 )
 
 // sanitize cleans a Markdown document to soothe linters.
@@ -62,4 +67,36 @@ func printFencedAsciidocCodeBlock(code string, language string) (string, bool) {
 		return fmt.Sprintf("\n[source,%s]\n----\n%s\n----\n", language, code), true
 	}
 	return fmt.Sprintf("`%s`", code), false
+}
+
+// readTemplateItems reads all static formatter .tmpl files prefixed by specific string
+// from an embed file system.
+func readTemplateItems(efs embed.FS, prefix string) []*template.Item {
+	items := make([]*template.Item, 0)
+
+	files, err := fs.ReadDir(efs, "templates")
+	if err != nil {
+		return items
+	}
+
+	for _, f := range files {
+		content, err := efs.ReadFile(filepath.Join("templates", f.Name()))
+		if err != nil {
+			continue
+		}
+
+		name := f.Name()
+		name = strings.ReplaceAll(name, prefix, "")
+		name = strings.ReplaceAll(name, "_", "")
+		name = strings.ReplaceAll(name, ".tmpl", "")
+		if name == "" {
+			name = "all"
+		}
+
+		items = append(items, &template.Item{
+			Name: name,
+			Text: string(content),
+		})
+	}
+	return items
 }

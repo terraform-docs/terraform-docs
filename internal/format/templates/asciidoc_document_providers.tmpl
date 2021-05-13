@@ -1,0 +1,12 @@
+{{- if .Settings.ShowProviders -}}
+    {{ indent 0 "=" }} Providers
+    {{ if not .Module.Providers }}
+        No providers.
+    {{ else }}
+        The following providers are used by this module:
+        {{- range .Module.Providers }}
+            {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+            - {{ anchorNameAsciidoc "provider" .FullName }}{{ $version }}
+        {{- end }}
+    {{ end }}
+{{ end -}}

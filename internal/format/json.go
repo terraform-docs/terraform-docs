@@ -20,15 +20,19 @@ import (
 )
 
 // JSON represents JSON format.
-type JSON struct{}
+type JSON struct {
+	settings *print.Settings
+}
 
 // NewJSON returns new instance of JSON.
 func NewJSON(settings *print.Settings) print.Engine {
-	return &JSON{}
+	return &JSON{
+		settings: settings,
+	}
 }
 
-// Print a Terraform module as json.
-func (j *JSON) Print(module *terraform.Module, settings *print.Settings) (string, error) {
+// Generate a Terraform module as json.
+func (j *JSON) Generate(module *terraform.Module) (*print.Generator, error) {
 	copy := &terraform.Module{
 		Header:       "",
 		Footer:       "",
@@ -40,20 +44,23 @@ func (j *JSON) Print(module *terraform.Module, settings *print.Settings) (string
 		Resources:    make([]*terraform.Resource, 0),
 	}
 
-	print.CopySections(settings, module, copy)
+	print.CopySections(j.settings, module, copy)
 
 	buffer := new(bytes.Buffer)
 
 	encoder := json.NewEncoder(buffer)
 	encoder.SetIndent("", "  ")
-	encoder.SetEscapeHTML(settings.EscapeCharacters)
+	encoder.SetEscapeHTML(j.settings.EscapeCharacters)
 
 	err := encoder.Encode(copy)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return strings.TrimSuffix(buffer.String(), "\n"), nil
+	return print.NewGenerator(
+		"json",
+		print.WithContent(strings.TrimSuffix(buffer.String(), "\n")),
+	), nil
 }
 
 func init() {

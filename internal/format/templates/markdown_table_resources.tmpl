@@ -1,0 +1,20 @@
+{{- if or .Settings.ShowResources .Settings.ShowDataSources -}}
+    {{ indent 0 "#" }} Resources
+    {{ if not .Module.Resources }}
+        No resources.
+    {{ else }}
+        | Name | Type |
+        |------|------|
+        {{- range .Module.Resources }}
+            {{- $isResource := and $.Settings.ShowResources ( eq "resource" (printf "%s" .GetMode)) }}
+            {{- $isDataResource := and $.Settings.ShowDataSources ( eq "data source" (printf "%s" .GetMode)) }}
+            {{- if or $isResource $isDataResource }}
+                {{ if eq (len .URL) 0 }}
+                    | {{ .Spec }} | {{ .GetMode }} |
+                {{- else -}}
+                    | [{{ .Spec }}]({{ .URL }}) | {{ .GetMode }} |
+                {{- end }}
+            {{- end }}
+        {{- end }}
+    {{ end }}
+{{ end -}}

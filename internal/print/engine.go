@@ -14,7 +14,7 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-// Engine represents a printer format engine (e.g. json, table, yaml, ...)
+// Engine represents a format engine (e.g. json, table, yaml, ...)
 type Engine interface {
-	Print(*terraform.Module, *Settings) (string, error)
+	Generate(*terraform.Module) (*Generator, error)
 }

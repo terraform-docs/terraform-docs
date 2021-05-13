@@ -84,6 +84,6 @@ func (t Template) CustomFunc(funcs gotemplate.FuncMap) {
 }
 
 // Render template with given Module struct.
-func (t Template) Render(module *terraform.Module) (string, error) {
-	return t.engine.Render(module)
+func (t Template) Render(name string, module *terraform.Module) (string, error) {
+	return t.engine.Render(name, module)
 }

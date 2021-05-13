@@ -28,6 +28,7 @@ var tfvarsHCLTpl []byte
 // TfvarsHCL represents Terraform tfvars HCL format.
 type TfvarsHCL struct {
 	template *template.Template
+	settings *print.Settings
 }
 
 var padding []int
@@ -57,17 +58,23 @@ func NewTfvarsHCL(settings *print.Settings) print.Engine {
 	})
 	return &TfvarsHCL{
 		template: tt,
+		settings: settings,
 	}
 }
 
-// Print a Terraform module as Terraform tfvars HCL.
-func (h *TfvarsHCL) Print(module *terraform.Module, settings *print.Settings) (string, error) {
-	alignments(module.Inputs, settings)
-	rendered, err := h.template.Render(module)
+// Generate a Terraform module as Terraform tfvars HCL.
+func (h *TfvarsHCL) Generate(module *terraform.Module) (*print.Generator, error) {
+	alignments(module.Inputs, h.settings)
+
+	rendered, err := h.template.Render("tfvars", module)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return strings.TrimSuffix(sanitize(rendered), "\n"), nil
+
+	return print.NewGenerator(
+		"tfvars hcl",
+		print.WithContent(strings.TrimSuffix(sanitize(rendered), "\n")),
+	), nil
 }
 
 func isMultilineFormat(input *terraform.Input) bool {

@@ -123,7 +123,7 @@ func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 			return err
 		}
 
-		printer, err := format.Factory(config.Formatter, settings)
+		formatter, err := format.Factory(config.Formatter, settings)
 		if err != nil {
 			plugins, perr := plugin.Discover()
 			if perr != nil {
@@ -145,10 +145,17 @@ func RunEFunc(config *Config) func(*cobra.Command, []string) error {
 			return writeContent(config, content)
 		}
 
-		content, err := printer.Print(module, settings)
+		generator, err := formatter.Generate(module)
 		if err != nil {
 			return err
 		}
+		generator.Path(config.moduleRoot)
+
+		content, err := generator.ExecuteTemplate(config.Content)
+		if err != nil {
+			return err
+		}
+
 		return writeContent(config, content)
 	}
 }

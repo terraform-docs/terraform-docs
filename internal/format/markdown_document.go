@@ -11,7 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
-	_ "embed" //nolint
+	"embed"
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
@@ -19,20 +19,20 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/terraform"
 )
 
-//go:embed templates/markdown_document.tmpl
-var markdownDocumentTpl []byte
+//go:embed templates/markdown_document*.tmpl
+var markdownDocumentFS embed.FS
 
 // MarkdownDocument represents Markdown Document format.
 type MarkdownDocument struct {
 	template *template.Template
+	settings *print.Settings
 }
 
 // NewMarkdownDocument returns new instance of Document.
 func NewMarkdownDocument(settings *print.Settings) print.Engine {
-	tt := template.New(settings, &template.Item{
-		Name: "document",
-		Text: string(markdownDocumentTpl),
-	})
+	items := readTemplateItems(markdownDocumentFS, "markdown_document")
+
+	tt := template.New(settings, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			result, extraline := printFencedCodeBlock(t, "hcl")
@@ -57,16 +57,28 @@ func NewMarkdownDocument(settings *print.Settings) print.Engine {
 	})
 	return &MarkdownDocument{
 		template: tt,
+		settings: settings,
 	}
 }
 
-// Print a Terraform module as Markdown document.
-func (d *MarkdownDocument) Print(module *terraform.Module, settings *print.Settings) (string, error) {
-	rendered, err := d.template.Render(module)
+// Generate a Terraform module as Markdown document.
+func (d *MarkdownDocument) Generate(module *terraform.Module) (*print.Generator, error) {
+	funcs := []print.GenerateFunc{}
+
+	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
+		rendered, err := d.template.Render(name, module)
+		if err != nil {
+			return err
+		}
+
+		funcs = append(funcs, fn(sanitize(rendered)))
+		return nil
+	})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return sanitize(rendered), nil
+
+	return print.NewGenerator("markdown document", funcs...), nil
 }
 
 func init() {
