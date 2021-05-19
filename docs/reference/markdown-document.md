@@ -138,6 +138,12 @@ generates the following output:
 
     Version: 1.2.3
 
+    ### <a name="module_foobar"></a> [foobar](#module\_foobar)
+
+    Source: git@github.com:module/path
+
+    Version: v7.8.9
+
     ## Resources
 
     The following resources are used by this module:

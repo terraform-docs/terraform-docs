@@ -137,6 +137,12 @@ generates the following output:
 
     Version: 1.2.3
 
+    === [[module_foobar]] <<module_foobar,foobar>>
+
+    Source: git@github.com:module/path
+
+    Version: v7.8.9
+
     == Resources
 
     The following resources are used by this module:

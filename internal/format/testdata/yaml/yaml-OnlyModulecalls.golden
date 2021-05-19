@@ -11,6 +11,9 @@ modules:
   - name: baz
     source: baz
     version: 4.5.6
+  - name: foobar
+    source: git@github.com:module/path
+    version: v7.8.9
 outputs: []
 providers: []
 requirements: []

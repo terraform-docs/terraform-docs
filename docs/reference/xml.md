@@ -312,6 +312,11 @@ generates the following output:
           <source>bar</source>
           <version>1.2.3</version>
         </module>
+        <module>
+          <name>foobar</name>
+          <source>git@github.com:module/path</source>
+          <version>v7.8.9</version>
+        </module>
       </modules>
       <outputs>
         <output>

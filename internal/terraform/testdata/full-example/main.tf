@@ -27,3 +27,7 @@ module "foo" {
   source  = "bar"
   version = "1.2.3"
 }
+
+module "foobar" {
+  source  = "git@github.com:module/path?ref=v7.8.9"
+}

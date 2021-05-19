@@ -515,7 +515,7 @@ func TestLoadModulecalls(t *testing.T) {
 		{
 			name:     "load modulecalls from path",
 			path:     "full-example",
-			expected: 1,
+			expected: 2,
 		},
 		{
 			name:     "load modulecalls from path",
