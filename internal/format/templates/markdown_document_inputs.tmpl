@@ -7,7 +7,7 @@
             The following input variables are required:
             {{- range .Module.RequiredInputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ anchorName "input" .Name }}
+                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -29,7 +29,7 @@
             The following input variables are optional (have default values):
             {{- range .Module.OptionalInputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ anchorName "input" .Name }}
+                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -52,7 +52,7 @@
             The following input variables are supported:
             {{- range .Module.Inputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ anchorName "input" .Name }}
+                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 

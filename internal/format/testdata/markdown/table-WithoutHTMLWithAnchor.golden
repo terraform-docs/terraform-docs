@@ -1,0 +1,121 @@
+Usage:
+
+Example of 'foo_bar' module in `foo_bar.tf`.
+
+- list item 1
+- list item 2
+
+Even inline **formatting** in _here_ is possible.
+and some [link](https://domain.com/)
+
+* list item 3
+* list item 4
+
+```hcl
+module "foo_bar" {
+  source = "github.com/foo/bar"
+
+  id   = "1234567890"
+  name = "baz"
+
+  zones = ["us-east-1", "us-west-1"]
+
+  tags = {
+    Name         = "baz"
+    Created-By   = "first.last@email.com"
+    Date-Created = "20180101"
+  }
+}
+```
+
+Here is some trailing text after code block,
+followed by another line of text.
+
+| Name | Description     |
+|------|-----------------|
+| Foo  | Foo description |
+| Bar  | Bar description |
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.12 |
+| <a name="requirement_aws"></a> [aws](#requirement_aws) | >= 2.15.0 |
+| <a name="requirement_random"></a> [random](#requirement_random) | >= 2.2.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_tls"></a> [tls](#provider_tls) | n/a |
+| <a name="provider_aws"></a> [aws](#provider_aws) | >= 2.15.0 |
+| <a name="provider_aws.ident"></a> [aws.ident](#provider_aws.ident) | >= 2.15.0 |
+| <a name="provider_null"></a> [null](#provider_null) | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_bar"></a> [bar](#module_bar) | baz | 4.5.6 |
+| <a name="module_foo"></a> [foo](#module_foo) | bar | 1.2.3 |
+| <a name="module_baz"></a> [baz](#module_baz) | baz | 4.5.6 |
+| <a name="module_foobar"></a> [foobar](#module_foobar) | git@github.com:module/path | v7.8.9 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_caller_identity.ident](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| <a name="input_unquoted"></a> [unquoted](#input_unquoted) | n/a | `any` | n/a |
+| <a name="input_bool-3"></a> [bool-3](#input_bool-3) | n/a | `bool` | `true` |
+| <a name="input_bool-2"></a> [bool-2](#input_bool-2) | It's bool number two. | `bool` | `false` |
+| <a name="input_bool-1"></a> [bool-1](#input_bool-1) | It's bool number one. | `bool` | `true` |
+| <a name="input_string-3"></a> [string-3](#input_string-3) | n/a | `string` | `""` |
+| <a name="input_string-2"></a> [string-2](#input_string-2) | It's string number two. | `string` | n/a |
+| <a name="input_string-1"></a> [string-1](#input_string-1) | It's string number one. | `string` | `"bar"` |
+| <a name="input_string-special-chars"></a> [string-special-chars](#input_string-special-chars) | n/a | `string` | `"\\.<>[]{}_-"` |
+| <a name="input_number-3"></a> [number-3](#input_number-3) | n/a | `number` | `"19"` |
+| <a name="input_number-4"></a> [number-4](#input_number-4) | n/a | `number` | `15.75` |
+| <a name="input_number-2"></a> [number-2](#input_number-2) | It's number number two. | `number` | n/a |
+| <a name="input_number-1"></a> [number-1](#input_number-1) | It's number number one. | `number` | `42` |
+| <a name="input_map-3"></a> [map-3](#input_map-3) | n/a | `map` | `{}` |
+| <a name="input_map-2"></a> [map-2](#input_map-2) | It's map number two. | `map` | n/a |
+| <a name="input_map-1"></a> [map-1](#input_map-1) | It's map number one. | `map` | ```{ "a": 1, "b": 2, "c": 3 }``` |
+| <a name="input_list-3"></a> [list-3](#input_list-3) | n/a | `list` | `[]` |
+| <a name="input_list-2"></a> [list-2](#input_list-2) | It's list number two. | `list` | n/a |
+| <a name="input_list-1"></a> [list-1](#input_list-1) | It's list number one. | `list` | ```[ "a", "b", "c" ]``` |
+| <a name="input_input_with_underscores"></a> [input_with_underscores](#input_input_with_underscores) | A variable with underscores. | `any` | n/a |
+| <a name="input_input-with-pipe"></a> [input-with-pipe](#input_input-with-pipe) | It includes v1 \| v2 \| v3 | `string` | `"v1"` |
+| <a name="input_input-with-code-block"></a> [input-with-code-block](#input_input-with-code-block) | This is a complicated one. We need a newline. And an example in a code block ```default = [ "machine rack01:neptune" ]``` | `list` | ```[ "name rack:location" ]``` |
+| <a name="input_long_type"></a> [long_type](#input_long_type) | This description is itself markdown.  It spans over multiple lines. | ```object({ name = string, foo = object({ foo = string, bar = string }), bar = object({ foo = string, bar = string }), fizz = list(string), buzz = list(string) })``` | ```{ "bar": { "bar": "bar", "foo": "bar" }, "buzz": [ "fizz", "buzz" ], "fizz": [], "foo": { "bar": "foo", "foo": "foo" }, "name": "hello" }``` |
+| <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input_no-escape-default-value) | The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` |
+| <a name="input_with-url"></a> [with-url](#input_with-url) | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` |
+| <a name="input_string_default_empty"></a> [string_default_empty](#input_string_default_empty) | n/a | `string` | `""` |
+| <a name="input_string_default_null"></a> [string_default_null](#input_string_default_null) | n/a | `string` | `null` |
+| <a name="input_string_no_default"></a> [string_no_default](#input_string_no_default) | n/a | `string` | n/a |
+| <a name="input_number_default_zero"></a> [number_default_zero](#input_number_default_zero) | n/a | `number` | `0` |
+| <a name="input_bool_default_false"></a> [bool_default_false](#input_bool_default_false) | n/a | `bool` | `false` |
+| <a name="input_list_default_empty"></a> [list_default_empty](#input_list_default_empty) | n/a | `list(string)` | `[]` |
+| <a name="input_object_default_empty"></a> [object_default_empty](#input_object_default_empty) | n/a | `object({})` | `{}` |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_unquoted"></a> [unquoted](#output_unquoted) | It's unquoted output. |
+| <a name="output_output-2"></a> [output-2](#output_output-2) | It's output number two. |
+| <a name="output_output-1"></a> [output-1](#output_output-1) | It's output number one. |
+| <a name="output_output-0.12"></a> [output-0.12](#output_output-0.12) | terraform 0.12 only |
+
+## This is an example of a footer
+
+It looks exactly like a header, but is placed at the end of the document

@@ -6,7 +6,7 @@
         The following Modules are called:
         {{- range .Module.ModuleCalls }}
 
-            {{ indent 1 "#" }} {{ anchorName "module" .Name }}
+            {{ indent 1 "#" }} {{ anchorNameMarkdown "module" .Name }}
 
             Source: {{ .Source }}
 

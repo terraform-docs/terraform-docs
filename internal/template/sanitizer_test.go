@@ -195,21 +195,43 @@ func TestSanitizeMarkdownTable(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
+		expected string
+		html     bool
 		escape   bool
 	}{
 		{
 			name:     "sanitize table item empty",
 			filename: "empty",
+			expected: "empty",
+			html:     true,
 			escape:   true,
 		},
 		{
-			name:     "sanitize table item complex",
+			name:     "sanitize table item complex with html",
 			filename: "complex",
+			expected: "complex-html",
+			html:     true,
 			escape:   true,
 		},
 		{
-			name:     "sanitize table item codeblock",
+			name:     "sanitize table item complex without html",
+			filename: "complex",
+			expected: "complex-nohtml",
+			html:     false,
+			escape:   true,
+		},
+		{
+			name:     "sanitize table item codeblock with html",
 			filename: "codeblock",
+			expected: "codeblock-html",
+			html:     true,
+			escape:   true,
+		},
+		{
+			name:     "sanitize table item codeblock without html",
+			filename: "codeblock",
+			expected: "codeblock-nohtml",
+			html:     false,
 			escape:   true,
 		},
 	}
@@ -217,6 +239,7 @@ func TestSanitizeMarkdownTable(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			settings := &print.Settings{
+				ShowHTML:         tt.html,
 				EscapeCharacters: tt.escape,
 			}
 
@@ -225,7 +248,7 @@ func TestSanitizeMarkdownTable(t *testing.T) {
 
 			actual := sanitizeMarkdownTable(string(bytes), settings)
 
-			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".expected"))
+			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.expected+".markdown.expected"))
 			assert.Nil(err)
 
 			assert.Equal(string(expected), actual)
@@ -280,67 +303,113 @@ func TestConvertMultiLineText(t *testing.T) {
 		name     string
 		filename string
 		isTable  bool
+		showHTML bool
 		expected string
 	}{
 		{
 			name:     "convert multi-line newline-single",
 			filename: "newline-single",
 			isTable:  false,
+			showHTML: true,
 			expected: "Lorem ipsum dolor sit amet,\n\nconsectetur adipiscing elit,\n\nsed do eiusmod tempor incididunt\n\nut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line newline-single",
 			filename: "newline-single",
 			isTable:  true,
+			showHTML: true,
 			expected: "Lorem ipsum dolor sit amet,<br><br>consectetur adipiscing elit,<br><br>sed do eiusmod tempor incididunt<br><br>ut labore et dolore magna aliqua.",
+		},
+		{
+			name:     "convert multi-line newline-single",
+			filename: "newline-single",
+			isTable:  true,
+			showHTML: false,
+			expected: "Lorem ipsum dolor sit amet,  consectetur adipiscing elit,  sed do eiusmod tempor incididunt  ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line newline-double",
 			filename: "newline-double",
 			isTable:  false,
+			showHTML: true,
 			expected: "Lorem ipsum dolor sit amet,\n\n\nconsectetur adipiscing elit,\n\n\nsed do eiusmod tempor incididunt\n\n\nut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line newline-double",
 			filename: "newline-double",
 			isTable:  true,
+			showHTML: true,
 			expected: "Lorem ipsum dolor sit amet,<br><br><br>consectetur adipiscing elit,<br><br><br>sed do eiusmod tempor incididunt<br><br><br>ut labore et dolore magna aliqua.",
+		},
+		{
+			name:     "convert multi-line newline-double",
+			filename: "newline-double",
+			isTable:  true,
+			showHTML: false,
+			expected: "Lorem ipsum dolor sit amet,   consectetur adipiscing elit,   sed do eiusmod tempor incididunt   ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line paragraph",
 			filename: "paragraph",
 			isTable:  false,
+			showHTML: true,
 			expected: "Lorem ipsum dolor sit amet,  \nconsectetur adipiscing elit,  \nsed do eiusmod tempor incididunt  \nut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line paragraph",
 			filename: "paragraph",
 			isTable:  true,
+			showHTML: true,
 			expected: "Lorem ipsum dolor sit amet,<br>consectetur adipiscing elit,<br>sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.",
+		},
+		{
+			name:     "convert multi-line paragraph",
+			filename: "paragraph",
+			isTable:  true,
+			showHTML: false,
+			expected: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line list",
 			filename: "list",
 			isTable:  false,
+			showHTML: true,
 			expected: "- Lorem ipsum dolor sit amet,\n  * Lorem ipsum dolor sit amet,\n  * consectetur adipiscing elit,\n- consectetur adipiscing elit,\n- sed do eiusmod tempor incididunt\n- ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line list",
 			filename: "list",
 			isTable:  true,
+			showHTML: true,
 			expected: "- Lorem ipsum dolor sit amet,<br>  * Lorem ipsum dolor sit amet,<br>  * consectetur adipiscing elit,<br>- consectetur adipiscing elit,<br>- sed do eiusmod tempor incididunt<br>- ut labore et dolore magna aliqua.",
+		},
+		{
+			name:     "convert multi-line list",
+			filename: "list",
+			isTable:  true,
+			showHTML: false,
+			expected: "- Lorem ipsum dolor sit amet,   * Lorem ipsum dolor sit amet,   * consectetur adipiscing elit, - consectetur adipiscing elit, - sed do eiusmod tempor incididunt - ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line indentations",
 			filename: "indentations",
 			isTable:  false,
+			showHTML: true,
 			expected: "This is is a multline test which works\n\nKey  \n  Foo1: blah  \n  Foo2: blah\n\nKey2  \nFoo1: bar1  \nFoo2: bar2",
 		},
 		{
 			name:     "convert multi-line indentations",
 			filename: "indentations",
 			isTable:  true,
+			showHTML: true,
 			expected: "This is is a multline test which works<br><br>Key<br>  Foo1: blah<br>  Foo2: blah<br><br>Key2<br>Foo1: bar1<br>Foo2: bar2",
+		},
+		{
+			name:     "convert multi-line indentations",
+			filename: "indentations",
+			isTable:  true,
+			showHTML: false,
+			expected: "This is is a multline test which works  Key   Foo1: blah   Foo2: blah  Key2 Foo1: bar1 Foo2: bar2",
 		},
 	}
 	for _, tt := range tests {
@@ -351,7 +420,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			bytes, err := ioutil.ReadFile(path)
 			assert.Nil(err)
 
-			actual := convertMultiLineText(string(bytes), tt.isTable, false)
+			actual := convertMultiLineText(string(bytes), tt.isTable, false, tt.showHTML)
 			assert.Equal(tt.expected, actual)
 		})
 	}

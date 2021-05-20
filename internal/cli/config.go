@@ -381,6 +381,7 @@ type settings struct {
 	Default     bool `mapstructure:"default"`
 	Description bool `mapstructure:"description"`
 	Escape      bool `mapstructure:"escape"`
+	HTML        bool `mapstructure:"html"`
 	Indent      int  `mapstructure:"indent"`
 	Required    bool `mapstructure:"required"`
 	Sensitive   bool `mapstructure:"sensitive"`
@@ -394,6 +395,7 @@ func defaultSettings() settings {
 		Default:     true,
 		Description: false,
 		Escape:      true,
+		HTML:        true,
 		Indent:      2,
 		Required:    true,
 		Sensitive:   true,
@@ -508,6 +510,7 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings.ShowDescription = c.Settings.Description
 	settings.ShowColor = c.Settings.Color
 	settings.ShowDefault = c.Settings.Default
+	settings.ShowHTML = c.Settings.HTML
 	settings.ShowRequired = c.Settings.Required
 	settings.ShowSensitivity = c.Settings.Sensitive
 	settings.ShowType = c.Settings.Type

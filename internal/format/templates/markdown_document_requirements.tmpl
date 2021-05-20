@@ -6,7 +6,7 @@
         The following requirements are needed by this module:
         {{- range .Module.Requirements }}
             {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            - {{ anchorName "requirement" .Name }}{{ $version }}
+            - {{ anchorNameMarkdown "requirement" .Name }}{{ $version }}
         {{- end }}
     {{ end }}
 {{ end -}}

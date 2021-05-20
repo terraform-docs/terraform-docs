@@ -6,7 +6,7 @@
         | Name | Source | Version |
         |------|--------|---------|
         {{- range .Module.ModuleCalls }}
-            | {{ anchorName "module" .Name }} | {{ .Source }} | {{ .Version | default "n/a" }} |
+            | {{ anchorNameMarkdown "module" .Name }} | {{ .Source }} | {{ .Version | default "n/a" }} |
         {{- end }}
     {{ end }}
 {{ end -}}

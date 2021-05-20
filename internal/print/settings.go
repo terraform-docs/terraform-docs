@@ -77,6 +77,12 @@ type Settings struct {
 	// scope: Global
 	ShowHeader bool
 
+	// ShowHTML use HTML tags (a, pre, br, ...)
+	//
+	// default: true
+	// scope: Markdown
+	ShowHTML bool
+
 	// ShowInputs show "Inputs" information
 	//
 	// default: true
@@ -145,6 +151,7 @@ func DefaultSettings() *Settings {
 		ShowDescription:  false,
 		ShowFooter:       false,
 		ShowHeader:       true,
+		ShowHTML:         true,
 		ShowInputs:       true,
 		ShowModuleCalls:  true,
 		ShowOutputs:      true,

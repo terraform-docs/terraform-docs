@@ -6,7 +6,7 @@
         The following outputs are exported:
         {{- range .Module.Outputs }}
 
-            {{ indent 1 "#" }} {{ anchorName "output" .Name }}
+            {{ indent 1 "#" }} {{ anchorNameMarkdown "output" .Name }}
 
             Description: {{ tostring .Description | sanitizeDoc }}
 

@@ -6,7 +6,7 @@
         The following providers are used by this module:
         {{- range .Module.Providers }}
             {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            - {{ anchorName "provider" .FullName }}{{ $version }}
+            - {{ anchorNameMarkdown "provider" .FullName }}{{ $version }}
         {{- end }}
     {{ end }}
 {{ end -}}
