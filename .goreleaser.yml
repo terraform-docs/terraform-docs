@@ -6,9 +6,7 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/terraform-docs/terraform-docs/internal/version.version={{ .Version }}
-      - -X github.com/terraform-docs/terraform-docs/internal/version.commitHash={{ .ShortCommit }}
-      - -X github.com/terraform-docs/terraform-docs/internal/version.buildDate={{ .Date }}
+      - -X github.com/terraform-docs/terraform-docs/internal/version.commit={{ .ShortCommit }}
     goos:
       - darwin
       - linux

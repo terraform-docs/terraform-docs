@@ -26,7 +26,7 @@ func NewCommand() *cobra.Command {
 		Use:   "version",
 		Short: "Print the version number of terraform-docs",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("terraform-docs version %s\n", Full())
+			fmt.Printf("terraform-docs version %s\n", version.Full())
 			plugins, err := plugin.Discover()
 			if err != nil {
 				return
@@ -45,9 +45,4 @@ func NewCommand() *cobra.Command {
 		},
 	}
 	return cmd
-}
-
-// Full returns the full version of the binary
-func Full() string {
-	return version.Full()
 }
