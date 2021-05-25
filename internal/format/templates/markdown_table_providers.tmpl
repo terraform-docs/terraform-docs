@@ -6,7 +6,7 @@
         | Name | Version |
         |------|---------|
         {{- range .Module.Providers }}
-            | {{ anchorName "provider" .FullName }} | {{ tostring .Version | default "n/a" }} |
+            | {{ anchorNameMarkdown "provider" .FullName }} | {{ tostring .Version | default "n/a" }} |
         {{- end }}
     {{ end }}
 {{ end -}}

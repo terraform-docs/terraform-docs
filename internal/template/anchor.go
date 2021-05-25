@@ -16,9 +16,10 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/print"
 )
 
-// createAnchor
+// createAnchorMarkdown
 func createAnchorMarkdown(t string, s string, settings *print.Settings) string {
 	sanitizedName := sanitizeName(s, settings)
+
 	if settings.ShowAnchor {
 		anchorName := fmt.Sprintf("%s_%s", t, s)
 		sanitizedAnchorName := sanitizeName(anchorName, settings)
@@ -32,6 +33,7 @@ func createAnchorMarkdown(t string, s string, settings *print.Settings) string {
 // createAnchorAsciidoc
 func createAnchorAsciidoc(t string, s string, settings *print.Settings) string {
 	sanitizedName := sanitizeName(s, settings)
+
 	if settings.ShowAnchor {
 		anchorName := fmt.Sprintf("%s_%s", t, s)
 		sanitizedAnchorName := sanitizeName(anchorName, settings)

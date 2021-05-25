@@ -96,6 +96,7 @@ settings:
   default: true
   description: false
   escape: true
+  html: true
   indent: 2
   required: true
   sensitive: true

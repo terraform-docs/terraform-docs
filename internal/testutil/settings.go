@@ -32,12 +32,24 @@ func WithSections(override ...print.Settings) print.Settings {
 		ShowDefault: true,
 		ShowType:    true,
 	}
-	if len(override) != 1 {
-		return base
+	return apply(base, override...)
+}
+
+// WithHTML appends ShowHTML to provided Settings.
+func WithHTML(override ...print.Settings) print.Settings {
+	base := print.Settings{
+		ShowHTML: true,
 	}
-	dest := override[0]
-	if err := mergo.Merge(&dest, base); err != nil {
-		return base
+	return apply(base, override...)
+}
+
+func apply(base print.Settings, override ...print.Settings) print.Settings {
+	dest := base
+	for i := range override {
+		if err := mergo.Merge(&dest, override[i]); err != nil {
+			return base
+		}
 	}
 	return dest
+
 }

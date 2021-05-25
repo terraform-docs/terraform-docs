@@ -6,7 +6,7 @@
         | Name | Version |
         |------|---------|
         {{- range .Module.Requirements }}
-            | {{ anchorName "requirement" .Name }} | {{ tostring .Version | default "n/a" }} |
+            | {{ anchorNameMarkdown "requirement" .Name }} | {{ tostring .Version | default "n/a" }} |
         {{- end }}
     {{ end }}
 {{ end -}}

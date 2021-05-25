@@ -27,14 +27,14 @@ func TestMarkdownTable(t *testing.T) {
 	}{
 		// Base
 		"Base": {
-			settings: testutil.WithSections(),
+			settings: testutil.WithSections(testutil.WithHTML()),
 			options: terraform.Options{
 				ShowFooter:     true,
 				FooterFromFile: "footer.md",
 			},
 		},
 		"Empty": {
-			settings: testutil.WithSections(),
+			settings: testutil.WithSections(testutil.WithHTML()),
 			options: terraform.Options{
 				Path: "empty",
 			},
@@ -50,6 +50,7 @@ func TestMarkdownTable(t *testing.T) {
 		// Settings
 		"WithRequired": {
 			settings: testutil.WithSections(
+				testutil.WithHTML(),
 				print.Settings{
 					ShowRequired: true,
 				},
@@ -61,6 +62,7 @@ func TestMarkdownTable(t *testing.T) {
 		},
 		"WithAnchor": {
 			settings: testutil.WithSections(
+				testutil.WithHTML(),
 				print.Settings{
 					ShowAnchor: true,
 				},
@@ -70,24 +72,52 @@ func TestMarkdownTable(t *testing.T) {
 				FooterFromFile: "footer.md",
 			},
 		},
-		"WithoutDefault": {
-			settings: print.Settings{
-				ShowInputs:  true,
-				ShowDefault: false,
-				ShowType:    true,
+		"WithoutHTML": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowHTML: false,
+				},
+			),
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
 			},
+		},
+		"WithoutHTMLWithAnchor": {
+			settings: testutil.WithSections(
+				print.Settings{
+					ShowHTML:   false,
+					ShowAnchor: true,
+				},
+			),
+			options: terraform.Options{
+				ShowFooter:     true,
+				FooterFromFile: "footer.md",
+			},
+		},
+		"WithoutDefault": {
+			settings: testutil.WithHTML(
+				print.Settings{
+					ShowInputs:  true,
+					ShowDefault: false,
+					ShowType:    true,
+				},
+			),
 			options: terraform.Options{},
 		},
 		"WithoutType": {
-			settings: print.Settings{
-				ShowInputs:  true,
-				ShowDefault: true,
-				ShowType:    false,
-			},
+			settings: testutil.WithHTML(
+				print.Settings{
+					ShowInputs:  true,
+					ShowDefault: true,
+					ShowType:    false,
+				},
+			),
 			options: terraform.Options{},
 		},
 		"EscapeCharacters": {
 			settings: testutil.WithSections(
+				testutil.WithHTML(),
 				print.Settings{
 					EscapeCharacters: true,
 				},
@@ -99,6 +129,7 @@ func TestMarkdownTable(t *testing.T) {
 		},
 		"IndentationOfFour": {
 			settings: testutil.WithSections(
+				testutil.WithHTML(),
 				print.Settings{
 					IndentLevel: 4,
 				},
@@ -109,22 +140,26 @@ func TestMarkdownTable(t *testing.T) {
 			},
 		},
 		"OutputValues": {
-			settings: print.Settings{
-				ShowOutputs:     true,
-				OutputValues:    true,
-				ShowSensitivity: true,
-			},
+			settings: testutil.WithHTML(
+				print.Settings{
+					ShowOutputs:     true,
+					OutputValues:    true,
+					ShowSensitivity: true,
+				},
+			),
 			options: terraform.Options{
 				OutputValues:     true,
 				OutputValuesPath: "output_values.json",
 			},
 		},
 		"OutputValuesNoSensitivity": {
-			settings: print.Settings{
-				ShowOutputs:     true,
-				OutputValues:    true,
-				ShowSensitivity: false,
-			},
+			settings: testutil.WithHTML(
+				print.Settings{
+					ShowOutputs:     true,
+					OutputValues:    true,
+					ShowSensitivity: false,
+				},
+			),
 			options: terraform.Options{
 				OutputValues:     true,
 				OutputValuesPath: "output_values.json",
@@ -148,11 +183,13 @@ func TestMarkdownTable(t *testing.T) {
 			},
 		},
 		"OnlyInputs": {
-			settings: print.Settings{
-				ShowInputs:  true,
-				ShowDefault: true,
-				ShowType:    true,
-			},
+			settings: testutil.WithHTML(
+				print.Settings{
+					ShowInputs:  true,
+					ShowDefault: true,
+					ShowType:    true,
+				},
+			),
 			options: terraform.Options{},
 		},
 		"OnlyOutputs": {

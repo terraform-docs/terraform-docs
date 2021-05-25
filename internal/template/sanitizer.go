@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"unicode"
 
 	"mvdan.cc/xurls/v2"
 
@@ -43,13 +44,13 @@ func sanitizeSection(s string, settings *print.Settings) string {
 	result := processSegments(
 		s,
 		"```",
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
 			segment = escapeIllegalCharacters(segment, settings, false)
-			segment = convertMultiLineText(segment, false, true)
+			segment = convertMultiLineText(segment, false, true, settings.ShowHTML)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
 			lastbreak := ""
 			if !strings.HasSuffix(segment, "\n") {
 				lastbreak = "\n"
@@ -71,13 +72,13 @@ func sanitizeDocument(s string, settings *print.Settings) string {
 	result := processSegments(
 		s,
 		"```",
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
 			segment = escapeIllegalCharacters(segment, settings, false)
-			segment = convertMultiLineText(segment, false, false)
+			segment = convertMultiLineText(segment, false, false, settings.ShowHTML)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
 			lastbreak := ""
 			if !strings.HasSuffix(segment, "\n") {
 				lastbreak = "\n"
@@ -98,17 +99,37 @@ func sanitizeMarkdownTable(s string, settings *print.Settings) string {
 	result := processSegments(
 		s,
 		"```",
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
 			segment = escapeIllegalCharacters(segment, settings, true)
-			segment = convertMultiLineText(segment, true, false)
+			segment = convertMultiLineText(segment, true, false, settings.ShowHTML)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
+			linebreak := "<br>"
+			codestart := "<pre>"
+			codeend := "</pre>"
+
 			segment = strings.TrimSpace(segment)
-			segment = strings.ReplaceAll(segment, "\n", "<br>")
+
+			if !settings.ShowHTML {
+				linebreak = ""
+				codestart = " ```"
+				codeend = "``` "
+
+				if first {
+					codestart = codestart[1:]
+				}
+				if last {
+					codeend = codeend[:3]
+				}
+
+				segment = convertOneLineCodeBlock(segment)
+			}
+
+			segment = strings.ReplaceAll(segment, "\n", linebreak)
 			segment = strings.ReplaceAll(segment, "\r", "")
-			segment = fmt.Sprintf("<pre>%s</pre>", segment)
+			segment = fmt.Sprintf("%s%s%s", codestart, segment, codeend)
 			return segment
 		},
 	)
@@ -124,12 +145,12 @@ func sanitizeAsciidocTable(s string, settings *print.Settings) string {
 	result := processSegments(
 		s,
 		"```",
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
 			segment = escapeIllegalCharacters(segment, settings, true)
 			segment = normalizeURLs(segment, settings)
 			return segment
 		},
-		func(segment string) string {
+		func(segment string, first bool, last bool) string {
 			segment = strings.TrimSpace(segment)
 			segment = fmt.Sprintf("[source]\n----\n%s\n----", segment)
 			return segment
@@ -139,13 +160,10 @@ func sanitizeAsciidocTable(s string, settings *print.Settings) string {
 }
 
 // convertMultiLineText converts a multi-line text into a suitable Markdown representation.
-func convertMultiLineText(s string, isTable bool, isHeader bool) string {
+func convertMultiLineText(s string, isTable bool, isHeader bool, showHTML bool) string {
 	if isTable {
 		s = strings.TrimSpace(s)
 	}
-
-	// Convert double newlines to <br><br>.
-	s = strings.ReplaceAll(s, "\n\n", "<br><br>")
 
 	// Convert line-break on a non-empty line followed by another line
 	// starting with "alphanumeric" word into space-space-newline
@@ -155,20 +173,42 @@ func convertMultiLineText(s string, isTable bool, isHeader bool) string {
 	if !isHeader {
 		s = regexp.MustCompile(`(\S*)(\r?\n)(\s*)(\w+)`).ReplaceAllString(s, "$1  $2$3$4")
 		s = strings.ReplaceAll(s, "    \n", "  \n")
-		s = strings.ReplaceAll(s, "<br>  \n", "\n\n")
+		s = strings.ReplaceAll(s, "  \n\n", "\n\n")
+		s = strings.ReplaceAll(s, "\n  \n", "\n\n")
 	}
 
-	if isTable {
-		// Convert space-space-newline to <br>
-		s = strings.ReplaceAll(s, "  \n", "<br>")
-
-		// Convert single newline to <br>.
-		s = strings.ReplaceAll(s, "\n", "<br>")
-	} else {
-		s = strings.ReplaceAll(s, "<br>", "\n")
+	if !isTable {
+		return s
 	}
 
-	return s
+	// representation of line break. <br> if showHTML is true, <space> if false.
+	linebreak := " "
+
+	if showHTML {
+		linebreak = "<br>"
+	}
+
+	// Convert space-space-newline to 'linebreak'.
+	s = strings.ReplaceAll(s, "  \n", linebreak)
+
+	// Convert single newline to 'linebreak'.
+	return strings.ReplaceAll(s, "\n", linebreak)
+}
+
+// convertOneLineCodeBlock converts a multi-line code block into a one-liner.
+// Line breaks are replaced with single space.
+func convertOneLineCodeBlock(s string) string {
+	splitted := strings.Split(s, "\n")
+	result := []string{}
+	for _, segment := range splitted {
+		if len(strings.TrimSpace(segment)) == 0 {
+			continue
+		}
+		segment = regexp.MustCompile(`(\s*)=(\s*)`).ReplaceAllString(segment, " = ")
+		segment = strings.TrimLeftFunc(segment, unicode.IsSpace)
+		result = append(result, segment)
+	}
+	return strings.Join(result, " ")
 }
 
 // escapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
@@ -178,10 +218,10 @@ func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool
 		s = processSegments(
 			s,
 			"`",
-			func(segment string) string {
+			func(segment string, first bool, last bool) string {
 				return strings.ReplaceAll(segment, "|", "\\|")
 			},
-			func(segment string) string {
+			func(segment string, first bool, last bool) string {
 				return fmt.Sprintf("`%s`", segment)
 			},
 		)
@@ -191,7 +231,7 @@ func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool
 		s = processSegments(
 			s,
 			"`",
-			func(segment string) string {
+			func(segment string, first bool, last bool) string {
 				return executePerLine(segment, func(line string) string {
 					escape := func(char string) {
 						c := strings.ReplaceAll(char, "*", "\\*")
@@ -226,7 +266,7 @@ func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool
 					return line
 				})
 			},
-			func(segment string) string {
+			func(segment string, first bool, last bool) string {
 				segment = fmt.Sprintf("`%s`", segment)
 				return segment
 			},
@@ -251,19 +291,25 @@ func normalizeURLs(s string, settings *print.Settings) string {
 	return s
 }
 
-func processSegments(s string, prefix string, normalFn func(segment string) string, codeFn func(segment string) string) string {
+type segmentCallbackFn func(string, bool, bool) string
+
+func processSegments(s string, prefix string, normalFn segmentCallbackFn, codeFn segmentCallbackFn) string {
 	// Isolate blocks of code. Dont escape anything inside them
 	nextIsInCodeBlock := strings.HasPrefix(s, prefix)
 	segments := strings.Split(s, prefix)
 	buffer := bytes.NewBufferString("")
-	for _, segment := range segments {
+	for i, segment := range segments {
 		if len(segment) == 0 {
 			continue
 		}
+
+		first := i == 0 || len(strings.TrimSpace(segments[i-1])) == 0
+		last := i == len(segments)-1 || len(strings.TrimSpace(segments[i+1])) == 0
+
 		if !nextIsInCodeBlock {
-			segment = normalFn(segment)
+			segment = normalFn(segment, first, last)
 		} else {
-			segment = codeFn(segment)
+			segment = codeFn(segment, first, last)
 		}
 		buffer.WriteString(segment)
 		nextIsInCodeBlock = !nextIsInCodeBlock

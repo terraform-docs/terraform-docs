@@ -12,7 +12,7 @@
         {{- if .Settings.ShowDefault }}---------|{{ end }}
         {{- if .Settings.ShowRequired }}:--------:|{{ end }}
         {{- range .Module.Inputs }}
-            | {{ anchorName "input" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
+            | {{ anchorNameMarkdown "input" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
             {{- if $.Settings.ShowType -}}
                 {{ printf " " }}{{ tostring .Type | type | sanitizeMarkdownTbl }} |
             {{- end -}}

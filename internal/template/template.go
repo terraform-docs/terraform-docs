@@ -58,7 +58,7 @@ func New(settings *print.Settings, items ...*Item) *Template {
 		"sanitizeAsciidocTbl": func(s string) string {
 			return sanitizeAsciidocTable(s, settings)
 		},
-		"anchorName": func(s string, t string) string {
+		"anchorNameMarkdown": func(s string, t string) string {
 			return createAnchorMarkdown(s, t, settings)
 		},
 		"anchorNameAsciidoc": func(s string, t string) string {
