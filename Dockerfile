@@ -6,7 +6,7 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-FROM golang:1.16.3-alpine AS builder
+FROM golang:1.16.4-alpine AS builder
 
 RUN apk add --update --no-cache make
 
