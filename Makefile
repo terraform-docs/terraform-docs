@@ -16,7 +16,6 @@ LICENSE       := MIT
 # Build variables
 BUILD_DIR    := bin
 COMMIT_HASH  ?= $(shell git rev-parse --short HEAD 2>/dev/null)
-BUILD_DATE   ?= $(shell date +%FT%T%z)
 CUR_VERSION  ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.0-$(COMMIT_HASH)")
 COVERAGE_OUT := coverage.out
 
@@ -26,9 +25,7 @@ GO_PACKAGE  := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
 GOOS        ?= $(shell $(GO) env GOOS)
 GOARCH      ?= $(shell $(GO) env GOARCH)
 
-GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.version=$(CUR_VERSION)
-GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.commitHash=$(COMMIT_HASH)
-GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
+GOLDFLAGS   += -X $(GO_PACKAGE)/internal/version.commit=$(COMMIT_HASH)
 
 GOBUILD     ?= CGO_ENABLED=0 $(GO) build -ldflags="$(GOLDFLAGS)"
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) run

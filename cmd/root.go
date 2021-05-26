@@ -23,10 +23,11 @@ import (
 	"github.com/terraform-docs/terraform-docs/cmd/pretty"
 	"github.com/terraform-docs/terraform-docs/cmd/tfvars"
 	"github.com/terraform-docs/terraform-docs/cmd/toml"
-	"github.com/terraform-docs/terraform-docs/cmd/version"
+	versioncmd "github.com/terraform-docs/terraform-docs/cmd/version"
 	"github.com/terraform-docs/terraform-docs/cmd/xml"
 	"github.com/terraform-docs/terraform-docs/cmd/yaml"
 	"github.com/terraform-docs/terraform-docs/internal/cli"
+	"github.com/terraform-docs/terraform-docs/internal/version"
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -98,7 +99,7 @@ func NewCommand() *cobra.Command {
 
 	// other subcommands
 	cmd.AddCommand(completion.NewCommand())
-	cmd.AddCommand(version.NewCommand())
+	cmd.AddCommand(versioncmd.NewCommand())
 
 	return cmd
 }

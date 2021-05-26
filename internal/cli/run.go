@@ -90,7 +90,7 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error { //nolint
 			return fmt.Errorf("unable to decode config, %w", err)
 		}
 
-		if err := checkConstraint(config.Version, version.Short()); err != nil {
+		if err := checkConstraint(config.Version, version.Core()); err != nil {
 			return err
 		}
 
