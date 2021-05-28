@@ -63,8 +63,8 @@ Create a script in your PATH (eg: /usr/bin) and paste the following content:
 
 ```bash
 #!/bin/sh
-docker pull --quiet quay.io/git-chglog/git-chglog:latest >&2
-docker run --rm --workdir="/workdir" -v "$PWD":/workdir quay.io/terraform-docs/terraform-docs $@
+docker pull --quiet quay.io/terraform-docs/terraform-docs:latest >&2
+docker run --rm --workdir="/workdir" -v "$PWD":/workdir quay.io/terraform-docs/terraform-docs:latest $@
 ```
 
 ## Pre-compiled Binary
