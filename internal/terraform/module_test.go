@@ -681,6 +681,13 @@ func TestLoadProviders(t *testing.T) {
 		},
 		{
 			name: "load module providers from path",
+			path: "with-lock-file",
+			expected: expected{
+				providers: 3,
+			},
+		},
+		{
+			name: "load module providers from path",
 			path: "no-providers",
 			expected: expected{
 				providers: 0,
@@ -690,8 +697,11 @@ func TestLoadProviders(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
+			options, _ := NewOptions().With(&Options{
+				Path: tt.path,
+			})
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			providers := loadProviders(module)
+			providers := loadProviders(module, options)
 
 			assert.Equal(tt.expected.providers, len(providers))
 		})
