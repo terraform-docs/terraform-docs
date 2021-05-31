@@ -62,7 +62,7 @@ func TestAnchorMarkdown(t *testing.T) {
 				ShowAnchor:       tt.anchor,
 				EscapeCharacters: tt.escape,
 			}
-			actual := createAnchorMarkdown(tt.typeSection, tt.name, settings)
+			actual := CreateAnchorMarkdown(tt.typeSection, tt.name, settings)
 
 			assert.Equal(tt.expected, actual)
 		})
@@ -113,7 +113,7 @@ func TestAnchorAsciidoc(t *testing.T) {
 				ShowAnchor:       tt.anchor,
 				EscapeCharacters: tt.escape,
 			}
-			actual := createAnchorAsciidoc(tt.typeSection, tt.name, settings)
+			actual := CreateAnchorAsciidoc(tt.typeSection, tt.name, settings)
 
 			assert.Equal(tt.expected, actual)
 		})

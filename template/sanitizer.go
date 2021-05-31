@@ -22,8 +22,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/print"
 )
 
-// sanitizeName escapes underscore character which have special meaning in Markdown.
-func sanitizeName(name string, settings *print.Settings) string {
+// SanitizeName escapes underscore character which have special meaning in Markdown.
+func SanitizeName(name string, settings *print.Settings) string {
 	if settings.EscapeCharacters {
 		// Escape underscore
 		name = strings.ReplaceAll(name, "_", "\\_")
@@ -31,13 +31,13 @@ func sanitizeName(name string, settings *print.Settings) string {
 	return name
 }
 
-// sanitizeSection converts passed 'string' to suitable Markdown or AsciiDoc
+// SanitizeSection converts passed 'string' to suitable Markdown or AsciiDoc
 // representation for a document. (including line-break, illegal characters,
 // code blocks etc). This is in particular being used for header and footer.
 //
-// IMPORTANT: sanitizeSection will never change the line-endings and preserve
+// IMPORTANT: SanitizeSection will never change the line-endings and preserve
 // them as they are provided by the users.
-func sanitizeSection(s string, settings *print.Settings) string {
+func SanitizeSection(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -45,9 +45,9 @@ func sanitizeSection(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = escapeIllegalCharacters(segment, settings, false)
-			segment = convertMultiLineText(segment, false, true, settings.ShowHTML)
-			segment = normalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, settings, false)
+			segment = ConvertMultiLineText(segment, false, true, settings.ShowHTML)
+			segment = NormalizeURLs(segment, settings)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -71,10 +71,10 @@ func sanitizeSection(s string, settings *print.Settings) string {
 	return result
 }
 
-// sanitizeDocument converts passed 'string' to suitable Markdown or AsciiDoc
+// SanitizeDocument converts passed 'string' to suitable Markdown or AsciiDoc
 // representation for a document. (including line-break, illegal characters,
 // code blocks etc)
-func sanitizeDocument(s string, settings *print.Settings) string {
+func SanitizeDocument(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -82,9 +82,9 @@ func sanitizeDocument(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = escapeIllegalCharacters(segment, settings, false)
-			segment = convertMultiLineText(segment, false, false, settings.ShowHTML)
-			segment = normalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, settings, false)
+			segment = ConvertMultiLineText(segment, false, false, settings.ShowHTML)
+			segment = NormalizeURLs(segment, settings)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -99,9 +99,9 @@ func sanitizeDocument(s string, settings *print.Settings) string {
 	return result
 }
 
-// sanitizeMarkdownTable converts passed 'string' to suitable Markdown representation
+// SanitizeMarkdownTable converts passed 'string' to suitable Markdown representation
 // for a table. (including line-break, illegal characters, code blocks etc)
-func sanitizeMarkdownTable(s string, settings *print.Settings) string {
+func SanitizeMarkdownTable(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -109,9 +109,9 @@ func sanitizeMarkdownTable(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = escapeIllegalCharacters(segment, settings, true)
-			segment = convertMultiLineText(segment, true, false, settings.ShowHTML)
-			segment = normalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, settings, true)
+			segment = ConvertMultiLineText(segment, true, false, settings.ShowHTML)
+			segment = NormalizeURLs(segment, settings)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -133,7 +133,7 @@ func sanitizeMarkdownTable(s string, settings *print.Settings) string {
 					codeend = codeend[:3]
 				}
 
-				segment = convertOneLineCodeBlock(segment)
+				segment = ConvertOneLineCodeBlock(segment)
 			}
 
 			segment = strings.ReplaceAll(segment, "\n", linebreak)
@@ -145,9 +145,9 @@ func sanitizeMarkdownTable(s string, settings *print.Settings) string {
 	return result
 }
 
-// sanitizeAsciidocTable converts passed 'string' to suitable AsciiDoc representation
+// SanitizeAsciidocTable converts passed 'string' to suitable AsciiDoc representation
 // for a table. (including line-break, illegal characters, code blocks etc)
-func sanitizeAsciidocTable(s string, settings *print.Settings) string {
+func SanitizeAsciidocTable(s string, settings *print.Settings) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -155,8 +155,8 @@ func sanitizeAsciidocTable(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = escapeIllegalCharacters(segment, settings, true)
-			segment = normalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, settings, true)
+			segment = NormalizeURLs(segment, settings)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -168,8 +168,8 @@ func sanitizeAsciidocTable(s string, settings *print.Settings) string {
 	return result
 }
 
-// convertMultiLineText converts a multi-line text into a suitable Markdown representation.
-func convertMultiLineText(s string, isTable bool, isHeader bool, showHTML bool) string {
+// ConvertMultiLineText converts a multi-line text into a suitable Markdown representation.
+func ConvertMultiLineText(s string, isTable bool, isHeader bool, showHTML bool) string {
 	if isTable {
 		s = strings.TrimSpace(s)
 	}
@@ -204,9 +204,9 @@ func convertMultiLineText(s string, isTable bool, isHeader bool, showHTML bool) 
 	return strings.ReplaceAll(s, "\n", linebreak)
 }
 
-// convertOneLineCodeBlock converts a multi-line code block into a one-liner.
+// ConvertOneLineCodeBlock converts a multi-line code block into a one-liner.
 // Line breaks are replaced with single space.
-func convertOneLineCodeBlock(s string) string {
+func ConvertOneLineCodeBlock(s string) string {
 	splitted := strings.Split(s, "\n")
 	result := []string{}
 	for _, segment := range splitted {
@@ -220,8 +220,8 @@ func convertOneLineCodeBlock(s string) string {
 	return strings.Join(result, " ")
 }
 
-// escapeIllegalCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
-func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool) string {
+// EscapeCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
+func EscapeCharacters(s string, settings *print.Settings, escapePipe bool) string {
 	// Escape pipe (only for 'markdown table' or 'asciidoc table')
 	if escapePipe {
 		s = processSegments(
@@ -285,10 +285,10 @@ func escapeIllegalCharacters(s string, settings *print.Settings, escapePipe bool
 	return s
 }
 
-// normalizeURLs runs after escape function and normalizes URL back
+// NormalizeURLs runs after escape function and normalizes URL back
 // to the original state. For example any underscore in the URL which
 // got escaped by 'EscapeIllegalCharacters' will be reverted back.
-func normalizeURLs(s string, settings *print.Settings) string {
+func NormalizeURLs(s string, settings *print.Settings) string {
 	if settings.EscapeCharacters {
 		if urls := xurls.Strict().FindAllString(s, -1); len(urls) > 0 {
 			for _, url := range urls {

@@ -16,13 +16,13 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/print"
 )
 
-// createAnchorMarkdown
-func createAnchorMarkdown(t string, s string, settings *print.Settings) string {
-	sanitizedName := sanitizeName(s, settings)
+// CreateAnchorMarkdown creates HTML anchor for Markdown format.
+func CreateAnchorMarkdown(t string, s string, settings *print.Settings) string {
+	sanitizedName := SanitizeName(s, settings)
 
 	if settings.ShowAnchor {
 		anchorName := fmt.Sprintf("%s_%s", t, s)
-		sanitizedAnchorName := sanitizeName(anchorName, settings)
+		sanitizedAnchorName := SanitizeName(anchorName, settings)
 		// the <a> link is purposely not sanitized as this breaks markdown formatting
 		return fmt.Sprintf("<a name=\"%s\"></a> [%s](#%s)", anchorName, sanitizedName, sanitizedAnchorName)
 	}
@@ -30,13 +30,13 @@ func createAnchorMarkdown(t string, s string, settings *print.Settings) string {
 	return sanitizedName
 }
 
-// createAnchorAsciidoc
-func createAnchorAsciidoc(t string, s string, settings *print.Settings) string {
-	sanitizedName := sanitizeName(s, settings)
+// CreateAnchorAsciidoc creates HTML anchor for AsciiDoc format.
+func CreateAnchorAsciidoc(t string, s string, settings *print.Settings) string {
+	sanitizedName := SanitizeName(s, settings)
 
 	if settings.ShowAnchor {
 		anchorName := fmt.Sprintf("%s_%s", t, s)
-		sanitizedAnchorName := sanitizeName(anchorName, settings)
+		sanitizedAnchorName := SanitizeName(anchorName, settings)
 		return fmt.Sprintf("[[%s]] <<%s,%s>>", sanitizedAnchorName, sanitizedAnchorName, sanitizedName)
 	}
 

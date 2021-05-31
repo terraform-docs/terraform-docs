@@ -100,7 +100,7 @@ func TestSanitizeName(t *testing.T) {
 			settings := &print.Settings{
 				EscapeCharacters: tt.escape,
 			}
-			actual := sanitizeName(tt.input, settings)
+			actual := SanitizeName(tt.input, settings)
 
 			assert.Equal(tt.expected, actual)
 		})
@@ -139,7 +139,7 @@ func TestSanitizeSection(t *testing.T) {
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeSection(string(bytes), settings)
+			actual := SanitizeSection(string(bytes), settings)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".expected"))
 			assert.Nil(err)
@@ -181,7 +181,7 @@ func TestSanitizeDocument(t *testing.T) {
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeDocument(string(bytes), settings)
+			actual := SanitizeDocument(string(bytes), settings)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".expected"))
 			assert.Nil(err)
@@ -246,7 +246,7 @@ func TestSanitizeMarkdownTable(t *testing.T) {
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeMarkdownTable(string(bytes), settings)
+			actual := SanitizeMarkdownTable(string(bytes), settings)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.expected+".markdown.expected"))
 			assert.Nil(err)
@@ -288,7 +288,7 @@ func TestSanitizeAsciidocTable(t *testing.T) {
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := sanitizeAsciidocTable(string(bytes), settings)
+			actual := SanitizeAsciidocTable(string(bytes), settings)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".asciidoc.expected"))
 			assert.Nil(err)
@@ -420,7 +420,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			bytes, err := ioutil.ReadFile(path)
 			assert.Nil(err)
 
-			actual := convertMultiLineText(string(bytes), tt.isTable, false, tt.showHTML)
+			actual := ConvertMultiLineText(string(bytes), tt.isTable, false, tt.showHTML)
 			assert.Equal(tt.expected, actual)
 		})
 	}
@@ -581,7 +581,7 @@ func TestEscapeIllegalCharacters(t *testing.T) {
 			settings := &print.Settings{
 				EscapeCharacters: tt.escapeChars,
 			}
-			actual := escapeIllegalCharacters(tt.input, settings, tt.escapePipe)
+			actual := EscapeCharacters(tt.input, settings, tt.escapePipe)
 
 			assert.Equal(tt.expected, actual)
 		})
@@ -638,7 +638,7 @@ func TestNormalizeURLs(t *testing.T) {
 			settings := &print.Settings{
 				EscapeCharacters: tt.escape,
 			}
-			actual := normalizeURLs(tt.input, settings)
+			actual := NormalizeURLs(tt.input, settings)
 
 			assert.Equal(tt.expected, actual)
 		})
