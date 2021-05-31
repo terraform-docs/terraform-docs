@@ -6,6 +6,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/hashicorp/go-plugin v1.4.0
 	github.com/hashicorp/go-version v1.3.0
+	github.com/hashicorp/hcl/v2 v2.0.0
 	github.com/iancoleman/orderedmap v0.2.0
 	github.com/imdario/mergo v0.3.11
 	github.com/mitchellh/go-homedir v1.1.0

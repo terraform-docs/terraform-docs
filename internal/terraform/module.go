@@ -23,6 +23,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/hashicorp/hcl/v2/hclsimple"
+
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
 	"github.com/terraform-docs/terraform-docs/internal/reader"
@@ -152,7 +154,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 	if err != nil {
 		return nil, err
 	}
-	providers := loadProviders(tfmodule)
+	providers := loadProviders(tfmodule, options)
 	requirements := loadRequirements(tfmodule)
 	resources := loadResources(tfmodule)
 
@@ -398,14 +400,37 @@ func loadOutputValues(options *Options) (map[string]*output, error) {
 	return terraformOutputs, err
 }
 
-func loadProviders(tfmodule *tfconfig.Module) []*Provider {
+func loadProviders(tfmodule *tfconfig.Module, options *Options) []*Provider {
+	type provider struct {
+		Name        string   `hcl:"name,label"`
+		Version     string   `hcl:"version"`
+		Constraints *string  `hcl:"constraints"`
+		Hashes      []string `hcl:"hashes"`
+	}
+	type lockfile struct {
+		Provider []provider `hcl:"provider,block"`
+	}
+	lock := make(map[string]provider)
+	var lf lockfile
+
+	filename := filepath.Join(options.Path, ".terraform.lock.hcl")
+	if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
+		for i := range lf.Provider {
+			segments := strings.Split(lf.Provider[i].Name, "/")
+			name := segments[len(segments)-1]
+			lock[name] = lf.Provider[i]
+		}
+	}
+
 	resources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
 	discovered := make(map[string]*Provider)
 
 	for _, resource := range resources {
 		for _, r := range resource {
 			var version = ""
-			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok && len(rv.VersionConstraints) > 0 {
+			if l, ok := lock[r.Provider.Name]; ok {
+				version = l.Version
+			} else if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok && len(rv.VersionConstraints) > 0 {
 				version = strings.Join(rv.VersionConstraints, " ")
 			}
 
