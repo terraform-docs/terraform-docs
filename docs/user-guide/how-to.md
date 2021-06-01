@@ -182,7 +182,7 @@ content: |-
   ## Example
 
   ```hcl
-  {{ file "example-1/main.tf" }}
+  {{ include "examples/example-1/main.tf" }}
   ```
 
   {{ .Inputs }}
