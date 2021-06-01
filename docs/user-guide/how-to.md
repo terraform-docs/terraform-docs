@@ -61,8 +61,8 @@ options:
 
 - `--show <name>`
 - `--hide <name>`
-- `--show-all` (deprecated in `v0.13.0`)
-- `--hide-all` (deprecated in `v0.13.0`)
+- `--show-all` (deprecated in `v0.13.0`, removed in `v0.15.0`)
+- `--hide-all` (deprecated in `v0.13.0`, removed in `v0.15.0`)
 
 As of `v0.13.0` flags `--show-all` and `--hide-all` are deprecated in favor of
 explicit use of `--show` and `--hide`. In other words when `--show <section>` is

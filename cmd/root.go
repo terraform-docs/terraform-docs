@@ -69,13 +69,6 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
 	cmd.PersistentFlags().StringVar(&config.Sort.By, "sort-by", "name", "sort items by criteria ["+cli.SortTypes+"]")
 
-	// deprecated flags ==>
-	cmd.PersistentFlags().BoolVar(new(bool), "show-all", true, "show all sections")
-	cmd.PersistentFlags().BoolVar(new(bool), "hide-all", false, "hide all sections (default false)")
-	cmd.PersistentFlags().MarkDeprecated("show-all", "more information: https://terraform-docs.io/user-guide/how-to/#visibility-of-sections\n\n") //nolint:errcheck,gosec
-	cmd.PersistentFlags().MarkDeprecated("hide-all", "more information: https://terraform-docs.io/user-guide/how-to/#visibility-of-sections\n\n") //nolint:errcheck,gosec
-	// <==
-
 	cmd.PersistentFlags().StringVar(&config.HeaderFrom, "header-from", "main.tf", "relative path of a file to read header from")
 	cmd.PersistentFlags().StringVar(&config.FooterFrom, "footer-from", "", "relative path of a file to read footer from (default \"\")")
 
