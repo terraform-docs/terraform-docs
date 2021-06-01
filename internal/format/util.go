@@ -14,7 +14,6 @@ import (
 	"embed"
 	"fmt"
 	"io/fs"
-	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -80,7 +79,7 @@ func readTemplateItems(efs embed.FS, prefix string) []*template.Item {
 	}
 
 	for _, f := range files {
-		content, err := efs.ReadFile(filepath.Join("templates", f.Name()))
+		content, err := efs.ReadFile("templates/" + f.Name())
 		if err != nil {
 			continue
 		}
