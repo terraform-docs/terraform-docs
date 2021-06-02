@@ -88,6 +88,7 @@ func DefaultConfig() *Config {
 }
 
 const (
+	sectionAll          = "all"
 	sectionDataSources  = "data-sources"
 	sectionFooter       = "footer"
 	sectionHeader       = "header"
@@ -100,6 +101,7 @@ const (
 )
 
 var allSections = []string{
+	sectionAll,
 	sectionDataSources,
 	sectionFooter,
 	sectionHeader,
@@ -168,12 +170,12 @@ func (s *sections) visibility(section string) bool {
 		return true
 	}
 	for _, n := range s.Show {
-		if n == section {
+		if n == sectionAll || n == section {
 			return true
 		}
 	}
 	for _, n := range s.Hide {
-		if n == section {
+		if n == sectionAll || n == section {
 			return false
 		}
 	}
@@ -342,35 +344,21 @@ var allSorts = []string{
 // SortTypes list.
 var SortTypes = strings.Join(allSorts, ", ")
 
-type sortby struct {
-	Name     bool `name:"name"`
-	Required bool `name:"required"`
-	Type     bool `name:"type"`
-}
 type sort struct {
-	Enabled  bool   `mapstructure:"enabled"`
-	By       string `mapstructure:"by"`
-	Criteria sortby `mapstructure:"-"`
+	Enabled bool   `mapstructure:"enabled"`
+	By      string `mapstructure:"by"`
 }
 
 func defaultSort() sort {
 	return sort{
 		Enabled: true,
 		By:      sortName,
-		Criteria: sortby{
-			Name:     true,
-			Required: false,
-			Type:     false,
-		},
 	}
 }
 
 func (s *sort) validate() error {
 	if !contains(allSorts, s.By) {
 		return fmt.Errorf("'%s' is not a valid sort type", s.By)
-	}
-	if s.Criteria.Required && s.Criteria.Type {
-		return fmt.Errorf("'--sort-by-required' and '--sort-by-type' can't be used together")
 	}
 	return nil
 }
@@ -461,11 +449,6 @@ func (c *Config) process() error { //nolint:gocyclo
 		}
 	}
 
-	// Enable specified sort criteria
-	c.Sort.Criteria.Name = c.Sort.Enabled && c.Sort.By == sortName
-	c.Sort.Criteria.Required = c.Sort.Enabled && c.Sort.By == sortRequired
-	c.Sort.Criteria.Type = c.Sort.Enabled && c.Sort.By == sortType
-
 	return nil
 }
 
@@ -499,9 +482,9 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options.OutputValuesPath = c.OutputValues.From
 
 	// sort
-	options.SortBy.Name = c.Sort.Enabled && c.Sort.Criteria.Name
-	options.SortBy.Required = c.Sort.Enabled && c.Sort.Criteria.Required
-	options.SortBy.Type = c.Sort.Enabled && c.Sort.Criteria.Type
+	options.SortBy.Name = c.Sort.Enabled && c.Sort.By == sortName
+	options.SortBy.Required = c.Sort.Enabled && c.Sort.By == sortRequired
+	options.SortBy.Type = c.Sort.Enabled && c.Sort.By == sortType
 
 	// settings
 	settings.EscapeCharacters = c.Settings.Escape

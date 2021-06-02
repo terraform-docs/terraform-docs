@@ -69,8 +69,8 @@ sections:
   hide: []
   show: []
 
-  hide-all: false # deprecated in v0.13.0
-  show-all: true  # deprecated in v0.13.0
+  hide-all: false # deprecated in v0.13.0, removed in v0.15.0
+  show-all: true  # deprecated in v0.13.0, removed in v0.15.0
 
 content: ""
 
@@ -111,7 +111,8 @@ settings:
 - `sections.show-all` and `sections.show`
 
 **Note:** As of `v0.13.0`, `sections.hide-all` and `sections.show-all` are deprecated
-and removed in favor of explicit use of `sections.hide` and `sections.show`.
+in favor of explicit use of `sections.hide` and `sections.show`, and they are removed
+as of `v0.15.0`.
 
 ## Version
 
@@ -182,6 +183,7 @@ Since `v0.10.0`
 The following options are supported and can be used for `sections.show` and
 `sections.hide`:
 
+- `all` (since `v0.15.0`)
 - `data-sources` (since `v0.13.0`)
 - `header`
 - `footer` (since `v0.12.0`)
@@ -193,7 +195,8 @@ The following options are supported and can be used for `sections.show` and
 - `resources` (since `v0.11.0`)
 
 **Note:** As of `v0.13.0`, `sections.hide-all` and `sections.show-all` are deprecated
-and removed in favor of explicit use of `sections.hide` and `sections.show`.
+in favor of explicit use of `sections.hide` and `sections.show`, and they are removed
+as of `v0.15.0`.
 
 ## Content
 
