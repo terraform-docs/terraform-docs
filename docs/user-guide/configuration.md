@@ -183,6 +183,7 @@ Since `v0.10.0`
 The following options are supported and can be used for `sections.show` and
 `sections.hide`:
 
+- `all` (since `v0.15.0`)
 - `data-sources` (since `v0.13.0`)
 - `header`
 - `footer` (since `v0.12.0`)

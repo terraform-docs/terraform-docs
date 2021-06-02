@@ -88,6 +88,7 @@ func DefaultConfig() *Config {
 }
 
 const (
+	sectionAll          = "all"
 	sectionDataSources  = "data-sources"
 	sectionFooter       = "footer"
 	sectionHeader       = "header"
@@ -100,6 +101,7 @@ const (
 )
 
 var allSections = []string{
+	sectionAll,
 	sectionDataSources,
 	sectionFooter,
 	sectionHeader,
@@ -168,12 +170,12 @@ func (s *sections) visibility(section string) bool {
 		return true
 	}
 	for _, n := range s.Show {
-		if n == section {
+		if n == sectionAll || n == section {
 			return true
 		}
 	}
 	for _, n := range s.Hide {
-		if n == section {
+		if n == sectionAll || n == section {
 			return false
 		}
 	}
