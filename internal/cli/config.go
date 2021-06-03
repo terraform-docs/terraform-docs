@@ -51,17 +51,19 @@ var flagMappings = map[string]string{
 
 // Config represents all the available config options that can be accessed and passed through CLI
 type Config struct {
-	File         string       `mapstructure:"-"`
-	Formatter    string       `mapstructure:"formatter"`
-	Version      string       `mapstructure:"version"`
-	HeaderFrom   string       `mapstructure:"header-from"`
-	FooterFrom   string       `mapstructure:"footer-from"`
-	Content      string       `mapstructure:"content"`
-	Sections     sections     `mapstructure:"sections"`
-	Output       output       `mapstructure:"output"`
-	OutputValues outputvalues `mapstructure:"output-values"`
-	Sort         sort         `mapstructure:"sort"`
-	Settings     settings     `mapstructure:"settings"`
+	File          string       `mapstructure:"-"`
+	Recursive     bool         `mapstructure:"-"`
+	RecursivePath string       `mapstructure:"-"`
+	Formatter     string       `mapstructure:"formatter"`
+	Version       string       `mapstructure:"version"`
+	HeaderFrom    string       `mapstructure:"header-from"`
+	FooterFrom    string       `mapstructure:"footer-from"`
+	Content       string       `mapstructure:"content"`
+	Sections      sections     `mapstructure:"sections"`
+	Output        output       `mapstructure:"output"`
+	OutputValues  outputvalues `mapstructure:"output-values"`
+	Sort          sort         `mapstructure:"sort"`
+	Settings      settings     `mapstructure:"settings"`
 
 	moduleRoot    string
 	isFlagChanged func(string) bool
@@ -70,17 +72,19 @@ type Config struct {
 // DefaultConfig returns new instance of Config with default values set
 func DefaultConfig() *Config {
 	return &Config{
-		File:         "",
-		Formatter:    "",
-		Version:      "",
-		HeaderFrom:   "main.tf",
-		FooterFrom:   "",
-		Content:      "",
-		Sections:     defaultSections(),
-		Output:       defaultOutput(),
-		OutputValues: defaultOutputValues(),
-		Sort:         defaultSort(),
-		Settings:     defaultSettings(),
+		File:          "",
+		Recursive:     false,
+		RecursivePath: "modules",
+		Formatter:     "",
+		Version:       "",
+		HeaderFrom:    "main.tf",
+		FooterFrom:    "",
+		Content:       "",
+		Sections:      defaultSections(),
+		Output:        defaultOutput(),
+		OutputValues:  defaultOutputValues(),
+		Sort:          defaultSort(),
+		Settings:      defaultSettings(),
 
 		moduleRoot:    "",
 		isFlagChanged: func(name string) bool { return false },
@@ -412,6 +416,11 @@ func (c *Config) process() error { //nolint:gocyclo
 	// formatter
 	if c.Formatter == "" {
 		return fmt.Errorf("value of 'formatter' can't be empty")
+	}
+
+	// recursive
+	if c.Recursive && c.RecursivePath == "" {
+		return fmt.Errorf("value of '--recursive-path' can't be empty")
 	}
 
 	// sections

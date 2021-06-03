@@ -39,6 +39,8 @@ terraform-docs asciidoc table [PATH] [flags]
       --output-template string      output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
       --output-values               inject output values into outputs (default false)
       --output-values-from string   inject output values from file into outputs (default "")
+      --recursive                   update submodules recursively (default false)
+      --recursive-path string       submodules path to recursively update (default "modules")
       --required                    show Required column or section (default true)
       --sensitive                   show Sensitive column or section (default true)
       --show strings                show section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]

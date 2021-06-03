@@ -154,7 +154,7 @@ func (fw *fileWriter) inject(filename string, content string, generated string) 
 	return fw.write(filename, []byte(generated))
 }
 
-// wrtie the content to io.Writer. If no io.Writer is available,
+// write the content to io.Writer. If no io.Writer is available,
 // it will be written to 'filename'.
 func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 	// if run in check mode return exit 1

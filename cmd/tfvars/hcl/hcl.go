@@ -17,14 +17,14 @@ import (
 )
 
 // NewCommand returns a new cobra.Command for 'tfvars hcl' formatter
-func NewCommand(config *cli.Config) *cobra.Command {
+func NewCommand(runtime *cli.Runtime, config *cli.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Args:        cobra.ExactArgs(1),
 		Use:         "hcl [PATH]",
 		Short:       "Generate HCL format of terraform.tfvars of inputs",
 		Annotations: cli.Annotations("tfvars hcl"),
-		PreRunE:     cli.PreRunEFunc(config),
-		RunE:        cli.RunEFunc(config),
+		PreRunE:     runtime.PreRunEFunc,
+		RunE:        runtime.RunEFunc,
 	}
 	cmd.PersistentFlags().BoolVar(&config.Settings.Description, "description", false, "show Descriptions on variables")
 	return cmd

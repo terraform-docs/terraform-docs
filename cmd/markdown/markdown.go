@@ -19,15 +19,15 @@ import (
 )
 
 // NewCommand returns a new cobra.Command for 'markdown' formatter
-func NewCommand(config *cli.Config) *cobra.Command {
+func NewCommand(runtime *cli.Runtime, config *cli.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Args:        cobra.ExactArgs(1),
 		Use:         "markdown [PATH]",
 		Aliases:     []string{"md"},
 		Short:       "Generate Markdown of inputs and outputs",
 		Annotations: cli.Annotations("markdown"),
-		PreRunE:     cli.PreRunEFunc(config),
-		RunE:        cli.RunEFunc(config),
+		PreRunE:     runtime.PreRunEFunc,
+		RunE:        runtime.RunEFunc,
 	}
 
 	// flags
@@ -41,8 +41,8 @@ func NewCommand(config *cli.Config) *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Settings.Type, "type", true, "show Type column or section")
 
 	// subcommands
-	cmd.AddCommand(document.NewCommand(config))
-	cmd.AddCommand(table.NewCommand(config))
+	cmd.AddCommand(document.NewCommand(runtime, config))
+	cmd.AddCommand(table.NewCommand(runtime, config))
 
 	return cmd
 }

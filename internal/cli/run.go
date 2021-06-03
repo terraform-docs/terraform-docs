@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 
 	goversion "github.com/hashicorp/go-version"
 	"github.com/spf13/cobra"
@@ -28,144 +29,170 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/version"
 )
 
-// PreRunEFunc returns actual 'cobra.Command#PreRunE' function for 'formatter'
-// commands. This functions reads and normalizes flags and arguments passed
+// Runtime represents the execution runtime for CLI.
+type Runtime struct {
+	rootDir string
+
+	formatter string
+	config    *Config
+
+	cmd *cobra.Command
+}
+
+// NewRuntime retruns new instance of Runtime. If `config` is not provided
+// default config will be used.
+func NewRuntime(config *Config) *Runtime {
+	if config == nil {
+		config = DefaultConfig()
+	}
+	return &Runtime{config: config}
+}
+
+// PreRunEFunc is the 'cobra.Command#PreRunE' function for 'formatter'
+// commands. This function reads and normalizes flags and arguments passed
 // through CLI execution.
-func PreRunEFunc(config *Config) func(*cobra.Command, []string) error { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
+func (r *Runtime) PreRunEFunc(cmd *cobra.Command, args []string) error {
+	r.formatter = cmd.Annotations["command"]
 
-	return func(cmd *cobra.Command, args []string) error {
-		config.isFlagChanged = cmd.Flags().Changed
+	// root command must have an argument, otherwise we're going to show help
+	if r.formatter == "root" && len(args) == 0 {
+		cmd.Help() //nolint:errcheck,gosec
+		os.Exit(0)
+	}
 
-		formatter := cmd.Annotations["command"]
+	r.config.isFlagChanged = cmd.Flags().Changed
+	r.rootDir = args[0]
+	r.cmd = cmd
 
-		// root command must have an argument, otherwise we're going to show help
-		if formatter == "root" && len(args) == 0 {
-			cmd.Help() //nolint:errcheck,gosec
-			os.Exit(0)
-		}
+	// this can only happen in one way: terraform-docs -c "" /path/to/module
+	if r.config.File == "" {
+		return fmt.Errorf("value of '--config' can't be empty")
+	}
 
-		// this can only happen in one way: terraform-docs -c "" /path/to/module
-		if config.File == "" {
-			return errors.New("value of '--config' can't be empty")
-		}
+	// attempt to read config file and override them with corresponding flags
+	if err := r.readConfig(r.config, ""); err != nil {
+		return err
+	}
 
-		v := viper.New()
+	return checkConstraint(r.config.Version, version.Core())
+}
 
-		if config.isFlagChanged("config") {
-			v.SetConfigFile(config.File)
-		} else {
-			v.SetConfigName(".terraform-docs")
-			v.SetConfigType("yml")
-		}
+type module struct {
+	rootDir string
+	config  *Config
+}
 
-		v.AddConfigPath(args[0])              // first look at module root
-		v.AddConfigPath(args[0] + "/.config") // then .config/ folder at module root
-		v.AddConfigPath(".")                  // then current directory
-		v.AddConfigPath(".config")            // then .config/ folder at current directory
-		v.AddConfigPath("$HOME/.tfdocs.d")    // and finally $HOME/.tfdocs.d/
+// RunEFunc is the 'cobra.Command#RunE' function for 'formatter' commands. It attempts
+// to discover submodules, on `--recursive` flag, and generates the content for them
+// as well as the root module.
+func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
+	modules := []module{
+		{rootDir: r.rootDir, config: r.config},
+	}
 
-		if err := v.ReadInConfig(); err != nil {
-			var perr *os.PathError
-			if errors.As(err, &perr) {
-				return fmt.Errorf("config file %s not found", config.File)
-			}
-
-			var cerr viper.ConfigFileNotFoundError
-			if !errors.As(err, &cerr) {
-				return err
-			}
-
-			// config is not provided, only show error for root command
-			if formatter == "root" {
-				cmd.Help() //nolint:errcheck,gosec
-				os.Exit(0)
-			}
-		}
-
-		// bind flags to viper
-		bindFlags(cmd, v)
-
-		if err := v.Unmarshal(config); err != nil {
-			return fmt.Errorf("unable to decode config, %w", err)
-		}
-
-		if err := checkConstraint(config.Version, version.Core()); err != nil {
+	// Generating content recursively is only allowed when `config.Output.File`
+	// is set. Otherwise it would be impossible to distinguish where output of
+	// one module ends and the other begin, if content is outpput to stdout.
+	if r.config.Recursive && r.config.RecursivePath != "" {
+		items, err := r.findSubmodules()
+		if err != nil {
 			return err
 		}
 
-		// explicitly setting formatter to Config for non-root commands this
-		// will effectively override formattter properties from config file
-		// if 1) config file exists and 2) formatter is set and 3) explicitly
-		// a subcommand was executed in the terminal
-		if formatter != "root" {
-			config.Formatter = formatter
+		modules = append(modules, items...)
+	}
+
+	for _, module := range modules {
+		cfg := r.config
+
+		// If submodules contains its own configuration file, use that instead
+		if module.config != nil {
+			cfg = module.config
 		}
 
 		// set the module root directory
-		config.moduleRoot = args[0]
+		cfg.moduleRoot = module.rootDir
 
 		// process and validate configuration
-		return config.process()
+		if err := cfg.process(); err != nil {
+			return err
+		}
+
+		if r.config.Recursive && cfg.Output.File == "" {
+			return fmt.Errorf("value of '--output-file' cannot be empty with '--recursive'")
+		}
+
+		if err := generateContent(cfg); err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
 
-// RunEFunc returns actual 'cobra.Command#RunE' function for 'formatter' commands.
-// This functions extract print.Settings and terraform.Options from generated and
-// normalized Config and initializes required print.Format instance and executes it.
-func RunEFunc(config *Config) func(*cobra.Command, []string) error {
-	return func(cmd *cobra.Command, _ []string) error {
-		settings, options := config.extract()
-		options.Path = config.moduleRoot
+// readConfig attempts to read config file, either default `.terraform-docs.yml`
+// or provided file with `-c, --config` flag. It will then attempt to override
+// them with corresponding flags (if set).
+func (r *Runtime) readConfig(config *Config, submoduleDir string) error {
+	v := viper.New()
 
-		module, err := terraform.LoadWithOptions(options)
-		if err != nil {
-			return err
-		}
-
-		formatter, err := format.Factory(config.Formatter, settings)
-		if err != nil {
-			plugins, perr := plugin.Discover()
-			if perr != nil {
-				return fmt.Errorf("formatter '%s' not found", config.Formatter)
-			}
-
-			client, found := plugins.Get(config.Formatter)
-			if !found {
-				return fmt.Errorf("formatter '%s' not found", config.Formatter)
-			}
-
-			content, cerr := client.Execute(pluginsdk.ExecuteArgs{
-				Module:   module.Convert(),
-				Settings: settings.Convert(),
-			})
-			if cerr != nil {
-				return cerr
-			}
-			return writeContent(config, content)
-		}
-
-		generator, err := formatter.Generate(module)
-		if err != nil {
-			return err
-		}
-		generator.Path(config.moduleRoot)
-
-		content, err := generator.ExecuteTemplate(config.Content)
-		if err != nil {
-			return err
-		}
-
-		return writeContent(config, content)
+	if config.isFlagChanged("config") {
+		v.SetConfigFile(config.File)
+	} else {
+		v.SetConfigName(".terraform-docs")
+		v.SetConfigType("yml")
 	}
+
+	if submoduleDir != "" {
+		v.AddConfigPath(submoduleDir)              // first look at submodule root
+		v.AddConfigPath(submoduleDir + "/.config") // then .config/ folder at submodule root
+	}
+
+	v.AddConfigPath(r.rootDir)              // first look at module root
+	v.AddConfigPath(r.rootDir + "/.config") // then .config/ folder at module root
+	v.AddConfigPath(".")                    // then current directory
+	v.AddConfigPath(".config")              // then .config/ folder at current directory
+	v.AddConfigPath("$HOME/.tfdocs.d")      // and finally $HOME/.tfdocs.d/
+
+	if err := v.ReadInConfig(); err != nil {
+		var perr *os.PathError
+		if errors.As(err, &perr) {
+			return fmt.Errorf("config file %s not found", config.File)
+		}
+
+		var cerr viper.ConfigFileNotFoundError
+		if !errors.As(err, &cerr) {
+			return err
+		}
+
+		// config is not provided, only show error for root command
+		if r.formatter == "root" {
+			r.cmd.Help() //nolint:errcheck,gosec
+			os.Exit(0)
+		}
+	}
+
+	r.bindFlags(v)
+
+	if err := v.Unmarshal(config); err != nil {
+		return fmt.Errorf("unable to decode config, %w", err)
+	}
+
+	// explicitly setting formatter to Config for non-root commands this
+	// will effectively override formattter properties from config file
+	// if 1) config file exists and 2) formatter is set and 3) explicitly
+	// a subcommand was executed in the terminal
+	if r.formatter != "root" {
+		config.Formatter = r.formatter
+	}
+
+	return nil
 }
 
-// bindFlags binds current command's changed flags to viper
-func bindFlags(cmd *cobra.Command, v *viper.Viper) {
+// bindFlags binds current command's changed flags to viper.
+func (r *Runtime) bindFlags(v *viper.Viper) {
 	sectionsCleared := false
-	fs := cmd.Flags()
+	fs := r.cmd.Flags()
 	fs.VisitAll(func(f *pflag.Flag) {
 		if !f.Changed {
 			return
@@ -197,6 +224,47 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) {
 	})
 }
 
+// findSubmodules generates list of submodules in `rootDir/RecursivePath` if
+// `--recursive` flag is set. This keeps track of `.terraform-docs.yml` in any
+// of the submodules (if exists) to override the root configuration.
+func (r *Runtime) findSubmodules() ([]module, error) {
+	dir := filepath.Join(r.rootDir, r.config.RecursivePath)
+
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		return nil, err
+	}
+
+	info, err := os.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+
+	modules := []module{}
+
+	for _, file := range info {
+		if !file.IsDir() {
+			continue
+		}
+
+		var cfg *Config
+
+		path := filepath.Join(dir, file.Name())
+		cfgfile := filepath.Join(path, r.config.File)
+
+		if _, err := os.Stat(cfgfile); !os.IsNotExist(err) {
+			cfg = DefaultConfig()
+
+			if err := r.readConfig(cfg, path); err != nil {
+				return nil, err
+			}
+		}
+
+		modules = append(modules, module{rootDir: path, config: cfg})
+	}
+
+	return modules, nil
+}
+
 // checkConstraint validates if current version of terraform-docs being executed
 // is valid against 'version' string provided in config file, and fail if the
 // constraints is violated.
@@ -216,6 +284,59 @@ func checkConstraint(versionRange string, currentVersion string) error {
 	}
 
 	return nil
+}
+
+// generateContent extracts print.Settings and terraform.Options from normalized
+// Config and generates the output content for the module (and submodules if avialble)
+// and write the result to the output (either stdout or a file).
+func generateContent(config *Config) error {
+	settings, options := config.extract()
+	options.Path = config.moduleRoot
+
+	module, err := terraform.LoadWithOptions(options)
+	if err != nil {
+		return err
+	}
+
+	formatter, err := format.Factory(config.Formatter, settings)
+
+	// formatter is unkowns, this might mean that the intended formatter is
+	// coming from a plugin. We are going to attempt to find a plugin with
+	// that name and generate the content with it or error out if not found.
+	if err != nil {
+		plugins, perr := plugin.Discover()
+		if perr != nil {
+			return fmt.Errorf("formatter '%s' not found", config.Formatter)
+		}
+
+		client, found := plugins.Get(config.Formatter)
+		if !found {
+			return fmt.Errorf("formatter '%s' not found", config.Formatter)
+		}
+
+		content, cerr := client.Execute(pluginsdk.ExecuteArgs{
+			Module:   module.Convert(),
+			Settings: settings.Convert(),
+		})
+		if cerr != nil {
+			return cerr
+		}
+
+		return writeContent(config, content)
+	}
+
+	generator, err := formatter.Generate(module)
+	if err != nil {
+		return err
+	}
+	generator.Path(options.Path)
+
+	content, err := generator.ExecuteTemplate(config.Content)
+	if err != nil {
+		return err
+	}
+
+	return writeContent(config, content)
 }
 
 // writeContent to a Writer. This can either be os.Stdout or specific

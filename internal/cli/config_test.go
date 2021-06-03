@@ -547,9 +547,7 @@ func TestConfigProcess(t *testing.T) {
 		errMsg  string
 	}{
 		"OK": {
-			config: func(c *Config) {
-				c.Formatter = "foo"
-			},
+			config:  func(c *Config) {},
 			wantErr: false,
 			errMsg:  "",
 		},
@@ -560,9 +558,16 @@ func TestConfigProcess(t *testing.T) {
 			wantErr: true,
 			errMsg:  "value of 'formatter' can't be empty",
 		},
+		"RecursivePathEmpty": {
+			config: func(c *Config) {
+				c.Recursive = true
+				c.RecursivePath = ""
+			},
+			wantErr: true,
+			errMsg:  "value of '--recursive-path' can't be empty",
+		},
 		"HeaderFromEmpty": {
 			config: func(c *Config) {
-				c.Formatter = "foo"
 				c.HeaderFrom = ""
 			},
 			wantErr: true,
@@ -570,7 +575,6 @@ func TestConfigProcess(t *testing.T) {
 		},
 		"FooterFrom": {
 			config: func(c *Config) {
-				c.Formatter = "foo"
 				c.FooterFrom = ""
 				c.Sections.footer = true
 				c.isFlagChanged = func(s string) bool { return true }
@@ -593,6 +597,7 @@ func TestConfigProcess(t *testing.T) {
 			assert := assert.New(t)
 
 			config := DefaultConfig()
+			config.Formatter = "foo"
 			tt.config(config)
 			err := config.process()
 
