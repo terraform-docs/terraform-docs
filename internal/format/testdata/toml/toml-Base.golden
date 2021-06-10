@@ -272,6 +272,11 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   version = ""
 
 [[providers]]
+  name = "foo"
+  alias = ""
+  version = ">= 1.0"
+
+[[providers]]
   name = "aws"
   alias = ""
   version = ">= 2.15.0"
@@ -295,8 +300,20 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   version = ">= 2.15.0"
 
 [[requirements]]
+  name = "foo"
+  version = ">= 1.0"
+
+[[requirements]]
   name = "random"
   version = ">= 2.2.0"
+
+[[resources]]
+  type = "resource"
+  name = "baz"
+  provider = "foo"
+  source = "https://registry.acme.com/foo"
+  mode = "managed"
+  version = "latest"
 
 [[resources]]
   type = "resource"

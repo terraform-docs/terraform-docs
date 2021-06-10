@@ -12,6 +12,11 @@ resources = []
   version = ""
 
 [[providers]]
+  name = "foo"
+  alias = ""
+  version = ">= 1.0"
+
+[[providers]]
   name = "aws"
   alias = ""
   version = ">= 2.15.0"

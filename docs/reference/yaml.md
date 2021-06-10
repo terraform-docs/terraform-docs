@@ -304,6 +304,9 @@ generates the following output:
       - name: aws
         alias: ident
         version: '>= 2.15.0'
+      - name: foo
+        alias: null
+        version: '>= 1.0'
       - name: "null"
         alias: null
         version: null
@@ -315,9 +318,17 @@ generates the following output:
         version: '>= 0.12'
       - name: aws
         version: '>= 2.15.0'
+      - name: foo
+        version: '>= 1.0'
       - name: random
         version: '>= 2.2.0'
     resources:
+      - type: resource
+        name: baz
+        provider: foo
+        source: https://registry.acme.com/foo
+        mode: managed
+        version: latest
       - type: resource
         name: foo
         provider: "null"

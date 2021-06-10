@@ -15,5 +15,9 @@ resources = []
   version = ">= 2.15.0"
 
 [[requirements]]
+  name = "foo"
+  version = ">= 1.0"
+
+[[requirements]]
   name = "random"
   version = ">= 2.2.0"

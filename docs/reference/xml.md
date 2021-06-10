@@ -348,6 +348,11 @@ generates the following output:
           <version>&gt;= 2.15.0</version>
         </provider>
         <provider>
+          <name>foo</name>
+          <alias xsi:nil="true"></alias>
+          <version>&gt;= 1.0</version>
+        </provider>
+        <provider>
           <name>null</name>
           <alias xsi:nil="true"></alias>
           <version xsi:nil="true"></version>
@@ -368,11 +373,23 @@ generates the following output:
           <version>&gt;= 2.15.0</version>
         </requirement>
         <requirement>
+          <name>foo</name>
+          <version>&gt;= 1.0</version>
+        </requirement>
+        <requirement>
           <name>random</name>
           <version>&gt;= 2.2.0</version>
         </requirement>
       </requirements>
       <resources>
+        <resource>
+          <type>resource</type>
+          <name>baz</name>
+          <provider>foo</provider>
+          <source>https://registry.acme.com/foo</source>
+          <mode>managed</mode>
+          <version>latest</version>
+        </resource>
         <resource>
           <type>resource</type>
           <name>foo</name>

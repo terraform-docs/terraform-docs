@@ -91,11 +91,13 @@ generates the following output:
 
     requirement.terraform (>= 0.12)
     requirement.aws (>= 2.15.0)
+    requirement.foo (>= 1.0)
     requirement.random (>= 2.2.0)
 
 
     provider.aws (>= 2.15.0)
     provider.aws.ident (>= 2.15.0)
+    provider.foo (>= 1.0)
     provider.null
     provider.tls
 
@@ -106,6 +108,7 @@ generates the following output:
     module.foobar (git@github.com:module/path,v7.8.9)
 
 
+    resource.foo_resource.baz (resource)
     resource.null_resource.foo (resource) (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
     resource.tls_private_key.baz (resource) (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)
     data.aws_caller_identity.current (data source) (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)

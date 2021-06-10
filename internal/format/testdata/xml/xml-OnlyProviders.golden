@@ -11,6 +11,11 @@
       <version xsi:nil="true"></version>
     </provider>
     <provider>
+      <name>foo</name>
+      <alias xsi:nil="true"></alias>
+      <version>&gt;= 1.0</version>
+    </provider>
+    <provider>
       <name>aws</name>
       <alias xsi:nil="true"></alias>
       <version>&gt;= 2.15.0</version>

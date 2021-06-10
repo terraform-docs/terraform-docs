@@ -3,6 +3,7 @@
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Type
+|foo_resource.baz |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] |resource
 |https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] |resource
 |===

@@ -15,6 +15,10 @@
       <version>&gt;= 2.15.0</version>
     </requirement>
     <requirement>
+      <name>foo</name>
+      <version>&gt;= 1.0</version>
+    </requirement>
+    <requirement>
       <name>random</name>
       <version>&gt;= 2.2.0</version>
     </requirement>

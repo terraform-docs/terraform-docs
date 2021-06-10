@@ -1,2 +1,3 @@
+resource.foo_resource.baz (resource)
 resource.null_resource.foo (resource) (https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource)
 resource.tls_private_key.baz (resource) (https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)

@@ -3,6 +3,7 @@
 | Name | Version |
 |------|---------|
 | tls | n/a |
+| foo | >= 1.0 |
 | aws | >= 2.15.0 |
 | aws.ident | >= 2.15.0 |
 | null | n/a |

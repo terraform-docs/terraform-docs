@@ -2,5 +2,6 @@
 
 The following resources are used by this module:
 
+- foo_resource.baz (resource)
 - [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) (resource)
 - [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) (resource)

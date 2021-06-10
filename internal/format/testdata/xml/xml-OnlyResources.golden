@@ -9,6 +9,14 @@
   <resources>
     <resource>
       <type>resource</type>
+      <name>baz</name>
+      <provider>foo</provider>
+      <source>https://registry.acme.com/foo</source>
+      <mode>managed</mode>
+      <version>latest</version>
+    </resource>
+    <resource>
+      <type>resource</type>
       <name>foo</name>
       <provider>null</provider>
       <source>hashicorp/null</source>

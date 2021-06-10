@@ -100,6 +100,7 @@ generates the following output:
     |Name |Version
     |[[requirement_terraform]] <<requirement_terraform,terraform>> |>= 0.12
     |[[requirement_aws]] <<requirement_aws,aws>> |>= 2.15.0
+    |[[requirement_foo]] <<requirement_foo,foo>> |>= 1.0
     |[[requirement_random]] <<requirement_random,random>> |>= 2.2.0
     |===
 
@@ -110,6 +111,7 @@ generates the following output:
     |Name |Version
     |[[provider_aws]] <<provider_aws,aws>> |>= 2.15.0
     |[[provider_aws.ident]] <<provider_aws.ident,aws.ident>> |>= 2.15.0
+    |[[provider_foo]] <<provider_foo,foo>> |>= 1.0
     |[[provider_null]] <<provider_null,null>> |n/a
     |[[provider_tls]] <<provider_tls,tls>> |n/a
     |===
@@ -130,6 +132,7 @@ generates the following output:
     [cols="a,a",options="header,autowidth"]
     |===
     |Name |Type
+    |foo_resource.baz |resource
     |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] |resource
     |https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] |resource
     |https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] |data source

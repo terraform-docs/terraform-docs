@@ -6,4 +6,6 @@ The following requirements are needed by this module:
 
 - aws (>= 2.15.0)
 
+- foo (>= 1.0)
+
 - random (>= 2.2.0)
