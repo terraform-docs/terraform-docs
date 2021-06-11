@@ -120,11 +120,11 @@ generates the following output:
 
     [cols="a,a,a",options="header,autowidth"]
     |===
-    |Name|Source|Version|
-    |[[module_bar]] <<module_bar,bar>>|baz|4.5.6
-    |[[module_baz]] <<module_baz,baz>>|baz|4.5.6
-    |[[module_foo]] <<module_foo,foo>>|bar|1.2.3
-    |[[module_foobar]] <<module_foobar,foobar>>|git@github.com:module/path|v7.8.9
+    |Name |Source |Version
+    |[[module_bar]] <<module_bar,bar>> |baz |4.5.6
+    |[[module_baz]] <<module_baz,baz>> |baz |4.5.6
+    |[[module_foo]] <<module_foo,foo>> |bar |1.2.3
+    |[[module_foobar]] <<module_foobar,foobar>> |git@github.com:module/path |v7.8.9
     |===
 
     == Resources

@@ -5,9 +5,9 @@
     {{ else }}
         [cols="a,a,a",options="header,autowidth"]
         |===
-        |Name|Source|Version|
+        |Name |Source |Version
         {{- range .Module.ModuleCalls }}
-            |{{ anchorNameAsciidoc "module" .Name }}|{{ .Source }}|{{ .Version }}
+            |{{ anchorNameAsciidoc "module" .Name }} |{{ .Source }} |{{ .Version }}
         {{- end }}
         |===
     {{ end }}
