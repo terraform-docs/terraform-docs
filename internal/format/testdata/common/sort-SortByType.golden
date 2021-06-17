@@ -47,15 +47,18 @@
   "providers": [
     "aws",
     "aws.ident",
+    "foo",
     "null",
     "tls"
   ],
   "requirements": [
     "terraform",
     "aws",
+    "foo",
     "random"
   ],
   "resources": [
+    "foo_resource.baz__managed",
     "null_resource.foo__managed",
     "tls_private_key.baz__managed",
     "aws_caller_identity.current__data",

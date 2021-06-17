@@ -44,6 +44,8 @@ The following requirements are needed by this module:
 
 - aws (>= 2.15.0)
 
+- foo (>= 1.0)
+
 - random (>= 2.2.0)
 
 ## Providers
@@ -51,6 +53,8 @@ The following requirements are needed by this module:
 The following providers are used by this module:
 
 - tls
+
+- foo (>= 1.0)
 
 - aws (>= 2.15.0)
 
@@ -90,6 +94,7 @@ Version: v7.8.9
 
 The following resources are used by this module:
 
+- foo_resource.baz (resource)
 - [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) (resource)
 - [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) (resource)
 - [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)

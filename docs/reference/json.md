@@ -349,6 +349,11 @@ generates the following output:
           "version": "\u003e= 2.15.0"
         },
         {
+          "name": "foo",
+          "alias": null,
+          "version": "\u003e= 1.0"
+        },
+        {
           "name": "null",
           "alias": null,
           "version": null
@@ -369,11 +374,23 @@ generates the following output:
           "version": "\u003e= 2.15.0"
         },
         {
+          "name": "foo",
+          "version": "\u003e= 1.0"
+        },
+        {
           "name": "random",
           "version": "\u003e= 2.2.0"
         }
       ],
       "resources": [
+        {
+          "type": "resource",
+          "name": "baz",
+          "provider": "foo",
+          "source": "https://registry.acme.com/foo",
+          "mode": "managed",
+          "version": "latest"
+        },
         {
           "type": "resource",
           "name": "foo",

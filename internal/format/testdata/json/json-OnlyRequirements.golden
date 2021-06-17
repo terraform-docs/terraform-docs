@@ -15,6 +15,10 @@
       "version": ">= 2.15.0"
     },
     {
+      "name": "foo",
+      "version": ">= 1.0"
+    },
+    {
       "name": "random",
       "version": ">= 2.2.0"
     }

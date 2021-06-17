@@ -328,6 +328,11 @@ generates the following output:
       version = ">= 2.15.0"
 
     [[providers]]
+      name = "foo"
+      alias = ""
+      version = ">= 1.0"
+
+    [[providers]]
       name = "null"
       alias = ""
       version = ""
@@ -346,8 +351,20 @@ generates the following output:
       version = ">= 2.15.0"
 
     [[requirements]]
+      name = "foo"
+      version = ">= 1.0"
+
+    [[requirements]]
       name = "random"
       version = ">= 2.2.0"
+
+    [[resources]]
+      type = "resource"
+      name = "baz"
+      provider = "foo"
+      source = "https://registry.acme.com/foo"
+      mode = "managed"
+      version = "latest"
 
     [[resources]]
       type = "resource"

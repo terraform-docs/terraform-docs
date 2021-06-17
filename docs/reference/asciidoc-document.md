@@ -101,6 +101,8 @@ generates the following output:
 
     - [[requirement_aws]] <<requirement_aws,aws>> (>= 2.15.0)
 
+    - [[requirement_foo]] <<requirement_foo,foo>> (>= 1.0)
+
     - [[requirement_random]] <<requirement_random,random>> (>= 2.2.0)
 
     == Providers
@@ -110,6 +112,8 @@ generates the following output:
     - [[provider_aws]] <<provider_aws,aws>> (>= 2.15.0)
 
     - [[provider_aws.ident]] <<provider_aws.ident,aws.ident>> (>= 2.15.0)
+
+    - [[provider_foo]] <<provider_foo,foo>> (>= 1.0)
 
     - [[provider_null]] <<provider_null,null>>
 
@@ -147,6 +151,7 @@ generates the following output:
 
     The following resources are used by this module:
 
+    - foo_resource.baz (resource)
     - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] (resource)
     - https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] (resource)
     - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] (data source)

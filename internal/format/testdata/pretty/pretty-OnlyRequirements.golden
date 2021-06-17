@@ -1,3 +1,4 @@
 requirement.terraform (>= 0.12)
 requirement.aws (>= 2.15.0)
+requirement.foo (>= 1.0)
 requirement.random (>= 2.2.0)

@@ -1,4 +1,5 @@
 provider.tls
+provider.foo (>= 1.0)
 provider.aws (>= 2.15.0)
 provider.aws.ident (>= 2.15.0)
 provider.null

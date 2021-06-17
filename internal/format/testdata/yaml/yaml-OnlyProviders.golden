@@ -7,6 +7,9 @@ providers:
   - name: tls
     alias: null
     version: null
+  - name: foo
+    alias: null
+    version: '>= 1.0'
   - name: aws
     alias: null
     version: '>= 2.15.0'

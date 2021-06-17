@@ -9,11 +9,8 @@
             {{- $isResource := and $.Settings.ShowResources ( eq "resource" (printf "%s" .GetMode)) }}
             {{- $isDataResource := and $.Settings.ShowDataSources ( eq "data source" (printf "%s" .GetMode)) }}
             {{- if or $isResource $isDataResource }}
-                {{ if eq (len .URL) 0 }}
-                    | {{ .Spec }} | {{ .GetMode }} |
-                {{- else -}}
-                    | [{{ .Spec }}]({{ .URL }}) | {{ .GetMode }} |
-                {{- end }}
+                {{- $fullspec := ternary .URL (printf "[%s](%s)" .Spec .URL) .Spec }}
+                | {{ $fullspec }} | {{ .GetMode }} |
             {{- end }}
         {{- end }}
     {{ end }}

@@ -8,6 +8,14 @@ requirements = []
 
 [[resources]]
   type = "resource"
+  name = "baz"
+  provider = "foo"
+  source = "https://registry.acme.com/foo"
+  mode = "managed"
+  version = "latest"
+
+[[resources]]
+  type = "resource"
   name = "foo"
   provider = "null"
   source = "hashicorp/null"

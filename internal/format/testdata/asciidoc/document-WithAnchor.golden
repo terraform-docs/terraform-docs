@@ -44,6 +44,8 @@ The following requirements are needed by this module:
 
 - [[requirement_aws]] <<requirement_aws,aws>> (>= 2.15.0)
 
+- [[requirement_foo]] <<requirement_foo,foo>> (>= 1.0)
+
 - [[requirement_random]] <<requirement_random,random>> (>= 2.2.0)
 
 == Providers
@@ -51,6 +53,8 @@ The following requirements are needed by this module:
 The following providers are used by this module:
 
 - [[provider_tls]] <<provider_tls,tls>>
+
+- [[provider_foo]] <<provider_foo,foo>> (>= 1.0)
 
 - [[provider_aws]] <<provider_aws,aws>> (>= 2.15.0)
 
@@ -90,6 +94,7 @@ Version: v7.8.9
 
 The following resources are used by this module:
 
+- foo_resource.baz (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] (resource)
 - https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] (resource)
 - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] (data source)
