@@ -13,6 +13,7 @@ package terraform
 import (
 	"io/ioutil"
 	"path/filepath"
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -665,32 +666,43 @@ func TestLoadOutputsValues(t *testing.T) {
 
 func TestLoadProviders(t *testing.T) {
 	type expected struct {
-		providers int
+		providers []string
 	}
 	tests := []struct {
 		name     string
 		path     string
+		lockfile bool
 		expected expected
 	}{
 		{
-			name: "load module providers from path",
-			path: "full-example",
+			name:     "load module providers from path",
+			path:     "full-example",
+			lockfile: false,
 			expected: expected{
-				providers: 3,
+				providers: []string{"aws->= 2.15.0", "null-", "tls-"},
 			},
 		},
 		{
-			name: "load module providers from path",
-			path: "with-lock-file",
+			name:     "load module providers from path",
+			path:     "with-lock-file",
+			lockfile: true,
 			expected: expected{
-				providers: 3,
+				providers: []string{"aws-3.42.0", "null-3.1.0", "tls-3.1.0"},
+			},
+		},
+		{
+			name:     "load module providers from path",
+			path:     "with-lock-file",
+			lockfile: false,
+			expected: expected{
+				providers: []string{"aws->= 2.15.0", "null-", "tls-"},
 			},
 		},
 		{
 			name: "load module providers from path",
 			path: "no-providers",
 			expected: expected{
-				providers: 0,
+				providers: []string{},
 			},
 		},
 	}
@@ -698,12 +710,21 @@ func TestLoadProviders(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			options, _ := NewOptions().With(&Options{
-				Path: tt.path,
+				Path: filepath.Join("testdata", tt.path),
 			})
+			options.UseLockFile = tt.lockfile
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
 			providers := loadProviders(module, options)
 
-			assert.Equal(tt.expected.providers, len(providers))
+			actual := []string{}
+
+			for _, p := range providers {
+				actual = append(actual, p.FullName()+"-"+string(p.Version))
+				providers[0].FullName()
+			}
+			sort.Strings(actual)
+
+			assert.Equal(tt.expected.providers, actual)
 		})
 	}
 }
