@@ -4,6 +4,10 @@
 
 ![terraform-docs-teaser](./images/terraform-docs-teaser.png)
 
+Sponsored by [Scalr - Terraform Automation & Collaboration Software](https://scalr.com/?utm_source=terraform-docs)
+
+<a href="https://www.scalr.com/?utm_source=terraform-docs" target="_blank"><img src="https://bit.ly/2T7Qm3U" alt="Scalr - Terraform Automation & Collaboration Software" width="175" height="40" /></a>
+
 ## What is terraform-docs
 
 A utility to generate documentation from Terraform modules in various output formats.
