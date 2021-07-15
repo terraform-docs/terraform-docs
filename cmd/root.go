@@ -72,6 +72,8 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.HeaderFrom, "header-from", "main.tf", "relative path of a file to read header from")
 	cmd.PersistentFlags().StringVar(&config.FooterFrom, "footer-from", "", "relative path of a file to read footer from (default \"\")")
 
+	cmd.PersistentFlags().BoolVar(&config.UseLockFile, "lockfile", true, "read .terraform.lock.hcl if exist")
+
 	cmd.PersistentFlags().BoolVar(&config.OutputValues.Enabled, "output-values", false, "inject output values into outputs (default false)")
 	cmd.PersistentFlags().StringVar(&config.OutputValues.From, "output-values-from", "", "inject output values from file into outputs (default \"\")")
 

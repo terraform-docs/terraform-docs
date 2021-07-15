@@ -51,11 +51,13 @@ var flagMappings = map[string]string{
 
 // Config represents all the available config options that can be accessed and passed through CLI
 type Config struct {
-	File         string       `mapstructure:"-"`
-	Formatter    string       `mapstructure:"formatter"`
-	Version      string       `mapstructure:"version"`
-	HeaderFrom   string       `mapstructure:"header-from"`
-	FooterFrom   string       `mapstructure:"footer-from"`
+	File       string `mapstructure:"-"`
+	Formatter  string `mapstructure:"formatter"`
+	Version    string `mapstructure:"version"`
+	HeaderFrom string `mapstructure:"header-from"`
+	FooterFrom string `mapstructure:"footer-from"`
+	// TOOD
+	UseLockFile  bool         `mapstructure:"lockfile"`
 	Content      string       `mapstructure:"content"`
 	Sections     sections     `mapstructure:"sections"`
 	Output       output       `mapstructure:"output"`
@@ -75,6 +77,7 @@ func DefaultConfig() *Config {
 		Version:      "",
 		HeaderFrom:   "main.tf",
 		FooterFrom:   "",
+		UseLockFile:  true,
 		Content:      "",
 		Sections:     defaultSections(),
 		Output:       defaultOutput(),
@@ -466,6 +469,9 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings.ShowFooter = c.Sections.footer
 	options.ShowFooter = settings.ShowFooter
 	options.FooterFromFile = c.FooterFrom
+
+	// lock file
+	options.UseLockFile = c.UseLockFile
 
 	// sections
 	settings.ShowDataSources = c.Sections.dataSources

@@ -670,18 +670,29 @@ func TestLoadProviders(t *testing.T) {
 	tests := []struct {
 		name     string
 		path     string
+		lockfile bool
 		expected expected
 	}{
 		{
-			name: "load module providers from path",
-			path: "full-example",
+			name:     "load module providers from path",
+			path:     "full-example",
+			lockfile: false,
 			expected: expected{
 				providers: 3,
 			},
 		},
 		{
-			name: "load module providers from path",
-			path: "with-lock-file",
+			name:     "load module providers from path",
+			path:     "with-lock-file",
+			lockfile: true,
+			expected: expected{
+				providers: 3,
+			},
+		},
+		{
+			name:     "load module providers from path",
+			path:     "with-lock-file",
+			lockfile: false,
 			expected: expected{
 				providers: 3,
 			},
@@ -698,7 +709,8 @@ func TestLoadProviders(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			options, _ := NewOptions().With(&Options{
-				Path: tt.path,
+				Path:        tt.path,
+				UseLockFile: tt.lockfile,
 			})
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
 			providers := loadProviders(module, options)

@@ -411,14 +411,17 @@ func loadProviders(tfmodule *tfconfig.Module, options *Options) []*Provider {
 		Provider []provider `hcl:"provider,block"`
 	}
 	lock := make(map[string]provider)
-	var lf lockfile
 
-	filename := filepath.Join(options.Path, ".terraform.lock.hcl")
-	if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
-		for i := range lf.Provider {
-			segments := strings.Split(lf.Provider[i].Name, "/")
-			name := segments[len(segments)-1]
-			lock[name] = lf.Provider[i]
+	if options.UseLockFile {
+		var lf lockfile
+
+		filename := filepath.Join(options.Path, ".terraform.lock.hcl")
+		if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
+			for i := range lf.Provider {
+				segments := strings.Split(lf.Provider[i].Name, "/")
+				name := segments[len(segments)-1]
+				lock[name] = lf.Provider[i]
+			}
 		}
 	}
 

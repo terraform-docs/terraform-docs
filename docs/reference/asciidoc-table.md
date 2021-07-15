@@ -32,6 +32,7 @@ terraform-docs asciidoc table [PATH] [flags]
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --indent int                  indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
+      --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-file string          file path to insert output into (default "")
       --output-mode string          output to file method [inject, replace] (default "inject")
       --output-template string      output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")

@@ -98,6 +98,7 @@ settings:
   escape: true
   html: true
   indent: 2
+  lockfile: true
   required: true
   sensitive: true
   type: true

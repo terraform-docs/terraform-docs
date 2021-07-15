@@ -34,6 +34,7 @@ terraform-docs markdown document [PATH] [flags]
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --html                        use HTML tags in genereted output (default true)
       --indent int                  indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
+      --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-file string          file path to insert output into (default "")
       --output-mode string          output to file method [inject, replace] (default "inject")
       --output-template string      output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
