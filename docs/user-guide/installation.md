@@ -51,6 +51,22 @@ Docker tag `latest` refers to _latest_ stable released version and `edge`refers
 to HEAD of `master` at any given point in time. And any named version tags are
 identical to the official GitHub releases without leading `v`.
 
+### Wrapper script
+
+You can use a wrapper script placed in your environment PATH to automatically pull the docker image and act as if the command is locally installed.
+The upside to this method is that you will always stay on the latest stable version unless you pin the image tag.
+The downside to this is that you can not run terraform docs on any path that is not the current working directory or a subfolder of the current working directory, and any folder path provided must be a relative path (not start with /), otherwise it will act as normal.
+
+It might be wise to clean out old docker images after a while if you are running low on space. A simple way to clean out docker is `docker system prune -a`
+
+Create a script in your PATH (eg: /usr/bin) and paste the following content:
+
+```bash
+#!/bin/sh
+docker pull --quiet quay.io/terraform-docs/terraform-docs:latest >&2
+docker run --rm --workdir="/workdir" -v "$PWD":/workdir quay.io/terraform-docs/terraform-docs:latest $@
+```
+
 ## Pre-compiled Binary
 
 Stable binaries are available on the GitHub [Release] page. To install, download
