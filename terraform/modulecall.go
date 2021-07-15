@@ -12,6 +12,7 @@ package terraform
 
 import (
 	"fmt"
+	"sort"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 )
@@ -32,29 +33,25 @@ func (mc *ModuleCall) FullName() string {
 	return mc.Source
 }
 
-type modulecallsSortedByName []*ModuleCall
-
-func (a modulecallsSortedByName) Len() int           { return len(a) }
-func (a modulecallsSortedByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a modulecallsSortedByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
-
-type modulecallsSortedBySource []*ModuleCall
-
-func (a modulecallsSortedBySource) Len() int      { return len(a) }
-func (a modulecallsSortedBySource) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a modulecallsSortedBySource) Less(i, j int) bool {
-	if a[i].Source == a[j].Source {
-		return a[i].Name < a[j].Name
-	}
-	return a[i].Source < a[j].Source
+func sortModulecallsByName(x []*ModuleCall) {
+	sort.Slice(x, func(i, j int) bool {
+		return x[i].Name < x[j].Name
+	})
 }
 
-type modulecallsSortedByPosition []*ModuleCall
+func sortModulecallsBySource(x []*ModuleCall) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].Source == x[j].Source {
+			return x[i].Name < x[j].Name
+		}
+		return x[i].Source < x[j].Source
+	})
+}
 
-func (a modulecallsSortedByPosition) Len() int      { return len(a) }
-func (a modulecallsSortedByPosition) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a modulecallsSortedByPosition) Less(i, j int) bool {
-	return a[i].Position.Filename < a[j].Position.Filename || a[i].Position.Line < a[j].Position.Line
+func sortModulecallsByPosition(x []*ModuleCall) {
+	sort.Slice(x, func(i, j int) bool {
+		return x[i].Position.Filename < x[j].Position.Filename || x[i].Position.Line < x[j].Position.Line
+	})
 }
 
 type modulecalls []*ModuleCall

@@ -14,6 +14,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strings"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
@@ -57,40 +58,37 @@ func (i *Input) HasDefault() bool {
 	return i.Default.HasDefault() || !i.Required
 }
 
-type inputsSortedByName []*Input
-
-func (a inputsSortedByName) Len() int           { return len(a) }
-func (a inputsSortedByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a inputsSortedByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
-
-type inputsSortedByRequired []*Input
-
-func (a inputsSortedByRequired) Len() int      { return len(a) }
-func (a inputsSortedByRequired) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a inputsSortedByRequired) Less(i, j int) bool {
-	if a[i].HasDefault() == a[j].HasDefault() {
-		return a[i].Name < a[j].Name
-	}
-	return !a[i].HasDefault() && a[j].HasDefault()
+func sortInputsByName(x []*Input) {
+	sort.Slice(x, func(i, j int) bool {
+		return x[i].Name < x[j].Name
+	})
 }
 
-type inputsSortedByPosition []*Input
-
-func (a inputsSortedByPosition) Len() int      { return len(a) }
-func (a inputsSortedByPosition) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a inputsSortedByPosition) Less(i, j int) bool {
-	return a[i].Position.Filename < a[j].Position.Filename || a[i].Position.Line < a[j].Position.Line
+func sortInputsByRequired(x []*Input) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].HasDefault() == x[j].HasDefault() {
+			return x[i].Name < x[j].Name
+		}
+		return !x[i].HasDefault() && x[j].HasDefault()
+	})
 }
 
-type inputsSortedByType []*Input
+func sortInputsByPosition(x []*Input) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].Position.Filename == x[j].Position.Filename {
+			return x[i].Position.Line < x[j].Position.Line
+		}
+		return x[i].Position.Filename < x[j].Position.Filename
+	})
+}
 
-func (a inputsSortedByType) Len() int      { return len(a) }
-func (a inputsSortedByType) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a inputsSortedByType) Less(i, j int) bool {
-	if a[i].Type == a[j].Type {
-		return a[i].Name < a[j].Name
-	}
-	return a[i].Type < a[j].Type
+func sortInputsByType(x []*Input) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].Type == x[j].Type {
+			return x[i].Name < x[j].Name
+		}
+		return x[i].Type < x[j].Type
+	})
 }
 
 type inputs []*Input

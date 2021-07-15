@@ -16,7 +16,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // GetModule returns 'example' Module

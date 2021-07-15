@@ -25,7 +25,7 @@ import (
 	"github.com/terraform-docs/terraform-docs/cmd"
 	"github.com/terraform-docs/terraform-docs/internal/format"
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // These are practiaclly a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go

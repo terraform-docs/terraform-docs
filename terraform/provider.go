@@ -12,6 +12,7 @@ package terraform
 
 import (
 	"fmt"
+	"sort"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
@@ -33,20 +34,22 @@ func (p *Provider) FullName() string {
 	return p.Name
 }
 
-type providersSortedByName []*Provider
-
-func (a providersSortedByName) Len() int      { return len(a) }
-func (a providersSortedByName) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a providersSortedByName) Less(i, j int) bool {
-	return a[i].Name < a[j].Name || (a[i].Name == a[j].Name && a[i].Alias < a[j].Alias)
+func sortProvidersByName(x []*Provider) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].Name == x[j].Name {
+			return x[i].Name == x[j].Name && x[i].Alias < x[j].Alias
+		}
+		return x[i].Name < x[j].Name
+	})
 }
 
-type providersSortedByPosition []*Provider
-
-func (a providersSortedByPosition) Len() int      { return len(a) }
-func (a providersSortedByPosition) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a providersSortedByPosition) Less(i, j int) bool {
-	return a[i].Position.Filename < a[j].Position.Filename || a[i].Position.Line < a[j].Position.Line
+func sortProvidersByPosition(x []*Provider) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].Position.Filename == x[j].Position.Filename {
+			return x[i].Position.Line < x[j].Position.Line
+		}
+		return x[i].Position.Filename < x[j].Position.Filename
+	})
 }
 
 type providers []*Provider

@@ -18,7 +18,7 @@ import (
 	"github.com/iancoleman/orderedmap"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // TfvarsJSON represents Terraform tfvars JSON format.

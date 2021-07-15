@@ -11,7 +11,6 @@ the root directory of this source tree.
 package terraform
 
 import (
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -54,15 +53,15 @@ func TestProviderName(t *testing.T) {
 func TestProvidersSort(t *testing.T) {
 	providers := sampleProviders()
 	tests := map[string]struct {
-		sortType sort.Interface
+		sortType func([]*Provider)
 		expected []string
 	}{
 		"ByName": {
-			sortType: providersSortedByName(providers),
+			sortType: sortProvidersByName,
 			expected: []string{"a", "b", "c", "d", "d.a", "e", "e.a"},
 		},
 		"ByPosition": {
-			sortType: providersSortedByPosition(providers),
+			sortType: sortProvidersByPosition,
 			expected: []string{"e.a", "b", "d", "d.a", "a", "e", "c"},
 		},
 	}
@@ -70,7 +69,7 @@ func TestProvidersSort(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			sort.Sort(tt.sortType)
+			tt.sortType(providers)
 
 			actual := make([]string, len(providers))
 

@@ -21,8 +21,8 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 func TestTemplateRender(t *testing.T) {
@@ -420,8 +420,7 @@ func TestBuiltinFunc(t *testing.T) {
 			assert := assert.New(t)
 			settings := print.DefaultSettings()
 			settings.EscapeCharacters = tt.escape
-			tmpl := New(settings)
-			funcs := tmpl.Funcs()
+			funcs := builtinFuncs(settings)
 
 			fn, ok := funcs[tt.funcName]
 			assert.Truef(ok, "function %s is not defined", tt.funcName)
@@ -459,6 +458,54 @@ func TestBuiltinFunc(t *testing.T) {
 			}
 
 			assert.Equal(tt.expected, result[0].String())
+		})
+	}
+}
+
+func TestGenerateIndentation(t *testing.T) {
+	tests := []struct {
+		name     string
+		base     int
+		extra    int
+		expected string
+	}{
+		{
+			name:     "generate indentation",
+			base:     2,
+			extra:    1,
+			expected: "###",
+		},
+		{
+			name:     "generate indentation",
+			extra:    2,
+			expected: "####",
+		},
+		{
+			name:     "generate indentation",
+			base:     4,
+			extra:    3,
+			expected: "#######",
+		},
+		{
+			name:     "generate indentation",
+			base:     0,
+			extra:    0,
+			expected: "##",
+		},
+		{
+			name:     "generate indentation",
+			base:     6,
+			extra:    1,
+			expected: "###",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			settings := &print.Settings{IndentLevel: tt.base}
+			actual := generateIndentation(tt.extra, "#", settings)
+
+			assert.Equal(tt.expected, actual)
 		})
 	}
 }

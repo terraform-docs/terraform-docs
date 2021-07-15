@@ -14,7 +14,6 @@ import (
 	"bytes"
 	"encoding/xml"
 	"reflect"
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -463,15 +462,15 @@ func sampleOutputs() []Output {
 func TestOutputsSort(t *testing.T) {
 	outputs := sampleOutputsForSort()
 	tests := map[string]struct {
-		sortType sort.Interface
+		sortType func([]*Output)
 		expected []string
 	}{
 		"ByName": {
-			sortType: outputsSortedByName(outputs),
+			sortType: sortOutputsByName,
 			expected: []string{"a", "b", "c", "d", "e"},
 		},
 		"ByPosition": {
-			sortType: outputsSortedByPosition(outputs),
+			sortType: sortOutputsByPosition,
 			expected: []string{"d", "a", "e", "b", "c"},
 		},
 	}
@@ -479,7 +478,7 @@ func TestOutputsSort(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			sort.Sort(tt.sortType)
+			tt.sortType(outputs)
 
 			actual := make([]string, len(outputs))
 

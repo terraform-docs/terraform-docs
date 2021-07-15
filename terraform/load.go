@@ -12,7 +12,6 @@ package terraform
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -25,93 +24,10 @@ import (
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
-	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
 	"github.com/terraform-docs/terraform-docs/internal/reader"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
-
-// Module represents a Terraform module. It consists of
-//
-// - Header       ('header' json key):        Module header found in shape of multi line '*.tf' comments or an entire file
-// - Footer       ('footer' json key):        Module footer found in shape of multi line '*.tf' comments or an entire file
-// - Inputs       ('inputs' json key):        List of input 'variables' extracted from the Terraform module .tf files
-// - ModuleCalls  ('modules' json key):       List of 'modules' extracted from the Terraform module .tf files
-// - Outputs      ('outputs' json key):       List of 'outputs' extracted from Terraform module .tf files
-// - Providers    ('providers' json key):     List of 'providers' extracted from resources used in Terraform module
-// - Requirements ('requirements' json key):  List of 'requirements' extracted from the Terraform module .tf files
-// - Resources    ('resources' json key):     List of 'resources' extracted from the Terraform module .tf files
-type Module struct {
-	XMLName xml.Name `json:"-" toml:"-" xml:"module" yaml:"-"`
-
-	Header       string         `json:"header" toml:"header" xml:"header" yaml:"header"`
-	Footer       string         `json:"footer" toml:"footer" xml:"footer" yaml:"footer"`
-	Inputs       []*Input       `json:"inputs" toml:"inputs" xml:"inputs>input" yaml:"inputs"`
-	ModuleCalls  []*ModuleCall  `json:"modules" toml:"modules" xml:"modules>module" yaml:"modules"`
-	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
-	Providers    []*Provider    `json:"providers" toml:"providers" xml:"providers>provider" yaml:"providers"`
-	Requirements []*Requirement `json:"requirements" toml:"requirements" xml:"requirements>requirement" yaml:"requirements"`
-	Resources    []*Resource    `json:"resources" toml:"resources" xml:"resources>resource" yaml:"resources"`
-
-	RequiredInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
-	OptionalInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
-}
-
-// HasHeader indicates if the module has header.
-func (m *Module) HasHeader() bool {
-	return len(m.Header) > 0
-}
-
-// HasFooter indicates if the module has footer.
-func (m *Module) HasFooter() bool {
-	return len(m.Footer) > 0
-}
-
-// HasInputs indicates if the module has inputs.
-func (m *Module) HasInputs() bool {
-	return len(m.Inputs) > 0
-}
-
-// HasModuleCalls indicates if the module has modulecalls.
-func (m *Module) HasModuleCalls() bool {
-	return len(m.ModuleCalls) > 0
-}
-
-// HasOutputs indicates if the module has outputs.
-func (m *Module) HasOutputs() bool {
-	return len(m.Outputs) > 0
-}
-
-// HasProviders indicates if the module has providers.
-func (m *Module) HasProviders() bool {
-	return len(m.Providers) > 0
-}
-
-// HasRequirements indicates if the module has requirements.
-func (m *Module) HasRequirements() bool {
-	return len(m.Requirements) > 0
-}
-
-// HasResources indicates if the module has resources.
-func (m *Module) HasResources() bool {
-	return len(m.Resources) > 0
-}
-
-// Convert internal Module to its equivalent in plugin-sdk
-func (m *Module) Convert() terraformsdk.Module {
-	return terraformsdk.NewModule(
-		terraformsdk.WithHeader(m.Header),
-		terraformsdk.WithFooter(m.Footer),
-		terraformsdk.WithInputs(inputs(m.Inputs).convert()),
-		terraformsdk.WithModuleCalls(modulecalls(m.ModuleCalls).convert()),
-		terraformsdk.WithOutputs(outputs(m.Outputs).convert()),
-		terraformsdk.WithProviders(providers(m.Providers).convert()),
-		terraformsdk.WithRequirements(requirements(m.Requirements).convert()),
-		terraformsdk.WithResources(resources(m.Resources).convert()),
-		terraformsdk.WithRequiredInputs(inputs(m.RequiredInputs).convert()),
-		terraformsdk.WithOptionalInputs(inputs(m.OptionalInputs).convert()),
-	)
-}
 
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
@@ -575,47 +491,47 @@ func sortItems(tfmodule *Module, sortby *SortBy) { //nolint:gocyclo
 	// inputs
 	switch {
 	case sortby.Type:
-		sort.Sort(inputsSortedByType(tfmodule.Inputs))
-		sort.Sort(inputsSortedByType(tfmodule.RequiredInputs))
-		sort.Sort(inputsSortedByType(tfmodule.OptionalInputs))
+		sortInputsByType(tfmodule.Inputs)
+		sortInputsByType(tfmodule.RequiredInputs)
+		sortInputsByType(tfmodule.OptionalInputs)
 	case sortby.Required:
-		sort.Sort(inputsSortedByRequired(tfmodule.Inputs))
-		sort.Sort(inputsSortedByRequired(tfmodule.RequiredInputs))
-		sort.Sort(inputsSortedByRequired(tfmodule.OptionalInputs))
+		sortInputsByRequired(tfmodule.Inputs)
+		sortInputsByRequired(tfmodule.RequiredInputs)
+		sortInputsByRequired(tfmodule.OptionalInputs)
 	case sortby.Name:
-		sort.Sort(inputsSortedByName(tfmodule.Inputs))
-		sort.Sort(inputsSortedByName(tfmodule.RequiredInputs))
-		sort.Sort(inputsSortedByName(tfmodule.OptionalInputs))
+		sortInputsByName(tfmodule.Inputs)
+		sortInputsByName(tfmodule.RequiredInputs)
+		sortInputsByName(tfmodule.OptionalInputs)
 	default:
-		sort.Sort(inputsSortedByPosition(tfmodule.Inputs))
-		sort.Sort(inputsSortedByPosition(tfmodule.RequiredInputs))
-		sort.Sort(inputsSortedByPosition(tfmodule.OptionalInputs))
+		sortInputsByPosition(tfmodule.Inputs)
+		sortInputsByPosition(tfmodule.RequiredInputs)
+		sortInputsByPosition(tfmodule.OptionalInputs)
 	}
 
 	// outputs
 	if sortby.Name || sortby.Required || sortby.Type {
-		sort.Sort(outputsSortedByName(tfmodule.Outputs))
+		sortOutputsByName(tfmodule.Outputs)
 	} else {
-		sort.Sort(outputsSortedByPosition(tfmodule.Outputs))
+		sortOutputsByPosition(tfmodule.Outputs)
 	}
 
 	// providers
 	if sortby.Name || sortby.Required || sortby.Type {
-		sort.Sort(providersSortedByName(tfmodule.Providers))
+		sortProvidersByName(tfmodule.Providers)
 	} else {
-		sort.Sort(providersSortedByPosition(tfmodule.Providers))
+		sortProvidersByPosition(tfmodule.Providers)
 	}
 
 	// resources (always sorted)
-	sort.Sort(resourcesSortedByType(tfmodule.Resources))
+	sortResourcesByType(tfmodule.Resources)
 
 	// modules
 	switch {
 	case sortby.Name || sortby.Required:
-		sort.Sort(modulecallsSortedByName(tfmodule.ModuleCalls))
+		sortModulecallsByName(tfmodule.ModuleCalls)
 	case sortby.Type:
-		sort.Sort(modulecallsSortedBySource(tfmodule.ModuleCalls))
+		sortModulecallsBySource(tfmodule.ModuleCalls)
 	default:
-		sort.Sort(modulecallsSortedByPosition(tfmodule.ModuleCalls))
+		sortModulecallsByPosition(tfmodule.ModuleCalls)
 	}
 }

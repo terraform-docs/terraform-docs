@@ -24,8 +24,8 @@ import (
 	pluginsdk "github.com/terraform-docs/plugin-sdk/plugin"
 	"github.com/terraform-docs/terraform-docs/internal/format"
 	"github.com/terraform-docs/terraform-docs/internal/plugin"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/version"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // PreRunEFunc returns actual 'cobra.Command#PreRunE' function for 'formatter'

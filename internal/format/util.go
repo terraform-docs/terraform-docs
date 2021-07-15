@@ -17,7 +17,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/terraform-docs/terraform-docs/internal/template"
+	"github.com/terraform-docs/terraform-docs/template"
 )
 
 // sanitize cleans a Markdown document to soothe linters.

@@ -8,5 +8,5 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-// Package terraform is the representation of a Terraform Module
-package terraform
+// Package template provides templating functionality.
+package template

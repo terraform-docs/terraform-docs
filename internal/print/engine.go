@@ -11,7 +11,7 @@ the root directory of this source tree.
 package print
 
 import (
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // Engine represents a format engine (e.g. json, table, yaml, ...)

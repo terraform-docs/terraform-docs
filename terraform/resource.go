@@ -12,6 +12,7 @@ package terraform
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
@@ -67,18 +68,16 @@ func (r *Resource) URL() string {
 	return fmt.Sprintf("https://registry.terraform.io/providers/%s/%s/docs/%s/%s", r.ProviderSource, r.Version, kind, r.Type)
 }
 
-type resourcesSortedByType []*Resource
-
-func (a resourcesSortedByType) Len() int      { return len(a) }
-func (a resourcesSortedByType) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a resourcesSortedByType) Less(i, j int) bool {
-	if a[i].Mode == a[j].Mode {
-		if a[i].Spec() == a[j].Spec() {
-			return a[i].Name <= a[j].Name
+func sortResourcesByType(x []*Resource) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].Mode == x[j].Mode {
+			if x[i].Spec() == x[j].Spec() {
+				return x[i].Name <= x[j].Name
+			}
+			return x[i].Spec() < x[j].Spec()
 		}
-		return a[i].Spec() < a[j].Spec()
-	}
-	return a[i].Mode > a[j].Mode
+		return x[i].Mode > x[j].Mode
+	})
 }
 
 type resources []*Resource
