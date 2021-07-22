@@ -373,6 +373,7 @@ type settings struct {
 	Escape      bool `mapstructure:"escape"`
 	HTML        bool `mapstructure:"html"`
 	Indent      int  `mapstructure:"indent"`
+	LockFile    bool `mapstructure:"lockfile"`
 	Required    bool `mapstructure:"required"`
 	Sensitive   bool `mapstructure:"sensitive"`
 	Type        bool `mapstructure:"type"`
@@ -387,6 +388,7 @@ func defaultSettings() settings {
 		Escape:      true,
 		HTML:        true,
 		Indent:      2,
+		LockFile:    true,
 		Required:    true,
 		Sensitive:   true,
 		Type:        true,
@@ -468,6 +470,9 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings.ShowFooter = c.Sections.footer
 	options.ShowFooter = settings.ShowFooter
 	options.FooterFromFile = c.FooterFrom
+
+	// terraform.lock.hcl file
+	options.UseLockFile = c.Settings.LockFile
 
 	// sections
 	settings.ShowDataSources = c.Sections.dataSources

@@ -31,6 +31,7 @@ type Options struct {
 	HeaderFromFile   string
 	ShowFooter       bool
 	FooterFromFile   string
+	UseLockFile      bool
 	SortBy           *SortBy
 	OutputValues     bool
 	OutputValuesPath string
@@ -44,6 +45,7 @@ func NewOptions() *Options {
 		HeaderFromFile:   "main.tf",
 		ShowFooter:       false,
 		FooterFromFile:   "",
+		UseLockFile:      true,
 		SortBy:           &SortBy{Name: false, Required: false, Type: false},
 		OutputValues:     false,
 		OutputValuesPath: "",
