@@ -30,6 +30,7 @@ terraform-docs json [PATH] [flags]
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --output-check                check if content of output file is up to date (default false)
       --output-file string          file path to insert output into (default "")
       --output-mode string          output to file method [inject, replace] (default "inject")
       --output-template string      output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")

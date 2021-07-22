@@ -229,6 +229,8 @@ func writeContent(config *Config, content string) error {
 
 			mode: config.Output.Mode,
 
+			check: config.Output.Check,
+
 			template: config.Output.Template,
 			begin:    config.Output.beginComment,
 			end:      config.Output.endComment,

@@ -65,6 +65,7 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.Output.File, "output-file", "", "file path to insert output into (default \"\")")
 	cmd.PersistentFlags().StringVar(&config.Output.Mode, "output-mode", "inject", "output to file method ["+cli.OutputModes+"]")
 	cmd.PersistentFlags().StringVar(&config.Output.Template, "output-template", cli.OutputTemplate, "output template")
+	cmd.PersistentFlags().BoolVar(&config.Output.Check, "output-check", false, "check if content of output file is up to date (default false)")
 
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
 	cmd.PersistentFlags().StringVar(&config.Sort.By, "sort-by", "name", "sort items by criteria ["+cli.SortTypes+"]")

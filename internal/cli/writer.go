@@ -13,6 +13,7 @@ package cli
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -45,6 +46,8 @@ type fileWriter struct {
 	dir  string
 
 	mode string
+
+	check bool
 
 	template string
 	begin    string
@@ -154,8 +157,26 @@ func (fw *fileWriter) inject(filename string, content string, generated string) 
 // wrtie the content to io.Writer. If no io.Writer is available,
 // it will be written to 'filename'.
 func (fw *fileWriter) write(filename string, p []byte) (int, error) {
+	// if run in check mode return exit 1
+	if fw.check {
+		f, err := os.ReadFile(filename)
+		if err != nil {
+			return 0, err
+		}
+
+		// check for changes and print changed file
+		if !bytes.Equal(f, p) {
+			return 0, fmt.Errorf("%s is out of date", filename)
+		}
+
+		fmt.Printf("%s is up to date\n", filename)
+		return 0, nil
+	}
+
 	if fw.writer != nil {
 		return fw.writer.Write(p)
 	}
+
+	fmt.Printf("%s updated successfully\n", filename)
 	return len(p), os.WriteFile(filename, p, 0644)
 }
