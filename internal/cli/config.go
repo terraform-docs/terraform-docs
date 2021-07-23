@@ -249,6 +249,7 @@ func (o *output) validate() error {
 		return nil
 	}
 
+	o.Template = strings.Replace(o.Template, "\\n", "\n", -1)
 	lines := strings.Split(o.Template, "\n")
 	tests := []struct {
 		condition  func() bool
