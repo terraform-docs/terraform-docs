@@ -249,7 +249,7 @@ func (o *output) validate() error {
 		return nil
 	}
 
-	o.Template = strings.Replace(o.Template, "\\n", "\n", -1)
+	o.Template = strings.ReplaceAll(o.Template, "\\n", "\n")
 	lines := strings.Split(o.Template, "\n")
 	tests := []struct {
 		condition  func() bool
@@ -292,24 +292,27 @@ func (o *output) validate() error {
 // ref: https://www.jamestharpe.com/markdown-comments/
 func isInlineComment(line string) bool {
 	switch {
-	// Markdown specific
-	case strings.HasPrefix(line, "<!--") && strings.HasSuffix(line, "-->"):
-		return true
-	case strings.HasPrefix(line, "[]: # ("):
-		return true
-	case strings.HasPrefix(line, "[]: # \""):
-		return true
-	case strings.HasPrefix(line, "[]: # '"):
-		return true
-	case strings.HasPrefix(line, "[//]: # ("):
-		return true
-	case strings.HasPrefix(line, "[comment]: # ("):
-		return true
-
 	// AsciiDoc specific
 	case strings.HasPrefix(line, "//"):
 		return true
+
+	// Markdown specific
+	default:
+		cases := [][]string{
+			{"<!--", "-->"},
+			{"[]: # (", ")"},
+			{"[]: # \"", "\""},
+			{"[]: # '", "'"},
+			{"[//]: # (", ")"},
+			{"[comment]: # (", ")"},
+		}
+		for _, c := range cases {
+			if strings.HasPrefix(line, c[0]) && strings.HasSuffix(line, c[1]) {
+				return true
+			}
+		}
 	}
+
 	return false
 }
 
