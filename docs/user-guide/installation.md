@@ -2,8 +2,8 @@
 title: "Installation"
 description: "terraform-docs installation guide."
 menu:
-    docs:
-        parent: "user-guide"
+  docs:
+    parent: "user-guide"
 weight: 110
 toc: true
 ---
@@ -123,7 +123,7 @@ autoload -U compinit && compinit
 
 To make this change permanent, the above commands can be added to `~/.profile` file.
 
-[release]: https://github.com/terraform-docs/terraform-docs/releases
-[homebrew]: https://brew.sh
-[scoop]: https://scoop.sh/
-[chocolatey]: https://www.chocolatey.org
+[Release]: https://github.com/terraform-docs/terraform-docs/releases
+[Homebrew]: https://brew.sh
+[Scoop]: https://scoop.sh/
+[Chocolatey]: https://www.chocolatey.org
