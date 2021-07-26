@@ -18,6 +18,12 @@ If you are a macOS user, you can use [Homebrew].
 brew install terraform-docs
 ```
 
+or
+
+```bash
+brew install terraform-docs/tap/terraform-docs
+```
+
 ## Windows
 
 If you are a Windows user:
