@@ -61,9 +61,11 @@ func PreRunEFunc(config *Config) func(*cobra.Command, []string) error { //nolint
 			v.SetConfigType("yml")
 		}
 
-		v.AddConfigPath(args[0])           // first look at module root
-		v.AddConfigPath(".")               // then current directory
-		v.AddConfigPath("$HOME/.tfdocs.d") // and finally $HOME/.tfdocs.d/
+		v.AddConfigPath(args[0])              // first look at module root
+		v.AddConfigPath(args[0] + "/.config") // then .config/ folder at module root
+		v.AddConfigPath(".")                  // then current directory
+		v.AddConfigPath(".config")            // then .config/ folder at current directory
+		v.AddConfigPath("$HOME/.tfdocs.d")    // and finally $HOME/.tfdocs.d/
 
 		if err := v.ReadInConfig(); err != nil {
 			var perr *os.PathError
