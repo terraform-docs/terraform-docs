@@ -39,10 +39,13 @@ $ tree
 $ terraform-docs -c .tfdocs-config.yml .
 ```
 
-As of `v0.13.0`, the order for looking for config file is:
+As of `v0.13.0`, the order for looking for config file is *(2 and 4 were added
+in `v0.15.0`)*:
 
 1. root of module directory
+1. `.config/` folder at root of module directory
 1. current directory
+1. `.config/` folder at current directory
 1. `$HOME/.tfdocs.d/`
 
 if `.terraform-docs.yml` is found in any of the folders above, that will take
