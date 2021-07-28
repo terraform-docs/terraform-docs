@@ -55,7 +55,16 @@ func sanitizeSection(s string, settings *print.Settings) string {
 			if !strings.HasSuffix(segment, "\n") {
 				lastbreak = "\n"
 			}
-			segment = fmt.Sprintf("```%s%s```", segment, lastbreak)
+
+			// Adjust indention and linebreak for indented codeblock
+			// https://github.com/terraform-docs/terraform-docs/issues/521
+			lastindent := ""
+			lines := strings.Split(segment, "\n")
+			if len(strings.TrimSpace(lines[len(lines)-1])) == 0 {
+				lastbreak = ""
+			}
+
+			segment = fmt.Sprintf("```%s%s%s```", segment, lastindent, lastbreak)
 			return segment
 		},
 	)

@@ -28,6 +28,16 @@ module "foo_bar" {
 }
 ```
 
+1. Entry one with code
+
+    ```json
+    {
+      "key": "value"
+    }
+    ```
+
+1. This line should not be broken
+
 Here is some trailing text after code block,
 followed by another line of text.
 
