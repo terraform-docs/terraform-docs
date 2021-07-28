@@ -239,8 +239,8 @@ github.com/subosito/gotenv v1.2.0 h1:Slr1R9HxAlEKefgq5jn9U+DnETlIUa6HfgEzj0g5d7s
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/terraform-docs/plugin-sdk v0.3.1-0.20210512170044-49b620c0a2da h1:WJXjngYRi9rtvzFFKjYuiWpax9R6tEiAA9givVSA4tw=
 github.com/terraform-docs/plugin-sdk v0.3.1-0.20210512170044-49b620c0a2da/go.mod h1:3G+0nZTeaMF1c5CZh8cOEYeNq0kUL6+DlQOVcxK7eCQ=
-github.com/terraform-docs/terraform-config-inspect v0.0.0-20210318143659-b932ca5358a6 h1:chOGKLaX5wNawU8rcF6HFJL+N5uU1Km8SiUQ/Ggwu2I=
-github.com/terraform-docs/terraform-config-inspect v0.0.0-20210318143659-b932ca5358a6/go.mod h1:GtanFwTsRRXScYHOMb5h4K18XQBFeS2tXat9/LrPtPc=
+github.com/terraform-docs/terraform-config-inspect v0.0.0-20210728164355-9c1f178932fa h1:wdyf3TobwYFwsqnUGJcjdNHxKfwHPFbaOknBJehnF1M=
+github.com/terraform-docs/terraform-config-inspect v0.0.0-20210728164355-9c1f178932fa/go.mod h1:GtanFwTsRRXScYHOMb5h4K18XQBFeS2tXat9/LrPtPc=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
