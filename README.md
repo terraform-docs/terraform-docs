@@ -90,11 +90,24 @@ choco install terraform-docs
 Alternatively you also can run `terraform-docs` as a container:
 
 ```bash
-docker run quay.io/terraform-docs/terraform-docs:0.14.1
+docker run quay.io/terraform-docs/terraform-docs:0.14.1 [Command] [Directory PATH]
 ```
 
 **NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge`
 refers to HEAD of `master` at any given point in time.
+
+Available Commands:
+  asciidoc    Generate AsciiDoc of inputs and outputs
+  completion  Generate shell completion code for the specified shell (bash or zsh)
+  help        Help about any command
+  json        Generate JSON of inputs and outputs
+  markdown    Generate Markdown of inputs and outputs
+  pretty      Generate colorized pretty of inputs and outputs
+  tfvars      Generate terraform.tfvars of inputs
+  toml        Generate TOML of inputs and outputs
+  version     Print the version number of terraform-docs
+  xml         Generate XML of inputs and outputs
+  yaml        Generate YAML of inputs and outputs
 
 ## Community
 
