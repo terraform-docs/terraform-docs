@@ -17,14 +17,14 @@ import (
 )
 
 // NewCommand returns a new cobra.Command for 'tfvars json' formatter
-func NewCommand(config *cli.Config) *cobra.Command {
+func NewCommand(runtime *cli.Runtime, config *cli.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Args:        cobra.ExactArgs(1),
 		Use:         "json [PATH]",
 		Short:       "Generate JSON format of terraform.tfvars of inputs",
 		Annotations: cli.Annotations("tfvars json"),
-		PreRunE:     cli.PreRunEFunc(config),
-		RunE:        cli.RunEFunc(config),
+		PreRunE:     runtime.PreRunEFunc,
+		RunE:        runtime.RunEFunc,
 	}
 	return cmd
 }

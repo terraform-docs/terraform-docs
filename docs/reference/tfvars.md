@@ -32,6 +32,8 @@ Generate terraform.tfvars of inputs.
       --output-template string      output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
       --output-values               inject output values into outputs (default false)
       --output-values-from string   inject output values from file into outputs (default "")
+      --recursive                   update submodules recursively (default false)
+      --recursive-path string       submodules path to recursively update (default "modules")
       --show strings                show section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")

@@ -19,7 +19,7 @@ import (
 )
 
 // NewCommand returns a new cobra.Command for 'tfvars' formatter
-func NewCommand(config *cli.Config) *cobra.Command {
+func NewCommand(runtime *cli.Runtime, config *cli.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Args:        cobra.ExactArgs(1),
 		Use:         "tfvars [PATH]",
@@ -28,8 +28,8 @@ func NewCommand(config *cli.Config) *cobra.Command {
 	}
 
 	// subcommands
-	cmd.AddCommand(hcl.NewCommand(config))
-	cmd.AddCommand(json.NewCommand(config))
+	cmd.AddCommand(hcl.NewCommand(runtime, config))
+	cmd.AddCommand(json.NewCommand(runtime, config))
 
 	return cmd
 }

@@ -43,6 +43,7 @@ func Execute() error {
 // NewCommand returns a new cobra.Command for 'root' command
 func NewCommand() *cobra.Command {
 	config := cli.DefaultConfig()
+	runtime := cli.NewRuntime(config)
 	cmd := &cobra.Command{
 		Args:          cobra.MaximumNArgs(1),
 		Use:           "terraform-docs [PATH]",
@@ -52,12 +53,14 @@ func NewCommand() *cobra.Command {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Annotations:   cli.Annotations("root"),
-		PreRunE:       cli.PreRunEFunc(config),
-		RunE:          cli.RunEFunc(config),
+		PreRunE:       runtime.PreRunEFunc,
+		RunE:          runtime.RunEFunc,
 	}
 
 	// flags
 	cmd.PersistentFlags().StringVarP(&config.File, "config", "c", ".terraform-docs.yml", "config file name")
+	cmd.PersistentFlags().BoolVar(&config.Recursive, "recursive", false, "update submodules recursively (default false)")
+	cmd.PersistentFlags().StringVar(&config.RecursivePath, "recursive-path", "modules", "submodules path to recursively update")
 
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+cli.AllSections+"]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+cli.AllSections+"]")
@@ -79,14 +82,14 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.OutputValues.From, "output-values-from", "", "inject output values from file into outputs (default \"\")")
 
 	// formatter subcommands
-	cmd.AddCommand(asciidoc.NewCommand(config))
-	cmd.AddCommand(json.NewCommand(config))
-	cmd.AddCommand(markdown.NewCommand(config))
-	cmd.AddCommand(pretty.NewCommand(config))
-	cmd.AddCommand(tfvars.NewCommand(config))
-	cmd.AddCommand(toml.NewCommand(config))
-	cmd.AddCommand(xml.NewCommand(config))
-	cmd.AddCommand(yaml.NewCommand(config))
+	cmd.AddCommand(asciidoc.NewCommand(runtime, config))
+	cmd.AddCommand(json.NewCommand(runtime, config))
+	cmd.AddCommand(markdown.NewCommand(runtime, config))
+	cmd.AddCommand(pretty.NewCommand(runtime, config))
+	cmd.AddCommand(tfvars.NewCommand(runtime, config))
+	cmd.AddCommand(toml.NewCommand(runtime, config))
+	cmd.AddCommand(xml.NewCommand(runtime, config))
+	cmd.AddCommand(yaml.NewCommand(runtime, config))
 
 	// other subcommands
 	cmd.AddCommand(completion.NewCommand())

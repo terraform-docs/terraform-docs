@@ -17,15 +17,15 @@ import (
 )
 
 // NewCommand returns a new cobra.Command for 'markdown table' formatter
-func NewCommand(config *cli.Config) *cobra.Command {
+func NewCommand(runtime *cli.Runtime, config *cli.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Args:        cobra.ExactArgs(1),
 		Use:         "table [PATH]",
 		Aliases:     []string{"tbl"},
 		Short:       "Generate Markdown tables of inputs and outputs",
 		Annotations: cli.Annotations("markdown table"),
-		PreRunE:     cli.PreRunEFunc(config),
-		RunE:        cli.RunEFunc(config),
+		PreRunE:     runtime.PreRunEFunc,
+		RunE:        runtime.RunEFunc,
 	}
 	return cmd
 }
