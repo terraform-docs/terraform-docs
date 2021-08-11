@@ -11,7 +11,6 @@ the root directory of this source tree.
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"log"
@@ -169,10 +168,10 @@ func example(ref *reference) error {
 		flag += " --no-color"
 	}
 
-	ref.Usage = fmt.Sprintf("%s%s ./examples/", ref.Command, flag)
+	ref.Usage = fmt.Sprintf("%s%s ./testdata/", ref.Command, flag)
 
 	config := print.DefaultConfig()
-	config.ModuleRoot = "./examples"
+	config.ModuleRoot = "./testdata"
 	config.Formatter = ref.Name
 	config.Settings.Color = false
 	config.Sections.Show = append(config.Sections.Show, "all")
@@ -193,17 +192,7 @@ func example(ref *reference) error {
 	if err := formatter.Generate(tfmodule); err != nil {
 		return err
 	}
-
-	segments := strings.Split(formatter.Content(), "\n")
-	buf := new(bytes.Buffer)
-	for _, s := range segments {
-		if s == "" {
-			buf.WriteString("\n")
-		} else {
-			buf.WriteString(fmt.Sprintf("    %s\n", s))
-		}
-	}
-	ref.Example = buf.String()
+	ref.Example = formatter.Content()
 
 	return nil
 }

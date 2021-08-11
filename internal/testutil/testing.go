@@ -56,7 +56,7 @@ func getExampleFolder(folder string) (string, error) {
 	if folder != "" {
 		path = filepath.Join(filepath.Dir(b), "..", "testutil", "testdata", folder)
 	} else {
-		path = filepath.Join(filepath.Dir(b), "..", "..", "examples")
+		path = filepath.Join(filepath.Dir(b), "..", "..", "testdata")
 	}
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return "", err

@@ -41,7 +41,7 @@ toc: true
 {{ printf "\n" }}
 ## Example
 
-Given the [`examples`][examples] module:
+Given the [`testdata`][testdata] module:
 
 ```shell
 {{ .Usage }}
@@ -49,8 +49,11 @@ Given the [`examples`][examples] module:
 
 generates the following output:
 
+````text
 {{ .Example }}
-[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+````
+
+[testdata]: https://github.com/terraform-docs/terraform-docs/tree/master/testdata
 {{- else -}}
 {{ printf "\n" }}
 ## Subcommands
