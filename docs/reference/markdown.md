@@ -23,6 +23,7 @@ terraform-docs markdown [PATH] [flags]
       --default      show Default column or section (default true)
       --escape       escape special characters (default true)
   -h, --help         help for markdown
+      --hide-empty   hide empty sections (default false)
       --html         use HTML tags in genereted output (default true)
       --indent int   indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --required     show Required column or section (default true)
@@ -37,6 +38,7 @@ terraform-docs markdown [PATH] [flags]
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --hide-empty                  hide empty sections (default false)
       --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-check                check if content of output file is up to date (default false)
       --output-file string          file path to insert output into (default "")

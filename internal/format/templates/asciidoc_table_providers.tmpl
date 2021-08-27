@@ -1,8 +1,13 @@
 {{- if .Settings.ShowProviders -}}
-    {{ indent 0 "=" }} Providers
-    {{ if not .Module.Providers }}
-        No providers.
+    {{- if not .Module.Providers -}}
+        {{- if not .Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Providers
+
+            No providers.
+        {{ end }}
     {{ else }}
+        {{- indent 0 "=" }} Providers
+
         [cols="a,a",options="header,autowidth"]
         |===
         |Name |Version

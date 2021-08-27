@@ -23,6 +23,8 @@ var flagMappings = map[string]string{
 	"header-from": "header-from",
 	"footer-from": "footer-from",
 
+	"hide-empty": "hide-empty",
+
 	"show": "sections.show",
 	"hide": "sections.hide",
 
@@ -59,6 +61,7 @@ type Config struct {
 	HeaderFrom    string       `mapstructure:"header-from"`
 	FooterFrom    string       `mapstructure:"footer-from"`
 	Content       string       `mapstructure:"content"`
+	HideEmpty     bool         `mapstructure:"hide-empty"`
 	Sections      sections     `mapstructure:"sections"`
 	Output        output       `mapstructure:"output"`
 	OutputValues  outputvalues `mapstructure:"output-values"`
@@ -80,6 +83,7 @@ func DefaultConfig() *Config {
 		HeaderFrom:    "main.tf",
 		FooterFrom:    "",
 		Content:       "",
+		HideEmpty:     false,
 		Sections:      defaultSections(),
 		Output:        defaultOutput(),
 		OutputValues:  defaultOutputValues(),
@@ -495,6 +499,7 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings.ShowProviders = c.Sections.providers
 	settings.ShowRequirements = c.Sections.requirements
 	settings.ShowResources = c.Sections.resources
+	settings.HideEmpty = c.HideEmpty
 
 	// output values
 	settings.OutputValues = c.OutputValues.Enabled

@@ -287,7 +287,7 @@ func checkConstraint(versionRange string, currentVersion string) error {
 }
 
 // generateContent extracts print.Settings and terraform.Options from normalized
-// Config and generates the output content for the module (and submodules if avialble)
+// Config and generates the output content for the module (and submodules if availble)
 // and write the result to the output (either stdout or a file).
 func generateContent(config *Config) error {
 	settings, options := config.extract()
@@ -300,7 +300,7 @@ func generateContent(config *Config) error {
 
 	formatter, err := format.Factory(config.Formatter, settings)
 
-	// formatter is unkowns, this might mean that the intended formatter is
+	// formatter is unknown, this might mean that the intended formatter is
 	// coming from a plugin. We are going to attempt to find a plugin with
 	// that name and generate the content with it or error out if not found.
 	if err != nil {

@@ -165,6 +165,12 @@ func TestMarkdownTable(t *testing.T) {
 				OutputValuesPath: "output_values.json",
 			},
 		},
+		"HideEmpty": {
+			settings: testutil.WithSections(testutil.WithHideEmpty()),
+			options: terraform.Options{
+				Path: "empty",
+			},
+		},
 
 		// Only section
 		"OnlyDataSources": {

@@ -1,8 +1,13 @@
 {{- if .Settings.ShowInputs -}}
-    {{ indent 0 "#" }} Inputs
-    {{ if not .Module.Inputs }}
-        No inputs.
+    {{- if not .Module.Inputs -}}
+        {{- if not .Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Inputs
+
+            No inputs.
+        {{- end }}
     {{ else }}
+        {{- indent 0 "#" }} Inputs
+
         | Name | Description |
         {{- if .Settings.ShowType }} Type |{{ end }}
         {{- if .Settings.ShowDefault }} Default |{{ end }}

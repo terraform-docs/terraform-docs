@@ -1,8 +1,13 @@
 {{- if .Settings.ShowOutputs -}}
-    {{ indent 0 "#" }} Outputs
-    {{ if not .Module.Outputs }}
-        No outputs.
+    {{- if not .Module.Outputs -}}
+        {{- if not .Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Outputs
+
+            No outputs.
+        {{ end }}
     {{ else }}
+        {{- indent 0 "#" }} Outputs
+
         | Name | Description |{{ if .Settings.OutputValues }} Value |{{ if $.Settings.ShowSensitivity }} Sensitive |{{ end }}{{ end }}
         |------|-------------|{{ if .Settings.OutputValues }}-------|{{ if $.Settings.ShowSensitivity }}:---------:|{{ end }}{{ end }}
         {{- range .Module.Outputs }}

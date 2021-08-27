@@ -23,6 +23,12 @@ type Settings struct {
 	// scope: Markdown
 	EscapeCharacters bool
 
+	// HideEmpty hide empty sections
+	//
+	// default: false
+	// scope: Global
+	HideEmpty bool
+
 	// IndentLevel control the indentation of headers [available: 1, 2, 3, 4, 5]
 	//
 	// default: 2
@@ -142,6 +148,7 @@ type Settings struct {
 func DefaultSettings() *Settings {
 	return &Settings{
 		EscapeCharacters: true,
+		HideEmpty:        false,
 		IndentLevel:      2,
 		OutputValues:     false,
 		ShowAnchor:       true,
@@ -168,6 +175,7 @@ func DefaultSettings() *Settings {
 func (s *Settings) Convert() *printsdk.Settings {
 	return &printsdk.Settings{
 		EscapeCharacters: s.EscapeCharacters,
+		HideEmpty:        s.HideEmpty,
 		IndentLevel:      s.IndentLevel,
 		OutputValues:     s.OutputValues,
 		ShowColor:        s.ShowColor,
