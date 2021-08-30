@@ -99,6 +99,7 @@ settings:
   default: true
   description: false
   escape: true
+  hideempty: false
   html: true
   indent: 2
   lockfile: true
