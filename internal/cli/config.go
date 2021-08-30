@@ -61,7 +61,6 @@ type Config struct {
 	HeaderFrom    string       `mapstructure:"header-from"`
 	FooterFrom    string       `mapstructure:"footer-from"`
 	Content       string       `mapstructure:"content"`
-	HideEmpty     bool         `mapstructure:"hide-empty"`
 	Sections      sections     `mapstructure:"sections"`
 	Output        output       `mapstructure:"output"`
 	OutputValues  outputvalues `mapstructure:"output-values"`
@@ -83,7 +82,6 @@ func DefaultConfig() *Config {
 		HeaderFrom:    "main.tf",
 		FooterFrom:    "",
 		Content:       "",
-		HideEmpty:     false,
 		Sections:      defaultSections(),
 		Output:        defaultOutput(),
 		OutputValues:  defaultOutputValues(),
@@ -383,6 +381,7 @@ type settings struct {
 	Default     bool `mapstructure:"default"`
 	Description bool `mapstructure:"description"`
 	Escape      bool `mapstructure:"escape"`
+	HideEmpty   bool `mapstructure:"hide-empty"`
 	HTML        bool `mapstructure:"html"`
 	Indent      int  `mapstructure:"indent"`
 	LockFile    bool `mapstructure:"lockfile"`
@@ -398,6 +397,7 @@ func defaultSettings() settings {
 		Default:     true,
 		Description: false,
 		Escape:      true,
+		HideEmpty:   false,
 		HTML:        true,
 		Indent:      2,
 		LockFile:    true,
@@ -499,7 +499,7 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings.ShowProviders = c.Sections.providers
 	settings.ShowRequirements = c.Sections.requirements
 	settings.ShowResources = c.Sections.resources
-	settings.HideEmpty = c.HideEmpty
+	settings.HideEmpty = c.Settings.HideEmpty
 
 	// output values
 	settings.OutputValues = c.OutputValues.Enabled

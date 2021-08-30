@@ -39,7 +39,7 @@ type Runtime struct {
 	cmd *cobra.Command
 }
 
-// NewRuntime retruns new instance of Runtime. If `config` is not provided
+// NewRuntime returns new instance of Runtime. If `config` is not provided
 // default config will be used.
 func NewRuntime(config *Config) *Runtime {
 	if config == nil {
@@ -287,7 +287,7 @@ func checkConstraint(versionRange string, currentVersion string) error {
 }
 
 // generateContent extracts print.Settings and terraform.Options from normalized
-// Config and generates the output content for the module (and submodules if availble)
+// Config and generates the output content for the module (and submodules if available)
 // and write the result to the output (either stdout or a file).
 func generateContent(config *Config) error {
 	settings, options := config.extract()

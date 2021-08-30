@@ -39,6 +39,12 @@ func TestAsciidocTable(t *testing.T) {
 				Path: "empty",
 			},
 		},
+		"HideEmpty": {
+			settings: testutil.WithSections(testutil.WithHideEmpty()),
+			options: terraform.Options{
+				Path: "empty",
+			},
+		},
 		"HideAll": {
 			settings: print.Settings{},
 			options: terraform.Options{
@@ -117,12 +123,6 @@ func TestAsciidocTable(t *testing.T) {
 			options: terraform.Options{
 				OutputValues:     true,
 				OutputValuesPath: "output_values.json",
-			},
-		},
-		"HideEmpty": {
-			settings: testutil.WithSections(testutil.WithHideEmpty()),
-			options: terraform.Options{
-				Path: "empty",
 			},
 		},
 

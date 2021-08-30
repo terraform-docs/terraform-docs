@@ -26,7 +26,7 @@ type Settings struct {
 	// HideEmpty hide empty sections
 	//
 	// default: false
-	// scope: Global
+	// scope: Asciidoc, Markdown
 	HideEmpty bool
 
 	// IndentLevel control the indentation of headers [available: 1, 2, 3, 4, 5]
