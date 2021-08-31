@@ -99,7 +99,7 @@ settings:
   default: true
   description: false
   escape: true
-  hideempty: false
+  hide-empty: false
   html: true
   indent: 2
   lockfile: true
