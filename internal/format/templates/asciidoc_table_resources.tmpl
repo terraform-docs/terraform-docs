@@ -1,8 +1,13 @@
 {{- if or .Settings.ShowResources .Settings.ShowDataSources -}}
-    {{ indent 0 "=" }} Resources
-    {{ if not .Module.Resources }}
-        No resources.
+    {{- if not .Module.Resources -}}
+        {{- if not .Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Resources
+
+            No resources.
+        {{ end }}
     {{ else }}
+        {{- indent 0 "=" }} Resources
+
         [cols="a,a",options="header,autowidth"]
         |===
         |Name |Type

@@ -43,6 +43,14 @@ func WithHTML(override ...print.Settings) print.Settings {
 	return apply(base, override...)
 }
 
+// WithHideEmpty appends HideEmpty to provided Settings.
+func WithHideEmpty(override ...print.Settings) print.Settings {
+	base := print.Settings{
+		HideEmpty: true,
+	}
+	return apply(base, override...)
+}
+
 func apply(base print.Settings, override ...print.Settings) print.Settings {
 	dest := base
 	for i := range override {

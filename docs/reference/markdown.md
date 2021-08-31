@@ -23,6 +23,7 @@ terraform-docs markdown [PATH] [flags]
       --default      show Default column or section (default true)
       --escape       escape special characters (default true)
   -h, --help         help for markdown
+      --hide-empty   hide empty sections (default false)
       --html         use HTML tags in genereted output (default true)
       --indent int   indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --required     show Required column or section (default true)

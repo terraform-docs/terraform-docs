@@ -1,8 +1,13 @@
 {{- if .Settings.ShowModuleCalls -}}
-    {{ indent 0 "=" }} Modules
-    {{ if not .Module.ModuleCalls }}
-        No modules.
+    {{- if not .Module.ModuleCalls -}}
+        {{- if not .Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Modules
+
+            No modules.
+        {{- end }}
     {{ else }}
+        {{- indent 0 "=" }} Modules
+
         [cols="a,a,a",options="header,autowidth"]
         |===
         |Name |Source |Version

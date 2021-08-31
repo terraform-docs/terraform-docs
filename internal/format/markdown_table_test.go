@@ -39,6 +39,12 @@ func TestMarkdownTable(t *testing.T) {
 				Path: "empty",
 			},
 		},
+		"HideEmpty": {
+			settings: testutil.WithSections(testutil.WithHideEmpty()),
+			options: terraform.Options{
+				Path: "empty",
+			},
+		},
 		"HideAll": {
 			settings: print.Settings{},
 			options: terraform.Options{

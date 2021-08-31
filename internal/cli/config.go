@@ -23,6 +23,8 @@ var flagMappings = map[string]string{
 	"header-from": "header-from",
 	"footer-from": "footer-from",
 
+	"hide-empty": "hide-empty",
+
 	"show": "sections.show",
 	"hide": "sections.hide",
 
@@ -379,6 +381,7 @@ type settings struct {
 	Default     bool `mapstructure:"default"`
 	Description bool `mapstructure:"description"`
 	Escape      bool `mapstructure:"escape"`
+	HideEmpty   bool `mapstructure:"hide-empty"`
 	HTML        bool `mapstructure:"html"`
 	Indent      int  `mapstructure:"indent"`
 	LockFile    bool `mapstructure:"lockfile"`
@@ -394,6 +397,7 @@ func defaultSettings() settings {
 		Default:     true,
 		Description: false,
 		Escape:      true,
+		HideEmpty:   false,
 		HTML:        true,
 		Indent:      2,
 		LockFile:    true,
@@ -495,6 +499,7 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	settings.ShowProviders = c.Sections.providers
 	settings.ShowRequirements = c.Sections.requirements
 	settings.ShowResources = c.Sections.resources
+	settings.HideEmpty = c.Settings.HideEmpty
 
 	// output values
 	settings.OutputValues = c.OutputValues.Enabled

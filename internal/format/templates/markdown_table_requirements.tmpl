@@ -1,8 +1,13 @@
 {{- if .Settings.ShowRequirements -}}
-    {{ indent 0 "#" }} Requirements
-    {{ if not .Module.Requirements }}
-        No requirements.
+    {{- if not .Module.Requirements -}}
+        {{- if not .Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Requirements
+
+            No requirements.
+        {{ end }}
     {{ else }}
+        {{- indent 0 "#" }} Requirements
+
         | Name | Version |
         |------|---------|
         {{- range .Module.Requirements }}

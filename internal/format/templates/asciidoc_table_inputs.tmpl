@@ -1,8 +1,13 @@
 {{- if .Settings.ShowInputs -}}
-    {{ indent 0 "=" }} Inputs
-    {{ if not .Module.Inputs }}
-        No inputs.
+    {{- if not .Module.Inputs -}}
+        {{- if not .Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Inputs
+
+            No inputs.
+        {{- end }}
     {{ else }}
+        {{- indent 0 "=" }} Inputs
+
         [cols="a,a{{ if .Settings.ShowType }},a{{ end }}{{ if .Settings.ShowDefault }},a{{ end }}{{ if .Settings.ShowRequired }},a{{ end }}",options="header,autowidth"]
         |===
         |Name |Description
