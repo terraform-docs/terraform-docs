@@ -12,9 +12,13 @@ package print
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
+
+	"github.com/terraform-docs/terraform-docs/internal/exec"
 )
 
 // GenerateFunc configures Generator.
@@ -156,7 +160,16 @@ func (g *Generator) ExecuteTemplate(contentTmpl string) (string, error) {
 			}
 			return string(content)
 		},
+		"exec": func(cmd string) string {
+			out, err := exec.RunCommand(cmd)
+			if err != nil {
+				panic(err)
+			}
+
+			return fmt.Sprintf("```\n%s\n```", strings.TrimSuffix(out, "\n"))
+		},
 	})
+
 	template.Must(tmpl.Parse(contentTmpl))
 
 	if err := tmpl.ExecuteTemplate(&buf, "content", g); err != nil {
