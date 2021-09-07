@@ -166,7 +166,7 @@ func (g *Generator) ExecuteTemplate(contentTmpl string) (string, error) {
 				panic(err)
 			}
 
-			return fmt.Sprintf("```\n%s\n```", strings.TrimSuffix(out, "\n"))
+			return fmt.Sprintf("%s", strings.TrimSuffix(out, "\n"))
 		},
 	})
 
