@@ -35,6 +35,13 @@ func (l *Lines) Extract() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	stat, err := f.Stat()
+	if err != nil {
+		return nil, err
+	}
+	if stat.Size() == 0 {
+		return []string{}, nil
+	}
 	defer func() {
 		_ = f.Close()
 	}()

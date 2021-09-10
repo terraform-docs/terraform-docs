@@ -105,6 +105,13 @@ func TestReadLinesFromFile(t *testing.T) {
 		},
 		{
 			name:       "extract lines from file",
+			fileName:   "testdata/empty.txt",
+			lineNumber: 0,
+			expected:   "",
+			wantError:  false,
+		},
+		{
+			name:       "extract lines from file",
 			fileName:   "testdata/noop.txt",
 			lineNumber: -1,
 			expected:   "",
