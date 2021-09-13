@@ -1,6 +1,6 @@
 ---
 title: "yaml"
-description: "Generate YAML of inputs and outputs."
+description: "Generate YAML of inputs and outputs"
 menu:
   docs:
     parent: "terraform-docs"

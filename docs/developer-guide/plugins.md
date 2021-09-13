@@ -1,6 +1,6 @@
 ---
 title: "Plugins"
-description: "terraform-docs plugin development guide."
+description: "terraform-docs plugin development guide"
 menu:
   docs:
     parent: "developer-guide"

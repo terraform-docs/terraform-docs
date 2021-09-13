@@ -1,6 +1,6 @@
 ---
 title: "markdown"
-description: "Generate Markdown of inputs and outputs."
+description: "Generate Markdown of inputs and outputs"
 menu:
   docs:
     parent: "terraform-docs"

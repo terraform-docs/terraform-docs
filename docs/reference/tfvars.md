@@ -1,6 +1,6 @@
 ---
 title: "tfvars"
-description: "Generate terraform.tfvars of inputs."
+description: "Generate terraform.tfvars of inputs"
 menu:
   docs:
     parent: "terraform-docs"

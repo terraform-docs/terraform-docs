@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-description: "Generate documentation from Terraform modules in various output formats."
+description: "Generate documentation from Terraform modules in various output formats"
 menu:
   docs:
     parent: "user-guide"

@@ -1,6 +1,6 @@
 ---
 title: "Visibility of Sections"
-description: "How to control visibility of terraform-docs sections."
+description: "How to control visibility of terraform-docs sections"
 menu:
   docs:
     parent: "how-to"

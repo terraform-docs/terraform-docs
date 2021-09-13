@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-description: "terraform-docs installation guide."
+description: "terraform-docs installation guide"
 menu:
   docs:
     parent: "user-guide"

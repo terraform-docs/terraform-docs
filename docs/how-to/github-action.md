@@ -1,6 +1,6 @@
 ---
 title: "GitHub Action"
-description: "How to use terraform-docs with GitHub Actions."
+description: "How to use terraform-docs with GitHub Actions"
 menu:
   docs:
     parent: "how-to"

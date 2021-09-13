@@ -1,6 +1,6 @@
 ---
 title: "pre-commit Hooks"
-description: "How to use pre-commit hooks with terraform-docs."
+description: "How to use pre-commit hooks with terraform-docs"
 menu:
   docs:
     parent: "how-to"

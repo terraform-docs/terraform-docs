@@ -1,6 +1,6 @@
 ---
 title: "Configuration File"
-description: "How to use terraform-docs configuration file."
+description: "How to use terraform-docs configuration file"
 menu:
   docs:
     parent: "how-to"

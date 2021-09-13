@@ -1,6 +1,6 @@
 ---
 title: "Recursive Submodules"
-description: "How to generate submodules documentation recursively with terraform-docs."
+description: "How to generate submodules documentation recursively with terraform-docs"
 menu:
   docs:
     parent: "how-to"

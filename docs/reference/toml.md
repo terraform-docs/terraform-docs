@@ -1,6 +1,6 @@
 ---
 title: "toml"
-description: "Generate TOML of inputs and outputs."
+description: "Generate TOML of inputs and outputs"
 menu:
   docs:
     parent: "terraform-docs"

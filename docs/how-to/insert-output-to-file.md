@@ -1,6 +1,6 @@
 ---
 title: "Insert Output To File"
-description: "How to insert generated terraform-docs output to file."
+description: "How to insert generated terraform-docs output to file"
 menu:
   docs:
     parent: "how-to"

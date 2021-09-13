@@ -1,6 +1,6 @@
 ---
 title: "Include Examples"
-description: "How to include example in terraform-docs generated output."
+description: "How to include example in terraform-docs generated output"
 menu:
   docs:
     parent: "how-to"

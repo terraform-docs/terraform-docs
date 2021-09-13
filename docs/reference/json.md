@@ -1,6 +1,6 @@
 ---
 title: "json"
-description: "Generate JSON of inputs and outputs."
+description: "Generate JSON of inputs and outputs"
 menu:
   docs:
     parent: "terraform-docs"
