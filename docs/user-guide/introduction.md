@@ -23,7 +23,7 @@ of a CI pipeline) all you need to do is run `terraform-docs /module/path`.
 
 {{< img-simple src="config.png" >}}
 
-Read all about [Configuration].
+Read all about [configuration].
 
 ## Formats
 
@@ -65,6 +65,6 @@ terraform-docs compatiblity matrix with Terraform can be found below:
   </tbody>
 </table>
 
-[Configuration]: {{< ref "configuration" >}}
+[configuration]: {{< ref "configuration" >}}
 [markdown table]: {{< ref "markdown-table" >}}
 [formats]: {{< ref "terraform-docs" >}}
