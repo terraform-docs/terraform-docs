@@ -131,4 +131,7 @@ jobs:
           destination-branch: main
           git-user: terraform-docs-bot
           git-user-email: bot@terraform-docs.io
-          git-commit-message: "Update website content"
+          git-commit-message: |-
+            Update website content
+
+            from: https://github.com/terraform-docs/terraform-docs/commit/${{ github.sha }}
