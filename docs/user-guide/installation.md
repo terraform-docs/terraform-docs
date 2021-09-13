@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-description: "terraform-docs installation guide."
+description: "terraform-docs installation guide"
 menu:
   docs:
     parent: "user-guide"
@@ -53,9 +53,11 @@ You also can run `terraform-docs` as a container:
 docker run quay.io/terraform-docs/terraform-docs:0.15.0
 ```
 
-Docker tag `latest` refers to _latest_ stable released version and `edge`refers
+{{< alert type="primary" >}}
+Docker tag `latest` refers to _latest_ stable released version and `edge` refers
 to HEAD of `master` at any given point in time. And any named version tags are
 identical to the official GitHub releases without leading `v`.
+{{< /alert >}}
 
 ## Pre-compiled Binary
 
@@ -69,7 +71,9 @@ chmod +x terraform-docs
 mv terraform-docs /some-dir-in-your-PATH/terraform-docs
 ```
 
-**Note:** Windows releases are in `ZIP` format.
+{{< alert type="primary" >}}
+Windows releases are in `ZIP` format.
+{{< /alert >}}
 
 ## Go Users
 
@@ -79,15 +83,19 @@ The latest version can be installed using `go get`:
 GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.15.0
 ```
 
-**NOTE:** to download any version **before** `v0.9.1` (inclusive) you need to use to
+{{< alert type="warning" >}}
+To download any version **before** `v0.9.1` (inclusive) you need to use to
 old module namespace (`segmentio`):
+{{< /alert >}}
 
 ```bash
 # only for v0.9.1 and before
 GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
 ```
 
-**NOTE:** please use the latest Go to do this, minimum `go1.16` or greater.
+{{< alert type="primary" >}}
+Please use the latest Go to do this, minimum `go1.16` or greater.
+{{< /alert >}}
 
 This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error
 `terraform-docs: command not found` after installation then you may need to either add

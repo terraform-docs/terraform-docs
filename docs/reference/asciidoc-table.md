@@ -1,6 +1,6 @@
 ---
 title: "asciidoc table"
-description: "Generate AsciiDoc tables of inputs and outputs."
+description: "Generate AsciiDoc tables of inputs and outputs"
 menu:
   docs:
     parent: "asciidoc"

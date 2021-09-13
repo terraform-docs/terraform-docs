@@ -1,6 +1,6 @@
 ---
 title: "terraform-docs"
-description: "A utility to generate documentation from Terraform modules in various output formats."
+description: "A utility to generate documentation from Terraform modules in various output formats"
 menu:
   docs:
     parent: "reference"

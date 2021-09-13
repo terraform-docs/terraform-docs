@@ -1,6 +1,6 @@
 ---
 title: "asciidoc document"
-description: "Generate AsciiDoc document of inputs and outputs."
+description: "Generate AsciiDoc document of inputs and outputs"
 menu:
   docs:
     parent: "asciidoc"

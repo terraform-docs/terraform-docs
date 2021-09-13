@@ -1,6 +1,6 @@
 ---
 title: "xml"
-description: "Generate XML of inputs and outputs."
+description: "Generate XML of inputs and outputs"
 menu:
   docs:
     parent: "terraform-docs"

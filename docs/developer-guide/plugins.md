@@ -1,11 +1,11 @@
 ---
 title: "Plugins"
-description: "terraform-docs plugin development guide."
+description: "terraform-docs plugin development guide"
 menu:
   docs:
     parent: "developer-guide"
-weight: 210
-toc: true
+weight: 310
+toc: false
 ---
 
 If you want to add or change formatter, you need to write plugins. When changing

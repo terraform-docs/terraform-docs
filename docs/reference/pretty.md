@@ -1,6 +1,6 @@
 ---
 title: "pretty"
-description: "Generate colorized pretty of inputs and outputs."
+description: "Generate colorized pretty of inputs and outputs"
 menu:
   docs:
     parent: "terraform-docs"

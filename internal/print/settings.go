@@ -29,7 +29,7 @@ type Settings struct {
 	// scope: Asciidoc, Markdown
 	HideEmpty bool
 
-	// IndentLevel control the indentation of headers [available: 1, 2, 3, 4, 5]
+	// IndentLevel control the indentation of headings [available: 1, 2, 3, 4, 5]
 	//
 	// default: 2
 	// scope: Asciidoc, Markdown
@@ -41,7 +41,7 @@ type Settings struct {
 	// scope: Global
 	OutputValues bool
 
-	// ShowAnchor show html anchor
+	// ShowAnchor generate HTML anchor tag for elements
 	//
 	// default: true
 	// scope: Asciidoc, Markdown
@@ -59,7 +59,7 @@ type Settings struct {
 	// scope: Global
 	ShowDataSources bool
 
-	// ShowDefault show "Default" column
+	// ShowDefault show "Default" as column (in table) or section (in document)
 	//
 	// default: true
 	// scope: Asciidoc, Markdown
@@ -83,7 +83,7 @@ type Settings struct {
 	// scope: Global
 	ShowHeader bool
 
-	// ShowHTML use HTML tags (a, pre, br, ...)
+	// ShowHTML generate HTML tags (a, pre, br, ...) in the output
 	//
 	// default: true
 	// scope: Markdown
@@ -113,13 +113,13 @@ type Settings struct {
 	// scope: Global
 	ShowProviders bool
 
-	// ShowRequired show "Required" column
+	// ShowRequired show "Required" as column (in table) or section (in document)
 	//
 	// default: true
 	// scope: Asciidoc, Markdown
 	ShowRequired bool
 
-	// ShowSensitivity show "Sensitive" column
+	// ShowSensitivity show "Sensitive" as column (in table) or section (in document)
 	//
 	// default: true
 	// scope: Asciidoc, Markdown
@@ -137,7 +137,7 @@ type Settings struct {
 	// scope: Global
 	ShowResources bool
 
-	// ShowType show "Type" column
+	// ShowType show "Type" as column (in table) or section (in document)
 	//
 	// default: true
 	// scope: Asciidoc, Markdown

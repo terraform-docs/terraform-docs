@@ -1,6 +1,6 @@
 ---
 title: "tfvars hcl"
-description: "Generate HCL format of terraform.tfvars of inputs."
+description: "Generate HCL format of terraform.tfvars of inputs"
 menu:
   docs:
     parent: "tfvars"

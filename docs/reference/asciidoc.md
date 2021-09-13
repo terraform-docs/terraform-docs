@@ -1,6 +1,6 @@
 ---
 title: "asciidoc"
-description: "Generate AsciiDoc of inputs and outputs."
+description: "Generate AsciiDoc of inputs and outputs"
 menu:
   docs:
     parent: "terraform-docs"

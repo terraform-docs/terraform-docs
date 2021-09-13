@@ -1,6 +1,6 @@
 ---
 title: "tfvars json"
-description: "Generate JSON format of terraform.tfvars of inputs."
+description: "Generate JSON format of terraform.tfvars of inputs"
 menu:
   docs:
     parent: "tfvars"

@@ -1,6 +1,6 @@
 ---
 title: "markdown table"
-description: "Generate Markdown tables of inputs and outputs."
+description: "Generate Markdown tables of inputs and outputs"
 menu:
   docs:
     parent: "markdown"
