@@ -54,7 +54,7 @@ sections:
 
 ## Examples
 
-Show only `providrs`, `inputs`, and `outputs`.
+Show only `providers`, `inputs`, and `outputs`.
 
 ```yaml
 sections:
@@ -64,7 +64,7 @@ sections:
     - outputs
 ```
 
-Show everything except `providrs`.
+Show everything except `providers`.
 
 ```yaml
 sections:
