@@ -16,5 +16,5 @@ If you want to create a new plugin, please refer to [tfdocs-format-template]. Th
 plugin can use [plugin-sdk] to communicate with the host process. You can create a
 new repository from `Use this template`.
 
-[tfdocs-format-template]: https://github.com/terraform-docs/tfdocs-format-template
 [plugin-sdk]: https://github.com/terraform-docs/plugin-sdk
+[tfdocs-format-template]: https://github.com/terraform-docs/tfdocs-format-template

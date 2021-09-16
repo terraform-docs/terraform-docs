@@ -66,5 +66,5 @@ terraform-docs compatiblity matrix with Terraform can be found below:
 </table>
 
 [configuration]: {{< ref "configuration" >}}
-[markdown table]: {{< ref "markdown-table" >}}
 [formats]: {{< ref "terraform-docs" >}}
+[markdown table]: {{< ref "markdown-table" >}}
