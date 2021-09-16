@@ -35,7 +35,7 @@ and following functions:
 
 These variables are the generated output of individual sections in the selected
 formatter. For example `{{ .Inputs }}` is Markdown Table representation of _inputs_
-when formatter is set to `markdown table` and so on.
+when formatter is set to `markdown table`.
 
 {{< alert type="info" >}}
 Sections visibility (i.e. `sections.show` and `sections.hide`) takes

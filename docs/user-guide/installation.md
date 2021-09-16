@@ -47,10 +47,18 @@ choco install terraform-docs
 
 ## Docker
 
-You also can run `terraform-docs` as a container:
+terraform-docs can be run as a container by mounting a directory with `.tf`
+files in it and run the following command:
 
 ```bash
-docker run quay.io/terraform-docs/terraform-docs:0.15.0
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.15.0 markdown /terraform-docs
+```
+
+If `output.file` is not enabled for this module, generated output can be redirected
+back to a file:
+
+```bash
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.15.0 markdown /terraform-docs > doc.md
 ```
 
 {{< alert type="primary" >}}
@@ -77,9 +85,15 @@ Windows releases are in `ZIP` format.
 
 ## Go Users
 
-The latest version can be installed using `go get`:
+The latest version can be installed using `go install` or `go get`:
 
 ```bash
+# go1.17+
+go install github.com/terraform-docs/terraform-docs@v0.15.0
+```
+
+```bash
+# go1.16
 GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.15.0
 ```
 
@@ -94,7 +108,7 @@ GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
 ```
 
 {{< alert type="primary" >}}
-Please use the latest Go to do this, minimum `go1.16` or greater.
+Please use the latest Go to do this, minimum `go1.16` is required.
 {{< /alert >}}
 
 This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error
@@ -131,7 +145,7 @@ autoload -U compinit && compinit
 
 To make this change permanent, the above commands can be added to `~/.profile` file.
 
-[Release]: https://github.com/terraform-docs/terraform-docs/releases
-[Homebrew]: https://brew.sh
-[Scoop]: https://scoop.sh/
 [Chocolatey]: https://www.chocolatey.org
+[Homebrew]: https://brew.sh
+[Release]: https://github.com/terraform-docs/terraform-docs/releases
+[Scoop]: https://scoop.sh/

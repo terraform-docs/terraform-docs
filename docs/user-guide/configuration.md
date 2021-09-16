@@ -42,13 +42,12 @@ $ tree
 $ terraform-docs -c .tfdocs-config.yml .
 ```
 
-As of `v0.13.0`, the order for looking for config file is *(2 and 4 were added
-in `v0.15.0`)*:
+As of `v0.13.0`, the order for looking for config file is:
 
 1. root of module directory
-1. `.config/` folder at root of module directory
+1. `.config/` folder at root of module directory <sup class="no-top">(since v0.15.0)</sup>
 1. current directory
-1. `.config/` folder at current directory
+1. `.config/` folder at current directory <sup class="no-top">(since v0.15.0)</sup>
 1. `$HOME/.tfdocs.d/`
 
 if `.terraform-docs.yml` is found in any of the folders above, that will take
@@ -66,9 +65,9 @@ Below is a complete list of options that can be used with `terraform-docs`, with
 default values.
 
 ```yaml
-version: ""
+formatter: "" # this is required
 
-formatter: <FORMATTER_NAME>
+version: ""
 
 header-from: main.tf
 footer-from: ""
@@ -114,7 +113,7 @@ settings:
 ```
 
 {{< alert type="info" >}}
-Only `formatter` is required, the rest of the options are optional.
+`formatter` is the only required option.
 {{< /alert >}}
 
 ## Usage

@@ -80,5 +80,5 @@ This is very basic and higly simplified version of [pre-commit-terraform](https:
 Please refer to it for complete examples and guides.
 {{< /alert >}}
 
-[`pre-commit`]: https://pre-commit.com/
 [git hooks]: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
+[`pre-commit`]: https://pre-commit.com/
