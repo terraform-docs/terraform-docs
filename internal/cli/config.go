@@ -40,15 +40,16 @@ var flagMappings = map[string]string{
 	"sort-by-required": "required",
 	"sort-by-type":     "type",
 
-	"anchor":      "settings.anchor",
-	"color":       "settings.color",
-	"default":     "settings.default",
-	"description": "settings.description",
-	"escape":      "settings.escape",
-	"indent":      "settings.indent",
-	"required":    "settings.required",
-	"sensitive":   "settings.sensitive",
-	"type":        "settings.type",
+	"anchor":        "settings.anchor",
+	"color":         "settings.color",
+	"default":       "settings.default",
+	"description":   "settings.description",
+	"escape":        "settings.escape",
+	"indent":        "settings.indent",
+	"read-comments": "settings.read-comments",
+	"required":      "settings.required",
+	"sensitive":     "settings.sensitive",
+	"type":          "settings.type",
 }
 
 // Config represents all the available config options that can be accessed and passed through CLI
@@ -376,34 +377,36 @@ func (s *sort) validate() error {
 }
 
 type settings struct {
-	Anchor      bool `mapstructure:"anchor"`
-	Color       bool `mapstructure:"color"`
-	Default     bool `mapstructure:"default"`
-	Description bool `mapstructure:"description"`
-	Escape      bool `mapstructure:"escape"`
-	HideEmpty   bool `mapstructure:"hide-empty"`
-	HTML        bool `mapstructure:"html"`
-	Indent      int  `mapstructure:"indent"`
-	LockFile    bool `mapstructure:"lockfile"`
-	Required    bool `mapstructure:"required"`
-	Sensitive   bool `mapstructure:"sensitive"`
-	Type        bool `mapstructure:"type"`
+	Anchor       bool `mapstructure:"anchor"`
+	Color        bool `mapstructure:"color"`
+	Default      bool `mapstructure:"default"`
+	Description  bool `mapstructure:"description"`
+	Escape       bool `mapstructure:"escape"`
+	HideEmpty    bool `mapstructure:"hide-empty"`
+	HTML         bool `mapstructure:"html"`
+	Indent       int  `mapstructure:"indent"`
+	LockFile     bool `mapstructure:"lockfile"`
+	ReadComments bool `mapstructure:"read-comments"`
+	Required     bool `mapstructure:"required"`
+	Sensitive    bool `mapstructure:"sensitive"`
+	Type         bool `mapstructure:"type"`
 }
 
 func defaultSettings() settings {
 	return settings{
-		Anchor:      true,
-		Color:       true,
-		Default:     true,
-		Description: false,
-		Escape:      true,
-		HideEmpty:   false,
-		HTML:        true,
-		Indent:      2,
-		LockFile:    true,
-		Required:    true,
-		Sensitive:   true,
-		Type:        true,
+		Anchor:       true,
+		Color:        true,
+		Default:      true,
+		Description:  false,
+		Escape:       true,
+		HideEmpty:    false,
+		HTML:         true,
+		Indent:       2,
+		LockFile:     true,
+		ReadComments: true,
+		Required:     true,
+		Sensitive:    true,
+		Type:         true,
 	}
 }
 
@@ -510,6 +513,9 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options.SortBy.Name = c.Sort.Enabled && c.Sort.By == sortName
 	options.SortBy.Required = c.Sort.Enabled && c.Sort.By == sortRequired
 	options.SortBy.Type = c.Sort.Enabled && c.Sort.By == sortType
+
+	// read comments
+	options.ReadComments = c.Settings.ReadComments
 
 	// settings
 	settings.EscapeCharacters = c.Settings.Escape

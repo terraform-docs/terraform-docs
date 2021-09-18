@@ -27,6 +27,7 @@ settings:
   html: true
   indent: 2
   lockfile: true
+  read-comments: true
   required: true
   sensitive: true
   type: true
@@ -94,6 +95,13 @@ Indentation level of headings [available: 1, 2, 3, 4, 5].
 > scope: `global`
 
 Read `.terraform.lock.hcl` to extract exact version of providers.
+
+### read-comments
+
+> since: `v0.16.0`\
+> scope: `global`
+
+Use comments from `tf` files for "Description" column (for inputs and outputs) when description is empty
 
 ### required
 

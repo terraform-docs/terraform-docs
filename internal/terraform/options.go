@@ -35,6 +35,7 @@ type Options struct {
 	SortBy           *SortBy
 	OutputValues     bool
 	OutputValuesPath string
+	ReadComments     bool
 }
 
 // NewOptions returns new instance of Options
@@ -49,6 +50,7 @@ func NewOptions() *Options {
 		SortBy:           &SortBy{Name: false, Required: false, Type: false},
 		OutputValues:     false,
 		OutputValuesPath: "",
+		ReadComments:     true,
 	}
 }
 

@@ -148,7 +148,7 @@ func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, erro
 		return nil, err
 	}
 
-	inputs, required, optional := loadInputs(tfmodule)
+	inputs, required, optional := loadInputs(tfmodule, options)
 	modulecalls := loadModulecalls(tfmodule)
 	outputs, err := loadOutputs(tfmodule, options)
 	if err != nil {
@@ -265,7 +265,7 @@ func loadSection(options *Options, file string, section string) (string, error) 
 	return strings.Join(sectionText, "\n"), nil
 }
 
-func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
+func loadInputs(tfmodule *tfconfig.Module, options *Options) ([]*Input, []*Input, []*Input) {
 	var inputs = make([]*Input, 0, len(tfmodule.Variables))
 	var required = make([]*Input, 0, len(tfmodule.Variables))
 	var optional = make([]*Input, 0, len(tfmodule.Variables))
@@ -273,7 +273,7 @@ func loadInputs(tfmodule *tfconfig.Module) ([]*Input, []*Input, []*Input) {
 	for _, input := range tfmodule.Variables {
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
 		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
-		if inputDescription == "" {
+		if inputDescription == "" && options.ReadComments {
 			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
 
@@ -355,7 +355,7 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*Output, error)
 	}
 	for _, o := range tfmodule.Outputs {
 		description := o.Description
-		if description == "" {
+		if description == "" && options.ReadComments {
 			description = loadComments(o.Pos.Filename, o.Pos.Line)
 		}
 		output := &Output{
