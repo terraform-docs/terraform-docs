@@ -11,12 +11,8 @@ weight: 120
 toc: true
 ---
 
-The `terraform-docs` configuration is a yaml file. This is a convenient way to
-share the configuation amongst teammates, CI, or other toolings. To do so you
-can use `-c` or `--config` flag which accepts name of the config file.
-
-Default name of this file is `.terraform-docs.yml`, and it will get picked up
-(if existed) without needing to explicitly passing with config flag.
+The `terraform-docs` configuration file uses the [yaml format](https://yaml.org/) in order to override any default behaviors.
+. This is a convenient way to share the configuation amongst teammates, CI, or other toolings.
 
 ```bash
 $ tree
@@ -28,6 +24,21 @@ $ tree
 
 $ terraform-docs .
 ```
+
+As of `v0.13.0`, The default name of the configuration file is `.terraform-docs.yml`.
+The path order for locating it is:
+
+1. root of module directory
+1. `.config/` folder at root of module directory <sup class="no-top">(since v0.15.0)</sup>
+1. current directory
+1. `.config/` folder at current directory <sup class="no-top">(since v0.15.0)</sup>
+1. `$HOME/.tfdocs.d/`
+
+if `.terraform-docs.yml` is found in any of the folders above, that will take
+precedence and will override the other ones.
+
+To use an alternative configuration file name or path you
+can use the `-c` or `--config` flag.
 
 Or you can use a config file with any arbitrary name:
 
@@ -41,17 +52,6 @@ $ tree
 
 $ terraform-docs -c .tfdocs-config.yml .
 ```
-
-As of `v0.13.0`, the order for looking for config file is:
-
-1. root of module directory
-1. `.config/` folder at root of module directory <sup class="no-top">(since v0.15.0)</sup>
-1. current directory
-1. `.config/` folder at current directory <sup class="no-top">(since v0.15.0)</sup>
-1. `$HOME/.tfdocs.d/`
-
-if `.terraform-docs.yml` is found in any of the folders above, that will take
-precedence and will override the other ones.
 
 {{< alert type="primary" >}}
 Values passed directly as CLI flags will override all of the above.

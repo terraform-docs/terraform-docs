@@ -165,7 +165,7 @@ when you make a commit.
 ## Configuration
 
 terraform-docs can be configured with a yaml file. The default name of this file is
-`.terraform-docs.yml` and the path order for locating for it is:
+`.terraform-docs.yml` and the path order for locating it is:
 
 1. root of module directory
 1. `.config/` folder at root of module directory
