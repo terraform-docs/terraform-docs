@@ -241,3 +241,57 @@ func TestForEach(t *testing.T) {
 		})
 	}
 }
+
+
+func TestExecTemplateFunc(t *testing.T) {
+	header := "this is the header"
+	footer := "this is the footer"
+	tests := map[string]struct {
+		name     string
+		content  string
+		template string
+		expected string
+		wantErr  bool
+	}{
+		"basic echo command": {
+			name:     "markdown table",
+			content:  "this is the header\nthis is the footer",
+			template: "{{ exec \"echo hallo\" }}",
+			expected: "hallo",
+			wantErr:  false,
+		},
+		"basic for loop command": {
+			name:     "markdown table",
+			content:  "this is the header\nthis is the footer",
+			template: "{{ exec \"for i in 1 2 3 4 5 ; do echo $i; done\" }}",
+			expected: "1\n2\n3\n4\n5",
+			wantErr:  false,
+		},
+		"basic pipe command": {
+			name:     "markdown table",
+			content:  "this is the header\nthis is the footer",
+			template: `{{ exec "echo \"test\" | cut -d \"e\" -f2" }}`,
+			expected: "st",
+			wantErr:  false,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			generator := NewGenerator(tt.name)
+			generator.Header = header
+			generator.Footer = footer
+
+			actual, err := generator.ExecuteTemplate(tt.template)
+
+			if tt.wantErr {
+				assert.NotNil(err, err.Error())
+			} else {
+				assert.Nil(err)
+				assert.Equal(tt.expected, actual)
+			}
+		})
+	}
+}
