@@ -81,6 +81,8 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.OutputValues.Enabled, "output-values", false, "inject output values into outputs (default false)")
 	cmd.PersistentFlags().StringVar(&config.OutputValues.From, "output-values-from", "", "inject output values from file into outputs (default \"\")")
 
+	cmd.PersistentFlags().BoolVar(&config.Settings.ReadComments, "read-comments", true, "use comments as description when description is empty")
+
 	// formatter subcommands
 	cmd.AddCommand(asciidoc.NewCommand(runtime, config))
 	cmd.AddCommand(json.NewCommand(runtime, config))

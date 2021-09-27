@@ -498,7 +498,8 @@ func TestLoadInputs(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			inputs, requireds, optionals := loadInputs(module)
+			options := NewOptions()
+			inputs, requireds, optionals := loadInputs(module, options)
 
 			assert.Equal(tt.expected.inputs, len(inputs))
 			assert.Equal(tt.expected.requireds, len(requireds))
@@ -556,7 +557,8 @@ func TestLoadInputsLineEnding(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			inputs, _, _ := loadInputs(module)
+			options := NewOptions()
+			inputs, _, _ := loadInputs(module, options)
 
 			assert.Equal(1, len(inputs))
 			assert.Equal(tt.expected, string(inputs[0].Description))
@@ -778,6 +780,49 @@ func TestLoadComments(t *testing.T) {
 			assert := assert.New(t)
 			actual := loadComments(filepath.Join("testdata", tt.path, tt.fileName), tt.lineNumber)
 			assert.Equal(tt.expected, actual)
+		})
+	}
+}
+
+func TestReadComments(t *testing.T) {
+	tests := []struct {
+		name         string
+		path         string
+		fileName     string
+		readComments bool
+		expected     string
+	}{
+		{
+			name:         "Validate description when 'ReadComments' is false",
+			path:         "read-comments",
+			fileName:     "variables.tf",
+			readComments: false,
+			expected:     "",
+		},
+		{
+			name:         "Validate description when 'ReadComments' is true",
+			path:         "read-comments",
+			fileName:     "variables.tf",
+			readComments: true,
+			expected:     "B description",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			options := NewOptions()
+			options.ReadComments = tt.readComments
+			module, err := loadModule(filepath.Join("testdata", tt.path))
+
+			assert.Nil(err)
+
+			inputs, _, _ := loadInputs(module, options)
+			assert.Equal(1, len(inputs))
+			assert.Equal(tt.expected, string(inputs[0].Description))
+
+			outputs, _ := loadOutputs(module, options)
+			assert.Equal(1, len(outputs))
+			assert.Equal(tt.expected, string(outputs[0].Description))
 		})
 	}
 }

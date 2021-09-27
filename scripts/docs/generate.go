@@ -183,6 +183,7 @@ func example(ref *reference) error {
 		SortBy: &terraform.SortBy{
 			Name: true,
 		},
+		ReadComments: true,
 	}
 
 	formatter, err := format.Factory(ref.Name, settings)

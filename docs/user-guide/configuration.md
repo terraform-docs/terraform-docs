@@ -111,6 +111,7 @@ settings:
   html: true
   indent: 2
   lockfile: true
+  read-comments: true
   required: true
   sensitive: true
   type: true
