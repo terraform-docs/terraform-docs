@@ -19,43 +19,41 @@ import (
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-//go:embed templates/asciidoc_table*.tmpl
-var asciidocTableFS embed.FS
+//go:embed templates/markdown_table*.tmpl
+var markdownTableFS embed.FS
 
-// AsciidocTable represents AsciiDoc Table format.
-type AsciidocTable struct {
+// MarkdownTable represents Markdown Table format.
+type MarkdownTable struct {
 	template *template.Template
 	settings *print.Settings
 }
 
-// NewAsciidocTable returns new instance of AsciidocTable.
-func NewAsciidocTable(settings *print.Settings) print.Engine {
-	items := readTemplateItems(asciidocTableFS, "asciidoc_table")
-
-	settings.EscapeCharacters = false
+// NewMarkdownTable returns new instance of Table.
+func NewMarkdownTable(settings *print.Settings) print.Engine {
+	items := readTemplateItems(markdownTableFS, "markdown_table")
 
 	tt := template.New(settings, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
-			inputType, _ := printFencedCodeBlock(t, "")
+			inputType, _ := PrintFencedCodeBlock(t, "")
 			return inputType
 		},
 		"value": func(v string) string {
 			var result = "n/a"
 			if v != "" {
-				result, _ = printFencedCodeBlock(v, "")
+				result, _ = PrintFencedCodeBlock(v, "")
 			}
 			return result
 		},
 	})
-	return &AsciidocTable{
+	return &MarkdownTable{
 		template: tt,
 		settings: settings,
 	}
 }
 
-// Generate a Terraform module as AsciiDoc tables.
-func (t *AsciidocTable) Generate(module *terraform.Module) (*print.Generator, error) {
+// Generate a Terraform module as Markdown tables.
+func (t *MarkdownTable) Generate(module *terraform.Module) (*print.Generator, error) {
 	funcs := []print.GenerateFunc{}
 
 	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
@@ -71,16 +69,16 @@ func (t *AsciidocTable) Generate(module *terraform.Module) (*print.Generator, er
 		return nil, err
 	}
 
-	return print.NewGenerator("asciidoc table", funcs...), nil
+	return print.NewGenerator("markdown table", funcs...), nil
 }
 
 func init() {
 	register(map[string]initializerFn{
-		"asciidoc":       NewAsciidocTable,
-		"asciidoc table": NewAsciidocTable,
-		"asciidoc tbl":   NewAsciidocTable,
-		"adoc":           NewAsciidocTable,
-		"adoc table":     NewAsciidocTable,
-		"adoc tbl":       NewAsciidocTable,
+		"markdown":       NewMarkdownTable,
+		"markdown table": NewMarkdownTable,
+		"markdown tbl":   NewMarkdownTable,
+		"md":             NewMarkdownTable,
+		"md table":       NewMarkdownTable,
+		"md tbl":         NewMarkdownTable,
 	})
 }

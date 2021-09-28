@@ -23,7 +23,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/terraform-docs/terraform-docs/cmd"
-	"github.com/terraform-docs/terraform-docs/internal/format"
+	"github.com/terraform-docs/terraform-docs/format"
 	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )

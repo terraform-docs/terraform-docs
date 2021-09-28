@@ -19,23 +19,25 @@ import (
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-//go:embed templates/markdown_document*.tmpl
-var markdownDocumentFS embed.FS
+//go:embed templates/asciidoc_document*.tmpl
+var asciidocsDocumentFS embed.FS
 
-// MarkdownDocument represents Markdown Document format.
-type MarkdownDocument struct {
+// AsciidocDocument represents AsciiDoc Document format.
+type AsciidocDocument struct {
 	template *template.Template
 	settings *print.Settings
 }
 
-// NewMarkdownDocument returns new instance of Document.
-func NewMarkdownDocument(settings *print.Settings) print.Engine {
-	items := readTemplateItems(markdownDocumentFS, "markdown_document")
+// NewAsciidocDocument returns new instance of AsciidocDocument.
+func NewAsciidocDocument(settings *print.Settings) print.Engine {
+	items := readTemplateItems(asciidocsDocumentFS, "asciidoc_document")
+
+	settings.EscapeCharacters = false
 
 	tt := template.New(settings, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
-			result, extraline := printFencedCodeBlock(t, "hcl")
+			result, extraline := PrintFencedAsciidocCodeBlock(t, "hcl")
 			if !extraline {
 				result += "\n"
 			}
@@ -45,7 +47,7 @@ func NewMarkdownDocument(settings *print.Settings) print.Engine {
 			if v == "n/a" {
 				return v
 			}
-			result, extraline := printFencedCodeBlock(v, "json")
+			result, extraline := PrintFencedAsciidocCodeBlock(v, "json")
 			if !extraline {
 				result += "\n"
 			}
@@ -55,14 +57,14 @@ func NewMarkdownDocument(settings *print.Settings) print.Engine {
 			return settings.ShowRequired
 		},
 	})
-	return &MarkdownDocument{
+	return &AsciidocDocument{
 		template: tt,
 		settings: settings,
 	}
 }
 
-// Generate a Terraform module as Markdown document.
-func (d *MarkdownDocument) Generate(module *terraform.Module) (*print.Generator, error) {
+// Generate a Terraform module as AsciiDoc document.
+func (d *AsciidocDocument) Generate(module *terraform.Module) (*print.Generator, error) {
 	funcs := []print.GenerateFunc{}
 
 	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
@@ -78,14 +80,14 @@ func (d *MarkdownDocument) Generate(module *terraform.Module) (*print.Generator,
 		return nil, err
 	}
 
-	return print.NewGenerator("markdown document", funcs...), nil
+	return print.NewGenerator("asciidoc document", funcs...), nil
 }
 
 func init() {
 	register(map[string]initializerFn{
-		"markdown document": NewMarkdownDocument,
-		"markdown doc":      NewMarkdownDocument,
-		"md document":       NewMarkdownDocument,
-		"md doc":            NewMarkdownDocument,
+		"asciidoc document": NewAsciidocDocument,
+		"asciidoc doc":      NewAsciidocDocument,
+		"adoc document":     NewAsciidocDocument,
+		"adoc doc":          NewAsciidocDocument,
 	})
 }

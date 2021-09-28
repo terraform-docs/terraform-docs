@@ -122,7 +122,7 @@ func TestFenceCodeBlock(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			actual, extraline := printFencedCodeBlock(tt.code, tt.language)
+			actual, extraline := PrintFencedCodeBlock(tt.code, tt.language)
 
 			assert.Equal(tt.expected, actual)
 			assert.Equal(tt.extraline, extraline)
