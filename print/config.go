@@ -8,51 +8,17 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package cli
+package print
 
 import (
 	"fmt"
 	"strings"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-// Mappings of CLI flags to Viper config
-var flagMappings = map[string]string{
-	"header-from": "header-from",
-	"footer-from": "footer-from",
-
-	"hide-empty": "hide-empty",
-
-	"show": "sections.show",
-	"hide": "sections.hide",
-
-	"output-file":     "output.file",
-	"output-mode":     "output.mode",
-	"output-template": "output.template",
-
-	"output-values":      "output-values.enabled",
-	"output-values-from": "output-values.from",
-
-	"sort":             "sort.enabled",
-	"sort-by":          "sort.by",
-	"sort-by-required": "required",
-	"sort-by-type":     "type",
-
-	"anchor":        "settings.anchor",
-	"color":         "settings.color",
-	"default":       "settings.default",
-	"description":   "settings.description",
-	"escape":        "settings.escape",
-	"indent":        "settings.indent",
-	"read-comments": "settings.read-comments",
-	"required":      "settings.required",
-	"sensitive":     "settings.sensitive",
-	"type":          "settings.type",
-}
-
-// Config represents all the available config options that can be accessed and passed through CLI
+// Config represents all the available config options that can be accessed and
+// passed through CLI.
 type Config struct {
 	File          string       `mapstructure:"-"`
 	Recursive     bool         `mapstructure:"-"`
@@ -68,11 +34,21 @@ type Config struct {
 	Sort          sort         `mapstructure:"sort"`
 	Settings      settings     `mapstructure:"settings"`
 
-	moduleRoot    string
-	isFlagChanged func(string) bool
+	ModuleRoot string
 }
 
-// DefaultConfig returns new instance of Config with default values set
+// NewConfig returns neew instancee of Config with empty values.
+func NewConfig() *Config {
+	return &Config{
+		Sections:     sections{},
+		Output:       output{},
+		OutputValues: outputvalues{},
+		Sort:         sort{},
+		Settings:     settings{},
+	}
+}
+
+// DefaultConfig returns new instance of Config with default values set.
 func DefaultConfig() *Config {
 	return &Config{
 		File:          "",
@@ -89,8 +65,7 @@ func DefaultConfig() *Config {
 		Sort:          defaultSort(),
 		Settings:      defaultSettings(),
 
-		moduleRoot:    "",
-		isFlagChanged: func(name string) bool { return false },
+		ModuleRoot: "",
 	}
 }
 
@@ -127,15 +102,15 @@ type sections struct {
 	Show []string `mapstructure:"show"`
 	Hide []string `mapstructure:"hide"`
 
-	dataSources  bool
-	header       bool
-	footer       bool
-	inputs       bool
-	modulecalls  bool
-	outputs      bool
-	providers    bool
-	requirements bool
-	resources    bool
+	DataSources  bool
+	Header       bool
+	Footer       bool
+	Inputs       bool
+	Modulecalls  bool
+	Outputs      bool
+	Providers    bool
+	Requirements bool
+	Resources    bool
 }
 
 func defaultSections() sections {
@@ -143,15 +118,15 @@ func defaultSections() sections {
 		Show: []string{},
 		Hide: []string{},
 
-		dataSources:  false,
-		header:       false,
-		footer:       false,
-		inputs:       false,
-		modulecalls:  false,
-		outputs:      false,
-		providers:    false,
-		requirements: false,
-		resources:    false,
+		DataSources:  true,
+		Header:       true,
+		Footer:       false,
+		Inputs:       true,
+		Modulecalls:  true,
+		Outputs:      true,
+		Providers:    true,
+		Requirements: true,
+		Resources:    true,
 	}
 }
 
@@ -191,19 +166,23 @@ func (s *sections) visibility(section string) bool {
 	return len(s.Hide) > 0
 }
 
+// Output modes.
 const (
-	outputModeInject  = "inject"
-	outputModeReplace = "replace"
-
-	outputBeginComment = "<!-- BEGIN_TF_DOCS -->"
-	outputContent      = "{{ .Content }}"
-	outputEndComment   = "<!-- END_TF_DOCS -->"
+	OutputModeInject  = "inject"
+	OutputModeReplace = "replace"
 )
 
-// Output to file template and modes
+// Output template.
+const (
+	OutputBeginComment = "<!-- BEGIN_TF_DOCS -->"
+	OutputContent      = "{{ .Content }}"
+	OutputEndComment   = "<!-- END_TF_DOCS -->"
+)
+
+// Output to file template and modes.
 var (
-	OutputTemplate = fmt.Sprintf("%s\n%s\n%s", outputBeginComment, outputContent, outputEndComment)
-	OutputModes    = strings.Join([]string{outputModeInject, outputModeReplace}, ", ")
+	OutputTemplate = fmt.Sprintf("%s\n%s\n%s", OutputBeginComment, OutputContent, OutputEndComment)
+	OutputModes    = strings.Join([]string{OutputModeInject, OutputModeReplace}, ", ")
 )
 
 type output struct {
@@ -212,19 +191,19 @@ type output struct {
 	Template string `mapstructure:"template"`
 	Check    bool
 
-	beginComment string
-	endComment   string
+	BeginComment string
+	EndComment   string
 }
 
 func defaultOutput() output {
 	return output{
 		File:     "",
-		Mode:     outputModeInject,
+		Mode:     OutputModeInject,
 		Template: OutputTemplate,
 		Check:    false,
 
-		beginComment: outputBeginComment,
-		endComment:   outputEndComment,
+		BeginComment: OutputBeginComment,
+		EndComment:   OutputEndComment,
 	}
 }
 
@@ -238,7 +217,7 @@ func (o *output) validate() error {
 	}
 
 	// Template is optional for mode 'replace'
-	if o.Mode == outputModeReplace && o.Template == "" {
+	if o.Mode == OutputModeReplace && o.Template == "" {
 		return nil
 	}
 
@@ -246,13 +225,13 @@ func (o *output) validate() error {
 		return fmt.Errorf("value of '--output-template' can't be empty")
 	}
 
-	if !strings.Contains(o.Template, outputContent) {
+	if !strings.Contains(o.Template, OutputContent) {
 		return fmt.Errorf("value of '--output-template' doesn't have '{{ .Content }}' (note that spaces inside '{{ }}' are mandatory)")
 	}
 
 	// No extra validation is needed for mode 'replace',
 	// the followings only apply for every other modes.
-	if o.Mode == outputModeReplace {
+	if o.Mode == OutputModeReplace {
 		return nil
 	}
 
@@ -288,13 +267,13 @@ func (o *output) validate() error {
 		}
 	}
 
-	o.beginComment = strings.TrimSpace(lines[0])
-	o.endComment = strings.TrimSpace(lines[len(lines)-1])
+	o.BeginComment = strings.TrimSpace(lines[0])
+	o.EndComment = strings.TrimSpace(lines[len(lines)-1])
 
 	return nil
 }
 
-// Detect if a particular line is a Markdown comment
+// Detect if a particular line is a Markdown comment.
 //
 // ref: https://www.jamestharpe.com/markdown-comments/
 func isInlineComment(line string) bool {
@@ -414,12 +393,27 @@ func (s *settings) validate() error {
 	return nil
 }
 
-// process provided Config and check for any misuse or misconfiguration
-func (c *Config) process() error { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
+// Parse process config and set sections visibility.
+func (c *Config) Parse() {
+	// sections
+	c.Sections.DataSources = c.Sections.visibility("data-sources")
+	c.Sections.Header = c.Sections.visibility("header")
+	c.Sections.Inputs = c.Sections.visibility("inputs")
+	c.Sections.Modulecalls = c.Sections.visibility("modules")
+	c.Sections.Outputs = c.Sections.visibility("outputs")
+	c.Sections.Providers = c.Sections.visibility("providers")
+	c.Sections.Requirements = c.Sections.visibility("requirements")
+	c.Sections.Resources = c.Sections.visibility("resources")
 
+	// Footer section is optional and should only be enabled if --footer-from
+	// is explicitly set, either via CLI or config file.
+	if c.FooterFrom != "" {
+		c.Sections.Footer = c.Sections.visibility("footer")
+	}
+}
+
+// Validate provided Config and check for any misuse or misconfiguration.
+func (c *Config) Validate() error {
 	// formatter
 	if c.Formatter == "" {
 		return fmt.Errorf("value of 'formatter' can't be empty")
@@ -430,30 +424,13 @@ func (c *Config) process() error { //nolint:gocyclo
 		return fmt.Errorf("value of '--recursive-path' can't be empty")
 	}
 
-	// sections
-	c.Sections.dataSources = c.Sections.visibility("data-sources")
-	c.Sections.header = c.Sections.visibility("header")
-	c.Sections.footer = c.Sections.visibility("footer")
-	c.Sections.inputs = c.Sections.visibility("inputs")
-	c.Sections.modulecalls = c.Sections.visibility("modules")
-	c.Sections.outputs = c.Sections.visibility("outputs")
-	c.Sections.providers = c.Sections.visibility("providers")
-	c.Sections.requirements = c.Sections.visibility("requirements")
-	c.Sections.resources = c.Sections.visibility("resources")
-
-	// Footer section is optional and should only be enabled if --footer-from
-	// is explicitly set, either via CLI or config file.
-	if c.FooterFrom == "" && !c.isFlagChanged("footer-from") {
-		c.Sections.footer = false
-	}
-
 	// header-from
 	if c.HeaderFrom == "" {
 		return fmt.Errorf("value of '--header-from' can't be empty")
 	}
 
 	// footer-from, not a 'default' section so can be empty
-	if c.Sections.footer && c.FooterFrom == "" {
+	if c.Sections.Footer && c.FooterFrom == "" {
 		return fmt.Errorf("value of '--footer-from' can't be empty")
 	}
 
@@ -476,18 +453,21 @@ func (c *Config) process() error { //nolint:gocyclo
 	return nil
 }
 
-// extract and build print.Settings and terraform.Options out of Config
-func (c *Config) extract() (*print.Settings, *terraform.Options) {
-	settings := print.DefaultSettings()
+// Extract and build print.Settings and terraform.Options out of Config.
+func (c *Config) Extract() (*Settings, *terraform.Options) {
+	settings := DefaultSettings()
 	options := terraform.NewOptions()
 
+	// path
+	options.Path = c.ModuleRoot
+
 	// header-from
-	settings.ShowHeader = c.Sections.header
+	settings.ShowHeader = c.Sections.Header
 	options.ShowHeader = settings.ShowHeader
 	options.HeaderFromFile = c.HeaderFrom
 
 	// footer-from
-	settings.ShowFooter = c.Sections.footer
+	settings.ShowFooter = c.Sections.Footer
 	options.ShowFooter = settings.ShowFooter
 	options.FooterFromFile = c.FooterFrom
 
@@ -495,13 +475,13 @@ func (c *Config) extract() (*print.Settings, *terraform.Options) {
 	options.UseLockFile = c.Settings.LockFile
 
 	// sections
-	settings.ShowDataSources = c.Sections.dataSources
-	settings.ShowInputs = c.Sections.inputs
-	settings.ShowModuleCalls = c.Sections.modulecalls
-	settings.ShowOutputs = c.Sections.outputs
-	settings.ShowProviders = c.Sections.providers
-	settings.ShowRequirements = c.Sections.requirements
-	settings.ShowResources = c.Sections.resources
+	settings.ShowDataSources = c.Sections.DataSources
+	settings.ShowInputs = c.Sections.Inputs
+	settings.ShowModuleCalls = c.Sections.Modulecalls
+	settings.ShowOutputs = c.Sections.Outputs
+	settings.ShowProviders = c.Sections.Providers
+	settings.ShowRequirements = c.Sections.Requirements
+	settings.ShowResources = c.Sections.Resources
 	settings.HideEmpty = c.Settings.HideEmpty
 
 	// output values

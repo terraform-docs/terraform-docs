@@ -12,29 +12,36 @@ package format
 
 import (
 	"bytes"
-	"encoding/json"
+	jsonsdk "encoding/json"
 	"strings"
 
 	"github.com/iancoleman/orderedmap"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-// TfvarsJSON represents Terraform tfvars JSON format.
-type TfvarsJSON struct {
+// tfvarsJSON represents Terraform tfvars JSON format.
+type tfvarsJSON struct {
+	*print.Generator
+
+	config   *print.Config
 	settings *print.Settings
 }
 
 // NewTfvarsJSON returns new instance of TfvarsJSON.
-func NewTfvarsJSON(settings *print.Settings) print.Engine {
-	return &TfvarsJSON{
-		settings: settings,
+func NewTfvarsJSON(config *print.Config) Type {
+	settings, _ := config.Extract()
+
+	return &tfvarsJSON{
+		Generator: print.NewGenerator("tfvars json", config.ModuleRoot),
+		config:    config,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as Terraform tfvars JSON.
-func (j *TfvarsJSON) Generate(module *terraform.Module) (*print.Generator, error) {
+func (j *tfvarsJSON) Generate(module *terraform.Module) error {
 	copy := orderedmap.New()
 	copy.SetEscapeHTML(false)
 	for _, i := range module.Inputs {
@@ -42,20 +49,17 @@ func (j *TfvarsJSON) Generate(module *terraform.Module) (*print.Generator, error
 	}
 
 	buffer := new(bytes.Buffer)
-
-	encoder := json.NewEncoder(buffer)
+	encoder := jsonsdk.NewEncoder(buffer)
 	encoder.SetIndent("", "  ")
 	encoder.SetEscapeHTML(false)
 
-	err := encoder.Encode(copy)
-	if err != nil {
-		return nil, err
+	if err := encoder.Encode(copy); err != nil {
+		return err
 	}
 
-	return print.NewGenerator(
-		"tfvars json",
-		print.WithContent(strings.TrimSuffix(buffer.String(), "\n")),
-	), nil
+	j.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+
+	return nil
 
 }
 

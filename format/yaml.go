@@ -14,53 +14,46 @@ import (
 	"bytes"
 	"strings"
 
-	"gopkg.in/yaml.v3"
+	yamlv3 "gopkg.in/yaml.v3"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-// YAML represents YAML format.
-type YAML struct {
+// yaml represents YAML format.
+type yaml struct {
+	*print.Generator
+
+	config   *print.Config
 	settings *print.Settings
 }
 
 // NewYAML returns new instance of YAML.
-func NewYAML(settings *print.Settings) print.Engine {
-	return &YAML{
-		settings: settings,
+func NewYAML(config *print.Config) Type {
+	settings, _ := config.Extract()
+
+	return &yaml{
+		Generator: print.NewGenerator("yaml", config.ModuleRoot),
+		config:    config,
+		settings:  settings,
 	}
 }
 
-// Generate a Terraform module as yaml.
-func (y *YAML) Generate(module *terraform.Module) (*print.Generator, error) {
-	copy := &terraform.Module{
-		Header:       "",
-		Footer:       "",
-		Inputs:       make([]*terraform.Input, 0),
-		ModuleCalls:  make([]*terraform.ModuleCall, 0),
-		Outputs:      make([]*terraform.Output, 0),
-		Providers:    make([]*terraform.Provider, 0),
-		Requirements: make([]*terraform.Requirement, 0),
-		Resources:    make([]*terraform.Resource, 0),
-	}
-
-	print.CopySections(y.settings, module, copy)
+// Generate a Terraform module as YAML.
+func (y *yaml) Generate(module *terraform.Module) error {
+	copy := copySections(y.settings, module)
 
 	buffer := new(bytes.Buffer)
-
-	encoder := yaml.NewEncoder(buffer)
+	encoder := yamlv3.NewEncoder(buffer)
 	encoder.SetIndent(2)
 
-	err := encoder.Encode(copy)
-	if err != nil {
-		return nil, err
+	if err := encoder.Encode(copy); err != nil {
+		return err
 	}
 
-	return print.NewGenerator(
-		"yaml",
-		print.WithContent(strings.TrimSuffix(buffer.String(), "\n")),
-	), nil
+	y.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+
+	return nil
 }
 
 func init() {

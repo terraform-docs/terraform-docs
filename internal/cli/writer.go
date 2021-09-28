@@ -19,6 +19,8 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // stdoutWriter writes content to os.Stdout.
@@ -62,7 +64,7 @@ func (fw *fileWriter) Write(p []byte) (int, error) {
 
 	if fw.template == "" {
 		// template is optional for mode replace
-		if fw.mode == outputModeReplace {
+		if fw.mode == print.OutputModeReplace {
 			return fw.write(filename, p)
 		}
 		return 0, errors.New("template is missing")
@@ -76,7 +78,7 @@ func (fw *fileWriter) Write(p []byte) (int, error) {
 
 	// Replace the content of 'filename' with generated output,
 	// no further processing is required for mode 'replace'.
-	if fw.mode == outputModeReplace {
+	if fw.mode == print.OutputModeReplace {
 		return fw.write(filename, buf.Bytes())
 	}
 

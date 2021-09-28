@@ -14,7 +14,7 @@ import (
 	"embed"
 	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/template"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
@@ -22,14 +22,18 @@ import (
 //go:embed templates/asciidoc_table*.tmpl
 var asciidocTableFS embed.FS
 
-// AsciidocTable represents AsciiDoc Table format.
-type AsciidocTable struct {
+// asciidocTable represents AsciiDoc Table format.
+type asciidocTable struct {
+	*print.Generator
+
+	config   *print.Config
 	template *template.Template
 	settings *print.Settings
 }
 
-// NewAsciidocTable returns new instance of AsciidocTable.
-func NewAsciidocTable(settings *print.Settings) print.Engine {
+// NewAsciidocTable returns new instance of Asciidoc Table.
+func NewAsciidocTable(config *print.Config) Type {
+	settings, _ := config.Extract()
 	items := readTemplateItems(asciidocTableFS, "asciidoc_table")
 
 	settings.EscapeCharacters = false
@@ -48,30 +52,26 @@ func NewAsciidocTable(settings *print.Settings) print.Engine {
 			return result
 		},
 	})
-	return &AsciidocTable{
-		template: tt,
-		settings: settings,
+
+	return &asciidocTable{
+		Generator: print.NewGenerator("json", config.ModuleRoot),
+		config:    config,
+		template:  tt,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as AsciiDoc tables.
-func (t *AsciidocTable) Generate(module *terraform.Module) (*print.Generator, error) {
-	funcs := []print.GenerateFunc{}
-
-	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
+func (t *asciidocTable) Generate(module *terraform.Module) error {
+	err := t.Generator.ForEach(func(name string) (string, error) {
 		rendered, err := t.template.Render(name, module)
 		if err != nil {
-			return err
+			return "", err
 		}
-
-		funcs = append(funcs, fn(sanitize(rendered)))
-		return nil
+		return sanitize(rendered), nil
 	})
-	if err != nil {
-		return nil, err
-	}
 
-	return print.NewGenerator("asciidoc table", funcs...), nil
+	return err
 }
 
 func init() {

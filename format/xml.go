@@ -11,49 +11,44 @@ the root directory of this source tree.
 package format
 
 import (
-	"encoding/xml"
+	xmlsdk "encoding/xml"
 	"strings"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-// XML represents XML format.
-type XML struct {
+// xml represents XML format.
+type xml struct {
+	*print.Generator
+
+	config   *print.Config
 	settings *print.Settings
 }
 
 // NewXML returns new instance of XML.
-func NewXML(settings *print.Settings) print.Engine {
-	return &XML{
-		settings: settings,
+func NewXML(config *print.Config) Type {
+	settings, _ := config.Extract()
+
+	return &xml{
+		Generator: print.NewGenerator("xml", config.ModuleRoot),
+		config:    config,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as xml.
-func (x *XML) Generate(module *terraform.Module) (*print.Generator, error) {
-	copy := &terraform.Module{
-		Header:       "",
-		Footer:       "",
-		Inputs:       make([]*terraform.Input, 0),
-		ModuleCalls:  make([]*terraform.ModuleCall, 0),
-		Outputs:      make([]*terraform.Output, 0),
-		Providers:    make([]*terraform.Provider, 0),
-		Requirements: make([]*terraform.Requirement, 0),
-		Resources:    make([]*terraform.Resource, 0),
-	}
+func (x *xml) Generate(module *terraform.Module) error {
+	copy := copySections(x.settings, module)
 
-	print.CopySections(x.settings, module, copy)
-
-	out, err := xml.MarshalIndent(copy, "", "  ")
+	out, err := xmlsdk.MarshalIndent(copy, "", "  ")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return print.NewGenerator(
-		"xml",
-		print.WithContent(strings.TrimSuffix(string(out), "\n")),
-	), nil
+	x.Generator.Funcs(print.WithContent(strings.TrimSuffix(string(out), "\n")))
+
+	return nil
 }
 
 func init() {

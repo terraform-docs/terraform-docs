@@ -19,7 +19,7 @@ import (
 
 	"mvdan.cc/xurls/v2"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // SanitizeName escapes underscore character which have special meaning in Markdown.

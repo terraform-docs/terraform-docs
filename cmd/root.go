@@ -28,6 +28,7 @@ import (
 	"github.com/terraform-docs/terraform-docs/cmd/yaml"
 	"github.com/terraform-docs/terraform-docs/internal/cli"
 	"github.com/terraform-docs/terraform-docs/internal/version"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -42,7 +43,7 @@ func Execute() error {
 
 // NewCommand returns a new cobra.Command for 'root' command
 func NewCommand() *cobra.Command {
-	config := cli.DefaultConfig()
+	config := print.DefaultConfig()
 	runtime := cli.NewRuntime(config)
 	cmd := &cobra.Command{
 		Args:          cobra.MaximumNArgs(1),
@@ -62,16 +63,16 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Recursive, "recursive", false, "update submodules recursively (default false)")
 	cmd.PersistentFlags().StringVar(&config.RecursivePath, "recursive-path", "modules", "submodules path to recursively update")
 
-	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+cli.AllSections+"]")
-	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+cli.AllSections+"]")
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+print.AllSections+"]")
+	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+print.AllSections+"]")
 
 	cmd.PersistentFlags().StringVar(&config.Output.File, "output-file", "", "file path to insert output into (default \"\")")
-	cmd.PersistentFlags().StringVar(&config.Output.Mode, "output-mode", "inject", "output to file method ["+cli.OutputModes+"]")
-	cmd.PersistentFlags().StringVar(&config.Output.Template, "output-template", cli.OutputTemplate, "output template")
+	cmd.PersistentFlags().StringVar(&config.Output.Mode, "output-mode", "inject", "output to file method ["+print.OutputModes+"]")
+	cmd.PersistentFlags().StringVar(&config.Output.Template, "output-template", print.OutputTemplate, "output template")
 	cmd.PersistentFlags().BoolVar(&config.Output.Check, "output-check", false, "check if content of output file is up to date (default false)")
 
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
-	cmd.PersistentFlags().StringVar(&config.Sort.By, "sort-by", "name", "sort items by criteria ["+cli.SortTypes+"]")
+	cmd.PersistentFlags().StringVar(&config.Sort.By, "sort-by", "name", "sort items by criteria ["+print.SortTypes+"]")
 
 	cmd.PersistentFlags().StringVar(&config.HeaderFrom, "header-from", "main.tf", "relative path of a file to read header from")
 	cmd.PersistentFlags().StringVar(&config.FooterFrom, "footer-from", "", "relative path of a file to read footer from (default \"\")")

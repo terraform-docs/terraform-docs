@@ -30,56 +30,56 @@ func WithContent(content string) GenerateFunc {
 // WithHeader specifies how the Generator should add Header.
 func WithHeader(header string) GenerateFunc {
 	return func(g *Generator) {
-		g.Header = header
+		g.header = header
 	}
 }
 
 // WithFooter specifies how the Generator should add Footer.
 func WithFooter(footer string) GenerateFunc {
 	return func(g *Generator) {
-		g.Footer = footer
+		g.footer = footer
 	}
 }
 
 // WithInputs specifies how the Generator should add Inputs.
 func WithInputs(inputs string) GenerateFunc {
 	return func(g *Generator) {
-		g.Inputs = inputs
+		g.inputs = inputs
 	}
 }
 
 // WithModules specifies how the Generator should add Modules.
 func WithModules(modules string) GenerateFunc {
 	return func(g *Generator) {
-		g.Modules = modules
+		g.modules = modules
 	}
 }
 
 // WithOutputs specifies how the Generator should add Outputs.
 func WithOutputs(outputs string) GenerateFunc {
 	return func(g *Generator) {
-		g.Outputs = outputs
+		g.outputs = outputs
 	}
 }
 
 // WithProviders specifies how the Generator should add Providers.
 func WithProviders(providers string) GenerateFunc {
 	return func(g *Generator) {
-		g.Providers = providers
+		g.providers = providers
 	}
 }
 
 // WithRequirements specifies how the Generator should add Requirements.
 func WithRequirements(requirements string) GenerateFunc {
 	return func(g *Generator) {
-		g.Requirements = requirements
+		g.requirements = requirements
 	}
 }
 
 // WithResources specifies how the Generator should add Resources.
 func WithResources(resources string) GenerateFunc {
 	return func(g *Generator) {
-		g.Resources = resources
+		g.resources = resources
 	}
 }
 
@@ -99,43 +99,85 @@ func WithResources(resources string) GenerateFunc {
 // - markdown document
 // - markdown table
 type Generator struct {
-	Header       string
-	Footer       string
-	Inputs       string
-	Modules      string
-	Outputs      string
-	Providers    string
-	Requirements string
-	Resources    string
+	// all the content combined
+	content string
+
+	// individual sections
+	header       string
+	footer       string
+	inputs       string
+	modules      string
+	outputs      string
+	providers    string
+	requirements string
+	resources    string
 
 	path      string // module's path
-	content   string // all the content combined
-	formatter string // name of the formatter
+	formatter string // formatter name
+
+	funcs []GenerateFunc
 }
 
 // NewGenerator returns a Generator for specific formatter name and with
 // provided sets of GeneratorFunc functions to build and add individual
 // sections.
-func NewGenerator(name string, fns ...GenerateFunc) *Generator {
+func NewGenerator(name string, root string, fns ...GenerateFunc) *Generator {
 	g := &Generator{
+		path:      root,
 		formatter: name,
+		funcs:     []GenerateFunc{},
 	}
 
-	for _, fn := range fns {
-		fn(g)
-	}
+	g.Funcs(fns...)
 
 	return g
 }
 
-// Path of module's directory.
+// Content returns generted all the sections combined based on the underlying format.
+func (g *Generator) Content() string { return g.content }
+
+// Header returns generted header section based on the underlying format.
+func (g *Generator) Header() string { return g.header }
+
+// Footer returns generted footer section based on the underlying format.
+func (g *Generator) Footer() string { return g.footer }
+
+// Inputs returns generted inputs section based on the underlying format.
+func (g *Generator) Inputs() string { return g.inputs }
+
+// Modules returns generted modules section based on the underlying format.
+func (g *Generator) Modules() string { return g.modules }
+
+// Outputs returns generted outputs section based on the underlying format.
+func (g *Generator) Outputs() string { return g.outputs }
+
+// Providers returns generted providers section based on the underlying format.
+func (g *Generator) Providers() string { return g.providers }
+
+// Requirements returns generted resources section based on the underlying format.
+func (g *Generator) Requirements() string { return g.requirements }
+
+// Resources returns generted requirements section based on the underlying format.
+func (g *Generator) Resources() string { return g.resources }
+
+// Funcs adds GenerateFunc to the list of available functions, for further use
+// if need be, and then runs them.
+func (g *Generator) Funcs(fns ...GenerateFunc) {
+	for _, fn := range fns {
+		g.funcs = append(g.funcs, fn)
+		fn(g)
+	}
+}
+
+// Path set path of module's root directory.
 func (g *Generator) Path(root string) {
 	g.path = root
 }
 
-// ExecuteTemplate applies the template with Generator known items. If template
-// is empty Generator.content is returned as is. If template is not empty this
-// still returns Generator.content for incompatible formatters.
+// ExecuteTemplate applies the template with Renderer known items. If template
+// is empty Renderer.content is returned as is. If template is not empty this
+// still returns Renderer.content for incompatible formatters.
+// func (g *Renderer) Render(contentTmpl string) (string, error) {
 func (g *Generator) ExecuteTemplate(contentTmpl string) (string, error) {
 	if !g.isCompatible() {
 		return g.content, nil
@@ -174,15 +216,15 @@ func (g *Generator) isCompatible() bool {
 	return false
 }
 
-// GeneratorCallback renders a Terraform module and creates a GenerateFunc.
-type GeneratorCallback func(string) GenerateFunc
+// generatorCallback renders a Terraform module and creates a GenerateFunc.
+type generatorCallback func(string) GenerateFunc
 
-// ForEach section executes GeneratorCallback to render the content for that
+// ForEach section executes generatorCallback to render the content for that
 // section and create corresponding GeneratorFunc. If there is any error in
 // the executing the template for the section ForEach function immediately
 // returns it and exit.
-func ForEach(callback func(string, GeneratorCallback) error) error {
-	mappings := map[string]GeneratorCallback{
+func (g *Generator) ForEach(render func(string) (string, error)) error {
+	mappings := map[string]generatorCallback{
 		"all":          WithContent,
 		"header":       WithHeader,
 		"footer":       WithFooter,
@@ -193,10 +235,14 @@ func ForEach(callback func(string, GeneratorCallback) error) error {
 		"requirements": WithRequirements,
 		"resources":    WithResources,
 	}
-	for name, fn := range mappings {
-		if err := callback(name, fn); err != nil {
+	for name, callback := range mappings {
+		result, err := render(name)
+		if err != nil {
 			return err
 		}
+		fn := callback(result)
+		g.funcs = append(g.funcs, fn)
+		fn(g)
 	}
 	return nil
 }

@@ -13,7 +13,7 @@ package template
 import (
 	"fmt"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // CreateAnchorMarkdown creates HTML anchor for Markdown format.

@@ -14,7 +14,7 @@ import (
 	"embed"
 	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/template"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
@@ -22,14 +22,18 @@ import (
 //go:embed templates/asciidoc_document*.tmpl
 var asciidocsDocumentFS embed.FS
 
-// AsciidocDocument represents AsciiDoc Document format.
-type AsciidocDocument struct {
+// asciidocDocument represents AsciiDoc Document format.
+type asciidocDocument struct {
+	*print.Generator
+
+	config   *print.Config
 	template *template.Template
 	settings *print.Settings
 }
 
-// NewAsciidocDocument returns new instance of AsciidocDocument.
-func NewAsciidocDocument(settings *print.Settings) print.Engine {
+// NewAsciidocDocument returns new instance of Asciidoc Document.
+func NewAsciidocDocument(config *print.Config) Type {
+	settings, _ := config.Extract()
 	items := readTemplateItems(asciidocsDocumentFS, "asciidoc_document")
 
 	settings.EscapeCharacters = false
@@ -57,30 +61,26 @@ func NewAsciidocDocument(settings *print.Settings) print.Engine {
 			return settings.ShowRequired
 		},
 	})
-	return &AsciidocDocument{
-		template: tt,
-		settings: settings,
+
+	return &asciidocDocument{
+		Generator: print.NewGenerator("json", config.ModuleRoot),
+		config:    config,
+		template:  tt,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as AsciiDoc document.
-func (d *AsciidocDocument) Generate(module *terraform.Module) (*print.Generator, error) {
-	funcs := []print.GenerateFunc{}
-
-	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
+func (d *asciidocDocument) Generate(module *terraform.Module) error {
+	err := d.Generator.ForEach(func(name string) (string, error) {
 		rendered, err := d.template.Render(name, module)
 		if err != nil {
-			return err
+			return "", err
 		}
-
-		funcs = append(funcs, fn(sanitize(rendered)))
-		return nil
+		return sanitize(rendered), nil
 	})
-	if err != nil {
-		return nil, err
-	}
 
-	return print.NewGenerator("asciidoc document", funcs...), nil
+	return err
 }
 
 func init() {

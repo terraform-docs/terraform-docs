@@ -184,8 +184,4 @@ generates the following output:
     | <a name="output_output-2"></a> [output-2](#output\_output-2) | It's output number two. |
     | <a name="output_unquoted"></a> [unquoted](#output\_unquoted) | It's unquoted output. |
 
-    ## This is an example of a footer
-
-    It looks exactly like a header, but is placed at the end of the document
-
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples

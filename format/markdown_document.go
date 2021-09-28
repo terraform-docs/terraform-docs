@@ -14,7 +14,7 @@ import (
 	"embed"
 	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/template"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
@@ -22,14 +22,18 @@ import (
 //go:embed templates/markdown_document*.tmpl
 var markdownDocumentFS embed.FS
 
-// MarkdownDocument represents Markdown Document format.
-type MarkdownDocument struct {
+// markdownDocument represents Markdown Document format.
+type markdownDocument struct {
+	*print.Generator
+
+	config   *print.Config
 	template *template.Template
 	settings *print.Settings
 }
 
-// NewMarkdownDocument returns new instance of Document.
-func NewMarkdownDocument(settings *print.Settings) print.Engine {
+// NewMarkdownDocument returns new instance of Markdown Document.
+func NewMarkdownDocument(config *print.Config) Type {
+	settings, _ := config.Extract()
 	items := readTemplateItems(markdownDocumentFS, "markdown_document")
 
 	tt := template.New(settings, items...)
@@ -55,30 +59,26 @@ func NewMarkdownDocument(settings *print.Settings) print.Engine {
 			return settings.ShowRequired
 		},
 	})
-	return &MarkdownDocument{
-		template: tt,
-		settings: settings,
+
+	return &markdownDocument{
+		Generator: print.NewGenerator("json", config.ModuleRoot),
+		config:    config,
+		template:  tt,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as Markdown document.
-func (d *MarkdownDocument) Generate(module *terraform.Module) (*print.Generator, error) {
-	funcs := []print.GenerateFunc{}
-
-	err := print.ForEach(func(name string, fn print.GeneratorCallback) error {
+func (d *markdownDocument) Generate(module *terraform.Module) error {
+	err := d.Generator.ForEach(func(name string) (string, error) {
 		rendered, err := d.template.Render(name, module)
 		if err != nil {
-			return err
+			return "", err
 		}
-
-		funcs = append(funcs, fn(sanitize(rendered)))
-		return nil
+		return sanitize(rendered), nil
 	})
-	if err != nil {
-		return nil, err
-	}
 
-	return print.NewGenerator("markdown document", funcs...), nil
+	return err
 }
 
 func init() {

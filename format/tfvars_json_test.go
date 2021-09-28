@@ -13,8 +13,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
@@ -89,12 +89,12 @@ func TestTfvarsJson(t *testing.T) {
 			module, err := testutil.GetModule(options)
 			assert.Nil(err)
 
-			formatter := NewTfvarsJSON(&tt.settings)
+			formatter := NewTfvarsJSON(tt.settings.ToConfig())
 
-			generator, err := formatter.Generate(module)
+			err = formatter.Generate(module)
 			assert.Nil(err)
 
-			actual, err := generator.ExecuteTemplate("")
+			actual, err := formatter.ExecuteTemplate("")
 
 			assert.Nil(err)
 			assert.Equal(expected, actual)

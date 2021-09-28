@@ -16,7 +16,7 @@ import (
 	"regexp"
 	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/template"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
@@ -24,14 +24,19 @@ import (
 //go:embed templates/pretty.tmpl
 var prettyTpl []byte
 
-// Pretty represents colorized pretty format.
-type Pretty struct {
+// pretty represents colorized pretty format.
+type pretty struct {
+	*print.Generator
+
+	config   *print.Config
 	template *template.Template
 	settings *print.Settings
 }
 
 // NewPretty returns new instance of Pretty.
-func NewPretty(settings *print.Settings) print.Engine {
+func NewPretty(config *print.Config) Type {
+	settings, _ := config.Extract()
+
 	tt := template.New(settings, &template.Item{
 		Name: "pretty",
 		Text: string(prettyTpl),
@@ -46,23 +51,25 @@ func NewPretty(settings *print.Settings) print.Engine {
 			return fmt.Sprintf("%s%s%s", c, s, r)
 		},
 	})
-	return &Pretty{
-		template: tt,
-		settings: settings,
+
+	return &pretty{
+		Generator: print.NewGenerator("pretty", config.ModuleRoot),
+		config:    config,
+		template:  tt,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module document.
-func (p *Pretty) Generate(module *terraform.Module) (*print.Generator, error) {
+func (p *pretty) Generate(module *terraform.Module) error {
 	rendered, err := p.template.Render("pretty", module)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return print.NewGenerator(
-		"pretty",
-		print.WithContent(regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, "")),
-	), nil
+	p.Generator.Funcs(print.WithContent(regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, "")))
+
+	return nil
 }
 
 func init() {

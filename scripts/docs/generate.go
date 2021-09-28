@@ -24,7 +24,7 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/cmd"
 	"github.com/terraform-docs/terraform-docs/format"
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
@@ -171,9 +171,9 @@ func example(ref *reference) error {
 
 	ref.Usage = fmt.Sprintf("%s%s ./examples/", ref.Command, flag)
 
-	settings := print.DefaultSettings()
-	settings.ShowColor = false
-	settings.ShowFooter = true
+	config := print.DefaultConfig()
+	config.Formatter = ref.Name
+	config.Settings.Color = false
 	options := &terraform.Options{
 		Path:           "./examples",
 		ShowHeader:     true,
@@ -186,26 +186,21 @@ func example(ref *reference) error {
 		ReadComments: true,
 	}
 
-	formatter, err := format.Factory(ref.Name, settings)
-	if err != nil {
-		return err
-	}
-
 	tfmodule, err := terraform.LoadWithOptions(options)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	generator, err := formatter.Generate(tfmodule)
-	if err != nil {
-		return err
-	}
-	output, err := generator.ExecuteTemplate("")
+	formatter, err := format.New(config)
 	if err != nil {
 		return err
 	}
 
-	segments := strings.Split(output, "\n")
+	if err := formatter.Generate(tfmodule); err != nil {
+		return err
+	}
+
+	segments := strings.Split(formatter.Content(), "\n")
 	buf := new(bytes.Buffer)
 	for _, s := range segments {
 		if s == "" {

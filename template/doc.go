@@ -16,7 +16,7 @@ the root directory of this source tree.
 //         "fmt"
 //         gotemplate "text/template"
 //
-//         "github.com/terraform-docs/terraform-docs/internal/print"
+//         "github.com/terraform-docs/terraform-docs/print"
 //         "github.com/terraform-docs/terraform-docs/template"
 //         "github.com/terraform-docs/terraform-docs/terraform"
 //     )

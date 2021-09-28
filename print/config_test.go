@@ -7,7 +7,8 @@ use this file except in compliance with the License.
 You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
-package cli
+
+package print
 
 import (
 	"fmt"
@@ -168,7 +169,7 @@ func TestConfigOutput(t *testing.T) {
 		"TemplateEmptyModeReplace": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeReplace,
+				Mode:     OutputModeReplace,
 				Template: "",
 			},
 			wantErr: false,
@@ -177,8 +178,8 @@ func TestConfigOutput(t *testing.T) {
 		"TemplateLiteralLineBreak": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeInject,
-				Template: fmt.Sprintf("%s\\n%s\\n%s", outputBeginComment, outputContent, outputEndComment),
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("%s\\n%s\\n%s", OutputBeginComment, OutputContent, OutputEndComment),
 			},
 			wantErr: false,
 			errMsg:  "",
@@ -186,8 +187,8 @@ func TestConfigOutput(t *testing.T) {
 		"NoExtraValidationModeReplace": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeReplace,
-				Template: fmt.Sprintf("%s\\n%s\\n%s", outputBeginComment, outputContent, outputEndComment),
+				Mode:     OutputModeReplace,
+				Template: fmt.Sprintf("%s\\n%s\\n%s", OutputBeginComment, OutputContent, OutputEndComment),
 			},
 			wantErr: false,
 			errMsg:  "",
@@ -205,7 +206,7 @@ func TestConfigOutput(t *testing.T) {
 		"TemplateEmptyModeInject": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeInject,
+				Mode:     OutputModeInject,
 				Template: "",
 			},
 			wantErr: true,
@@ -214,8 +215,8 @@ func TestConfigOutput(t *testing.T) {
 		"TemplateNotContent": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeInject,
-				Template: fmt.Sprintf("%s\n%s", outputBeginComment, outputEndComment),
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("%s\n%s", OutputBeginComment, OutputEndComment),
 			},
 			wantErr: true,
 			errMsg:  "value of '--output-template' doesn't have '{{ .Content }}' (note that spaces inside '{{ }}' are mandatory)",
@@ -223,8 +224,8 @@ func TestConfigOutput(t *testing.T) {
 		"TemplateNotThreeLines": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeInject,
-				Template: fmt.Sprintf("%s%s%s", outputBeginComment, outputContent, outputEndComment),
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("%s%s%s", OutputBeginComment, OutputContent, OutputEndComment),
 			},
 			wantErr: true,
 			errMsg:  "value of '--output-template' should contain at least 3 lines (begin comment, {{ .Content }}, and end comment)",
@@ -232,8 +233,8 @@ func TestConfigOutput(t *testing.T) {
 		"TemplateBeginCommentMissing": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeInject,
-				Template: fmt.Sprintf("no-begin-comment\n%s\n%s", outputContent, outputEndComment),
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("no-begin-comment\n%s\n%s", OutputContent, OutputEndComment),
 			},
 			wantErr: true,
 			errMsg:  "value of '--output-template' is missing begin comment",
@@ -241,8 +242,8 @@ func TestConfigOutput(t *testing.T) {
 		"TemplateEndCommentMissing": {
 			output: output{
 				File:     "README.md",
-				Mode:     outputModeInject,
-				Template: fmt.Sprintf("%s\n%s\nno-end-comment", outputBeginComment, outputContent),
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("%s\n%s\nno-end-comment", OutputBeginComment, OutputContent),
 			},
 			wantErr: true,
 			errMsg:  "value of '--output-template' is missing end comment",
@@ -540,7 +541,7 @@ func TestConfigOutputvalues(t *testing.T) {
 	}
 }
 
-func TestConfigProcess(t *testing.T) {
+func TestConfigValidate(t *testing.T) {
 	tests := map[string]struct {
 		config  func(c *Config)
 		wantErr bool
@@ -576,8 +577,7 @@ func TestConfigProcess(t *testing.T) {
 		"FooterFrom": {
 			config: func(c *Config) {
 				c.FooterFrom = ""
-				c.Sections.footer = true
-				c.isFlagChanged = func(s string) bool { return true }
+				c.Sections.Footer = true
 			},
 			wantErr: true,
 			errMsg:  "value of '--footer-from' can't be empty",
@@ -599,7 +599,7 @@ func TestConfigProcess(t *testing.T) {
 			config := DefaultConfig()
 			config.Formatter = "foo"
 			tt.config(config)
-			err := config.process()
+			err := config.Validate()
 
 			if tt.wantErr {
 				assert.NotNil(err)

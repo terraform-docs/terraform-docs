@@ -8,7 +8,7 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package cli
+package print
 
 func contains(list []string, name string) bool {
 	for _, v := range list {

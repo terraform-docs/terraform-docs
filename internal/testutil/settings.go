@@ -13,7 +13,7 @@ package testutil
 import (
 	"github.com/imdario/mergo"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // WithSections appends show all sections to provided Settings.

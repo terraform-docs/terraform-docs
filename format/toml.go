@@ -14,50 +14,45 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/BurntSushi/toml"
+	tomlsdk "github.com/BurntSushi/toml"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-// TOML represents TOML format.
-type TOML struct {
+// toml represents TOML format.
+type toml struct {
+	*print.Generator
+
+	config   *print.Config
 	settings *print.Settings
 }
 
 // NewTOML returns new instance of TOML.
-func NewTOML(settings *print.Settings) print.Engine {
-	return &TOML{
-		settings: settings,
+func NewTOML(config *print.Config) Type {
+	settings, _ := config.Extract()
+
+	return &toml{
+		Generator: print.NewGenerator("toml", config.ModuleRoot),
+		config:    config,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as toml.
-func (t *TOML) Generate(module *terraform.Module) (*print.Generator, error) {
-	copy := &terraform.Module{
-		Header:       "",
-		Footer:       "",
-		Inputs:       make([]*terraform.Input, 0),
-		ModuleCalls:  make([]*terraform.ModuleCall, 0),
-		Outputs:      make([]*terraform.Output, 0),
-		Providers:    make([]*terraform.Provider, 0),
-		Requirements: make([]*terraform.Requirement, 0),
-		Resources:    make([]*terraform.Resource, 0),
-	}
-
-	print.CopySections(t.settings, module, copy)
+func (t *toml) Generate(module *terraform.Module) error {
+	copy := copySections(t.settings, module)
 
 	buffer := new(bytes.Buffer)
-	encoder := toml.NewEncoder(buffer)
-	err := encoder.Encode(copy)
-	if err != nil {
-		return nil, err
+	encoder := tomlsdk.NewEncoder(buffer)
+
+	if err := encoder.Encode(copy); err != nil {
+		return err
 	}
 
-	return print.NewGenerator(
-		"toml",
-		print.WithContent(strings.TrimSuffix(buffer.String(), "\n")),
-	), nil
+	t.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+
+	return nil
 
 }
 

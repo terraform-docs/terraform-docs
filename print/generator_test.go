@@ -61,7 +61,7 @@ func TestIsCompatible(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			generator := NewGenerator(name)
+			generator := NewGenerator(name, "")
 			actual := generator.isCompatible()
 
 			assert.Equal(tt.expected, actual)
@@ -140,10 +140,10 @@ func TestExecuteTemplate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			generator := NewGenerator(tt.name)
+			generator := NewGenerator(tt.name, "")
 			generator.content = tt.content
-			generator.Header = header
-			generator.Footer = footer
+			generator.header = header
+			generator.footer = footer
 
 			actual, err := generator.ExecuteTemplate(tt.template)
 
@@ -165,46 +165,46 @@ func TestGeneratorFunc(t *testing.T) {
 	}{
 		"WithContent": {
 			fn:     WithContent,
-			actual: func(g *Generator) string { return g.content },
+			actual: func(r *Generator) string { return r.content },
 		},
 		"WithHeader": {
 			fn:     WithHeader,
-			actual: func(g *Generator) string { return g.Header },
+			actual: func(r *Generator) string { return r.header },
 		},
 		"WithFooter": {
 			fn:     WithFooter,
-			actual: func(g *Generator) string { return g.Footer },
+			actual: func(r *Generator) string { return r.footer },
 		},
 		"WithInputs": {
 			fn:     WithInputs,
-			actual: func(g *Generator) string { return g.Inputs },
+			actual: func(r *Generator) string { return r.inputs },
 		},
 		"WithModules": {
 			fn:     WithModules,
-			actual: func(g *Generator) string { return g.Modules },
+			actual: func(r *Generator) string { return r.modules },
 		},
 		"WithOutputs": {
 			fn:     WithOutputs,
-			actual: func(g *Generator) string { return g.Outputs },
+			actual: func(r *Generator) string { return r.outputs },
 		},
 		"WithProviders": {
 			fn:     WithProviders,
-			actual: func(g *Generator) string { return g.Providers },
+			actual: func(r *Generator) string { return r.providers },
 		},
 		"WithRequirements": {
 			fn:     WithRequirements,
-			actual: func(g *Generator) string { return g.Requirements },
+			actual: func(r *Generator) string { return r.requirements },
 		},
 		"WithResources": {
 			fn:     WithResources,
-			actual: func(g *Generator) string { return g.Resources },
+			actual: func(r *Generator) string { return r.resources },
 		},
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			generator := NewGenerator(name, tt.fn(text))
+			generator := NewGenerator(name, "", tt.fn(text))
 
 			assert.Equal(text, tt.actual(generator))
 		})
@@ -212,27 +212,23 @@ func TestGeneratorFunc(t *testing.T) {
 }
 
 func TestForEach(t *testing.T) {
-	// text := "foo"
-	fns := []GenerateFunc{}
-	ForEach(func(name string, fn GeneratorCallback) error {
-		fns = append(fns, fn(name))
-		return nil
+	generator := NewGenerator("foo", "")
+	generator.ForEach(func(name string) (string, error) {
+		return name, nil
 	})
-
-	generator := NewGenerator("foo", fns...)
 
 	tests := map[string]struct {
 		actual string
 	}{
 		"all":          {actual: generator.content},
-		"header":       {actual: generator.Header},
-		"footer":       {actual: generator.Footer},
-		"inputs":       {actual: generator.Inputs},
-		"modules":      {actual: generator.Modules},
-		"outputs":      {actual: generator.Outputs},
-		"providers":    {actual: generator.Providers},
-		"requirements": {actual: generator.Requirements},
-		"resources":    {actual: generator.Resources},
+		"header":       {actual: generator.header},
+		"footer":       {actual: generator.footer},
+		"inputs":       {actual: generator.inputs},
+		"modules":      {actual: generator.modules},
+		"outputs":      {actual: generator.outputs},
+		"providers":    {actual: generator.providers},
+		"requirements": {actual: generator.requirements},
+		"resources":    {actual: generator.resources},
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {

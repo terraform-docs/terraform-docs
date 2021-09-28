@@ -11,7 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
-	"encoding/json"
+	jsonsdk "encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -73,7 +73,7 @@ func TestCommonSort(t *testing.T) {
 
 			var expected Expected
 
-			err = json.Unmarshal([]byte(golden), &expected)
+			err = jsonsdk.Unmarshal([]byte(golden), &expected)
 			assert.Nil(err)
 
 			for ii, i := range module.Inputs {

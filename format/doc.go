@@ -8,27 +8,38 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-// Package format provides different, out of the box supported, output formats.
+// Package format provides different, out of the box supported, output format types.
 //
 // Usage
 //
-// A specific format can be instantiated either for `format.Factory()` function or
+// A specific format can be instantiated either for `format.New()` function or
 // directly calling its function (e.g. `NewMarkdownTable`, etc)
 //
-//     formatter, err := format.Factory("markdown table", settings)
+//     config := print.DefaultConfig()
+//     config.Formatter = "markdown table"
+//
+//     formatter, err := format.New(config)
 //     if err != nil {
 //         return err
 //     }
 //
-//     generator, err := formatter.Generate(tfmodule)
+//     err := formatter.Generate(tfmodule)
 //     if err != nil {
 //         return err
 //     }
 //
-//     output, err := generator.ExecuteTemplate("")
+//
+//     output, err := formatter.ExecuteTemplate("")
 //     if err != nil {
 //         return err
 //     }
+//
+// Note: if you don't intend to provide additional template for the generated
+// content, or the target format doesn't provide templating (e.g. json, yaml,
+// xml, or toml) you can use `Content()` function instead of `ExecuteTemplate()`.
+// `Content()` returns all the sections combined with predefined order.
+//
+//     output := formatter.Content()
 //
 // Supported formats are:
 //

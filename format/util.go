@@ -17,7 +17,9 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/template"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // sanitize cleans a Markdown document to soothe linters.
@@ -98,4 +100,59 @@ func readTemplateItems(efs embed.FS, prefix string) []*template.Item {
 		})
 	}
 	return items
+}
+
+// copySections sets the sections that'll be printed
+func copySections(settings *print.Settings, src *terraform.Module) *terraform.Module {
+	dest := &terraform.Module{
+		Header:       "",
+		Footer:       "",
+		Inputs:       make([]*terraform.Input, 0),
+		ModuleCalls:  make([]*terraform.ModuleCall, 0),
+		Outputs:      make([]*terraform.Output, 0),
+		Providers:    make([]*terraform.Provider, 0),
+		Requirements: make([]*terraform.Requirement, 0),
+		Resources:    make([]*terraform.Resource, 0),
+	}
+
+	if settings.ShowHeader {
+		dest.Header = src.Header
+	}
+	if settings.ShowFooter {
+		dest.Footer = src.Footer
+	}
+	if settings.ShowInputs {
+		dest.Inputs = src.Inputs
+	}
+	if settings.ShowModuleCalls {
+		dest.ModuleCalls = src.ModuleCalls
+	}
+	if settings.ShowOutputs {
+		dest.Outputs = src.Outputs
+	}
+	if settings.ShowProviders {
+		dest.Providers = src.Providers
+	}
+	if settings.ShowRequirements {
+		dest.Requirements = src.Requirements
+	}
+	if settings.ShowResources || settings.ShowDataSources {
+		dest.Resources = filterResourcesByMode(settings, src.Resources)
+	}
+
+	return dest
+}
+
+// filterResourcesByMode returns the managed or data resources defined by the show argument
+func filterResourcesByMode(settings *print.Settings, module []*terraform.Resource) []*terraform.Resource {
+	resources := make([]*terraform.Resource, 0)
+	for _, r := range module {
+		if settings.ShowResources && r.Mode == "managed" {
+			resources = append(resources, r)
+		}
+		if settings.ShowDataSources && r.Mode == "data" {
+			resources = append(resources, r)
+		}
+	}
+	return resources
 }

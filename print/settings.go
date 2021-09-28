@@ -12,7 +12,6 @@ package print
 
 import (
 	printsdk "github.com/terraform-docs/plugin-sdk/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // Settings represents all settings.
@@ -53,7 +52,7 @@ type Settings struct {
 	// scope: Pretty
 	ShowColor bool
 
-	// ShowDatasources show the data sources on the "Resources" section
+	// ShowDataSources show the data sources on the "Resources" section
 	//
 	// default: true
 	// scope: Global
@@ -144,7 +143,7 @@ type Settings struct {
 	ShowType bool
 }
 
-// DefaultSettings returns new instance of Settings
+// DefaultSettings returns new instance of Settings.
 func DefaultSettings() *Settings {
 	return &Settings{
 		EscapeCharacters: true,
@@ -171,7 +170,38 @@ func DefaultSettings() *Settings {
 	}
 }
 
-// Convert internal Settings to its equivalent in plugin-sdk
+// ToConfig converts Settings to Config.
+func (s *Settings) ToConfig() *Config {
+	config := NewConfig()
+
+	config.Settings.Anchor = s.ShowAnchor
+	config.Settings.Color = s.ShowColor
+	config.Settings.Default = s.ShowDefault
+	config.Settings.Description = s.ShowDescription
+	config.Settings.Escape = s.EscapeCharacters
+	config.Settings.HideEmpty = s.HideEmpty
+	config.Settings.HTML = s.ShowHTML
+	config.Settings.Indent = s.IndentLevel
+	config.Settings.Required = s.ShowRequired
+	config.Settings.Sensitive = s.ShowSensitivity
+	config.Settings.Type = s.ShowType
+
+	config.OutputValues.Enabled = s.OutputValues
+
+	config.Sections.DataSources = s.ShowDataSources
+	config.Sections.Footer = s.ShowFooter
+	config.Sections.Header = s.ShowHeader
+	config.Sections.Inputs = s.ShowInputs
+	config.Sections.Outputs = s.ShowOutputs
+	config.Sections.Modulecalls = s.ShowModuleCalls
+	config.Sections.Providers = s.ShowProviders
+	config.Sections.Requirements = s.ShowRequirements
+	config.Sections.Resources = s.ShowResources
+
+	return config
+}
+
+// Convert Settings to its equivalent in plugin-sdk.
 func (s *Settings) Convert() *printsdk.Settings {
 	return &printsdk.Settings{
 		EscapeCharacters: s.EscapeCharacters,
@@ -194,46 +224,4 @@ func (s *Settings) Convert() *printsdk.Settings {
 		ShowResources:    s.ShowResources,
 		ShowType:         s.ShowType,
 	}
-}
-
-// CopySections sets the sections that'll be printed
-func CopySections(settings *Settings, src *terraform.Module, dest *terraform.Module) {
-	if settings.ShowHeader {
-		dest.Header = src.Header
-	}
-	if settings.ShowFooter {
-		dest.Footer = src.Footer
-	}
-	if settings.ShowInputs {
-		dest.Inputs = src.Inputs
-	}
-	if settings.ShowModuleCalls {
-		dest.ModuleCalls = src.ModuleCalls
-	}
-	if settings.ShowOutputs {
-		dest.Outputs = src.Outputs
-	}
-	if settings.ShowProviders {
-		dest.Providers = src.Providers
-	}
-	if settings.ShowRequirements {
-		dest.Requirements = src.Requirements
-	}
-	if settings.ShowResources || settings.ShowDataSources {
-		dest.Resources = filterResourcesByMode(settings, src.Resources)
-	}
-}
-
-// filterResourcesByMode returns the managed or data resources defined by the show argument
-func filterResourcesByMode(settings *Settings, module []*terraform.Resource) []*terraform.Resource {
-	resources := make([]*terraform.Resource, 0)
-	for _, r := range module {
-		if settings.ShowResources && r.Mode == "managed" {
-			resources = append(resources, r)
-		}
-		if settings.ShowDataSources && r.Mode == "data" {
-			resources = append(resources, r)
-		}
-	}
-	return resources
 }

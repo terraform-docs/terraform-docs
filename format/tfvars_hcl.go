@@ -16,8 +16,8 @@ import (
 	"strings"
 	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
 	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/template"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
@@ -25,8 +25,11 @@ import (
 //go:embed templates/tfvars_hcl.tmpl
 var tfvarsHCLTpl []byte
 
-// TfvarsHCL represents Terraform tfvars HCL format.
-type TfvarsHCL struct {
+// tfvarsHCL represents Terraform tfvars HCL format.
+type tfvarsHCL struct {
+	*print.Generator
+
+	config   *print.Config
 	template *template.Template
 	settings *print.Settings
 }
@@ -34,7 +37,9 @@ type TfvarsHCL struct {
 var padding []int
 
 // NewTfvarsHCL returns new instance of TfvarsHCL.
-func NewTfvarsHCL(settings *print.Settings) print.Engine {
+func NewTfvarsHCL(config *print.Config) Type {
+	settings, _ := config.Extract()
+
 	tt := template.New(settings, &template.Item{
 		Name: "tfvars",
 		Text: string(tfvarsHCLTpl),
@@ -56,25 +61,27 @@ func NewTfvarsHCL(settings *print.Settings) print.Engine {
 			return settings.ShowDescription
 		},
 	})
-	return &TfvarsHCL{
-		template: tt,
-		settings: settings,
+
+	return &tfvarsHCL{
+		Generator: print.NewGenerator("tfvars hcl", config.ModuleRoot),
+		config:    config,
+		template:  tt,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as Terraform tfvars HCL.
-func (h *TfvarsHCL) Generate(module *terraform.Module) (*print.Generator, error) {
+func (h *tfvarsHCL) Generate(module *terraform.Module) error {
 	alignments(module.Inputs, h.settings)
 
 	rendered, err := h.template.Render("tfvars", module)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return print.NewGenerator(
-		"tfvars hcl",
-		print.WithContent(strings.TrimSuffix(sanitize(rendered), "\n")),
-	), nil
+	h.Generator.Funcs(print.WithContent(strings.TrimSuffix(sanitize(rendered), "\n")))
+
+	return nil
 }
 
 func isMultilineFormat(input *terraform.Input) bool {

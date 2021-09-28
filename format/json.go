@@ -12,55 +12,48 @@ package format
 
 import (
 	"bytes"
-	"encoding/json"
+	jsonsdk "encoding/json"
 	"strings"
 
-	"github.com/terraform-docs/terraform-docs/internal/print"
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-// JSON represents JSON format.
-type JSON struct {
+// json represents JSON format.
+type json struct {
+	*print.Generator
+
+	config   *print.Config
 	settings *print.Settings
 }
 
 // NewJSON returns new instance of JSON.
-func NewJSON(settings *print.Settings) print.Engine {
-	return &JSON{
-		settings: settings,
+func NewJSON(config *print.Config) Type {
+	settings, _ := config.Extract()
+
+	return &json{
+		Generator: print.NewGenerator("json", config.ModuleRoot),
+		config:    config,
+		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as json.
-func (j *JSON) Generate(module *terraform.Module) (*print.Generator, error) {
-	copy := &terraform.Module{
-		Header:       "",
-		Footer:       "",
-		Inputs:       make([]*terraform.Input, 0),
-		ModuleCalls:  make([]*terraform.ModuleCall, 0),
-		Outputs:      make([]*terraform.Output, 0),
-		Providers:    make([]*terraform.Provider, 0),
-		Requirements: make([]*terraform.Requirement, 0),
-		Resources:    make([]*terraform.Resource, 0),
-	}
-
-	print.CopySections(j.settings, module, copy)
+func (j *json) Generate(module *terraform.Module) error {
+	copy := copySections(j.settings, module)
 
 	buffer := new(bytes.Buffer)
-
-	encoder := json.NewEncoder(buffer)
+	encoder := jsonsdk.NewEncoder(buffer)
 	encoder.SetIndent("", "  ")
 	encoder.SetEscapeHTML(j.settings.EscapeCharacters)
 
-	err := encoder.Encode(copy)
-	if err != nil {
-		return nil, err
+	if err := encoder.Encode(copy); err != nil {
+		return err
 	}
 
-	return print.NewGenerator(
-		"json",
-		print.WithContent(strings.TrimSuffix(buffer.String(), "\n")),
-	), nil
+	j.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+
+	return nil
 }
 
 func init() {
