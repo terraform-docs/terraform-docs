@@ -1,0 +1,21 @@
+{{- if or .Config.Sections.Resources .Config.Sections.DataSources -}}
+    {{- if not .Module.Resources -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Resources
+
+            No resources.
+        {{- end }}
+    {{ else }}
+        {{- indent 0 "=" }} Resources
+
+        The following resources are used by this module:
+        {{ range .Module.Resources }}
+            {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
+            {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
+            {{- if or $isResource $isDataResource }}
+                {{- $fullspec := ternary .URL (printf "%s[%s]" .URL .Spec) .Spec }}
+                - {{ $fullspec }} {{ printf "(%s)" .GetMode -}}
+            {{- end }}
+        {{- end }}
+    {{ end }}
+{{ end -}}

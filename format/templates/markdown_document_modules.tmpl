@@ -1,0 +1,22 @@
+{{- if .Config.Sections.ModuleCalls -}}
+    {{- if not .Module.ModuleCalls -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Modules
+
+            No modules.
+        {{ end }}
+    {{ else }}
+        {{- indent 0 "#" }} Modules
+
+        The following Modules are called:
+        {{- range .Module.ModuleCalls }}
+
+            {{ indent 1 "#" }} {{ anchorNameMarkdown "module" .Name }}
+
+            Source: {{ .Source }}
+
+            Version: {{ .Version }}
+
+        {{ end }}
+    {{ end }}
+{{ end -}}

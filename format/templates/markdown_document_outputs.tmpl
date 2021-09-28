@@ -1,0 +1,28 @@
+{{- if .Config.Sections.Outputs -}}
+    {{- if not .Module.Outputs -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Outputs
+
+            No outputs.
+        {{ end }}
+    {{ else }}
+        {{- indent 0 "#" }} Outputs
+
+        The following outputs are exported:
+        {{- range .Module.Outputs }}
+
+            {{ indent 1 "#" }} {{ anchorNameMarkdown "output" .Name }}
+
+            Description: {{ tostring .Description | sanitizeDoc }}
+
+            {{ if $.Config.OutputValues.Enabled }}
+                {{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
+                Value: {{ value $sensitive | sanitizeDoc }}
+
+                {{ if $.Config.Settings.Sensitive -}}
+                    Sensitive: {{ ternary (.Sensitive) "yes" "no" }}
+                {{- end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end -}}

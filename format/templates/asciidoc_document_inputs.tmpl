@@ -1,0 +1,86 @@
+{{- if .Config.Sections.Inputs -}}
+    {{- if .Config.Settings.Required -}}
+        {{- if not .Module.RequiredInputs -}}
+            {{- if not .Config.Settings.HideEmpty -}}
+                {{- indent 0 "=" }} Required Inputs
+
+                No required inputs.
+            {{ end -}}
+        {{ else }}
+            {{- indent 0 "=" }} Required Inputs
+
+            The following input variables are required:
+            {{- range .Module.RequiredInputs }}
+                {{ printf "\n" }}
+                {{ indent 1 "=" }} {{ anchorNameAsciidoc "input" .Name }}
+
+                Description: {{ tostring .Description | sanitizeDoc }}
+
+                {{ if $.Config.Settings.Type -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Config.Settings.Default }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
+                {{- end }}
+            {{- end }}
+        {{- end }}
+        {{- if not .Module.OptionalInputs -}}
+            {{- if not .Config.Settings.HideEmpty -}}
+                {{- indent 0 "=" }} Optional Inputs
+
+                No optional inputs.
+            {{ end }}
+        {{ else }}
+            {{- indent 0 "=" }} Optional Inputs
+
+            The following input variables are optional (have default values):
+            {{- range .Module.OptionalInputs }}
+                {{ printf "\n" }}
+                {{ indent 1 "=" }} {{ anchorNameAsciidoc "input" .Name }}
+
+                Description: {{ tostring .Description | sanitizeDoc }}
+
+                {{ if $.Config.Settings.Type -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Config.Settings.Default }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
+                {{- end }}
+            {{- end }}
+        {{ end }}
+    {{ else -}}
+        {{- if not .Module.Inputs -}}
+            {{- if not .Config.Settings.HideEmpty -}}
+                {{- indent 0 "=" }} Inputs
+
+                No inputs.
+            {{ end }}
+        {{ else }}
+            {{- indent 0 "=" }} Inputs
+
+            The following input variables are supported:
+            {{- range .Module.Inputs }}
+                {{ printf "\n" }}
+                {{ indent 1 "=" }} {{ anchorNameAsciidoc "input" .Name }}
+
+                Description: {{ tostring .Description | sanitizeDoc }}
+
+                {{ if $.Config.Settings.Type -}}
+                    Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Config.Settings.Default }}
+                    {{ if or .HasDefault (not isRequired) }}
+                        Default: {{ default "n/a" .GetValue | value }}
+                    {{- end }}
+                {{- end }}
+            {{- end }}
+        {{ end }}
+    {{- end }}
+{{ end -}}

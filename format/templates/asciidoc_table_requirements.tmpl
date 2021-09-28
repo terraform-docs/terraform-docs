@@ -1,0 +1,19 @@
+{{- if .Config.Sections.Requirements -}}
+    {{- if not .Module.Requirements -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Requirements
+
+            No requirements.
+        {{- end }}
+    {{ else }}
+        {{- indent 0 "=" }} Requirements
+
+        [cols="a,a",options="header,autowidth"]
+        |===
+        |Name |Version
+        {{- range .Module.Requirements }}
+            |{{ anchorNameAsciidoc "requirement" .Name }} |{{ tostring .Version | default "n/a" }}
+        {{- end }}
+        |===
+    {{ end }}
+{{ end -}}

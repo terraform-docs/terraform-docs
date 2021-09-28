@@ -1,0 +1,17 @@
+{{- if .Config.Sections.ModuleCalls -}}
+    {{- if not .Module.ModuleCalls -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Modules
+
+            No modules.
+        {{ end }}
+    {{ else }}
+        {{- indent 0 "#" }} Modules
+
+        | Name | Source | Version |
+        |------|--------|---------|
+        {{- range .Module.ModuleCalls }}
+            | {{ anchorNameMarkdown "module" .Name }} | {{ .Source }} | {{ .Version | default "n/a" }} |
+        {{- end }}
+    {{ end }}
+{{ end -}}

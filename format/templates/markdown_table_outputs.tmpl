@@ -1,0 +1,24 @@
+{{- if .Config.Sections.Outputs -}}
+    {{- if not .Module.Outputs -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Outputs
+
+            No outputs.
+        {{ end }}
+    {{ else }}
+        {{- indent 0 "#" }} Outputs
+
+        | Name | Description |{{ if .Config.OutputValues.Enabled }} Value |{{ if $.Config.Settings.Sensitive }} Sensitive |{{ end }}{{ end }}
+        |------|-------------|{{ if .Config.OutputValues.Enabled }}-------|{{ if $.Config.Settings.Sensitive }}:---------:|{{ end }}{{ end }}
+        {{- range .Module.Outputs }}
+            | {{ anchorNameMarkdown "output" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
+            {{- if $.Config.OutputValues.Enabled -}}
+                {{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
+                {{ printf " " }}{{ value $sensitive | sanitizeMarkdownTbl }} |
+                {{- if $.Config.Settings.Sensitive -}}
+                    {{ printf " " }}{{ ternary .Sensitive "yes" "no" }} |
+                {{- end -}}
+            {{- end -}}
+        {{- end }}
+    {{ end }}
+{{ end -}}

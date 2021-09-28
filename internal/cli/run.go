@@ -23,10 +23,11 @@ import (
 	"github.com/spf13/viper"
 
 	pluginsdk "github.com/terraform-docs/plugin-sdk/plugin"
-	"github.com/terraform-docs/terraform-docs/internal/format"
+	"github.com/terraform-docs/terraform-docs/format"
 	"github.com/terraform-docs/terraform-docs/internal/plugin"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/version"
+	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // Runtime represents the execution runtime for CLI.
@@ -34,16 +35,17 @@ type Runtime struct {
 	rootDir string
 
 	formatter string
-	config    *Config
+	config    *print.Config
 
-	cmd *cobra.Command
+	cmd           *cobra.Command
+	isFlagChanged func(string) bool
 }
 
 // NewRuntime returns new instance of Runtime. If `config` is not provided
 // default config will be used.
-func NewRuntime(config *Config) *Runtime {
+func NewRuntime(config *print.Config) *Runtime {
 	if config == nil {
-		config = DefaultConfig()
+		config = print.DefaultConfig()
 	}
 	return &Runtime{config: config}
 }
@@ -60,7 +62,7 @@ func (r *Runtime) PreRunEFunc(cmd *cobra.Command, args []string) error {
 		os.Exit(0)
 	}
 
-	r.config.isFlagChanged = cmd.Flags().Changed
+	r.isFlagChanged = cmd.Flags().Changed
 	r.rootDir = args[0]
 	r.cmd = cmd
 
@@ -79,7 +81,7 @@ func (r *Runtime) PreRunEFunc(cmd *cobra.Command, args []string) error {
 
 type module struct {
 	rootDir string
-	config  *Config
+	config  *print.Config
 }
 
 // RunEFunc is the 'cobra.Command#RunE' function for 'formatter' commands. It attempts
@@ -111,10 +113,10 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
 		}
 
 		// set the module root directory
-		cfg.moduleRoot = module.rootDir
+		cfg.ModuleRoot = module.rootDir
 
 		// process and validate configuration
-		if err := cfg.process(); err != nil {
+		if err := cfg.Validate(); err != nil {
 			return err
 		}
 
@@ -133,10 +135,10 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
 // readConfig attempts to read config file, either default `.terraform-docs.yml`
 // or provided file with `-c, --config` flag. It will then attempt to override
 // them with corresponding flags (if set).
-func (r *Runtime) readConfig(config *Config, submoduleDir string) error {
+func (r *Runtime) readConfig(config *print.Config, submoduleDir string) error {
 	v := viper.New()
 
-	if config.isFlagChanged("config") {
+	if r.isFlagChanged("config") {
 		v.SetConfigFile(config.File)
 	} else {
 		v.SetConfigName(".terraform-docs")
@@ -185,6 +187,9 @@ func (r *Runtime) readConfig(config *Config, submoduleDir string) error {
 	if r.formatter != "root" {
 		config.Formatter = r.formatter
 	}
+
+	// TODO
+	config.Parse()
 
 	return nil
 }
@@ -246,13 +251,13 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 			continue
 		}
 
-		var cfg *Config
+		var cfg *print.Config
 
 		path := filepath.Join(dir, file.Name())
 		cfgfile := filepath.Join(path, r.config.File)
 
 		if _, err := os.Stat(cfgfile); !os.IsNotExist(err) {
-			cfg = DefaultConfig()
+			cfg = print.DefaultConfig()
 
 			if err := r.readConfig(cfg, path); err != nil {
 				return nil, err
@@ -289,16 +294,13 @@ func checkConstraint(versionRange string, currentVersion string) error {
 // generateContent extracts print.Settings and terraform.Options from normalized
 // Config and generates the output content for the module (and submodules if available)
 // and write the result to the output (either stdout or a file).
-func generateContent(config *Config) error {
-	settings, options := config.extract()
-	options.Path = config.moduleRoot
-
-	module, err := terraform.LoadWithOptions(options)
+func generateContent(config *print.Config) error {
+	module, err := terraform.LoadWithOptions(config)
 	if err != nil {
 		return err
 	}
 
-	formatter, err := format.Factory(config.Formatter, settings)
+	formatter, err := format.New(config)
 
 	// formatter is unknown, this might mean that the intended formatter is
 	// coming from a plugin. We are going to attempt to find a plugin with
@@ -316,7 +318,7 @@ func generateContent(config *Config) error {
 
 		content, cerr := client.Execute(pluginsdk.ExecuteArgs{
 			Module:   module.Convert(),
-			Settings: settings.Convert(),
+			Settings: nil, // TODO settings.Convert(),
 		})
 		if cerr != nil {
 			return cerr
@@ -325,13 +327,12 @@ func generateContent(config *Config) error {
 		return writeContent(config, content)
 	}
 
-	generator, err := formatter.Generate(module)
+	err = formatter.Generate(module)
 	if err != nil {
 		return err
 	}
-	generator.Path(options.Path)
 
-	content, err := generator.ExecuteTemplate(config.Content)
+	content, err := formatter.ExecuteTemplate(config.Content)
 	if err != nil {
 		return err
 	}
@@ -341,22 +342,22 @@ func generateContent(config *Config) error {
 
 // writeContent to a Writer. This can either be os.Stdout or specific
 // file (e.g. README.md) if '--output-file' is provided.
-func writeContent(config *Config, content string) error {
+func writeContent(config *print.Config, content string) error {
 	var w io.Writer
 
 	// writing to a file (either inject or replace)
 	if config.Output.File != "" {
 		w = &fileWriter{
 			file: config.Output.File,
-			dir:  config.moduleRoot,
+			dir:  config.ModuleRoot,
 
 			mode: config.Output.Mode,
 
 			check: config.Output.Check,
 
 			template: config.Output.Template,
-			begin:    config.Output.beginComment,
-			end:      config.Output.endComment,
+			begin:    config.Output.BeginComment,
+			end:      config.Output.EndComment,
 		}
 	} else {
 		// writing to stdout

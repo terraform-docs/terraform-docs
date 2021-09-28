@@ -1,0 +1,26 @@
+{{- if .Config.Sections.Outputs -}}
+    {{- if not .Module.Outputs -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Outputs
+
+            No outputs.
+        {{- end }}
+    {{ else }}
+        {{- indent 0 "=" }} Outputs
+
+        [cols="a,a{{ if .Config.OutputValues.Enabled }},a{{ if $.Config.Settings.Sensitive }},a{{ end }}{{ end }}",options="header,autowidth"]
+        |===
+        |Name |Description{{ if .Config.OutputValues.Enabled }} |Value{{ if $.Config.Settings.Sensitive }} |Sensitive{{ end }}{{ end }}
+        {{- range .Module.Outputs }}
+            |{{ anchorNameAsciidoc "output" .Name }} |{{ tostring .Description | sanitizeAsciidocTbl }}
+            {{- if $.Config.OutputValues.Enabled -}}
+                {{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
+                {{ printf " " }}|{{ value $sensitive }}
+                {{- if $.Config.Settings.Sensitive -}}
+                    {{ printf " " }}|{{ ternary .Sensitive "yes" "no" }}
+                {{- end -}}
+            {{- end -}}
+        {{- end }}
+        |===
+    {{ end }}
+{{ end -}}

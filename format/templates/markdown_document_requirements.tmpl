@@ -1,0 +1,17 @@
+{{- if .Config.Sections.Requirements -}}
+    {{- if not .Module.Requirements -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "#" }} Requirements
+
+            No requirements.
+        {{ end }}
+    {{ else }}
+        {{- indent 0 "#" }} Requirements
+
+        The following requirements are needed by this module:
+        {{- range .Module.Requirements }}
+            {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+            - {{ anchorNameMarkdown "requirement" .Name }}{{ $version }}
+        {{- end }}
+    {{ end }}
+{{ end -}}

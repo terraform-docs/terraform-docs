@@ -1,0 +1,19 @@
+{{- if .Config.Sections.ModuleCalls -}}
+    {{- if not .Module.ModuleCalls -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Modules
+
+            No modules.
+        {{- end }}
+    {{ else }}
+        {{- indent 0 "=" }} Modules
+
+        [cols="a,a,a",options="header,autowidth"]
+        |===
+        |Name |Source |Version
+        {{- range .Module.ModuleCalls }}
+            |{{ anchorNameAsciidoc "module" .Name }} |{{ .Source }} |{{ .Version }}
+        {{- end }}
+        |===
+    {{ end }}
+{{ end -}}

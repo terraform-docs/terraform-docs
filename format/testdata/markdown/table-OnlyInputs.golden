@@ -1,0 +1,35 @@
+## Inputs
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| unquoted | n/a | `any` | n/a |
+| bool-3 | n/a | `bool` | `true` |
+| bool-2 | It's bool number two. | `bool` | `false` |
+| bool-1 | It's bool number one. | `bool` | `true` |
+| string-3 | n/a | `string` | `""` |
+| string-2 | It's string number two. | `string` | n/a |
+| string-1 | It's string number one. | `string` | `"bar"` |
+| string-special-chars | n/a | `string` | `"\\.<>[]{}_-"` |
+| number-3 | n/a | `number` | `"19"` |
+| number-4 | n/a | `number` | `15.75` |
+| number-2 | It's number number two. | `number` | n/a |
+| number-1 | It's number number one. | `number` | `42` |
+| map-3 | n/a | `map` | `{}` |
+| map-2 | It's map number two. | `map` | n/a |
+| map-1 | It's map number one. | `map` | ```{ "a": 1, "b": 2, "c": 3 }``` |
+| list-3 | n/a | `list` | `[]` |
+| list-2 | It's list number two. | `list` | n/a |
+| list-1 | It's list number one. | `list` | ```[ "a", "b", "c" ]``` |
+| input_with_underscores | A variable with underscores. | `any` | n/a |
+| input-with-pipe | It includes v1 \| v2 \| v3 | `string` | `"v1"` |
+| input-with-code-block | This is a complicated one. We need a newline. And an example in a code block ```default = [ "machine rack01:neptune" ]``` | `list` | ```[ "name rack:location" ]``` |
+| long_type | This description is itself markdown.  It spans over multiple lines. | ```object({ name = string, foo = object({ foo = string, bar = string }), bar = object({ foo = string, bar = string }), fizz = list(string), buzz = list(string) })``` | ```{ "bar": { "bar": "bar", "foo": "bar" }, "buzz": [ "fizz", "buzz" ], "fizz": [], "foo": { "bar": "foo", "foo": "foo" }, "name": "hello" }``` |
+| no-escape-default-value | The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` |
+| with-url | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` |
+| string_default_empty | n/a | `string` | `""` |
+| string_default_null | n/a | `string` | `null` |
+| string_no_default | n/a | `string` | n/a |
+| number_default_zero | n/a | `number` | `0` |
+| bool_default_false | n/a | `bool` | `false` |
+| list_default_empty | n/a | `list(string)` | `[]` |
+| object_default_empty | n/a | `object({})` | `{}` |

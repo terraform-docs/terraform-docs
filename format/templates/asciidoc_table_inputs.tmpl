@@ -1,0 +1,26 @@
+{{- if .Config.Sections.Inputs -}}
+    {{- if not .Module.Inputs -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Inputs
+
+            No inputs.
+        {{- end }}
+    {{ else }}
+        {{- indent 0 "=" }} Inputs
+
+        [cols="a,a{{ if .Config.Settings.Type }},a{{ end }}{{ if .Config.Settings.Default }},a{{ end }}{{ if .Config.Settings.Required }},a{{ end }}",options="header,autowidth"]
+        |===
+        |Name |Description
+        {{- if .Config.Settings.Type }} |Type{{ end }}
+        {{- if .Config.Settings.Default }} |Default{{ end }}
+        {{- if .Config.Settings.Required }} |Required{{ end }}
+        {{- range .Module.Inputs }}
+            |{{ anchorNameAsciidoc "input" .Name }}
+            |{{ tostring .Description | sanitizeAsciidocTbl }}
+            {{- if $.Config.Settings.Type }}{{ printf "\n" }}|{{ tostring .Type | type | sanitizeAsciidocTbl }}{{ end }}
+            {{- if $.Config.Settings.Default }}{{ printf "\n" }}|{{ value .GetValue | sanitizeAsciidocTbl }}{{ end }}
+            {{- if $.Config.Settings.Required }}{{ printf "\n" }}|{{ ternary .Required "yes" "no" }}{{ end }}
+        {{ end }}
+        |===
+    {{ end }}
+{{ end -}}

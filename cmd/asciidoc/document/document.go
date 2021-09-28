@@ -14,10 +14,11 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/terraform-docs/terraform-docs/internal/cli"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // NewCommand returns a new cobra.Command for 'asciidoc document' formatter
-func NewCommand(runtime *cli.Runtime, config *cli.Config) *cobra.Command {
+func NewCommand(runtime *cli.Runtime, config *print.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Args:        cobra.ExactArgs(1),
 		Use:         "document [PATH]",

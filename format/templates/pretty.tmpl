@@ -1,0 +1,83 @@
+{{- if .Config.Sections.Header -}}
+    {{- with .Module.Header -}}
+        {{ colorize "\033[90m" . }}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if .Config.Sections.Requirements -}}
+    {{- with .Module.Requirements }}
+        {{- range . }}
+            {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+            {{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if .Config.Sections.Providers -}}
+    {{- with .Module.Providers }}
+        {{- range . }}
+            {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
+            {{- printf "provider.%s" .FullName | colorize "\033[36m" }}{{ $version }}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if .Config.Sections.ModuleCalls -}}
+    {{- with .Module.ModuleCalls }}
+        {{- range . }}
+            {{- printf "module.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}
+
+{{- if or .Config.Sections.Resources .Config.Sections.DataSources -}}
+    {{- with .Module.Resources }}
+        {{- range . }}
+            {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
+            {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
+            {{- $url := ternary .URL (printf " (%s)" .URL) "" }}
+            {{- if $isResource }}
+                {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}{{ $url }}
+            {{ end -}}
+            {{- if $isDataResource }}
+                {{- printf "data.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}{{ $url }}
+            {{ end -}}
+        {{- end }}
+    {{ end }}
+{{ end }}
+
+{{- if .Config.Sections.Inputs -}}
+    {{- with .Module.Inputs }}
+        {{- range . }}
+            {{- printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
+            {{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
+            {{- printf "\n\n" -}}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n" -}}
+{{ end -}}
+
+{{- if .Config.Sections.Outputs -}}
+    {{- with .Module.Outputs }}
+        {{- range . }}
+            {{- printf "output.%s" .Name | colorize "\033[36m" }}
+            {{- if $.Config.OutputValues.Enabled -}}
+                {{- printf " " -}}
+                ({{ ternary .Sensitive "<sensitive>" .GetValue }})
+            {{- end }}
+            {{ tostring .Description | trimSuffix "\n" | default "n/a" | colorize "\033[90m" }}
+            {{- printf "\n\n" -}}
+        {{ end -}}
+    {{ end -}}
+{{ end -}}
+
+{{- if .Config.Sections.Footer -}}
+    {{- with .Module.Footer -}}
+        {{ colorize "\033[90m" . }}
+    {{ end -}}
+    {{- printf "\n\n" -}}
+{{ end -}}

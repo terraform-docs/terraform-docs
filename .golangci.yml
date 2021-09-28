@@ -122,6 +122,7 @@ issues:
         - gosec
         - scopelint
         - unparam
+        - goconst
 
     # - text: "should have a package comment"
     #   linters:

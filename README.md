@@ -276,6 +276,46 @@ content: |-
   ```
 ````
 
+## Build on top of terraform-docs
+
+terraform-docs primary use-case is to be utilized as a standalone binary, but
+some parts of it is also available publicly and can be imported in your project
+as a library.
+
+```go
+import (
+    "github.com/terraform-docs/terraform-docs/format"
+    "github.com/terraform-docs/terraform-docs/print"
+    "github.com/terraform-docs/terraform-docs/terraform"
+)
+
+// buildTerraformDocs for module root `path` and provided content `tmpl`.
+func buildTerraformDocs(path string, tmpl string) (string, error) {
+    config := print.DefaultConfig()
+    config.ModuleRoot = path // module root path (can be relative or absolute)
+
+    module, err := terraform.LoadWithOptions(config)
+    if err != nil {
+        return "", err
+    }
+
+    // Generate in Markdown Table format
+    formatter := format.NewMarkdownTable(config)
+
+    if err := formatter.Generate(module); err != nil {
+        return "", err
+    }
+
+    // // Note: if you don't intend to provide additional template for the generated
+    // // content, or the target format doesn't provide templating (e.g. json, yaml,
+    // // xml, or toml) you can use `Content()` function instead of `ExecuteTemplate()`.
+    // // `Content()` returns all the sections combined with predefined order.
+    // return formatter.Content(), nil
+
+    return formatter.ExecuteTemplate(tmpl)
+}
+```
+
 ## Documentation
 
 - **Users**

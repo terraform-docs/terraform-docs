@@ -1,0 +1,19 @@
+{{- if .Config.Sections.Providers -}}
+    {{- if not .Module.Providers -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Providers
+
+            No providers.
+        {{ end }}
+    {{ else }}
+        {{- indent 0 "=" }} Providers
+
+        [cols="a,a",options="header,autowidth"]
+        |===
+        |Name |Version
+        {{- range .Module.Providers }}
+            |{{ anchorNameAsciidoc "provider" .FullName }} |{{ tostring .Version | default "n/a" }}
+        {{- end }}
+        |===
+    {{ end }}
+{{ end -}}

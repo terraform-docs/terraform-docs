@@ -23,9 +23,9 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/terraform-docs/terraform-docs/cmd"
-	"github.com/terraform-docs/terraform-docs/internal/format"
-	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/format"
+	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // These are practiaclly a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go
@@ -171,41 +171,30 @@ func example(ref *reference) error {
 
 	ref.Usage = fmt.Sprintf("%s%s ./examples/", ref.Command, flag)
 
-	settings := print.DefaultSettings()
-	settings.ShowColor = false
-	settings.ShowFooter = true
-	options := &terraform.Options{
-		Path:           "./examples",
-		ShowHeader:     true,
-		HeaderFromFile: "main.tf",
-		ShowFooter:     true,
-		FooterFromFile: "footer.md",
-		SortBy: &terraform.SortBy{
-			Name: true,
-		},
-		ReadComments: true,
-	}
+	config := print.DefaultConfig()
+	config.ModuleRoot = "./examples"
+	config.Formatter = ref.Name
+	config.Settings.Color = false
+	config.Sections.Show = append(config.Sections.Show, "all")
+	config.Sections.Footer = true
+	config.FooterFrom = "footer.md"
+	config.Parse()
 
-	formatter, err := format.Factory(ref.Name, settings)
-	if err != nil {
-		return err
-	}
-
-	tfmodule, err := terraform.LoadWithOptions(options)
+	tfmodule, err := terraform.LoadWithOptions(config)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	generator, err := formatter.Generate(tfmodule)
-	if err != nil {
-		return err
-	}
-	output, err := generator.ExecuteTemplate("")
+	formatter, err := format.New(config)
 	if err != nil {
 		return err
 	}
 
-	segments := strings.Split(output, "\n")
+	if err := formatter.Generate(tfmodule); err != nil {
+		return err
+	}
+
+	segments := strings.Split(formatter.Content(), "\n")
 	buf := new(bytes.Buffer)
 	for _, s := range segments {
 		if s == "" {

@@ -1,0 +1,103 @@
+unquoted = ""
+bool-3   = true
+
+# It's bool number two.
+bool-2 = false
+
+# It's bool number one.
+bool-1 = true
+
+string-3 = ""
+
+# It's string number two.
+string-2 = ""
+
+# It's string number one.
+string-1 = "bar"
+
+string-special-chars = "\\.<>[]{}_-"
+number-3             = "19"
+number-4             = 15.75
+
+# It's number number two.
+number-2 = ""
+
+# It's number number one.
+number-1 = 42
+
+map-3 = {}
+
+# It's map number two.
+map-2 = ""
+
+# It's map number one.
+map-1 = {
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+
+list-3 = []
+
+# It's list number two.
+list-2 = ""
+
+# It's list number one.
+list-1 = [
+  "a",
+  "b",
+  "c"
+]
+
+# A variable with underscores.
+input_with_underscores = ""
+
+# It includes v1 | v2 | v3
+input-with-pipe = "v1"
+
+# This is a complicated one. We need a newline.  
+# And an example in a code block
+# ```
+# default     = [
+#   "machine rack01:neptune"
+# ]
+# ```
+#
+input-with-code-block = [
+  "name rack:location"
+]
+
+# This description is itself markdown.
+#
+# It spans over multiple lines.
+#
+long_type = {
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+
+# The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
+no-escape-default-value = "VALUE_WITH_UNDERSCORE"
+
+# The description contains url. https://www.domain.com/foo/bar_baz.html
+with-url = ""
+
+string_default_empty = ""
+string_default_null  = ""
+string_no_default    = ""
+number_default_zero  = 0
+bool_default_false   = false
+list_default_empty   = []
+object_default_empty = {}
