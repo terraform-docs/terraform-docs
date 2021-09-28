@@ -30,19 +30,19 @@ type Item struct {
 // Template represents a new Template with given name and content to be rendered
 // with provided settings with use of built-in and custom functions.
 type Template struct {
-	items    []*Item
-	settings *print.Settings
+	items  []*Item
+	config *print.Config
 
 	funcMap    gotemplate.FuncMap
 	customFunc gotemplate.FuncMap
 }
 
 // New returns new instance of Template.
-func New(settings *print.Settings, items ...*Item) *Template {
+func New(config *print.Config, items ...*Item) *Template {
 	return &Template{
 		items:      items,
-		settings:   settings,
-		funcMap:    builtinFuncs(settings),
+		config:     config,
+		funcMap:    builtinFuncs(config),
 		customFunc: make(gotemplate.FuncMap),
 	}
 }
@@ -96,11 +96,11 @@ func (t *Template) Render(name string, module *terraform.Module) (string, error)
 	}
 
 	if err := tmpl.ExecuteTemplate(&buffer, item.Name, struct {
-		Module   *terraform.Module
-		Settings *print.Settings
+		Module *terraform.Module
+		Config *print.Config
 	}{
-		Module:   module,
-		Settings: t.settings,
+		Module: module,
+		Config: t.config,
 	}); err != nil {
 		return "", err
 	}
@@ -123,19 +123,19 @@ func (t *Template) findByName(name string) *Item {
 	return nil
 }
 
-func builtinFuncs(settings *print.Settings) gotemplate.FuncMap { // nolint:gocyclo
+func builtinFuncs(config *print.Config) gotemplate.FuncMap { // nolint:gocyclo
 	return gotemplate.FuncMap{
-		"default": func(d string, s string) string {
-			if s != "" {
-				return s
+		"default": func(_default string, value string) string {
+			if value != "" {
+				return value
 			}
-			return d
+			return _default
 		},
-		"indent": func(l int, char string) string {
-			return GenerateIndentation(l, char, settings)
+		"indent": func(extra int, char string) string {
+			return GenerateIndentation(config.Settings.Indent, extra, char)
 		},
-		"name": func(n string) string {
-			return SanitizeName(n, settings)
+		"name": func(name string) string {
+			return SanitizeName(name, config.Settings.Escape)
 		},
 		"ternary": func(condition interface{}, trueValue string, falseValue string) string {
 			var c bool
@@ -190,24 +190,24 @@ func builtinFuncs(settings *print.Settings) gotemplate.FuncMap { // nolint:gocyc
 
 		// sanitize
 		"sanitizeSection": func(s string) string {
-			return SanitizeSection(s, settings)
+			return SanitizeSection(s, config.Settings.Escape, config.Settings.HTML)
 		},
 		"sanitizeDoc": func(s string) string {
-			return SanitizeDocument(s, settings)
+			return SanitizeDocument(s, config.Settings.Escape, config.Settings.HTML)
 		},
 		"sanitizeMarkdownTbl": func(s string) string {
-			return SanitizeMarkdownTable(s, settings)
+			return SanitizeMarkdownTable(s, config.Settings.Escape, config.Settings.HTML)
 		},
 		"sanitizeAsciidocTbl": func(s string) string {
-			return SanitizeAsciidocTable(s, settings)
+			return SanitizeAsciidocTable(s, config.Settings.Escape, config.Settings.HTML)
 		},
 
 		// anchors
-		"anchorNameMarkdown": func(s string, t string) string {
-			return CreateAnchorMarkdown(s, t, settings)
+		"anchorNameMarkdown": func(prefix string, value string) string {
+			return CreateAnchorMarkdown(prefix, value, config.Settings.Anchor, config.Settings.Escape)
 		},
-		"anchorNameAsciidoc": func(s string, t string) string {
-			return CreateAnchorAsciidoc(s, t, settings)
+		"anchorNameAsciidoc": func(prefix string, value string) string {
+			return CreateAnchorAsciidoc(prefix, value, config.Settings.Anchor, config.Settings.Escape)
 		},
 	}
 }
@@ -228,11 +228,10 @@ func normalize(s string) string {
 // GenerateIndentation generates indentation of Markdown and AsciiDoc headers
 // with base level of provided 'settings.IndentLevel' plus any extra level needed
 // for subsection (e.g. 'Required Inputs' which is a subsection of 'Inputs' section)
-func GenerateIndentation(extra int, char string, settings *print.Settings) string {
+func GenerateIndentation(base int, extra int, char string) string {
 	if char == "" {
 		return ""
 	}
-	var base = settings.IndentLevel
 	if base < 1 || base > 5 {
 		base = 2
 	}

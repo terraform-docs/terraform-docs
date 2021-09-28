@@ -82,6 +82,11 @@ func sortResourcesByType(x []*Resource) {
 
 type resources []*Resource
 
+func (rr resources) sort(enabled bool, by string) { //nolint:unparam
+	// always sort by type
+	sortResourcesByType(rr)
+}
+
 func (rr resources) convert() []*terraformsdk.Resource {
 	list := []*terraformsdk.Resource{}
 	for _, r := range rr {

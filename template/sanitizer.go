@@ -18,13 +18,12 @@ import (
 	"unicode"
 
 	"mvdan.cc/xurls/v2"
-
-	"github.com/terraform-docs/terraform-docs/print"
 )
 
-// SanitizeName escapes underscore character which have special meaning in Markdown.
-func SanitizeName(name string, settings *print.Settings) string {
-	if settings.EscapeCharacters {
+// SanitizeName escapes underscore character which have special meaning in
+// Markdown.
+func SanitizeName(name string, escape bool) string {
+	if escape {
 		// Escape underscore
 		name = strings.ReplaceAll(name, "_", "\\_")
 	}
@@ -37,7 +36,7 @@ func SanitizeName(name string, settings *print.Settings) string {
 //
 // IMPORTANT: SanitizeSection will never change the line-endings and preserve
 // them as they are provided by the users.
-func SanitizeSection(s string, settings *print.Settings) string {
+func SanitizeSection(s string, escape bool, html bool) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -45,9 +44,9 @@ func SanitizeSection(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = EscapeCharacters(segment, settings, false)
-			segment = ConvertMultiLineText(segment, false, true, settings.ShowHTML)
-			segment = NormalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, escape, false)
+			segment = ConvertMultiLineText(segment, false, true, html)
+			segment = NormalizeURLs(segment, escape)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -73,8 +72,8 @@ func SanitizeSection(s string, settings *print.Settings) string {
 
 // SanitizeDocument converts passed 'string' to suitable Markdown or AsciiDoc
 // representation for a document. (including line-break, illegal characters,
-// code blocks etc)
-func SanitizeDocument(s string, settings *print.Settings) string {
+// code blocks etc).
+func SanitizeDocument(s string, escape bool, html bool) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -82,9 +81,9 @@ func SanitizeDocument(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = EscapeCharacters(segment, settings, false)
-			segment = ConvertMultiLineText(segment, false, false, settings.ShowHTML)
-			segment = NormalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, escape, false)
+			segment = ConvertMultiLineText(segment, false, false, html)
+			segment = NormalizeURLs(segment, escape)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -100,8 +99,8 @@ func SanitizeDocument(s string, settings *print.Settings) string {
 }
 
 // SanitizeMarkdownTable converts passed 'string' to suitable Markdown representation
-// for a table. (including line-break, illegal characters, code blocks etc)
-func SanitizeMarkdownTable(s string, settings *print.Settings) string {
+// for a table. (including line-break, illegal characters, code blocks etc).
+func SanitizeMarkdownTable(s string, escape bool, html bool) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -109,9 +108,9 @@ func SanitizeMarkdownTable(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = EscapeCharacters(segment, settings, true)
-			segment = ConvertMultiLineText(segment, true, false, settings.ShowHTML)
-			segment = NormalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, escape, true)
+			segment = ConvertMultiLineText(segment, true, false, html)
+			segment = NormalizeURLs(segment, escape)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -121,7 +120,7 @@ func SanitizeMarkdownTable(s string, settings *print.Settings) string {
 
 			segment = strings.TrimSpace(segment)
 
-			if !settings.ShowHTML {
+			if !html {
 				linebreak = ""
 				codestart = " ```"
 				codeend = "``` "
@@ -146,8 +145,8 @@ func SanitizeMarkdownTable(s string, settings *print.Settings) string {
 }
 
 // SanitizeAsciidocTable converts passed 'string' to suitable AsciiDoc representation
-// for a table. (including line-break, illegal characters, code blocks etc)
-func SanitizeAsciidocTable(s string, settings *print.Settings) string {
+// for a table. (including line-break, illegal characters, code blocks etc).
+func SanitizeAsciidocTable(s string, escape bool, html bool) string {
 	if s == "" {
 		return "n/a"
 	}
@@ -155,8 +154,8 @@ func SanitizeAsciidocTable(s string, settings *print.Settings) string {
 		s,
 		"```",
 		func(segment string, first bool, last bool) string {
-			segment = EscapeCharacters(segment, settings, true)
-			segment = NormalizeURLs(segment, settings)
+			segment = EscapeCharacters(segment, escape, true)
+			segment = NormalizeURLs(segment, escape)
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
@@ -220,8 +219,9 @@ func ConvertOneLineCodeBlock(s string) string {
 	return strings.Join(result, " ")
 }
 
-// EscapeCharacters escapes characters which have special meaning in Markdown into their corresponding literal.
-func EscapeCharacters(s string, settings *print.Settings, escapePipe bool) string {
+// EscapeCharacters escapes characters which have special meaning in Markdown into
+// their corresponding literal.
+func EscapeCharacters(s string, escape bool, escapePipe bool) string {
 	// Escape pipe (only for 'markdown table' or 'asciidoc table')
 	if escapePipe {
 		s = processSegments(
@@ -236,7 +236,7 @@ func EscapeCharacters(s string, settings *print.Settings, escapePipe bool) strin
 		)
 	}
 
-	if settings.EscapeCharacters {
+	if escape {
 		s = processSegments(
 			s,
 			"`",
@@ -285,11 +285,11 @@ func EscapeCharacters(s string, settings *print.Settings, escapePipe bool) strin
 	return s
 }
 
-// NormalizeURLs runs after escape function and normalizes URL back
-// to the original state. For example any underscore in the URL which
-// got escaped by 'EscapeIllegalCharacters' will be reverted back.
-func NormalizeURLs(s string, settings *print.Settings) string {
-	if settings.EscapeCharacters {
+// NormalizeURLs runs after escape function and normalizes URL back to the original
+// state. For example any underscore in the URL which got escaped by 'EscapeCharacters'
+// will be reverted back.
+func NormalizeURLs(s string, escape bool) string {
+	if escape {
 		if urls := xurls.Strict().FindAllString(s, -1); len(urls) > 0 {
 			for _, url := range urls {
 				normalized := strings.ReplaceAll(url, "\\", "")

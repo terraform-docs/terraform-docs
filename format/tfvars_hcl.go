@@ -31,16 +31,13 @@ type tfvarsHCL struct {
 
 	config   *print.Config
 	template *template.Template
-	settings *print.Settings
 }
 
 var padding []int
 
 // NewTfvarsHCL returns new instance of TfvarsHCL.
 func NewTfvarsHCL(config *print.Config) Type {
-	settings, _ := config.Extract()
-
-	tt := template.New(settings, &template.Item{
+	tt := template.New(config, &template.Item{
 		Name: "tfvars",
 		Text: string(tfvarsHCLTpl),
 	})
@@ -58,7 +55,7 @@ func NewTfvarsHCL(config *print.Config) Type {
 			return "\n# " + strings.ReplaceAll(string(s), "\n", "\n# ")
 		},
 		"showDescription": func() bool {
-			return settings.ShowDescription
+			return config.Settings.Description
 		},
 	})
 
@@ -66,13 +63,12 @@ func NewTfvarsHCL(config *print.Config) Type {
 		Generator: print.NewGenerator("tfvars hcl", config.ModuleRoot),
 		config:    config,
 		template:  tt,
-		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as Terraform tfvars HCL.
 func (h *tfvarsHCL) Generate(module *terraform.Module) error {
-	alignments(module.Inputs, h.settings)
+	alignments(module.Inputs, h.config)
 
 	rendered, err := h.template.Render("tfvars", module)
 	if err != nil {
@@ -90,12 +86,12 @@ func isMultilineFormat(input *terraform.Input) bool {
 	return (isList || isMap) && input.Default.Length() > 0
 }
 
-func alignments(inputs []*terraform.Input, settings *print.Settings) {
+func alignments(inputs []*terraform.Input, config *print.Config) {
 	padding = make([]int, len(inputs))
 	maxlen := 0
 	index := 0
 	for i, input := range inputs {
-		isDescribed := settings.ShowDescription && input.Description.Length() > 0
+		isDescribed := config.Settings.Description && input.Description.Length() > 0
 		l := len(input.Name)
 		if isMultilineFormat(input) || isDescribed {
 			for j := index; j < i; j++ {

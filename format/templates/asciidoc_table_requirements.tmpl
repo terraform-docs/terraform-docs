@@ -1,6 +1,6 @@
-{{- if .Settings.ShowRequirements -}}
+{{- if .Config.Sections.Requirements -}}
     {{- if not .Module.Requirements -}}
-        {{- if not .Settings.HideEmpty -}}
+        {{- if not .Config.Settings.HideEmpty -}}
             {{- indent 0 "=" }} Requirements
 
             No requirements.

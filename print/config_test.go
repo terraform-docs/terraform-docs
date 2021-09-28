@@ -451,21 +451,21 @@ func TestConfigSort(t *testing.T) {
 	}{
 		"name": {
 			sort: sort{
-				By: sortName,
+				By: SortName,
 			},
 			wantErr: false,
 			errMsg:  "",
 		},
 		"required": {
 			sort: sort{
-				By: sortRequired,
+				By: SortRequired,
 			},
 			wantErr: false,
 			errMsg:  "",
 		},
 		"type": {
 			sort: sort{
-				By: sortType,
+				By: SortType,
 			},
 			wantErr: false,
 			errMsg:  "",

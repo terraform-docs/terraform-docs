@@ -15,65 +15,62 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 func TestTfvarsJson(t *testing.T) {
 	tests := map[string]struct {
-		settings print.Settings
-		options  terraform.Options
+		config print.Config
 	}{
 		// Base
 		"Base": {
-			settings: testutil.WithSections(),
-			options:  terraform.Options{},
+			config: testutil.WithSections(),
 		},
 		"Empty": {
-			settings: testutil.WithSections(),
-			options: terraform.Options{
-				Path: "empty",
-			},
+			config: testutil.WithDefaultSections(
+				testutil.With(func(c *print.Config) {
+					c.ModuleRoot = "empty"
+				}),
+			),
 		},
 
 		// Settings
 		"EscapeCharacters": {
-			settings: print.Settings{EscapeCharacters: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) {
+				c.Settings.Escape = true
+			}),
 		},
 		"SortByName": {
-			settings: testutil.WithSections(),
-			options: terraform.Options{
-				SortBy: &terraform.SortBy{
-					Name: true,
-				},
-			},
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Sort.Enabled = true
+					c.Sort.By = print.SortName
+				}),
+			),
 		},
 		"SortByRequired": {
-			settings: testutil.WithSections(),
-			options: terraform.Options{
-				SortBy: &terraform.SortBy{
-					Name:     true,
-					Required: true,
-				},
-			},
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Sort.Enabled = true
+					c.Sort.By = print.SortRequired
+				}),
+			),
 		},
 		"SortByType": {
-			settings: testutil.WithSections(),
-			options: terraform.Options{
-				SortBy: &terraform.SortBy{
-					Type: true,
-				},
-			},
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Sort.Enabled = true
+					c.Sort.By = print.SortType
+				}),
+			),
 		},
 
 		// No section
 		"NoInputs": {
-			settings: testutil.WithSections(
-				print.Settings{
-					ShowInputs: false,
-				},
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Sections.Inputs = false
+				}),
 			),
-			options: terraform.Options{},
 		},
 	}
 	for name, tt := range tests {
@@ -83,13 +80,10 @@ func TestTfvarsJson(t *testing.T) {
 			expected, err := testutil.GetExpected("tfvars", "json-"+name)
 			assert.Nil(err)
 
-			options, err := terraform.NewOptions().With(&tt.options)
+			module, err := testutil.GetModule(&tt.config)
 			assert.Nil(err)
 
-			module, err := testutil.GetModule(options)
-			assert.Nil(err)
-
-			formatter := NewTfvarsJSON(tt.settings.ToConfig())
+			formatter := NewTfvarsJSON(&tt.config)
 
 			err = formatter.Generate(module)
 			assert.Nil(err)

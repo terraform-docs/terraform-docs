@@ -28,17 +28,15 @@ type asciidocTable struct {
 
 	config   *print.Config
 	template *template.Template
-	settings *print.Settings
 }
 
 // NewAsciidocTable returns new instance of Asciidoc Table.
 func NewAsciidocTable(config *print.Config) Type {
-	settings, _ := config.Extract()
 	items := readTemplateItems(asciidocTableFS, "asciidoc_table")
 
-	settings.EscapeCharacters = false
+	config.Settings.Escape = false
 
-	tt := template.New(settings, items...)
+	tt := template.New(config, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			inputType, _ := PrintFencedCodeBlock(t, "")
@@ -57,7 +55,6 @@ func NewAsciidocTable(config *print.Config) Type {
 		Generator: print.NewGenerator("json", config.ModuleRoot),
 		config:    config,
 		template:  tt,
-		settings:  settings,
 	}
 }
 

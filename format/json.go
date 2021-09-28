@@ -23,29 +23,25 @@ import (
 type json struct {
 	*print.Generator
 
-	config   *print.Config
-	settings *print.Settings
+	config *print.Config
 }
 
 // NewJSON returns new instance of JSON.
 func NewJSON(config *print.Config) Type {
-	settings, _ := config.Extract()
-
 	return &json{
 		Generator: print.NewGenerator("json", config.ModuleRoot),
 		config:    config,
-		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as json.
 func (j *json) Generate(module *terraform.Module) error {
-	copy := copySections(j.settings, module)
+	copy := copySections(j.config, module)
 
 	buffer := new(bytes.Buffer)
 	encoder := jsonsdk.NewEncoder(buffer)
 	encoder.SetIndent("", "  ")
-	encoder.SetEscapeHTML(j.settings.EscapeCharacters)
+	encoder.SetEscapeHTML(j.config.Settings.Escape)
 
 	if err := encoder.Encode(copy); err != nil {
 		return err

@@ -17,15 +17,18 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 func TestLoadModuleWithOptions(t *testing.T) {
 	assert := assert.New(t)
 
-	options, _ := NewOptions().With(&Options{
-		Path: filepath.Join("testdata", "full-example"),
-	})
-	module, err := LoadWithOptions(options)
+	config := print.NewConfig()
+	config.ModuleRoot = filepath.Join("testdata", "full-example")
+	config.Sections.Header = true
+
+	module, err := LoadWithOptions(config)
 
 	assert.Nil(err)
 	assert.Equal(true, module.HasHeader())
@@ -36,13 +39,11 @@ func TestLoadModuleWithOptions(t *testing.T) {
 	assert.Equal(true, module.HasProviders())
 	assert.Equal(true, module.HasRequirements())
 
-	options, _ = options.With(&Options{
-		FooterFromFile: "doc.tf",
-		ShowFooter:     true,
-	})
-	// options.With and .WithOverwrite will not overwrite true with false
-	options.ShowHeader = false
-	module, err = LoadWithOptions(options)
+	config.Sections.Header = false
+	config.Sections.Footer = true
+	config.FooterFrom = "doc.tf"
+
+	module, err = LoadWithOptions(config)
 	assert.Nil(err)
 	assert.Equal(true, module.HasFooter())
 	assert.Equal(false, module.HasHeader())
@@ -241,14 +242,15 @@ func TestLoadHeader(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			options, err := NewOptions().With(&Options{
-				Path:       filepath.Join("testdata", tt.testData),
-				ShowHeader: tt.showHeader,
-			})
-			assert.Nil(err)
+
+			config := print.NewConfig()
+			config.ModuleRoot = filepath.Join("testdata", tt.testData)
+			config.Sections.Header = tt.showHeader
+
 			expected, err := tt.expectedData()
 			assert.Nil(err)
-			header, err := loadHeader(options)
+
+			header, err := loadHeader(config)
 			assert.Nil(err)
 			assert.Equal(expected, header)
 		})
@@ -287,15 +289,16 @@ func TestLoadFooter(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			options, err := NewOptions().With(&Options{
-				Path:           filepath.Join("testdata", tt.testData),
-				FooterFromFile: tt.footerFile,
-				ShowFooter:     tt.showFooter,
-			})
-			assert.Nil(err)
+
+			config := print.NewConfig()
+			config.ModuleRoot = filepath.Join("testdata", tt.testData)
+			config.Sections.Footer = tt.showFooter
+			config.FooterFrom = tt.footerFile
+
 			expected, err := tt.expectedData()
 			assert.Nil(err)
-			header, err := loadFooter(options)
+
+			header, err := loadFooter(config)
 			assert.Nil(err)
 			assert.Equal(expected, header)
 		})
@@ -433,8 +436,11 @@ func TestLoadSections(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			options := &Options{Path: filepath.Join("testdata", tt.path)}
-			actual, err := loadSection(options, tt.file, tt.section)
+
+			config := print.NewConfig()
+			config.ModuleRoot = filepath.Join("testdata", tt.path)
+
+			actual, err := loadSection(config, tt.file, tt.section)
 			if tt.wantErr {
 				assert.NotNil(err)
 				assert.Equal(tt.errText, err.Error())
@@ -497,9 +503,10 @@ func TestLoadInputs(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
+
+			config := print.NewConfig()
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			options := NewOptions()
-			inputs, requireds, optionals := loadInputs(module, options)
+			inputs, requireds, optionals := loadInputs(module, config)
 
 			assert.Equal(tt.expected.inputs, len(inputs))
 			assert.Equal(tt.expected.requireds, len(requireds))
@@ -556,9 +563,10 @@ func TestLoadInputsLineEnding(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
+
+			config := print.NewConfig()
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			options := NewOptions()
-			inputs, _, _ := loadInputs(module, options)
+			inputs, _, _ := loadInputs(module, config)
 
 			assert.Equal(1, len(inputs))
 			assert.Equal(tt.expected, string(inputs[0].Description))
@@ -593,9 +601,10 @@ func TestLoadOutputs(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			options := NewOptions()
+
+			config := print.NewConfig()
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			outputs, err := loadOutputs(module, options)
+			outputs, err := loadOutputs(module, config)
 
 			assert.Nil(err)
 			assert.Equal(tt.expected.outputs, len(outputs))
@@ -645,12 +654,13 @@ func TestLoadOutputsValues(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			options, _ := NewOptions().With(&Options{
-				OutputValues:     true,
-				OutputValuesPath: filepath.Join("testdata", tt.path, tt.outputPath),
-			})
+
+			config := print.NewConfig()
+			config.OutputValues.Enabled = true
+			config.OutputValues.From = filepath.Join("testdata", tt.path, tt.outputPath)
+
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			outputs, err := loadOutputs(module, options)
+			outputs, err := loadOutputs(module, config)
 
 			if tt.wantErr {
 				assert.NotNil(err)
@@ -711,12 +721,13 @@ func TestLoadProviders(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			options, _ := NewOptions().With(&Options{
-				Path: filepath.Join("testdata", tt.path),
-			})
-			options.UseLockFile = tt.lockfile
+
+			config := print.NewConfig()
+			config.ModuleRoot = filepath.Join("testdata", tt.path)
+			config.Settings.LockFile = tt.lockfile
+
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			providers := loadProviders(module, options)
+			providers := loadProviders(module, config)
 
 			actual := []string{}
 
@@ -809,17 +820,19 @@ func TestReadComments(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			options := NewOptions()
-			options.ReadComments = tt.readComments
+
+			config := print.NewConfig()
+			config.Settings.ReadComments = tt.readComments
+
 			module, err := loadModule(filepath.Join("testdata", tt.path))
 
 			assert.Nil(err)
 
-			inputs, _, _ := loadInputs(module, options)
+			inputs, _, _ := loadInputs(module, config)
 			assert.Equal(1, len(inputs))
 			assert.Equal(tt.expected, string(inputs[0].Description))
 
-			outputs, _ := loadOutputs(module, options)
+			outputs, _ := loadOutputs(module, config)
 			assert.Equal(1, len(outputs))
 			assert.Equal(tt.expected, string(outputs[0].Description))
 		})
@@ -835,15 +848,17 @@ func TestSortItems(t *testing.T) {
 		providers []string
 	}
 	tests := []struct {
-		name     string
-		path     string
-		sort     *SortBy
-		expected expected
+		name        string
+		path        string
+		sortenabled bool
+		sorttype    string
+		expected    expected
 	}{
 		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: false, Required: false, Type: false},
+			name:        "sort module items",
+			path:        "full-example",
+			sortenabled: false,
+			sorttype:    "",
 			expected: expected{
 				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
 				required:  []string{"A", "F"},
@@ -853,9 +868,36 @@ func TestSortItems(t *testing.T) {
 			},
 		},
 		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: true, Required: false, Type: false},
+			name:        "sort module items",
+			path:        "full-example",
+			sortenabled: false,
+			sorttype:    print.SortName,
+			expected: expected{
+				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
+				required:  []string{"A", "F"},
+				optional:  []string{"D", "B", "E", "C", "G"},
+				outputs:   []string{"C", "A", "B"},
+				providers: []string{"tls", "aws", "null"},
+			},
+		},
+		{
+			name:        "sort module items",
+			path:        "full-example",
+			sortenabled: false,
+			sorttype:    print.SortRequired,
+			expected: expected{
+				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
+				required:  []string{"A", "F"},
+				optional:  []string{"D", "B", "E", "C", "G"},
+				outputs:   []string{"C", "A", "B"},
+				providers: []string{"tls", "aws", "null"},
+			},
+		},
+		{
+			name:        "sort module items",
+			path:        "full-example",
+			sortenabled: true,
+			sorttype:    print.SortName,
 			expected: expected{
 				inputs:    []string{"A", "B", "C", "D", "E", "F", "G"},
 				required:  []string{"A", "F"},
@@ -865,9 +907,10 @@ func TestSortItems(t *testing.T) {
 			},
 		},
 		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: false, Required: true, Type: false},
+			name:        "sort module items",
+			path:        "full-example",
+			sortenabled: true,
+			sorttype:    print.SortRequired,
 			expected: expected{
 				inputs:    []string{"A", "F", "B", "C", "D", "E", "G"},
 				required:  []string{"A", "F"},
@@ -877,57 +920,10 @@ func TestSortItems(t *testing.T) {
 			},
 		},
 		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: false, Required: false, Type: true},
-			expected: expected{
-				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
-				required:  []string{"A", "F"},
-				optional:  []string{"G", "B", "C", "D", "E"},
-				outputs:   []string{"A", "B", "C"},
-				providers: []string{"aws", "null", "tls"},
-			},
-		},
-		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: true, Required: true, Type: false},
-			expected: expected{
-				inputs:    []string{"A", "F", "B", "C", "D", "E", "G"},
-				required:  []string{"A", "F"},
-				optional:  []string{"B", "C", "D", "E", "G"},
-				outputs:   []string{"A", "B", "C"},
-				providers: []string{"aws", "null", "tls"},
-			},
-		},
-		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: true, Required: false, Type: true},
-			expected: expected{
-				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
-				required:  []string{"A", "F"},
-				optional:  []string{"G", "B", "C", "D", "E"},
-				outputs:   []string{"A", "B", "C"},
-				providers: []string{"aws", "null", "tls"},
-			},
-		},
-		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: false, Required: true, Type: true},
-			expected: expected{
-				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
-				required:  []string{"A", "F"},
-				optional:  []string{"G", "B", "C", "D", "E"},
-				outputs:   []string{"A", "B", "C"},
-				providers: []string{"aws", "null", "tls"},
-			},
-		},
-		{
-			name: "sort module items",
-			path: "full-example",
-			sort: &SortBy{Name: true, Required: true, Type: true},
+			name:        "sort module items",
+			path:        "full-example",
+			sortenabled: true,
+			sorttype:    print.SortType,
 			expected: expected{
 				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
 				required:  []string{"A", "F"},
@@ -941,15 +937,17 @@ func TestSortItems(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			path := filepath.Join("testdata", tt.path)
-			options, _ := NewOptions().With(&Options{
-				Path:   path,
-				SortBy: tt.sort,
-			})
+
+			config := print.NewConfig()
+			config.ModuleRoot = path
+			config.Sort.Enabled = tt.sortenabled
+			config.Sort.By = tt.sorttype
+
 			tfmodule, _ := loadModule(path)
-			module, err := loadModuleItems(tfmodule, options)
+			module, err := loadModuleItems(tfmodule, config)
 
 			assert.Nil(err)
-			sortItems(module, tt.sort)
+			sortItems(module, config)
 
 			for i, v := range module.Inputs {
 				assert.Equal(tt.expected.inputs[i], v.Name)

@@ -55,7 +55,6 @@ func register(e map[string]initializerFn) {
 // format.Engine based on the provided 'name', for example for name
 // of 'json' it will return '*format.JSON' through 'format.NewJSON'
 // function.
-// func New(name string, settings *print.Settings) (Generator, error) {
 func New(config *print.Config) (Type, error) {
 	name := config.Formatter
 	fn, ok := initializers[name]

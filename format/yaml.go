@@ -24,24 +24,20 @@ import (
 type yaml struct {
 	*print.Generator
 
-	config   *print.Config
-	settings *print.Settings
+	config *print.Config
 }
 
 // NewYAML returns new instance of YAML.
 func NewYAML(config *print.Config) Type {
-	settings, _ := config.Extract()
-
 	return &yaml{
 		Generator: print.NewGenerator("yaml", config.ModuleRoot),
 		config:    config,
-		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as YAML.
 func (y *yaml) Generate(module *terraform.Module) error {
-	copy := copySections(y.settings, module)
+	copy := copySections(y.config, module)
 
 	buffer := new(bytes.Buffer)
 	encoder := yamlv3.NewEncoder(buffer)

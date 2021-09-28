@@ -69,7 +69,7 @@ func TestTemplateRender(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			tpl := New(print.DefaultSettings(), tt.items...)
+			tpl := New(print.DefaultConfig(), tt.items...)
 			tpl.CustomFunc(customFuncs)
 			rendered, err := tpl.Render("", module)
 			if tt.wantErr {
@@ -418,9 +418,9 @@ func TestBuiltinFunc(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := print.DefaultSettings()
-			settings.EscapeCharacters = tt.escape
-			funcs := builtinFuncs(settings)
+			config := print.DefaultConfig()
+			config.Settings.Escape = tt.escape
+			funcs := builtinFuncs(config)
 
 			fn, ok := funcs[tt.funcName]
 			assert.Truef(ok, "function %s is not defined", tt.funcName)
@@ -502,8 +502,7 @@ func TestGenerateIndentation(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{IndentLevel: tt.base}
-			actual := GenerateIndentation(tt.extra, "#", settings)
+			actual := GenerateIndentation(tt.base, tt.extra, "#")
 
 			assert.Equal(tt.expected, actual)
 		})

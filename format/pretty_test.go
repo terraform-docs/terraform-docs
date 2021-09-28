@@ -17,99 +17,77 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 func TestPretty(t *testing.T) {
 	tests := map[string]struct {
-		settings print.Settings
-		options  terraform.Options
+		config print.Config
 	}{
 		// Base
 		"Base": {
-			settings: testutil.WithSections(),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
+			config: testutil.WithSections(),
 		},
 		"Empty": {
-			settings: testutil.WithSections(),
-			options: terraform.Options{
-				Path: "empty",
-			},
+			config: testutil.WithDefaultSections(
+				testutil.With(func(c *print.Config) {
+					c.ModuleRoot = "empty"
+				}),
+			),
 		},
 		"HideAll": {
-			settings: print.Settings{},
-			options: terraform.Options{
-				ShowHeader:     false, // Since we don't show the header, the file won't be loaded at all
-				HeaderFromFile: "bad.tf",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Header = false // Since we don't show the header, the file won't be loaded at all
+				c.HeaderFrom = "bad.tf"
+			}),
 		},
 
 		// Settings
 		"WithColor": {
-			settings: testutil.WithSections(
-				print.Settings{
-					ShowColor: true,
-				},
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Settings.Color = true
+				}),
 			),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
 		},
 		"OutputValues": {
-			settings: print.Settings{
-				ShowOutputs:     true,
-				OutputValues:    true,
-				ShowSensitivity: true,
-			},
-			options: terraform.Options{
-				OutputValues:     true,
-				OutputValuesPath: "output_values.json",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Outputs = true
+				c.OutputValues.Enabled = true
+				c.OutputValues.From = "output_values.json"
+				c.Settings.Sensitive = true
+			}),
 		},
 
 		// Only section
 		"OnlyDataSources": {
-			settings: print.Settings{ShowDataSources: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.DataSources = true }),
 		},
 		"OnlyHeader": {
-			settings: print.Settings{ShowHeader: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Header = true }),
 		},
 		"OnlyFooter": {
-			settings: print.Settings{ShowFooter: true},
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Footer = true
+				c.FooterFrom = "footer.md"
+			}),
 		},
 		"OnlyInputs": {
-			settings: print.Settings{ShowInputs: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Inputs = true }),
 		},
 		"OnlyOutputs": {
-			settings: print.Settings{ShowOutputs: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Outputs = true }),
 		},
 		"OnlyModulecalls": {
-			settings: print.Settings{ShowModuleCalls: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.ModuleCalls = true }),
 		},
 		"OnlyProviders": {
-			settings: print.Settings{ShowProviders: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Providers = true }),
 		},
 		"OnlyRequirements": {
-			settings: print.Settings{ShowRequirements: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Requirements = true }),
 		},
 		"OnlyResources": {
-			settings: print.Settings{ShowResources: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Resources = true }),
 		},
 	}
 	for name, tt := range tests {
@@ -119,13 +97,10 @@ func TestPretty(t *testing.T) {
 			expected, err := testutil.GetExpected("pretty", "pretty-"+name)
 			assert.Nil(err)
 
-			options, err := terraform.NewOptions().With(&tt.options)
+			module, err := testutil.GetModule(&tt.config)
 			assert.Nil(err)
 
-			module, err := testutil.GetModule(options)
-			assert.Nil(err)
-
-			formatter := NewPretty(tt.settings.ToConfig())
+			formatter := NewPretty(&tt.config)
 
 			err = formatter.Generate(module)
 			assert.Nil(err)

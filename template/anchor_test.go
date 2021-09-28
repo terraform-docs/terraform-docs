@@ -14,8 +14,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/terraform-docs/terraform-docs/print"
 )
 
 func TestAnchorMarkdown(t *testing.T) {
@@ -58,11 +56,8 @@ func TestAnchorMarkdown(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				ShowAnchor:       tt.anchor,
-				EscapeCharacters: tt.escape,
-			}
-			actual := CreateAnchorMarkdown(tt.typeSection, tt.name, settings)
+
+			actual := CreateAnchorMarkdown(tt.typeSection, tt.name, tt.anchor, tt.escape)
 
 			assert.Equal(tt.expected, actual)
 		})
@@ -109,11 +104,8 @@ func TestAnchorAsciidoc(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				ShowAnchor:       tt.anchor,
-				EscapeCharacters: tt.escape,
-			}
-			actual := CreateAnchorAsciidoc(tt.typeSection, tt.name, settings)
+
+			actual := CreateAnchorAsciidoc(tt.typeSection, tt.name, tt.anchor, tt.escape)
 
 			assert.Equal(tt.expected, actual)
 		})

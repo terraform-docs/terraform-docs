@@ -16,23 +16,27 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // GetModule returns 'example' Module
-func GetModule(options *terraform.Options) (*terraform.Module, error) {
-	path, err := getExampleFolder(options.Path)
+func GetModule(config *print.Config) (*terraform.Module, error) {
+	path, err := getExampleFolder(config.ModuleRoot)
 	if err != nil {
 		return nil, err
 	}
-	options.Path = path
-	if options.OutputValues {
-		options.OutputValuesPath = filepath.Join(path, options.OutputValuesPath)
+	config.ModuleRoot = path
+
+	if config.OutputValues.Enabled {
+		config.OutputValues.From = filepath.Join(path, config.OutputValues.From)
 	}
-	tfmodule, err := terraform.LoadWithOptions(options)
+
+	tfmodule, err := terraform.LoadWithOptions(config)
 	if err != nil {
 		return nil, err
 	}
+
 	return tfmodule, nil
 }
 

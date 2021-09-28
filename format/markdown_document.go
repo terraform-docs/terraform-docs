@@ -28,15 +28,13 @@ type markdownDocument struct {
 
 	config   *print.Config
 	template *template.Template
-	settings *print.Settings
 }
 
 // NewMarkdownDocument returns new instance of Markdown Document.
 func NewMarkdownDocument(config *print.Config) Type {
-	settings, _ := config.Extract()
 	items := readTemplateItems(markdownDocumentFS, "markdown_document")
 
-	tt := template.New(settings, items...)
+	tt := template.New(config, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			result, extraline := PrintFencedCodeBlock(t, "hcl")
@@ -56,7 +54,7 @@ func NewMarkdownDocument(config *print.Config) Type {
 			return result
 		},
 		"isRequired": func() bool {
-			return settings.ShowRequired
+			return config.Settings.Required
 		},
 	})
 
@@ -64,7 +62,6 @@ func NewMarkdownDocument(config *print.Config) Type {
 		Generator: print.NewGenerator("json", config.ModuleRoot),
 		config:    config,
 		template:  tt,
-		settings:  settings,
 	}
 }
 

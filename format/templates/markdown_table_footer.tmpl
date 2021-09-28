@@ -1,4 +1,4 @@
-{{- if .Settings.ShowFooter -}}
+{{- if .Config.Sections.Footer -}}
     {{- with .Module.Footer -}}
         {{ sanitizeSection . }}
         {{ printf "\n" }}

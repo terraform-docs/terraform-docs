@@ -1,6 +1,6 @@
-{{- if .Settings.ShowProviders -}}
+{{- if .Config.Sections.Providers -}}
     {{- if not .Module.Providers -}}
-        {{- if not .Settings.HideEmpty -}}
+        {{- if not .Config.Settings.HideEmpty -}}
             {{- indent 0 "=" }} Providers
 
             No providers.

@@ -146,6 +146,15 @@ func sortOutputsByPosition(x []*Output) {
 
 type outputs []*Output
 
+func (oo outputs) sort(enabled bool, by string) { //nolint:unparam
+	if !enabled {
+		sortOutputsByPosition(oo)
+	} else {
+		// always sort by name if sorting is enabled
+		sortOutputsByName(oo)
+	}
+}
+
 func (oo outputs) convert() []*terraformsdk.Output {
 	list := []*terraformsdk.Output{}
 	for _, o := range oo {

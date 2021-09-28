@@ -28,15 +28,13 @@ type markdownTable struct {
 
 	config   *print.Config
 	template *template.Template
-	settings *print.Settings
 }
 
 // NewMarkdownTable returns new instance of Markdown Table.
 func NewMarkdownTable(config *print.Config) Type {
-	settings, _ := config.Extract()
 	items := readTemplateItems(markdownTableFS, "markdown_table")
 
-	tt := template.New(settings, items...)
+	tt := template.New(config, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			inputType, _ := PrintFencedCodeBlock(t, "")
@@ -55,7 +53,6 @@ func NewMarkdownTable(config *print.Config) Type {
 		Generator: print.NewGenerator("markdown table", config.ModuleRoot),
 		config:    config,
 		template:  tt,
-		settings:  settings,
 	}
 }
 

@@ -19,6 +19,7 @@ import (
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // Input represents a Terraform input.
@@ -92,6 +93,23 @@ func sortInputsByType(x []*Input) {
 }
 
 type inputs []*Input
+
+func (ii inputs) sort(enabled bool, by string) {
+	if !enabled {
+		sortInputsByPosition(ii)
+	} else {
+		switch by {
+		case print.SortType:
+			sortInputsByType(ii)
+		case print.SortRequired:
+			sortInputsByRequired(ii)
+		case print.SortName:
+			sortInputsByName(ii)
+		default:
+			sortInputsByPosition(ii)
+		}
+	}
+}
 
 func (ii inputs) convert() []*terraformsdk.Input {
 	list := []*terraformsdk.Input{}

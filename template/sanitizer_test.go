@@ -16,8 +16,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/terraform-docs/terraform-docs/print"
 )
 
 func TestSanitizeName(t *testing.T) {
@@ -97,10 +95,8 @@ func TestSanitizeName(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				EscapeCharacters: tt.escape,
-			}
-			actual := SanitizeName(tt.input, settings)
+
+			actual := SanitizeName(tt.input, tt.escape)
 
 			assert.Equal(tt.expected, actual)
 		})
@@ -132,14 +128,11 @@ func TestSanitizeSection(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				EscapeCharacters: tt.escape,
-			}
 
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := SanitizeSection(string(bytes), settings)
+			actual := SanitizeSection(string(bytes), tt.escape, false)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".expected"))
 			assert.Nil(err)
@@ -174,14 +167,11 @@ func TestSanitizeDocument(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				EscapeCharacters: tt.escape,
-			}
 
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := SanitizeDocument(string(bytes), settings)
+			actual := SanitizeDocument(string(bytes), tt.escape, false)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".expected"))
 			assert.Nil(err)
@@ -238,15 +228,11 @@ func TestSanitizeMarkdownTable(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				ShowHTML:         tt.html,
-				EscapeCharacters: tt.escape,
-			}
 
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := SanitizeMarkdownTable(string(bytes), settings)
+			actual := SanitizeMarkdownTable(string(bytes), tt.escape, tt.html)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.expected+".markdown.expected"))
 			assert.Nil(err)
@@ -281,14 +267,11 @@ func TestSanitizeAsciidocTable(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				EscapeCharacters: tt.escape,
-			}
 
 			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
-			actual := SanitizeAsciidocTable(string(bytes), settings)
+			actual := SanitizeAsciidocTable(string(bytes), tt.escape, false)
 
 			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".asciidoc.expected"))
 			assert.Nil(err)
@@ -426,7 +409,7 @@ func TestConvertMultiLineText(t *testing.T) {
 	}
 }
 
-func TestEscapeIllegalCharacters(t *testing.T) {
+func TestEscapeCharacters(t *testing.T) {
 	tests := []struct {
 		name        string
 		input       string
@@ -578,10 +561,8 @@ func TestEscapeIllegalCharacters(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				EscapeCharacters: tt.escapeChars,
-			}
-			actual := EscapeCharacters(tt.input, settings, tt.escapePipe)
+
+			actual := EscapeCharacters(tt.input, tt.escapeChars, tt.escapePipe)
 
 			assert.Equal(tt.expected, actual)
 		})
@@ -635,10 +616,8 @@ func TestNormalizeURLs(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			settings := &print.Settings{
-				EscapeCharacters: tt.escape,
-			}
-			actual := NormalizeURLs(tt.input, settings)
+
+			actual := NormalizeURLs(tt.input, tt.escape)
 
 			assert.Equal(tt.expected, actual)
 		})

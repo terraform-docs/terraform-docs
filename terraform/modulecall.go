@@ -15,6 +15,7 @@ import (
 	"sort"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // ModuleCall represents a submodule called by Terraform module.
@@ -55,6 +56,21 @@ func sortModulecallsByPosition(x []*ModuleCall) {
 }
 
 type modulecalls []*ModuleCall
+
+func (mm modulecalls) sort(enabled bool, by string) {
+	if !enabled {
+		sortModulecallsByPosition(mm)
+	} else {
+		switch by {
+		case print.SortName, print.SortRequired:
+			sortModulecallsByName(mm)
+		case print.SortType:
+			sortModulecallsBySource(mm)
+		default:
+			sortModulecallsByPosition(mm)
+		}
+	}
+}
 
 func (mm modulecalls) convert() []*terraformsdk.ModuleCall {
 	list := []*terraformsdk.ModuleCall{}

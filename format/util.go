@@ -103,7 +103,7 @@ func readTemplateItems(efs embed.FS, prefix string) []*template.Item {
 }
 
 // copySections sets the sections that'll be printed
-func copySections(settings *print.Settings, src *terraform.Module) *terraform.Module {
+func copySections(config *print.Config, src *terraform.Module) *terraform.Module {
 	dest := &terraform.Module{
 		Header:       "",
 		Footer:       "",
@@ -115,42 +115,42 @@ func copySections(settings *print.Settings, src *terraform.Module) *terraform.Mo
 		Resources:    make([]*terraform.Resource, 0),
 	}
 
-	if settings.ShowHeader {
+	if config.Sections.Header {
 		dest.Header = src.Header
 	}
-	if settings.ShowFooter {
+	if config.Sections.Footer {
 		dest.Footer = src.Footer
 	}
-	if settings.ShowInputs {
+	if config.Sections.Inputs {
 		dest.Inputs = src.Inputs
 	}
-	if settings.ShowModuleCalls {
+	if config.Sections.ModuleCalls {
 		dest.ModuleCalls = src.ModuleCalls
 	}
-	if settings.ShowOutputs {
+	if config.Sections.Outputs {
 		dest.Outputs = src.Outputs
 	}
-	if settings.ShowProviders {
+	if config.Sections.Providers {
 		dest.Providers = src.Providers
 	}
-	if settings.ShowRequirements {
+	if config.Sections.Requirements {
 		dest.Requirements = src.Requirements
 	}
-	if settings.ShowResources || settings.ShowDataSources {
-		dest.Resources = filterResourcesByMode(settings, src.Resources)
+	if config.Sections.Resources || config.Sections.DataSources {
+		dest.Resources = filterResourcesByMode(config, src.Resources)
 	}
 
 	return dest
 }
 
 // filterResourcesByMode returns the managed or data resources defined by the show argument
-func filterResourcesByMode(settings *print.Settings, module []*terraform.Resource) []*terraform.Resource {
+func filterResourcesByMode(config *print.Config, module []*terraform.Resource) []*terraform.Resource {
 	resources := make([]*terraform.Resource, 0)
 	for _, r := range module {
-		if settings.ShowResources && r.Mode == "managed" {
+		if config.Sections.Resources && r.Mode == "managed" {
 			resources = append(resources, r)
 		}
-		if settings.ShowDataSources && r.Mode == "data" {
+		if config.Sections.DataSources && r.Mode == "data" {
 			resources = append(resources, r)
 		}
 	}

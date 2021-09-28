@@ -172,21 +172,15 @@ func example(ref *reference) error {
 	ref.Usage = fmt.Sprintf("%s%s ./examples/", ref.Command, flag)
 
 	config := print.DefaultConfig()
+	config.ModuleRoot = "./examples"
 	config.Formatter = ref.Name
 	config.Settings.Color = false
-	options := &terraform.Options{
-		Path:           "./examples",
-		ShowHeader:     true,
-		HeaderFromFile: "main.tf",
-		ShowFooter:     true,
-		FooterFromFile: "footer.md",
-		SortBy: &terraform.SortBy{
-			Name: true,
-		},
-		ReadComments: true,
-	}
+	config.Sections.Show = append(config.Sections.Show, "all")
+	config.Sections.Footer = true
+	config.FooterFrom = "footer.md"
+	config.Parse()
 
-	tfmodule, err := terraform.LoadWithOptions(options)
+	tfmodule, err := terraform.LoadWithOptions(config)
 	if err != nil {
 		log.Fatal(err)
 	}

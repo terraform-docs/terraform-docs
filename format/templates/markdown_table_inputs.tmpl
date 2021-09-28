@@ -1,6 +1,6 @@
-{{- if .Settings.ShowInputs -}}
+{{- if .Config.Sections.Inputs -}}
     {{- if not .Module.Inputs -}}
-        {{- if not .Settings.HideEmpty -}}
+        {{- if not .Config.Settings.HideEmpty -}}
             {{- indent 0 "#" }} Inputs
 
             No inputs.
@@ -9,22 +9,22 @@
         {{- indent 0 "#" }} Inputs
 
         | Name | Description |
-        {{- if .Settings.ShowType }} Type |{{ end }}
-        {{- if .Settings.ShowDefault }} Default |{{ end }}
-        {{- if .Settings.ShowRequired }} Required |{{ end }}
+        {{- if .Config.Settings.Type }} Type |{{ end }}
+        {{- if .Config.Settings.Default }} Default |{{ end }}
+        {{- if .Config.Settings.Required }} Required |{{ end }}
         |------|-------------|
-        {{- if .Settings.ShowType }}------|{{ end }}
-        {{- if .Settings.ShowDefault }}---------|{{ end }}
-        {{- if .Settings.ShowRequired }}:--------:|{{ end }}
+        {{- if .Config.Settings.Type }}------|{{ end }}
+        {{- if .Config.Settings.Default }}---------|{{ end }}
+        {{- if .Config.Settings.Required }}:--------:|{{ end }}
         {{- range .Module.Inputs }}
             | {{ anchorNameMarkdown "input" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
-            {{- if $.Settings.ShowType -}}
+            {{- if $.Config.Settings.Type -}}
                 {{ printf " " }}{{ tostring .Type | type | sanitizeMarkdownTbl }} |
             {{- end -}}
-            {{- if $.Settings.ShowDefault -}}
+            {{- if $.Config.Settings.Default -}}
                 {{ printf " " }}{{ value .GetValue | sanitizeMarkdownTbl }} |
             {{- end -}}
-            {{- if $.Settings.ShowRequired -}}
+            {{- if $.Config.Settings.Required -}}
                 {{ printf " " }}{{ ternary .Required "yes" "no" }} |
             {{- end -}}
         {{- end }}

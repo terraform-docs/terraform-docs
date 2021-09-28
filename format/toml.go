@@ -24,24 +24,20 @@ import (
 type toml struct {
 	*print.Generator
 
-	config   *print.Config
-	settings *print.Settings
+	config *print.Config
 }
 
 // NewTOML returns new instance of TOML.
 func NewTOML(config *print.Config) Type {
-	settings, _ := config.Extract()
-
 	return &toml{
 		Generator: print.NewGenerator("toml", config.ModuleRoot),
 		config:    config,
-		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as toml.
 func (t *toml) Generate(module *terraform.Module) error {
-	copy := copySections(t.settings, module)
+	copy := copySections(t.config, module)
 
 	buffer := new(bytes.Buffer)
 	encoder := tomlsdk.NewEncoder(buffer)

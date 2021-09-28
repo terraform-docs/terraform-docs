@@ -1,6 +1,6 @@
-{{- if .Settings.ShowModuleCalls -}}
+{{- if .Config.Sections.ModuleCalls -}}
     {{- if not .Module.ModuleCalls -}}
-        {{- if not .Settings.HideEmpty -}}
+        {{- if not .Config.Settings.HideEmpty -}}
             {{- indent 0 "=" }} Modules
 
             No modules.

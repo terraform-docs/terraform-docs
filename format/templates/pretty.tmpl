@@ -1,11 +1,11 @@
-{{- if .Settings.ShowHeader -}}
+{{- if .Config.Sections.Header -}}
     {{- with .Module.Header -}}
         {{ colorize "\033[90m" . }}
     {{ end -}}
     {{- printf "\n\n" -}}
 {{ end -}}
 
-{{- if .Settings.ShowRequirements -}}
+{{- if .Config.Sections.Requirements -}}
     {{- with .Module.Requirements }}
         {{- range . }}
             {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
@@ -15,7 +15,7 @@
     {{- printf "\n\n" -}}
 {{ end -}}
 
-{{- if .Settings.ShowProviders -}}
+{{- if .Config.Sections.Providers -}}
     {{- with .Module.Providers }}
         {{- range . }}
             {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
@@ -25,7 +25,7 @@
     {{- printf "\n\n" -}}
 {{ end -}}
 
-{{- if .Settings.ShowModuleCalls -}}
+{{- if .Config.Sections.ModuleCalls -}}
     {{- with .Module.ModuleCalls }}
         {{- range . }}
             {{- printf "module.%s" .Name | colorize "\033[36m" }}{{ printf " (%s)" .FullName }}
@@ -34,11 +34,11 @@
     {{- printf "\n\n" -}}
 {{ end -}}
 
-{{- if or .Settings.ShowResources .Settings.ShowDataSources -}}
+{{- if or .Config.Sections.Resources .Config.Sections.DataSources -}}
     {{- with .Module.Resources }}
         {{- range . }}
-            {{- $isResource := and $.Settings.ShowResources ( eq "resource" (printf "%s" .GetMode)) }}
-            {{- $isDataResource := and $.Settings.ShowDataSources ( eq "data source" (printf "%s" .GetMode)) }}
+            {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
+            {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
             {{- $url := ternary .URL (printf " (%s)" .URL) "" }}
             {{- if $isResource }}
                 {{- printf "resource.%s (%s)" .Spec .GetMode | colorize "\033[36m" }}{{ $url }}
@@ -50,7 +50,7 @@
     {{ end }}
 {{ end }}
 
-{{- if .Settings.ShowInputs -}}
+{{- if .Config.Sections.Inputs -}}
     {{- with .Module.Inputs }}
         {{- range . }}
             {{- printf "input.%s" .Name | colorize "\033[36m" }} ({{ default "required" .GetValue }})
@@ -61,11 +61,11 @@
     {{- printf "\n" -}}
 {{ end -}}
 
-{{- if .Settings.ShowOutputs -}}
+{{- if .Config.Sections.Outputs -}}
     {{- with .Module.Outputs }}
         {{- range . }}
             {{- printf "output.%s" .Name | colorize "\033[36m" }}
-            {{- if $.Settings.OutputValues -}}
+            {{- if $.Config.OutputValues.Enabled -}}
                 {{- printf " " -}}
                 ({{ ternary .Sensitive "<sensitive>" .GetValue }})
             {{- end }}
@@ -75,7 +75,7 @@
     {{ end -}}
 {{ end -}}
 
-{{- if .Settings.ShowFooter -}}
+{{- if .Config.Sections.Footer -}}
     {{- with .Module.Footer -}}
         {{ colorize "\033[90m" . }}
     {{ end -}}

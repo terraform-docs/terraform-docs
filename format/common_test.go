@@ -17,46 +17,40 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 func TestCommonSort(t *testing.T) {
 	tests := map[string]struct {
-		options terraform.Options
+		config print.Config
 	}{
 		"NoSort": {
-			options: terraform.Options{},
+			config: *print.NewConfig(),
 		},
 		"SortByName": {
-			options: terraform.Options{
-				SortBy: &terraform.SortBy{
-					Name: true,
-				},
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sort.Enabled = true
+				c.Sort.By = print.SortName
+			}),
 		},
 		"SortByRequired": {
-			options: terraform.Options{
-				SortBy: &terraform.SortBy{
-					Required: true,
-				},
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sort.Enabled = true
+				c.Sort.By = print.SortRequired
+			}),
 		},
 		"SortByType": {
-			options: terraform.Options{
-				SortBy: &terraform.SortBy{
-					Type: true,
-				},
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sort.Enabled = true
+				c.Sort.By = print.SortType
+			}),
 		},
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			options, err := terraform.NewOptions().With(&tt.options)
-			assert.Nil(err)
-
-			module, err := testutil.GetModule(options)
+			module, err := testutil.GetModule(&tt.config)
 			assert.Nil(err)
 
 			type Expected struct {
@@ -100,27 +94,31 @@ func TestCommonSort(t *testing.T) {
 
 func TestCommonHeaderFrom(t *testing.T) {
 	tests := map[string]struct {
-		options terraform.Options
+		config print.Config
 	}{
 		"HeaderFromADOCFile": {
-			options: terraform.Options{
-				HeaderFromFile: "doc.adoc",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Header = true
+				c.HeaderFrom = "doc.adoc"
+			}),
 		},
 		"HeaderFromMDFile": {
-			options: terraform.Options{
-				HeaderFromFile: "doc.md",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Header = true
+				c.HeaderFrom = "doc.md"
+			}),
 		},
 		"HeaderFromTFFile": {
-			options: terraform.Options{
-				HeaderFromFile: "doc.tf",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Header = true
+				c.HeaderFrom = "doc.tf"
+			}),
 		},
 		"HeaderFromTXTFile": {
-			options: terraform.Options{
-				HeaderFromFile: "doc.txt",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Header = true
+				c.HeaderFrom = "doc.txt"
+			}),
 		},
 	}
 	for name, tt := range tests {
@@ -130,10 +128,7 @@ func TestCommonHeaderFrom(t *testing.T) {
 			expected, err := testutil.GetExpected("common", "header-"+name)
 			assert.Nil(err)
 
-			options, err := terraform.NewOptions().WithOverwrite(&tt.options)
-			assert.Nil(err)
-
-			module, err := testutil.GetModule(options)
+			module, err := testutil.GetModule(&tt.config)
 			assert.Nil(err)
 
 			assert.Equal(expected, module.Header)
@@ -143,31 +138,31 @@ func TestCommonHeaderFrom(t *testing.T) {
 
 func TestCommonFooterFrom(t *testing.T) {
 	tests := map[string]struct {
-		options terraform.Options
+		config print.Config
 	}{
 		"FooterFromADOCFile": {
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "doc.adoc",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Footer = true
+				c.FooterFrom = "doc.adoc"
+			}),
 		},
 		"FooterFromMDFile": {
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "doc.md",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Footer = true
+				c.FooterFrom = "doc.md"
+			}),
 		},
 		"FooterFromTFFile": {
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "doc.tf",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Footer = true
+				c.FooterFrom = "doc.tf"
+			}),
 		},
 		"FooterFromTXTFile": {
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "doc.txt",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Footer = true
+				c.FooterFrom = "doc.txt"
+			}),
 		},
 	}
 	for name, tt := range tests {
@@ -177,10 +172,7 @@ func TestCommonFooterFrom(t *testing.T) {
 			expected, err := testutil.GetExpected("common", "footer-"+name)
 			assert.Nil(err)
 
-			options, err := terraform.NewOptions().WithOverwrite(&tt.options)
-			assert.Nil(err)
-
-			module, err := testutil.GetModule(options)
+			module, err := testutil.GetModule(&tt.config)
 			assert.Nil(err)
 
 			assert.Equal(expected, module.Footer)

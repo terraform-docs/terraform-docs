@@ -1,7 +1,7 @@
-{{- if .Settings.ShowInputs -}}
-    {{- if .Settings.ShowRequired -}}
+{{- if .Config.Sections.Inputs -}}
+    {{- if .Config.Settings.Required -}}
         {{- if not .Module.RequiredInputs -}}
-            {{- if not .Settings.HideEmpty -}}
+            {{- if not .Config.Settings.HideEmpty -}}
                 {{- indent 0 "#" }} Required Inputs
 
                 No required inputs.
@@ -16,11 +16,11 @@
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
-                {{ if $.Settings.ShowType -}}
+                {{ if $.Config.Settings.Type -}}
                     Type: {{ tostring .Type | type }}
                 {{- end }}
 
-                {{ if $.Settings.ShowDefault }}
+                {{ if $.Config.Settings.Default }}
                     {{ if or .HasDefault (not isRequired) }}
                         Default: {{ default "n/a" .GetValue | value }}
                     {{- end }}
@@ -28,7 +28,7 @@
             {{- end }}
         {{- end }}
         {{- if not .Module.OptionalInputs -}}
-            {{- if not .Settings.HideEmpty -}}
+            {{- if not .Config.Settings.HideEmpty -}}
                 {{- indent 0 "#" }} Optional Inputs
 
                 No optional inputs.
@@ -43,11 +43,11 @@
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
-                {{ if $.Settings.ShowType -}}
+                {{ if $.Config.Settings.Type -}}
                     Type: {{ tostring .Type | type }}
                 {{- end }}
 
-                {{ if $.Settings.ShowDefault }}
+                {{ if $.Config.Settings.Default }}
                     {{ if or .HasDefault (not isRequired) }}
                         Default: {{ default "n/a" .GetValue | value }}
                     {{- end }}
@@ -56,7 +56,7 @@
         {{ end }}
     {{ else -}}
         {{- if not .Module.Inputs -}}
-            {{- if not .Settings.HideEmpty -}}
+            {{- if not .Config.Settings.HideEmpty -}}
                 {{- indent 0 "#" }} Inputs
 
                 No inputs.
@@ -71,11 +71,11 @@
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
-                {{ if $.Settings.ShowType -}}
+                {{ if $.Config.Settings.Type -}}
                     Type: {{ tostring .Type | type }}
                 {{- end }}
 
-                {{ if $.Settings.ShowDefault }}
+                {{ if $.Config.Settings.Default }}
                     {{ if or .HasDefault (not isRequired) }}
                         Default: {{ default "n/a" .GetValue | value }}
                     {{- end }}

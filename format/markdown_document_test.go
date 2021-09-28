@@ -17,206 +17,162 @@ import (
 
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
 	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 func TestMarkdownDocument(t *testing.T) {
 	tests := map[string]struct {
-		settings print.Settings
-		options  terraform.Options
+		config print.Config
 	}{
 		// Base
 		"Base": {
-			settings: testutil.WithSections(testutil.WithHTML()),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
+			config: testutil.WithSections(
+				testutil.WithHTML(),
+			),
 		},
 		"Empty": {
-			settings: testutil.WithSections(testutil.WithHTML()),
-			options: terraform.Options{
-				Path: "empty",
-			},
+			config: testutil.WithDefaultSections(
+				testutil.WithHTML(),
+				testutil.With(func(c *print.Config) {
+					c.ModuleRoot = "empty"
+				}),
+			),
 		},
 		"HideEmpty": {
-			settings: testutil.WithSections(testutil.WithHideEmpty()),
-			options: terraform.Options{
-				Path: "empty",
-			},
+			config: testutil.WithDefaultSections(
+				testutil.WithHideEmpty(),
+				testutil.With(func(c *print.Config) {
+					c.ModuleRoot = "empty"
+				}),
+			),
 		},
 		"HideAll": {
-			settings: print.Settings{},
-			options: terraform.Options{
-				ShowHeader:     false, // Since we don't show the header, the file won't be loaded at all
-				HeaderFromFile: "bad.tf",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Header = false // Since we don't show the header, the file won't be loaded at all
+				c.HeaderFrom = "bad.tf"
+			}),
 		},
 
 		// Settings
 		"WithRequired": {
-			settings: testutil.WithSections(
+			config: testutil.WithSections(
 				testutil.WithHTML(),
-				print.Settings{
-					ShowRequired: true,
-				},
+				testutil.With(func(c *print.Config) {
+					c.Settings.Required = true
+				}),
 			),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
 		},
 		"WithAnchor": {
-			settings: testutil.WithSections(
+			config: testutil.WithSections(
 				testutil.WithHTML(),
-				print.Settings{
-					ShowAnchor: true,
-				},
+				testutil.With(func(c *print.Config) {
+					c.Settings.Anchor = true
+				}),
 			),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
 		},
 		"WithoutHTML": {
-			settings: testutil.WithSections(
-				print.Settings{
-					ShowHTML: false,
-				},
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Settings.HTML = false
+				}),
 			),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
 		},
 		"WithoutHTMLWithAnchor": {
-			settings: testutil.WithSections(
-				print.Settings{
-					ShowHTML:   false,
-					ShowAnchor: true,
-				},
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Settings.HTML = false
+					c.Settings.Anchor = true
+				}),
 			),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
 		},
 		"WithoutDefault": {
-			settings: testutil.WithHTML(
-				print.Settings{
-					ShowInputs:  true,
-					ShowDefault: false,
-					ShowType:    true,
-				},
+			config: testutil.WithHTML(
+				testutil.With(func(c *print.Config) {
+					c.Sections.Inputs = true
+					c.Settings.Default = false
+					c.Settings.Type = true
+				}),
 			),
-			options: terraform.Options{},
 		},
 		"WithoutType": {
-			settings: testutil.WithHTML(
-				print.Settings{
-					ShowInputs:  true,
-					ShowDefault: true,
-					ShowType:    false,
-				},
+			config: testutil.WithHTML(
+				testutil.With(func(c *print.Config) {
+					c.Sections.Inputs = true
+					c.Settings.Default = true
+					c.Settings.Type = false
+				}),
 			),
-			options: terraform.Options{},
 		},
 		"EscapeCharacters": {
-			settings: testutil.WithSections(
+			config: testutil.WithSections(
 				testutil.WithHTML(),
-				print.Settings{
-					EscapeCharacters: true,
-				},
+				testutil.With(func(c *print.Config) {
+					c.Settings.Escape = true
+				}),
 			),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
 		},
 		"IndentationOfFour": {
-			settings: testutil.WithSections(
+			config: testutil.WithSections(
 				testutil.WithHTML(),
-				print.Settings{
-					IndentLevel: 4,
-				},
+				testutil.With(func(c *print.Config) {
+					c.Settings.Indent = 4
+				}),
 			),
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
 		},
 		"OutputValues": {
-			settings: testutil.WithHTML(
-				print.Settings{
-					ShowOutputs:     true,
-					OutputValues:    true,
-					ShowSensitivity: true,
-				},
+			config: testutil.WithHTML(
+				testutil.With(func(c *print.Config) {
+					c.Sections.Outputs = true
+					c.OutputValues.Enabled = true
+					c.OutputValues.From = "output_values.json"
+					c.Settings.Sensitive = true
+				}),
 			),
-			options: terraform.Options{
-				OutputValues:     true,
-				OutputValuesPath: "output_values.json",
-			},
 		},
 		"OutputValuesNoSensitivity": {
-			settings: testutil.WithHTML(
-				print.Settings{
-					ShowOutputs:     true,
-					OutputValues:    true,
-					ShowSensitivity: false,
-				},
+			config: testutil.WithHTML(
+				testutil.With(func(c *print.Config) {
+					c.Sections.Outputs = true
+					c.OutputValues.Enabled = true
+					c.OutputValues.From = "output_values.json"
+					c.Settings.Sensitive = false
+				}),
 			),
-			options: terraform.Options{
-				OutputValues:     true,
-				OutputValuesPath: "output_values.json",
-			},
 		},
 
 		// Only section
 		"OnlyDataSources": {
-			settings: print.Settings{ShowDataSources: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.DataSources = true }),
 		},
 		"OnlyHeader": {
-			settings: print.Settings{ShowHeader: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Header = true }),
 		},
 		"OnlyFooter": {
-			settings: print.Settings{ShowFooter: true},
-			options: terraform.Options{
-				ShowFooter:     true,
-				FooterFromFile: "footer.md",
-			},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Footer = true
+				c.FooterFrom = "footer.md"
+			}),
 		},
 		"OnlyInputs": {
-			settings: testutil.WithHTML(
-				print.Settings{
-					ShowInputs:  true,
-					ShowDefault: true,
-					ShowType:    true,
-				},
-			),
-			options: terraform.Options{},
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Inputs = true
+				c.Settings.Default = true
+				c.Settings.Type = true
+			}),
 		},
 		"OnlyOutputs": {
-			settings: print.Settings{ShowOutputs: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Outputs = true }),
 		},
 		"OnlyModulecalls": {
-			settings: print.Settings{ShowModuleCalls: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.ModuleCalls = true }),
 		},
 		"OnlyProviders": {
-			settings: print.Settings{ShowProviders: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Providers = true }),
 		},
 		"OnlyRequirements": {
-			settings: print.Settings{ShowRequirements: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Requirements = true }),
 		},
 		"OnlyResources": {
-			settings: print.Settings{ShowResources: true},
-			options:  terraform.Options{},
+			config: testutil.With(func(c *print.Config) { c.Sections.Resources = true }),
 		},
 	}
 	for name, tt := range tests {
@@ -226,13 +182,10 @@ func TestMarkdownDocument(t *testing.T) {
 			expected, err := testutil.GetExpected("markdown", "document-"+name)
 			assert.Nil(err)
 
-			options, err := terraform.NewOptions().With(&tt.options)
+			module, err := testutil.GetModule(&tt.config)
 			assert.Nil(err)
 
-			module, err := testutil.GetModule(options)
-			assert.Nil(err)
-
-			formatter := NewMarkdownDocument(tt.settings.ToConfig())
+			formatter := NewMarkdownDocument(&tt.config)
 
 			err = formatter.Generate(module)
 			assert.Nil(err)

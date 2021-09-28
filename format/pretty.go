@@ -30,21 +30,18 @@ type pretty struct {
 
 	config   *print.Config
 	template *template.Template
-	settings *print.Settings
 }
 
 // NewPretty returns new instance of Pretty.
 func NewPretty(config *print.Config) Type {
-	settings, _ := config.Extract()
-
-	tt := template.New(settings, &template.Item{
+	tt := template.New(config, &template.Item{
 		Name: "pretty",
 		Text: string(prettyTpl),
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"colorize": func(c string, s string) string {
 			r := "\033[0m"
-			if !settings.ShowColor {
+			if !config.Settings.Color {
 				c = ""
 				r = ""
 			}
@@ -56,7 +53,6 @@ func NewPretty(config *print.Config) Type {
 		Generator: print.NewGenerator("pretty", config.ModuleRoot),
 		config:    config,
 		template:  tt,
-		settings:  settings,
 	}
 }
 

@@ -92,7 +92,10 @@ generates the following output:
       |------|-----------------|
       | Foo  | Foo description |
       | Bar  | Bar description |
-    footer: ""
+    footer: |-
+      ## This is an example of a footer
+
+      It looks exactly like a header, but is placed at the end of the document
     inputs:
       - name: bool-1
         type: bool

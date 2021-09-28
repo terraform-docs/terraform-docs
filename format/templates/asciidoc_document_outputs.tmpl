@@ -1,6 +1,6 @@
-{{- if .Settings.ShowOutputs -}}
+{{- if .Config.Sections.Outputs -}}
     {{- if not .Module.Outputs -}}
-        {{- if not .Settings.HideEmpty -}}
+        {{- if not .Config.Settings.HideEmpty -}}
             {{- indent 0 "=" }} Outputs
 
             No outputs.
@@ -15,11 +15,11 @@
 
             Description: {{ tostring .Description | sanitizeDoc }}
 
-            {{ if $.Settings.OutputValues }}
+            {{ if $.Config.OutputValues.Enabled }}
                 {{- $sensitive := ternary .Sensitive "<sensitive>" .GetValue -}}
                 Value: {{ value $sensitive | sanitizeDoc }}
 
-                {{ if $.Settings.ShowSensitivity -}}
+                {{ if $.Config.Settings.Sensitive -}}
                     Sensitive: {{ ternary (.Sensitive) "yes" "no" }}
                 {{- end }}
             {{ end }}

@@ -22,28 +22,28 @@ the root directory of this source tree.
 //     )
 //
 //     const mainTpl =`
-//     {{- if .Settings.ShowHeader -}}
+//     {{- if .Config.Sections.Header -}}
 //         {{- with .Module.Header -}}
 //             {{ colorize "\033[90m" . }}
 //         {{ end -}}
 //         {{- printf "\n\n" -}}
 //     {{ end -}}`
 //
-//     func render(settings *print.Settings, module *terraform.Module) (string, error) {
-//         tt := template.New(settings, &template.Item{
+//     func render(config *print.Config, module *terraform.Module) (string, error) {
+//         tt := template.New(config, &template.Item{
 //             Name: "main",
 //             Text: mainTpl,
 //         })
 //
-//         tt := template.New(settings, items...)
+//         tt := template.New(config, items...)
 //         tt.CustomFunc(gotemplate.FuncMap{
-//             "colorize": func(c string, s string) string {
-//                 r := "\033[0m"
-//                 if !settings.ShowColor {
-//                     c = ""
-//                     r = ""
+//             "colorize": func(color string, s string) string {
+//                 reset := "\033[0m"
+//                 if !config.Settings.Color {
+//                     color = ""
+//                     reset = ""
 //                 }
-//                 return fmt.Sprintf("%s%s%s", c, s, r)
+//                 return fmt.Sprintf("%s%s%s", color, s, reset)
 //             },
 //         })
 //

@@ -27,21 +27,22 @@ import (
 	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
 	"github.com/terraform-docs/terraform-docs/internal/reader"
 	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
-func LoadWithOptions(options *Options) (*Module, error) {
-	tfmodule, err := loadModule(options.Path)
+func LoadWithOptions(config *print.Config) (*Module, error) {
+	tfmodule, err := loadModule(config.ModuleRoot)
 	if err != nil {
 		return nil, err
 	}
 
-	module, err := loadModuleItems(tfmodule, options)
+	module, err := loadModuleItems(tfmodule, config)
 	if err != nil {
 		return nil, err
 	}
-	sortItems(module, options.SortBy)
+	sortItems(module, config)
 	return module, nil
 }
 
@@ -53,24 +54,24 @@ func loadModule(path string) (*tfconfig.Module, error) {
 	return module, nil
 }
 
-func loadModuleItems(tfmodule *tfconfig.Module, options *Options) (*Module, error) {
-	header, err := loadHeader(options)
+func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, error) {
+	header, err := loadHeader(config)
 	if err != nil {
 		return nil, err
 	}
 
-	footer, err := loadFooter(options)
+	footer, err := loadFooter(config)
 	if err != nil {
 		return nil, err
 	}
 
-	inputs, required, optional := loadInputs(tfmodule, options)
+	inputs, required, optional := loadInputs(tfmodule, config)
 	modulecalls := loadModulecalls(tfmodule)
-	outputs, err := loadOutputs(tfmodule, options)
+	outputs, err := loadOutputs(tfmodule, config)
 	if err != nil {
 		return nil, err
 	}
-	providers := loadProviders(tfmodule, options)
+	providers := loadProviders(tfmodule, config)
 	requirements := loadRequirements(tfmodule)
 	resources := loadResources(tfmodule)
 
@@ -114,21 +115,21 @@ func isFileFormatSupported(filename string, section string) (bool, error) {
 	return false, fmt.Errorf("only .adoc, .md, .tf, and .txt formats are supported to read %s from", section)
 }
 
-func loadHeader(options *Options) (string, error) {
-	if !options.ShowHeader {
+func loadHeader(config *print.Config) (string, error) {
+	if !config.Sections.Header {
 		return "", nil
 	}
-	return loadSection(options, options.HeaderFromFile, "header")
+	return loadSection(config, config.HeaderFrom, "header")
 }
 
-func loadFooter(options *Options) (string, error) {
-	if !options.ShowFooter {
+func loadFooter(config *print.Config) (string, error) {
+	if !config.Sections.Footer {
 		return "", nil
 	}
-	return loadSection(options, options.FooterFromFile, "footer")
+	return loadSection(config, config.FooterFrom, "footer")
 }
 
-func loadSection(options *Options, file string, section string) (string, error) { //nolint:gocyclo
+func loadSection(config *print.Config, file string, section string) (string, error) { //nolint:gocyclo
 	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
 	// Be wary when adding branches, and look for functionality that could
 	// be reasonably moved into an injected dependency.
@@ -136,7 +137,7 @@ func loadSection(options *Options, file string, section string) (string, error) 
 	if section == "" {
 		return "", errors.New("section is missing")
 	}
-	filename := filepath.Join(options.Path, file)
+	filename := filepath.Join(config.ModuleRoot, file)
 	if ok, err := isFileFormatSupported(file, section); !ok {
 		return "", err
 	}
@@ -181,7 +182,7 @@ func loadSection(options *Options, file string, section string) (string, error) 
 	return strings.Join(sectionText, "\n"), nil
 }
 
-func loadInputs(tfmodule *tfconfig.Module, options *Options) ([]*Input, []*Input, []*Input) {
+func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*Input, []*Input) {
 	var inputs = make([]*Input, 0, len(tfmodule.Variables))
 	var required = make([]*Input, 0, len(tfmodule.Variables))
 	var optional = make([]*Input, 0, len(tfmodule.Variables))
@@ -189,7 +190,7 @@ func loadInputs(tfmodule *tfconfig.Module, options *Options) ([]*Input, []*Input
 	for _, input := range tfmodule.Variables {
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
 		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
-		if inputDescription == "" && options.ReadComments {
+		if inputDescription == "" && config.Settings.ReadComments {
 			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
 		}
 
@@ -259,19 +260,19 @@ func loadModulecalls(tfmodule *tfconfig.Module) []*ModuleCall {
 	return modules
 }
 
-func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*Output, error) {
+func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, error) {
 	outputs := make([]*Output, 0, len(tfmodule.Outputs))
 	values := make(map[string]*output)
-	if options.OutputValues {
+	if config.OutputValues.Enabled {
 		var err error
-		values, err = loadOutputValues(options)
+		values, err = loadOutputValues(config)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, o := range tfmodule.Outputs {
 		description := o.Description
-		if description == "" && options.ReadComments {
+		if description == "" && config.Settings.ReadComments {
 			description = loadComments(o.Pos.Filename, o.Pos.Line)
 		}
 		output := &Output{
@@ -281,9 +282,9 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*Output, error)
 				Filename: o.Pos.Filename,
 				Line:     o.Pos.Line,
 			},
-			ShowValue: options.OutputValues,
+			ShowValue: config.OutputValues.Enabled,
 		}
-		if options.OutputValues {
+		if config.OutputValues.Enabled {
 			output.Sensitive = values[output.Name].Sensitive
 			if values[output.Name].Sensitive {
 				output.Value = types.ValueOf(`<sensitive>`)
@@ -296,17 +297,17 @@ func loadOutputs(tfmodule *tfconfig.Module, options *Options) ([]*Output, error)
 	return outputs, nil
 }
 
-func loadOutputValues(options *Options) (map[string]*output, error) {
+func loadOutputValues(config *print.Config) (map[string]*output, error) {
 	var out []byte
 	var err error
-	if options.OutputValuesPath == "" {
+	if config.OutputValues.From == "" {
 		cmd := exec.Command("terraform", "output", "-json")
-		cmd.Dir = options.Path
+		cmd.Dir = config.ModuleRoot
 		if out, err = cmd.Output(); err != nil {
 			return nil, fmt.Errorf("caught error while reading the terraform outputs: %w", err)
 		}
-	} else if out, err = ioutil.ReadFile(options.OutputValuesPath); err != nil {
-		return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %w", options.OutputValuesPath, err)
+	} else if out, err = ioutil.ReadFile(config.OutputValues.From); err != nil {
+		return nil, fmt.Errorf("caught error while reading the terraform outputs file at %s: %w", config.OutputValues.From, err)
 	}
 	var terraformOutputs map[string]*output
 	err = json.Unmarshal(out, &terraformOutputs)
@@ -316,7 +317,7 @@ func loadOutputValues(options *Options) (map[string]*output, error) {
 	return terraformOutputs, err
 }
 
-func loadProviders(tfmodule *tfconfig.Module, options *Options) []*Provider {
+func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider {
 	type provider struct {
 		Name        string   `hcl:"name,label"`
 		Version     string   `hcl:"version"`
@@ -328,10 +329,10 @@ func loadProviders(tfmodule *tfconfig.Module, options *Options) []*Provider {
 	}
 	lock := make(map[string]provider)
 
-	if options.UseLockFile {
+	if config.Settings.LockFile {
 		var lf lockfile
 
-		filename := filepath.Join(options.Path, ".terraform.lock.hcl")
+		filename := filepath.Join(config.ModuleRoot, ".terraform.lock.hcl")
 		if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
 			for i := range lf.Provider {
 				segments := strings.Split(lf.Provider[i].Name, "/")
@@ -486,55 +487,21 @@ func loadComments(filename string, lineNum int) string {
 	return strings.Join(comment, " ")
 }
 
-func sortItems(tfmodule *Module, sortby *SortBy) { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
-
+func sortItems(tfmodule *Module, config *print.Config) {
 	// inputs
-	switch {
-	case sortby.Type:
-		sortInputsByType(tfmodule.Inputs)
-		sortInputsByType(tfmodule.RequiredInputs)
-		sortInputsByType(tfmodule.OptionalInputs)
-	case sortby.Required:
-		sortInputsByRequired(tfmodule.Inputs)
-		sortInputsByRequired(tfmodule.RequiredInputs)
-		sortInputsByRequired(tfmodule.OptionalInputs)
-	case sortby.Name:
-		sortInputsByName(tfmodule.Inputs)
-		sortInputsByName(tfmodule.RequiredInputs)
-		sortInputsByName(tfmodule.OptionalInputs)
-	default:
-		sortInputsByPosition(tfmodule.Inputs)
-		sortInputsByPosition(tfmodule.RequiredInputs)
-		sortInputsByPosition(tfmodule.OptionalInputs)
-	}
+	inputs(tfmodule.Inputs).sort(config.Sort.Enabled, config.Sort.By)
+	inputs(tfmodule.RequiredInputs).sort(config.Sort.Enabled, config.Sort.By)
+	inputs(tfmodule.OptionalInputs).sort(config.Sort.Enabled, config.Sort.By)
 
 	// outputs
-	if sortby.Name || sortby.Required || sortby.Type {
-		sortOutputsByName(tfmodule.Outputs)
-	} else {
-		sortOutputsByPosition(tfmodule.Outputs)
-	}
+	outputs(tfmodule.Outputs).sort(config.Sort.Enabled, config.Sort.By)
 
 	// providers
-	if sortby.Name || sortby.Required || sortby.Type {
-		sortProvidersByName(tfmodule.Providers)
-	} else {
-		sortProvidersByPosition(tfmodule.Providers)
-	}
+	providers(tfmodule.Providers).sort(config.Sort.Enabled, config.Sort.By)
 
-	// resources (always sorted)
-	sortResourcesByType(tfmodule.Resources)
+	// resources
+	resources(tfmodule.Resources).sort(config.Sort.Enabled, config.Sort.By)
 
 	// modules
-	switch {
-	case sortby.Name || sortby.Required:
-		sortModulecallsByName(tfmodule.ModuleCalls)
-	case sortby.Type:
-		sortModulecallsBySource(tfmodule.ModuleCalls)
-	default:
-		sortModulecallsByPosition(tfmodule.ModuleCalls)
-	}
+	modulecalls(tfmodule.ModuleCalls).sort(config.Sort.Enabled, config.Sort.By)
 }

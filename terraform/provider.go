@@ -54,6 +54,15 @@ func sortProvidersByPosition(x []*Provider) {
 
 type providers []*Provider
 
+func (pp providers) sort(enabled bool, by string) { //nolint:unparam
+	if !enabled {
+		sortProvidersByPosition(pp)
+	} else {
+		// always sort by name if sorting is enabled
+		sortProvidersByName(pp)
+	}
+}
+
 func (pp providers) convert() []*terraformsdk.Provider {
 	list := []*terraformsdk.Provider{}
 	for _, p := range pp {

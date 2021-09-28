@@ -13,8 +13,6 @@ package print
 import (
 	"fmt"
 	"strings"
-
-	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // Config represents all the available config options that can be accessed and
@@ -40,6 +38,7 @@ type Config struct {
 // NewConfig returns neew instancee of Config with empty values.
 func NewConfig() *Config {
 	return &Config{
+		HeaderFrom:   "main.tf",
 		Sections:     sections{},
 		Output:       output{},
 		OutputValues: outputvalues{},
@@ -106,7 +105,7 @@ type sections struct {
 	Header       bool
 	Footer       bool
 	Inputs       bool
-	Modulecalls  bool
+	ModuleCalls  bool
 	Outputs      bool
 	Providers    bool
 	Requirements bool
@@ -118,15 +117,15 @@ func defaultSections() sections {
 		Show: []string{},
 		Hide: []string{},
 
-		DataSources:  true,
-		Header:       true,
+		DataSources:  false,
+		Header:       false,
 		Footer:       false,
-		Inputs:       true,
-		Modulecalls:  true,
-		Outputs:      true,
-		Providers:    true,
-		Requirements: true,
-		Resources:    true,
+		Inputs:       false,
+		ModuleCalls:  false,
+		Outputs:      false,
+		Providers:    false,
+		Requirements: false,
+		Resources:    false,
 	}
 }
 
@@ -321,16 +320,17 @@ func (o *outputvalues) validate() error {
 	return nil
 }
 
+// Sort types.
 const (
-	sortName     = "name"
-	sortRequired = "required"
-	sortType     = "type"
+	SortName     = "name"
+	SortRequired = "required"
+	SortType     = "type"
 )
 
 var allSorts = []string{
-	sortName,
-	sortRequired,
-	sortType,
+	SortName,
+	SortRequired,
+	SortType,
 }
 
 // SortTypes list.
@@ -344,7 +344,7 @@ type sort struct {
 func defaultSort() sort {
 	return sort{
 		Enabled: true,
-		By:      sortName,
+		By:      SortName,
 	}
 }
 
@@ -399,7 +399,7 @@ func (c *Config) Parse() {
 	c.Sections.DataSources = c.Sections.visibility("data-sources")
 	c.Sections.Header = c.Sections.visibility("header")
 	c.Sections.Inputs = c.Sections.visibility("inputs")
-	c.Sections.Modulecalls = c.Sections.visibility("modules")
+	c.Sections.ModuleCalls = c.Sections.visibility("modules")
 	c.Sections.Outputs = c.Sections.visibility("outputs")
 	c.Sections.Providers = c.Sections.visibility("providers")
 	c.Sections.Requirements = c.Sections.visibility("requirements")
@@ -451,63 +451,4 @@ func (c *Config) Validate() error {
 	}
 
 	return nil
-}
-
-// Extract and build print.Settings and terraform.Options out of Config.
-func (c *Config) Extract() (*Settings, *terraform.Options) {
-	settings := DefaultSettings()
-	options := terraform.NewOptions()
-
-	// path
-	options.Path = c.ModuleRoot
-
-	// header-from
-	settings.ShowHeader = c.Sections.Header
-	options.ShowHeader = settings.ShowHeader
-	options.HeaderFromFile = c.HeaderFrom
-
-	// footer-from
-	settings.ShowFooter = c.Sections.Footer
-	options.ShowFooter = settings.ShowFooter
-	options.FooterFromFile = c.FooterFrom
-
-	// terraform.lock.hcl file
-	options.UseLockFile = c.Settings.LockFile
-
-	// sections
-	settings.ShowDataSources = c.Sections.DataSources
-	settings.ShowInputs = c.Sections.Inputs
-	settings.ShowModuleCalls = c.Sections.Modulecalls
-	settings.ShowOutputs = c.Sections.Outputs
-	settings.ShowProviders = c.Sections.Providers
-	settings.ShowRequirements = c.Sections.Requirements
-	settings.ShowResources = c.Sections.Resources
-	settings.HideEmpty = c.Settings.HideEmpty
-
-	// output values
-	settings.OutputValues = c.OutputValues.Enabled
-	options.OutputValues = c.OutputValues.Enabled
-	options.OutputValuesPath = c.OutputValues.From
-
-	// sort
-	options.SortBy.Name = c.Sort.Enabled && c.Sort.By == sortName
-	options.SortBy.Required = c.Sort.Enabled && c.Sort.By == sortRequired
-	options.SortBy.Type = c.Sort.Enabled && c.Sort.By == sortType
-
-	// read comments
-	options.ReadComments = c.Settings.ReadComments
-
-	// settings
-	settings.EscapeCharacters = c.Settings.Escape
-	settings.IndentLevel = c.Settings.Indent
-	settings.ShowAnchor = c.Settings.Anchor
-	settings.ShowDescription = c.Settings.Description
-	settings.ShowColor = c.Settings.Color
-	settings.ShowDefault = c.Settings.Default
-	settings.ShowHTML = c.Settings.HTML
-	settings.ShowRequired = c.Settings.Required
-	settings.ShowSensitivity = c.Settings.Sensitive
-	settings.ShowType = c.Settings.Type
-
-	return settings, options
 }

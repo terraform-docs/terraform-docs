@@ -12,7 +12,7 @@ the root directory of this source tree.
 //
 // Usage
 //
-// A specific format can be instantiated either for `format.New()` function or
+// A specific format can be instantiated either with `format.New()` function or
 // directly calling its function (e.g. `NewMarkdownTable`, etc)
 //
 //     config := print.DefaultConfig()
@@ -27,7 +27,6 @@ the root directory of this source tree.
 //     if err != nil {
 //         return err
 //     }
-//
 //
 //     output, err := formatter.ExecuteTemplate("")
 //     if err != nil {

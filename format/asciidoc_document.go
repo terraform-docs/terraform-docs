@@ -28,17 +28,15 @@ type asciidocDocument struct {
 
 	config   *print.Config
 	template *template.Template
-	settings *print.Settings
 }
 
 // NewAsciidocDocument returns new instance of Asciidoc Document.
 func NewAsciidocDocument(config *print.Config) Type {
-	settings, _ := config.Extract()
 	items := readTemplateItems(asciidocsDocumentFS, "asciidoc_document")
 
-	settings.EscapeCharacters = false
+	config.Settings.Escape = false
 
-	tt := template.New(settings, items...)
+	tt := template.New(config, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
 		"type": func(t string) string {
 			result, extraline := PrintFencedAsciidocCodeBlock(t, "hcl")
@@ -58,7 +56,7 @@ func NewAsciidocDocument(config *print.Config) Type {
 			return result
 		},
 		"isRequired": func() bool {
-			return settings.ShowRequired
+			return config.Settings.Required
 		},
 	})
 
@@ -66,7 +64,6 @@ func NewAsciidocDocument(config *print.Config) Type {
 		Generator: print.NewGenerator("json", config.ModuleRoot),
 		config:    config,
 		template:  tt,
-		settings:  settings,
 	}
 }
 

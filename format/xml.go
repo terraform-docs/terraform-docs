@@ -22,24 +22,20 @@ import (
 type xml struct {
 	*print.Generator
 
-	config   *print.Config
-	settings *print.Settings
+	config *print.Config
 }
 
 // NewXML returns new instance of XML.
 func NewXML(config *print.Config) Type {
-	settings, _ := config.Extract()
-
 	return &xml{
 		Generator: print.NewGenerator("xml", config.ModuleRoot),
 		config:    config,
-		settings:  settings,
 	}
 }
 
 // Generate a Terraform module as xml.
 func (x *xml) Generate(module *terraform.Module) error {
-	copy := copySections(x.settings, module)
+	copy := copySections(x.config, module)
 
 	out, err := xmlsdk.MarshalIndent(copy, "", "  ")
 	if err != nil {

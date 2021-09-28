@@ -295,9 +295,7 @@ func checkConstraint(versionRange string, currentVersion string) error {
 // Config and generates the output content for the module (and submodules if available)
 // and write the result to the output (either stdout or a file).
 func generateContent(config *print.Config) error {
-	settings, options := config.Extract()
-
-	module, err := terraform.LoadWithOptions(options)
+	module, err := terraform.LoadWithOptions(config)
 	if err != nil {
 		return err
 	}
@@ -320,7 +318,7 @@ func generateContent(config *print.Config) error {
 
 		content, cerr := client.Execute(pluginsdk.ExecuteArgs{
 			Module:   module.Convert(),
-			Settings: settings.Convert(),
+			Settings: nil, // TODO settings.Convert(),
 		})
 		if cerr != nil {
 			return cerr

@@ -25,18 +25,14 @@ import (
 type tfvarsJSON struct {
 	*print.Generator
 
-	config   *print.Config
-	settings *print.Settings
+	config *print.Config
 }
 
 // NewTfvarsJSON returns new instance of TfvarsJSON.
 func NewTfvarsJSON(config *print.Config) Type {
-	settings, _ := config.Extract()
-
 	return &tfvarsJSON{
 		Generator: print.NewGenerator("tfvars json", config.ModuleRoot),
 		config:    config,
-		settings:  settings,
 	}
 }
 

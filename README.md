@@ -294,9 +294,7 @@ func buildTerraformDocs(path string, tmpl string) (string, error) {
     config := print.DefaultConfig()
     config.ModuleRoot = path // module root path (can be relative or absolute)
 
-    _, options := config.Extract()
-
-    module, err := terraform.LoadWithOptions(options)
+    module, err := terraform.LoadWithOptions(config)
     if err != nil {
         return "", err
     }
