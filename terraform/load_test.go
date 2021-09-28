@@ -722,7 +722,6 @@ func TestLoadProviders(t *testing.T) {
 
 			for _, p := range providers {
 				actual = append(actual, p.FullName()+"-"+string(p.Version))
-				providers[0].FullName()
 			}
 			sort.Strings(actual)
 

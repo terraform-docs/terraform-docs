@@ -15,7 +15,7 @@ import (
 	"strings"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // XML represents XML format.

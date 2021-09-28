@@ -16,8 +16,8 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/testutil"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 func TestAsciidocDocument(t *testing.T) {

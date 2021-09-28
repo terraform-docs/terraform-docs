@@ -17,9 +17,9 @@ import (
 	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/template"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 //go:embed templates/tfvars_hcl.tmpl

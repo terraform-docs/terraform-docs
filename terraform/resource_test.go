@@ -11,7 +11,6 @@ the root directory of this source tree.
 package terraform
 
 import (
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -134,7 +133,7 @@ func TestResourcesSortedByType(t *testing.T) {
 	assert := assert.New(t)
 	resources := sampleResources()
 
-	sort.Sort(resourcesSortedByType(resources))
+	sortResourcesByType(resources)
 
 	expected := []string{"a_a.a", "a_f.f", "b_b.b", "b_d.d", "c_c.c", "c_e.c", "c_e.d", "c_e_x.c", "c_e_x.d", "z_z.z", "a_a.a", "z_z.z", "a_a.a", "z_z.z"}
 	actual := make([]string, len(resources))
@@ -150,7 +149,7 @@ func TestResourcesSortedByTypeAndMode(t *testing.T) {
 	assert := assert.New(t)
 	resources := sampleResources()
 
-	sort.Sort(resourcesSortedByType(resources))
+	sortResourcesByType(resources)
 
 	expected := []string{"a_a.a (r)", "a_f.f (r)", "b_b.b (r)", "b_d.d (r)", "c_c.c (r)", "c_e.c (r)", "c_e.d (r)", "c_e_x.c (r)", "c_e_x.d (r)", "z_z.z (r)", "a_a.a (d)", "z_z.z (d)", "a_a.a", "z_z.z"}
 	actual := make([]string, len(resources))

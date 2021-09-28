@@ -11,7 +11,6 @@ the root directory of this source tree.
 package terraform
 
 import (
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -49,19 +48,19 @@ func TestModulecallName(t *testing.T) {
 func TestModulecallSort(t *testing.T) {
 	modules := sampleModulecalls()
 	tests := map[string]struct {
-		sortType sort.Interface
+		sortType func([]*ModuleCall)
 		expected []string
 	}{
 		"ByName": {
-			sortType: modulecallsSortedByName(modules),
+			sortType: sortModulecallsByName,
 			expected: []string{"a", "b", "c", "d", "e", "f"},
 		},
 		"BySource": {
-			sortType: modulecallsSortedBySource(modules),
+			sortType: sortModulecallsBySource,
 			expected: []string{"f", "d", "c", "e", "a", "b"},
 		},
 		"ByPosition": {
-			sortType: modulecallsSortedByPosition(modules),
+			sortType: sortModulecallsByPosition,
 			expected: []string{"b", "c", "a", "e", "d", "f"},
 		},
 	}
@@ -69,7 +68,7 @@ func TestModulecallSort(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			sort.Sort(tt.sortType)
+			tt.sortType(modules)
 
 			actual := make([]string, len(modules))
 

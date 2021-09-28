@@ -17,7 +17,7 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"github.com/terraform-docs/terraform-docs/internal/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // YAML represents YAML format.

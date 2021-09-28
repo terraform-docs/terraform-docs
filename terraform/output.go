@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"sort"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
@@ -128,18 +129,19 @@ type output struct {
 	Value     interface{} `json:"value"`
 }
 
-type outputsSortedByName []*Output
+func sortOutputsByName(x []*Output) {
+	sort.Slice(x, func(i, j int) bool {
+		return x[i].Name < x[j].Name
+	})
+}
 
-func (a outputsSortedByName) Len() int           { return len(a) }
-func (a outputsSortedByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a outputsSortedByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
-
-type outputsSortedByPosition []*Output
-
-func (a outputsSortedByPosition) Len() int      { return len(a) }
-func (a outputsSortedByPosition) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a outputsSortedByPosition) Less(i, j int) bool {
-	return a[i].Position.Filename < a[j].Position.Filename || a[i].Position.Line < a[j].Position.Line
+func sortOutputsByPosition(x []*Output) {
+	sort.Slice(x, func(i, j int) bool {
+		if x[i].Position.Filename == x[j].Position.Filename {
+			return x[i].Position.Line < x[j].Position.Line
+		}
+		return x[i].Position.Filename < x[j].Position.Filename
+	})
 }
 
 type outputs []*Output

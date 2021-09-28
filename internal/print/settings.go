@@ -12,7 +12,7 @@ package print
 
 import (
 	printsdk "github.com/terraform-docs/plugin-sdk/print"
-	"github.com/terraform-docs/terraform-docs/internal/terraform"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
 // Settings represents all settings.
