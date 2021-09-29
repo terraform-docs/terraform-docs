@@ -306,22 +306,26 @@ generates the following output:
         {
           "name": "bar",
           "source": "baz",
-          "version": "4.5.6"
+          "version": "4.5.6",
+          "description": null
         },
         {
           "name": "baz",
           "source": "baz",
-          "version": "4.5.6"
+          "version": "4.5.6",
+          "description": null
         },
         {
           "name": "foo",
           "source": "bar",
-          "version": "1.2.3"
+          "version": "1.2.3",
+          "description": "another type of description for module foo"
         },
         {
           "name": "foobar",
           "source": "git@github.com:module/path",
-          "version": "v7.8.9"
+          "version": "v7.8.9",
+          "description": null
         }
       ],
       "outputs": [
@@ -394,7 +398,8 @@ generates the following output:
           "provider": "foo",
           "source": "https://registry.acme.com/foo",
           "mode": "managed",
-          "version": "latest"
+          "version": "latest",
+          "description": null
         },
         {
           "type": "resource",
@@ -402,7 +407,8 @@ generates the following output:
           "provider": "null",
           "source": "hashicorp/null",
           "mode": "managed",
-          "version": "latest"
+          "version": "latest",
+          "description": null
         },
         {
           "type": "private_key",
@@ -410,7 +416,8 @@ generates the following output:
           "provider": "tls",
           "source": "hashicorp/tls",
           "mode": "managed",
-          "version": "latest"
+          "version": "latest",
+          "description": "this description for tls_private_key.baz which can be multiline."
         },
         {
           "type": "caller_identity",
@@ -418,7 +425,8 @@ generates the following output:
           "provider": "aws",
           "source": "hashicorp/aws",
           "mode": "data",
-          "version": "latest"
+          "version": "latest",
+          "description": null
         },
         {
           "type": "caller_identity",
@@ -426,7 +434,8 @@ generates the following output:
           "provider": "aws",
           "source": "hashicorp/aws",
           "mode": "data",
-          "version": "latest"
+          "version": "latest",
+          "description": null
         }
       ]
     }

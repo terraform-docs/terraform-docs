@@ -12,15 +12,18 @@ resources:
     source: https://registry.acme.com/foo
     mode: managed
     version: latest
+    description: null
   - type: resource
     name: foo
     provider: "null"
     source: hashicorp/null
     mode: managed
     version: latest
+    description: null
   - type: private_key
     name: baz
     provider: tls
     source: hashicorp/tls
     mode: managed
     version: latest
+    description: this description for tls_private_key.baz which can be multiline.

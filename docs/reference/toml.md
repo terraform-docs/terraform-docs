@@ -290,21 +290,25 @@ generates the following output:
       name = "bar"
       source = "baz"
       version = "4.5.6"
+      description = ""
 
     [[modules]]
       name = "baz"
       source = "baz"
       version = "4.5.6"
+      description = ""
 
     [[modules]]
       name = "foo"
       source = "bar"
       version = "1.2.3"
+      description = "another type of description for module foo"
 
     [[modules]]
       name = "foobar"
       source = "git@github.com:module/path"
       version = "v7.8.9"
+      description = ""
 
     [[outputs]]
       name = "output-0.12"
@@ -370,6 +374,7 @@ generates the following output:
       source = "https://registry.acme.com/foo"
       mode = "managed"
       version = "latest"
+      description = ""
 
     [[resources]]
       type = "resource"
@@ -378,6 +383,7 @@ generates the following output:
       source = "hashicorp/null"
       mode = "managed"
       version = "latest"
+      description = ""
 
     [[resources]]
       type = "private_key"
@@ -386,6 +392,7 @@ generates the following output:
       source = "hashicorp/tls"
       mode = "managed"
       version = "latest"
+      description = "this description for tls_private_key.baz which can be multiline."
 
     [[resources]]
       type = "caller_identity"
@@ -394,6 +401,7 @@ generates the following output:
       source = "hashicorp/aws"
       mode = "data"
       version = "latest"
+      description = ""
 
     [[resources]]
       type = "caller_identity"
@@ -402,5 +410,6 @@ generates the following output:
       source = "hashicorp/aws"
       mode = "data"
       version = "latest"
+      description = ""
 
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples

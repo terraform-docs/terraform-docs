@@ -13,6 +13,7 @@ requirements = []
   source = "hashicorp/aws"
   mode = "data"
   version = "latest"
+  description = ""
 
 [[resources]]
   type = "caller_identity"
@@ -21,3 +22,4 @@ requirements = []
   source = "hashicorp/aws"
   mode = "data"
   version = "latest"
+  description = ""

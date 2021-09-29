@@ -50,6 +50,8 @@ terraform {
   }
 }
 
+// this description for tls_private_key.baz
+// which can be multiline.
 resource "tls_private_key" "baz" {}
 resource "foo_resource" "baz" {}
 
@@ -68,6 +70,7 @@ module "bar" {
   version = "4.5.6"
 }
 
+# another type of description for module foo
 module "foo" {
   source  = "bar"
   version = "1.2.3"

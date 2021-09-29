@@ -234,21 +234,25 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   name = "bar"
   source = "baz"
   version = "4.5.6"
+  description = ""
 
 [[modules]]
   name = "foo"
   source = "bar"
   version = "1.2.3"
+  description = "another type of description for module foo"
 
 [[modules]]
   name = "baz"
   source = "baz"
   version = "4.5.6"
+  description = ""
 
 [[modules]]
   name = "foobar"
   source = "git@github.com:module/path"
   version = "v7.8.9"
+  description = ""
 
 [[outputs]]
   name = "unquoted"
@@ -314,6 +318,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   source = "https://registry.acme.com/foo"
   mode = "managed"
   version = "latest"
+  description = ""
 
 [[resources]]
   type = "resource"
@@ -322,6 +327,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   source = "hashicorp/null"
   mode = "managed"
   version = "latest"
+  description = ""
 
 [[resources]]
   type = "private_key"
@@ -330,6 +336,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   source = "hashicorp/tls"
   mode = "managed"
   version = "latest"
+  description = "this description for tls_private_key.baz which can be multiline."
 
 [[resources]]
   type = "caller_identity"
@@ -338,6 +345,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   source = "hashicorp/aws"
   mode = "data"
   version = "latest"
+  description = ""
 
 [[resources]]
   type = "caller_identity"
@@ -346,3 +354,4 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   source = "hashicorp/aws"
   mode = "data"
   version = "latest"
+  description = ""

@@ -15,15 +15,17 @@ import (
 	"sort"
 
 	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
+	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
 )
 
 // ModuleCall represents a submodule called by Terraform module.
 type ModuleCall struct {
-	Name     string   `json:"name" toml:"name" xml:"name" yaml:"name"`
-	Source   string   `json:"source" toml:"source" xml:"source" yaml:"source"`
-	Version  string   `json:"version" toml:"version" xml:"version" yaml:"version"`
-	Position Position `json:"-" toml:"-" xml:"-" yaml:"-"`
+	Name        string       `json:"name" toml:"name" xml:"name" yaml:"name"`
+	Source      string       `json:"source" toml:"source" xml:"source" yaml:"source"`
+	Version     string       `json:"version" toml:"version" xml:"version" yaml:"version"`
+	Description types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
+	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 
 // FullName returns full name of the modulecall, with version if available

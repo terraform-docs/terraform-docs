@@ -306,21 +306,25 @@ generates the following output:
           <name>bar</name>
           <source>baz</source>
           <version>4.5.6</version>
+          <description xsi:nil="true"></description>
         </module>
         <module>
           <name>baz</name>
           <source>baz</source>
           <version>4.5.6</version>
+          <description xsi:nil="true"></description>
         </module>
         <module>
           <name>foo</name>
           <source>bar</source>
           <version>1.2.3</version>
+          <description>another type of description for module foo</description>
         </module>
         <module>
           <name>foobar</name>
           <source>git@github.com:module/path</source>
           <version>v7.8.9</version>
+          <description xsi:nil="true"></description>
         </module>
       </modules>
       <outputs>
@@ -394,6 +398,7 @@ generates the following output:
           <source>https://registry.acme.com/foo</source>
           <mode>managed</mode>
           <version>latest</version>
+          <description xsi:nil="true"></description>
         </resource>
         <resource>
           <type>resource</type>
@@ -402,6 +407,7 @@ generates the following output:
           <source>hashicorp/null</source>
           <mode>managed</mode>
           <version>latest</version>
+          <description xsi:nil="true"></description>
         </resource>
         <resource>
           <type>private_key</type>
@@ -410,6 +416,7 @@ generates the following output:
           <source>hashicorp/tls</source>
           <mode>managed</mode>
           <version>latest</version>
+          <description>this description for tls_private_key.baz which can be multiline.</description>
         </resource>
         <resource>
           <type>caller_identity</type>
@@ -418,6 +425,7 @@ generates the following output:
           <source>hashicorp/aws</source>
           <mode>data</mode>
           <version>latest</version>
+          <description xsi:nil="true"></description>
         </resource>
         <resource>
           <type>caller_identity</type>
@@ -426,6 +434,7 @@ generates the following output:
           <source>hashicorp/aws</source>
           <mode>data</mode>
           <version>latest</version>
+          <description xsi:nil="true"></description>
         </resource>
       </resources>
     </module>

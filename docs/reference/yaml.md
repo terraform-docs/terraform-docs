@@ -284,15 +284,19 @@ generates the following output:
       - name: bar
         source: baz
         version: 4.5.6
+        description: null
       - name: baz
         source: baz
         version: 4.5.6
+        description: null
       - name: foo
         source: bar
         version: 1.2.3
+        description: another type of description for module foo
       - name: foobar
         source: git@github.com:module/path
         version: v7.8.9
+        description: null
     outputs:
       - name: output-0.12
         description: terraform 0.12 only
@@ -334,29 +338,34 @@ generates the following output:
         source: https://registry.acme.com/foo
         mode: managed
         version: latest
+        description: null
       - type: resource
         name: foo
         provider: "null"
         source: hashicorp/null
         mode: managed
         version: latest
+        description: null
       - type: private_key
         name: baz
         provider: tls
         source: hashicorp/tls
         mode: managed
         version: latest
+        description: this description for tls_private_key.baz which can be multiline.
       - type: caller_identity
         name: current
         provider: aws
         source: hashicorp/aws
         mode: data
         version: latest
+        description: null
       - type: caller_identity
         name: ident
         provider: aws
         source: hashicorp/aws
         mode: data
         version: latest
+        description: null
 
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples

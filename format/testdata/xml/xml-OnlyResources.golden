@@ -14,6 +14,7 @@
       <source>https://registry.acme.com/foo</source>
       <mode>managed</mode>
       <version>latest</version>
+      <description xsi:nil="true"></description>
     </resource>
     <resource>
       <type>resource</type>
@@ -22,6 +23,7 @@
       <source>hashicorp/null</source>
       <mode>managed</mode>
       <version>latest</version>
+      <description xsi:nil="true"></description>
     </resource>
     <resource>
       <type>private_key</type>
@@ -30,6 +32,7 @@
       <source>hashicorp/tls</source>
       <mode>managed</mode>
       <version>latest</version>
+      <description>this description for tls_private_key.baz which can be multiline.</description>
     </resource>
   </resources>
 </module>

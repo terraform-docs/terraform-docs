@@ -27,6 +27,7 @@ type Resource struct {
 	ProviderSource string       `json:"source" toml:"source" xml:"source" yaml:"source"`
 	Mode           string       `json:"mode" toml:"mode" xml:"mode" yaml:"mode"`
 	Version        types.String `json:"version" toml:"version" xml:"version" yaml:"version"`
+	Description    types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
 	Position       Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 

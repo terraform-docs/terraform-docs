@@ -535,8 +535,10 @@ func TestLoadModulecalls(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
+
+			config := print.NewConfig()
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			modulecalls := loadModulecalls(module)
+			modulecalls := loadModulecalls(module, config)
 
 			assert.Equal(tt.expected, len(modulecalls))
 		})

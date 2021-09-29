@@ -12,9 +12,11 @@ resources:
     source: hashicorp/aws
     mode: data
     version: latest
+    description: null
   - type: caller_identity
     name: ident
     provider: aws
     source: hashicorp/aws
     mode: data
     version: latest
+    description: null
