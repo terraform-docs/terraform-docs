@@ -4,7 +4,7 @@ description: "sections configuration"
 menu:
   docs:
     parent: "configuration"
-weight: 127
+weight: 128
 toc: true
 ---
 

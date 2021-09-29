@@ -18,19 +18,18 @@ import (
 // Config represents all the available config options that can be accessed and
 // passed through CLI.
 type Config struct {
-	File          string       `mapstructure:"-"`
-	Recursive     bool         `mapstructure:"-"`
-	RecursivePath string       `mapstructure:"-"`
-	Formatter     string       `mapstructure:"formatter"`
-	Version       string       `mapstructure:"version"`
-	HeaderFrom    string       `mapstructure:"header-from"`
-	FooterFrom    string       `mapstructure:"footer-from"`
-	Content       string       `mapstructure:"content"`
-	Sections      sections     `mapstructure:"sections"`
-	Output        output       `mapstructure:"output"`
-	OutputValues  outputvalues `mapstructure:"output-values"`
-	Sort          sort         `mapstructure:"sort"`
-	Settings      settings     `mapstructure:"settings"`
+	File         string       `mapstructure:"-"`
+	Formatter    string       `mapstructure:"formatter"`
+	Version      string       `mapstructure:"version"`
+	HeaderFrom   string       `mapstructure:"header-from"`
+	FooterFrom   string       `mapstructure:"footer-from"`
+	Recursive    recursive    `mapstructure:"recursive"`
+	Content      string       `mapstructure:"content"`
+	Sections     sections     `mapstructure:"sections"`
+	Output       output       `mapstructure:"output"`
+	OutputValues outputvalues `mapstructure:"output-values"`
+	Sort         sort         `mapstructure:"sort"`
+	Settings     settings     `mapstructure:"settings"`
 
 	ModuleRoot string
 }
@@ -39,6 +38,7 @@ type Config struct {
 func NewConfig() *Config {
 	return &Config{
 		HeaderFrom:   "main.tf",
+		Recursive:    recursive{},
 		Sections:     sections{},
 		Output:       output{},
 		OutputValues: outputvalues{},
@@ -50,22 +50,40 @@ func NewConfig() *Config {
 // DefaultConfig returns new instance of Config with default values set.
 func DefaultConfig() *Config {
 	return &Config{
-		File:          "",
-		Recursive:     false,
-		RecursivePath: "modules",
-		Formatter:     "",
-		Version:       "",
-		HeaderFrom:    "main.tf",
-		FooterFrom:    "",
-		Content:       "",
-		Sections:      defaultSections(),
-		Output:        defaultOutput(),
-		OutputValues:  defaultOutputValues(),
-		Sort:          defaultSort(),
-		Settings:      defaultSettings(),
+		File:         "",
+		Formatter:    "",
+		Version:      "",
+		HeaderFrom:   "main.tf",
+		FooterFrom:   "",
+		Recursive:    defaultRecursive(),
+		Content:      "",
+		Sections:     defaultSections(),
+		Output:       defaultOutput(),
+		OutputValues: defaultOutputValues(),
+		Sort:         defaultSort(),
+		Settings:     defaultSettings(),
 
 		ModuleRoot: "",
 	}
+}
+
+type recursive struct {
+	Enabled bool   `mapstructure:"enabled"`
+	Path    string `mapstructure:"path"`
+}
+
+func defaultRecursive() recursive {
+	return recursive{
+		Enabled: false,
+		Path:    "modules",
+	}
+}
+
+func (r *recursive) validate() error {
+	if r.Enabled && r.Path == "" {
+		return fmt.Errorf("value of '--recursive-path' can't be empty")
+	}
+	return nil
 }
 
 const (
@@ -419,11 +437,6 @@ func (c *Config) Validate() error {
 		return fmt.Errorf("value of 'formatter' can't be empty")
 	}
 
-	// recursive
-	if c.Recursive && c.RecursivePath == "" {
-		return fmt.Errorf("value of '--recursive-path' can't be empty")
-	}
-
 	// header-from
 	if c.HeaderFrom == "" {
 		return fmt.Errorf("value of '--header-from' can't be empty")
@@ -439,6 +452,7 @@ func (c *Config) Validate() error {
 	}
 
 	for _, fn := range [](func() error){
+		c.Recursive.validate,
 		c.Sections.validate,
 		c.Output.validate,
 		c.OutputValues.validate,

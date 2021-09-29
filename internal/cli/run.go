@@ -95,7 +95,7 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
 	// Generating content recursively is only allowed when `config.Output.File`
 	// is set. Otherwise it would be impossible to distinguish where output of
 	// one module ends and the other begin, if content is outpput to stdout.
-	if r.config.Recursive && r.config.RecursivePath != "" {
+	if r.config.Recursive.Enabled && r.config.Recursive.Path != "" {
 		items, err := r.findSubmodules()
 		if err != nil {
 			return err
@@ -120,7 +120,7 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		if r.config.Recursive && cfg.Output.File == "" {
+		if r.config.Recursive.Enabled && cfg.Output.File == "" {
 			return fmt.Errorf("value of '--output-file' cannot be empty with '--recursive'")
 		}
 
@@ -233,7 +233,7 @@ func (r *Runtime) bindFlags(v *viper.Viper) {
 // `--recursive` flag is set. This keeps track of `.terraform-docs.yml` in any
 // of the submodules (if exists) to override the root configuration.
 func (r *Runtime) findSubmodules() ([]module, error) {
-	dir := filepath.Join(r.rootDir, r.config.RecursivePath)
+	dir := filepath.Join(r.rootDir, r.config.Recursive.Path)
 
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		return nil, err

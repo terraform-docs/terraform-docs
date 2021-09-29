@@ -11,7 +11,7 @@ toc: false
 Since `v0.15.0`
 
 Considering the file strucutre below of main module and its submodules, it is
-possible to generate documentation for them main and all its submodules in one
+possible to generate documentation for the main and all its submodules in one
 execution, with `--recursive` flag.
 
 {{< alert type="warning" >}}
@@ -42,4 +42,41 @@ $ tree .
 ├── outputs.tf
 ├── variables.tf
 └── versions.tf
+
+$ terraform-docs markdown --recursive --output-file README.md .
+```
+
+Alternatively `recursive.enabled` config also can be used instead of CLI flag.
+
+```bash
+$ pwd
+/path/to/module
+
+$ tree .
+.
+├── README.md
+├── main.tf
+├── modules
+│   └── my-sub-module
+│       ├── README.md
+│       ├── main.tf
+│       ├── variables.tf
+│       └── versions.tf
+├── outputs.tf
+├── variables.tf
+├── versions.tf
+├── ...
+└── .terraform-docs.yml
+
+$ cat .terraform-docs.yml
+formatter: markdown table
+
+recursive:
+  enabled: true
+
+output:
+  file: README.md
+  mode: inject
+
+$ terraform-docs .
 ```
