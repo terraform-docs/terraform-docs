@@ -53,439 +53,441 @@ terraform-docs asciidoc document [PATH] [flags]
 
 ## Example
 
-Given the [`examples`][examples] module:
+Given the [`testdata`][testdata] module:
 
 ```shell
-terraform-docs asciidoc document --footer-from footer.md ./examples/
+terraform-docs asciidoc document --footer-from footer.md ./testdata/
 ```
 
 generates the following output:
 
-    Usage:
+````text
+Usage:
 
-    Example of 'foo_bar' module in `foo_bar.tf`.
+Example of 'foo_bar' module in `foo_bar.tf`.
 
-    - list item 1
-    - list item 2
+- list item 1
+- list item 2
 
-    Even inline **formatting** in _here_ is possible.
-    and some [link](https://domain.com/)
+Even inline **formatting** in _here_ is possible.
+and some [link](https://domain.com/)
 
-    * list item 3
-    * list item 4
+* list item 3
+* list item 4
 
-    ```hcl
-    module "foo_bar" {
-      source = "github.com/foo/bar"
+```hcl
+module "foo_bar" {
+  source = "github.com/foo/bar"
 
-      id   = "1234567890"
-      name = "baz"
+  id   = "1234567890"
+  name = "baz"
 
-      zones = ["us-east-1", "us-west-1"]
+  zones = ["us-east-1", "us-west-1"]
 
-      tags = {
-        Name         = "baz"
-        Created-By   = "first.last@email.com"
-        Date-Created = "20180101"
-      }
-    }
-    ```
+  tags = {
+    Name         = "baz"
+    Created-By   = "first.last@email.com"
+    Date-Created = "20180101"
+  }
+}
+```
 
-    Here is some trailing text after code block,
-    followed by another line of text.
+Here is some trailing text after code block,
+followed by another line of text.
 
-    | Name | Description     |
-    |------|-----------------|
-    | Foo  | Foo description |
-    | Bar  | Bar description |
+| Name | Description     |
+|------|-----------------|
+| Foo  | Foo description |
+| Bar  | Bar description |
 
-    == Requirements
+== Requirements
 
-    The following requirements are needed by this module:
+The following requirements are needed by this module:
 
-    - [[requirement_terraform]] <<requirement_terraform,terraform>> (>= 0.12)
+- [[requirement_terraform]] <<requirement_terraform,terraform>> (>= 0.12)
 
-    - [[requirement_aws]] <<requirement_aws,aws>> (>= 2.15.0)
+- [[requirement_aws]] <<requirement_aws,aws>> (>= 2.15.0)
 
-    - [[requirement_foo]] <<requirement_foo,foo>> (>= 1.0)
+- [[requirement_foo]] <<requirement_foo,foo>> (>= 1.0)
 
-    - [[requirement_random]] <<requirement_random,random>> (>= 2.2.0)
+- [[requirement_random]] <<requirement_random,random>> (>= 2.2.0)
 
-    == Providers
+== Providers
 
-    The following providers are used by this module:
+The following providers are used by this module:
 
-    - [[provider_aws]] <<provider_aws,aws>> (>= 2.15.0)
+- [[provider_aws]] <<provider_aws,aws>> (>= 2.15.0)
 
-    - [[provider_aws.ident]] <<provider_aws.ident,aws.ident>> (>= 2.15.0)
+- [[provider_aws.ident]] <<provider_aws.ident,aws.ident>> (>= 2.15.0)
 
-    - [[provider_foo]] <<provider_foo,foo>> (>= 1.0)
+- [[provider_foo]] <<provider_foo,foo>> (>= 1.0)
 
-    - [[provider_null]] <<provider_null,null>>
+- [[provider_null]] <<provider_null,null>>
 
-    - [[provider_tls]] <<provider_tls,tls>>
+- [[provider_tls]] <<provider_tls,tls>>
 
-    == Modules
+== Modules
 
-    The following Modules are called:
+The following Modules are called:
 
-    === [[module_bar]] <<module_bar,bar>>
+=== [[module_bar]] <<module_bar,bar>>
 
-    Source: baz
+Source: baz
 
-    Version: 4.5.6
+Version: 4.5.6
 
-    === [[module_baz]] <<module_baz,baz>>
+=== [[module_baz]] <<module_baz,baz>>
 
-    Source: baz
+Source: baz
 
-    Version: 4.5.6
+Version: 4.5.6
 
-    === [[module_foo]] <<module_foo,foo>>
+=== [[module_foo]] <<module_foo,foo>>
 
-    Source: bar
+Source: bar
 
-    Version: 1.2.3
+Version: 1.2.3
 
-    === [[module_foobar]] <<module_foobar,foobar>>
+=== [[module_foobar]] <<module_foobar,foobar>>
 
-    Source: git@github.com:module/path
+Source: git@github.com:module/path
 
-    Version: v7.8.9
+Version: v7.8.9
 
-    == Resources
+== Resources
 
-    The following resources are used by this module:
+The following resources are used by this module:
 
-    - foo_resource.baz (resource)
-    - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] (resource)
-    - https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] (resource)
-    - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] (data source)
-    - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.ident] (data source)
+- foo_resource.baz (resource)
+- https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] (resource)
+- https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] (resource)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] (data source)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.ident] (data source)
 
-    == Required Inputs
+== Required Inputs
 
-    The following input variables are required:
+The following input variables are required:
 
-    === [[input_input_with_underscores]] <<input_input_with_underscores,input_with_underscores>>
+=== [[input_input_with_underscores]] <<input_input_with_underscores,input_with_underscores>>
 
-    Description: A variable with underscores.
+Description: A variable with underscores.
 
-    Type: `any`
+Type: `any`
 
-    === [[input_list-2]] <<input_list-2,list-2>>
+=== [[input_list-2]] <<input_list-2,list-2>>
 
-    Description: It's list number two.
+Description: It's list number two.
 
-    Type: `list`
+Type: `list`
 
-    === [[input_map-2]] <<input_map-2,map-2>>
+=== [[input_map-2]] <<input_map-2,map-2>>
 
-    Description: It's map number two.
+Description: It's map number two.
 
-    Type: `map`
+Type: `map`
 
-    === [[input_number-2]] <<input_number-2,number-2>>
+=== [[input_number-2]] <<input_number-2,number-2>>
 
-    Description: It's number number two.
+Description: It's number number two.
 
-    Type: `number`
+Type: `number`
 
-    === [[input_string-2]] <<input_string-2,string-2>>
+=== [[input_string-2]] <<input_string-2,string-2>>
 
-    Description: It's string number two.
+Description: It's string number two.
 
-    Type: `string`
+Type: `string`
 
-    === [[input_string_no_default]] <<input_string_no_default,string_no_default>>
+=== [[input_string_no_default]] <<input_string_no_default,string_no_default>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    === [[input_unquoted]] <<input_unquoted,unquoted>>
+=== [[input_unquoted]] <<input_unquoted,unquoted>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `any`
+Type: `any`
 
-    == Optional Inputs
+== Optional Inputs
 
-    The following input variables are optional (have default values):
+The following input variables are optional (have default values):
 
-    === [[input_bool-1]] <<input_bool-1,bool-1>>
+=== [[input_bool-1]] <<input_bool-1,bool-1>>
 
-    Description: It's bool number one.
+Description: It's bool number one.
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `true`
+Default: `true`
 
-    === [[input_bool-2]] <<input_bool-2,bool-2>>
+=== [[input_bool-2]] <<input_bool-2,bool-2>>
 
-    Description: It's bool number two.
+Description: It's bool number two.
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `false`
+Default: `false`
 
-    === [[input_bool-3]] <<input_bool-3,bool-3>>
+=== [[input_bool-3]] <<input_bool-3,bool-3>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `true`
+Default: `true`
 
-    === [[input_bool_default_false]] <<input_bool_default_false,bool_default_false>>
+=== [[input_bool_default_false]] <<input_bool_default_false,bool_default_false>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `false`
+Default: `false`
 
-    === [[input_input-with-code-block]] <<input_input-with-code-block,input-with-code-block>>
+=== [[input_input-with-code-block]] <<input_input-with-code-block,input-with-code-block>>
 
-    Description: This is a complicated one. We need a newline.  
-    And an example in a code block
-    ```
-    default     = [
-      "machine rack01:neptune"
-    ]
-    ```
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
 
-    Type: `list`
+Type: `list`
 
-    Default:
-    [source,json]
-    ----
-    [
-      "name rack:location"
-    ]
-    ----
+Default:
+[source,json]
+----
+[
+  "name rack:location"
+]
+----
 
-    === [[input_input-with-pipe]] <<input_input-with-pipe,input-with-pipe>>
+=== [[input_input-with-pipe]] <<input_input-with-pipe,input-with-pipe>>
 
-    Description: It includes v1 | v2 | v3
+Description: It includes v1 | v2 | v3
 
-    Type: `string`
+Type: `string`
 
-    Default: `"v1"`
+Default: `"v1"`
 
-    === [[input_list-1]] <<input_list-1,list-1>>
+=== [[input_list-1]] <<input_list-1,list-1>>
 
-    Description: It's list number one.
+Description: It's list number one.
 
-    Type: `list`
+Type: `list`
 
-    Default:
-    [source,json]
-    ----
-    [
-      "a",
-      "b",
-      "c"
-    ]
-    ----
+Default:
+[source,json]
+----
+[
+  "a",
+  "b",
+  "c"
+]
+----
 
-    === [[input_list-3]] <<input_list-3,list-3>>
+=== [[input_list-3]] <<input_list-3,list-3>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `list`
+Type: `list`
 
-    Default: `[]`
+Default: `[]`
 
-    === [[input_list_default_empty]] <<input_list_default_empty,list_default_empty>>
+=== [[input_list_default_empty]] <<input_list_default_empty,list_default_empty>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `list(string)`
+Type: `list(string)`
 
-    Default: `[]`
+Default: `[]`
 
-    === [[input_long_type]] <<input_long_type,long_type>>
+=== [[input_long_type]] <<input_long_type,long_type>>
 
-    Description: This description is itself markdown.
+Description: This description is itself markdown.
 
-    It spans over multiple lines.
+It spans over multiple lines.
 
-    Type:
-    [source,hcl]
-    ----
-    object({
-        name = string,
-        foo  = object({ foo = string, bar = string }),
-        bar  = object({ foo = string, bar = string }),
-        fizz = list(string),
-        buzz = list(string)
-      })
-    ----
+Type:
+[source,hcl]
+----
+object({
+    name = string,
+    foo  = object({ foo = string, bar = string }),
+    bar  = object({ foo = string, bar = string }),
+    fizz = list(string),
+    buzz = list(string)
+  })
+----
 
-    Default:
-    [source,json]
-    ----
-    {
-      "bar": {
-        "bar": "bar",
-        "foo": "bar"
-      },
-      "buzz": [
-        "fizz",
-        "buzz"
-      ],
-      "fizz": [],
-      "foo": {
-        "bar": "foo",
-        "foo": "foo"
-      },
-      "name": "hello"
-    }
-    ----
+Default:
+[source,json]
+----
+{
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+----
 
-    === [[input_map-1]] <<input_map-1,map-1>>
+=== [[input_map-1]] <<input_map-1,map-1>>
 
-    Description: It's map number one.
+Description: It's map number one.
 
-    Type: `map`
+Type: `map`
 
-    Default:
-    [source,json]
-    ----
-    {
-      "a": 1,
-      "b": 2,
-      "c": 3
-    }
-    ----
+Default:
+[source,json]
+----
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+----
 
-    === [[input_map-3]] <<input_map-3,map-3>>
+=== [[input_map-3]] <<input_map-3,map-3>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `map`
+Type: `map`
 
-    Default: `{}`
+Default: `{}`
 
-    === [[input_no-escape-default-value]] <<input_no-escape-default-value,no-escape-default-value>>
+=== [[input_no-escape-default-value]] <<input_no-escape-default-value,no-escape-default-value>>
 
-    Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
+Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
 
-    Type: `string`
+Type: `string`
 
-    Default: `"VALUE_WITH_UNDERSCORE"`
+Default: `"VALUE_WITH_UNDERSCORE"`
 
-    === [[input_number-1]] <<input_number-1,number-1>>
+=== [[input_number-1]] <<input_number-1,number-1>>
 
-    Description: It's number number one.
+Description: It's number number one.
 
-    Type: `number`
+Type: `number`
 
-    Default: `42`
+Default: `42`
 
-    === [[input_number-3]] <<input_number-3,number-3>>
+=== [[input_number-3]] <<input_number-3,number-3>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `number`
+Type: `number`
 
-    Default: `"19"`
+Default: `"19"`
 
-    === [[input_number-4]] <<input_number-4,number-4>>
+=== [[input_number-4]] <<input_number-4,number-4>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `number`
+Type: `number`
 
-    Default: `15.75`
+Default: `15.75`
 
-    === [[input_number_default_zero]] <<input_number_default_zero,number_default_zero>>
+=== [[input_number_default_zero]] <<input_number_default_zero,number_default_zero>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `number`
+Type: `number`
 
-    Default: `0`
+Default: `0`
 
-    === [[input_object_default_empty]] <<input_object_default_empty,object_default_empty>>
+=== [[input_object_default_empty]] <<input_object_default_empty,object_default_empty>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `object({})`
+Type: `object({})`
 
-    Default: `{}`
+Default: `{}`
 
-    === [[input_string-1]] <<input_string-1,string-1>>
+=== [[input_string-1]] <<input_string-1,string-1>>
 
-    Description: It's string number one.
+Description: It's string number one.
 
-    Type: `string`
+Type: `string`
 
-    Default: `"bar"`
+Default: `"bar"`
 
-    === [[input_string-3]] <<input_string-3,string-3>>
+=== [[input_string-3]] <<input_string-3,string-3>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `""`
+Default: `""`
 
-    === [[input_string-special-chars]] <<input_string-special-chars,string-special-chars>>
+=== [[input_string-special-chars]] <<input_string-special-chars,string-special-chars>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `"\\.<>[]{}_-"`
+Default: `"\\.<>[]{}_-"`
 
-    === [[input_string_default_empty]] <<input_string_default_empty,string_default_empty>>
+=== [[input_string_default_empty]] <<input_string_default_empty,string_default_empty>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `""`
+Default: `""`
 
-    === [[input_string_default_null]] <<input_string_default_null,string_default_null>>
+=== [[input_string_default_null]] <<input_string_default_null,string_default_null>>
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `null`
+Default: `null`
 
-    === [[input_with-url]] <<input_with-url,with-url>>
+=== [[input_with-url]] <<input_with-url,with-url>>
 
-    Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+Description: The description contains url. https://www.domain.com/foo/bar_baz.html
 
-    Type: `string`
+Type: `string`
 
-    Default: `""`
+Default: `""`
 
-    == Outputs
+== Outputs
 
-    The following outputs are exported:
+The following outputs are exported:
 
-    === [[output_output-0.12]] <<output_output-0.12,output-0.12>>
+=== [[output_output-0.12]] <<output_output-0.12,output-0.12>>
 
-    Description: terraform 0.12 only
+Description: terraform 0.12 only
 
-    === [[output_output-1]] <<output_output-1,output-1>>
+=== [[output_output-1]] <<output_output-1,output-1>>
 
-    Description: It's output number one.
+Description: It's output number one.
 
-    === [[output_output-2]] <<output_output-2,output-2>>
+=== [[output_output-2]] <<output_output-2,output-2>>
 
-    Description: It's output number two.
+Description: It's output number two.
 
-    === [[output_unquoted]] <<output_unquoted,unquoted>>
+=== [[output_unquoted]] <<output_unquoted,unquoted>>
 
-    Description: It's unquoted output.
+Description: It's unquoted output.
 
-    ## This is an example of a footer
+## This is an example of a footer
 
-    It looks exactly like a header, but is placed at the end of the document
+It looks exactly like a header, but is placed at the end of the document
+````
 
-[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+[testdata]: https://github.com/terraform-docs/terraform-docs/tree/master/testdata

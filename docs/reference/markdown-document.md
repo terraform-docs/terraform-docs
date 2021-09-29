@@ -55,439 +55,441 @@ terraform-docs markdown document [PATH] [flags]
 
 ## Example
 
-Given the [`examples`][examples] module:
+Given the [`testdata`][testdata] module:
 
 ```shell
-terraform-docs markdown document --footer-from footer.md ./examples/
+terraform-docs markdown document --footer-from footer.md ./testdata/
 ```
 
 generates the following output:
 
-    Usage:
+````text
+Usage:
 
-    Example of 'foo\_bar' module in `foo_bar.tf`.
+Example of 'foo\_bar' module in `foo_bar.tf`.
 
-    - list item 1
-    - list item 2
+- list item 1
+- list item 2
 
-    Even inline **formatting** in _here_ is possible.
-    and some [link](https://domain.com/)
+Even inline **formatting** in _here_ is possible.
+and some [link](https://domain.com/)
 
-    * list item 3
-    * list item 4
+* list item 3
+* list item 4
 
-    ```hcl
-    module "foo_bar" {
-      source = "github.com/foo/bar"
+```hcl
+module "foo_bar" {
+  source = "github.com/foo/bar"
 
-      id   = "1234567890"
-      name = "baz"
+  id   = "1234567890"
+  name = "baz"
 
-      zones = ["us-east-1", "us-west-1"]
+  zones = ["us-east-1", "us-west-1"]
 
-      tags = {
-        Name         = "baz"
-        Created-By   = "first.last@email.com"
-        Date-Created = "20180101"
-      }
-    }
-    ```
+  tags = {
+    Name         = "baz"
+    Created-By   = "first.last@email.com"
+    Date-Created = "20180101"
+  }
+}
+```
 
-    Here is some trailing text after code block,
-    followed by another line of text.
+Here is some trailing text after code block,
+followed by another line of text.
 
-    | Name | Description     |
-    |------|-----------------|
-    | Foo  | Foo description |
-    | Bar  | Bar description |
+| Name | Description     |
+|------|-----------------|
+| Foo  | Foo description |
+| Bar  | Bar description |
 
-    ## Requirements
+## Requirements
 
-    The following requirements are needed by this module:
+The following requirements are needed by this module:
 
-    - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 0.12)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 0.12)
 
-    - <a name="requirement_aws"></a> [aws](#requirement\_aws) (>= 2.15.0)
+- <a name="requirement_aws"></a> [aws](#requirement\_aws) (>= 2.15.0)
 
-    - <a name="requirement_foo"></a> [foo](#requirement\_foo) (>= 1.0)
+- <a name="requirement_foo"></a> [foo](#requirement\_foo) (>= 1.0)
 
-    - <a name="requirement_random"></a> [random](#requirement\_random) (>= 2.2.0)
+- <a name="requirement_random"></a> [random](#requirement\_random) (>= 2.2.0)
 
-    ## Providers
+## Providers
 
-    The following providers are used by this module:
+The following providers are used by this module:
 
-    - <a name="provider_aws"></a> [aws](#provider\_aws) (>= 2.15.0)
+- <a name="provider_aws"></a> [aws](#provider\_aws) (>= 2.15.0)
 
-    - <a name="provider_aws.ident"></a> [aws.ident](#provider\_aws.ident) (>= 2.15.0)
+- <a name="provider_aws.ident"></a> [aws.ident](#provider\_aws.ident) (>= 2.15.0)
 
-    - <a name="provider_foo"></a> [foo](#provider\_foo) (>= 1.0)
+- <a name="provider_foo"></a> [foo](#provider\_foo) (>= 1.0)
 
-    - <a name="provider_null"></a> [null](#provider\_null)
+- <a name="provider_null"></a> [null](#provider\_null)
 
-    - <a name="provider_tls"></a> [tls](#provider\_tls)
+- <a name="provider_tls"></a> [tls](#provider\_tls)
 
-    ## Modules
+## Modules
 
-    The following Modules are called:
+The following Modules are called:
 
-    ### <a name="module_bar"></a> [bar](#module\_bar)
+### <a name="module_bar"></a> [bar](#module\_bar)
 
-    Source: baz
+Source: baz
 
-    Version: 4.5.6
+Version: 4.5.6
 
-    ### <a name="module_baz"></a> [baz](#module\_baz)
+### <a name="module_baz"></a> [baz](#module\_baz)
 
-    Source: baz
+Source: baz
 
-    Version: 4.5.6
+Version: 4.5.6
 
-    ### <a name="module_foo"></a> [foo](#module\_foo)
+### <a name="module_foo"></a> [foo](#module\_foo)
 
-    Source: bar
+Source: bar
 
-    Version: 1.2.3
+Version: 1.2.3
 
-    ### <a name="module_foobar"></a> [foobar](#module\_foobar)
+### <a name="module_foobar"></a> [foobar](#module\_foobar)
 
-    Source: git@github.com:module/path
+Source: git@github.com:module/path
 
-    Version: v7.8.9
+Version: v7.8.9
 
-    ## Resources
+## Resources
 
-    The following resources are used by this module:
+The following resources are used by this module:
 
-    - foo_resource.baz (resource)
-    - [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) (resource)
-    - [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) (resource)
-    - [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)
-    - [aws_caller_identity.ident](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)
+- foo_resource.baz (resource)
+- [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) (resource)
+- [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) (resource)
+- [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)
+- [aws_caller_identity.ident](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)
 
-    ## Required Inputs
+## Required Inputs
 
-    The following input variables are required:
+The following input variables are required:
 
-    ### <a name="input_input_with_underscores"></a> [input\_with\_underscores](#input\_input\_with\_underscores)
+### <a name="input_input_with_underscores"></a> [input\_with\_underscores](#input\_input\_with\_underscores)
 
-    Description: A variable with underscores.
+Description: A variable with underscores.
 
-    Type: `any`
+Type: `any`
 
-    ### <a name="input_list-2"></a> [list-2](#input\_list-2)
+### <a name="input_list-2"></a> [list-2](#input\_list-2)
 
-    Description: It's list number two.
+Description: It's list number two.
 
-    Type: `list`
+Type: `list`
 
-    ### <a name="input_map-2"></a> [map-2](#input\_map-2)
+### <a name="input_map-2"></a> [map-2](#input\_map-2)
 
-    Description: It's map number two.
+Description: It's map number two.
 
-    Type: `map`
+Type: `map`
 
-    ### <a name="input_number-2"></a> [number-2](#input\_number-2)
+### <a name="input_number-2"></a> [number-2](#input\_number-2)
 
-    Description: It's number number two.
+Description: It's number number two.
 
-    Type: `number`
+Type: `number`
 
-    ### <a name="input_string-2"></a> [string-2](#input\_string-2)
+### <a name="input_string-2"></a> [string-2](#input\_string-2)
 
-    Description: It's string number two.
+Description: It's string number two.
 
-    Type: `string`
+Type: `string`
 
-    ### <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default)
+### <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default)
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    ### <a name="input_unquoted"></a> [unquoted](#input\_unquoted)
+### <a name="input_unquoted"></a> [unquoted](#input\_unquoted)
 
-    Description: n/a
+Description: n/a
 
-    Type: `any`
+Type: `any`
 
-    ## Optional Inputs
+## Optional Inputs
 
-    The following input variables are optional (have default values):
+The following input variables are optional (have default values):
 
-    ### <a name="input_bool-1"></a> [bool-1](#input\_bool-1)
+### <a name="input_bool-1"></a> [bool-1](#input\_bool-1)
 
-    Description: It's bool number one.
+Description: It's bool number one.
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `true`
+Default: `true`
 
-    ### <a name="input_bool-2"></a> [bool-2](#input\_bool-2)
+### <a name="input_bool-2"></a> [bool-2](#input\_bool-2)
 
-    Description: It's bool number two.
+Description: It's bool number two.
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `false`
+Default: `false`
 
-    ### <a name="input_bool-3"></a> [bool-3](#input\_bool-3)
+### <a name="input_bool-3"></a> [bool-3](#input\_bool-3)
 
-    Description: n/a
+Description: n/a
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `true`
+Default: `true`
 
-    ### <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false)
+### <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false)
 
-    Description: n/a
+Description: n/a
 
-    Type: `bool`
+Type: `bool`
 
-    Default: `false`
+Default: `false`
 
-    ### <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block)
+### <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block)
 
-    Description: This is a complicated one. We need a newline.  
-    And an example in a code block
-    ```
-    default     = [
-      "machine rack01:neptune"
-    ]
-    ```
+Description: This is a complicated one. We need a newline.  
+And an example in a code block
+```
+default     = [
+  "machine rack01:neptune"
+]
+```
 
-    Type: `list`
+Type: `list`
 
-    Default:
+Default:
 
-    ```json
-    [
-      "name rack:location"
-    ]
-    ```
+```json
+[
+  "name rack:location"
+]
+```
 
-    ### <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe)
+### <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe)
 
-    Description: It includes v1 | v2 | v3
+Description: It includes v1 | v2 | v3
 
-    Type: `string`
+Type: `string`
 
-    Default: `"v1"`
+Default: `"v1"`
 
-    ### <a name="input_list-1"></a> [list-1](#input\_list-1)
+### <a name="input_list-1"></a> [list-1](#input\_list-1)
 
-    Description: It's list number one.
+Description: It's list number one.
 
-    Type: `list`
+Type: `list`
 
-    Default:
+Default:
 
-    ```json
-    [
-      "a",
-      "b",
-      "c"
-    ]
-    ```
+```json
+[
+  "a",
+  "b",
+  "c"
+]
+```
 
-    ### <a name="input_list-3"></a> [list-3](#input\_list-3)
+### <a name="input_list-3"></a> [list-3](#input\_list-3)
 
-    Description: n/a
+Description: n/a
 
-    Type: `list`
+Type: `list`
 
-    Default: `[]`
+Default: `[]`
 
-    ### <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty)
+### <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty)
 
-    Description: n/a
+Description: n/a
 
-    Type: `list(string)`
+Type: `list(string)`
 
-    Default: `[]`
+Default: `[]`
 
-    ### <a name="input_long_type"></a> [long\_type](#input\_long\_type)
+### <a name="input_long_type"></a> [long\_type](#input\_long\_type)
 
-    Description: This description is itself markdown.
+Description: This description is itself markdown.
 
-    It spans over multiple lines.
+It spans over multiple lines.
 
-    Type:
+Type:
 
-    ```hcl
-    object({
-        name = string,
-        foo  = object({ foo = string, bar = string }),
-        bar  = object({ foo = string, bar = string }),
-        fizz = list(string),
-        buzz = list(string)
-      })
-    ```
+```hcl
+object({
+    name = string,
+    foo  = object({ foo = string, bar = string }),
+    bar  = object({ foo = string, bar = string }),
+    fizz = list(string),
+    buzz = list(string)
+  })
+```
 
-    Default:
+Default:
 
-    ```json
-    {
-      "bar": {
-        "bar": "bar",
-        "foo": "bar"
-      },
-      "buzz": [
-        "fizz",
-        "buzz"
-      ],
-      "fizz": [],
-      "foo": {
-        "bar": "foo",
-        "foo": "foo"
-      },
-      "name": "hello"
-    }
-    ```
+```json
+{
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+```
 
-    ### <a name="input_map-1"></a> [map-1](#input\_map-1)
+### <a name="input_map-1"></a> [map-1](#input\_map-1)
 
-    Description: It's map number one.
+Description: It's map number one.
 
-    Type: `map`
+Type: `map`
 
-    Default:
+Default:
 
-    ```json
-    {
-      "a": 1,
-      "b": 2,
-      "c": 3
-    }
-    ```
+```json
+{
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+```
 
-    ### <a name="input_map-3"></a> [map-3](#input\_map-3)
+### <a name="input_map-3"></a> [map-3](#input\_map-3)
 
-    Description: n/a
+Description: n/a
 
-    Type: `map`
+Type: `map`
 
-    Default: `{}`
+Default: `{}`
 
-    ### <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value)
+### <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value)
 
-    Description: The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'.
+Description: The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'.
 
-    Type: `string`
+Type: `string`
 
-    Default: `"VALUE_WITH_UNDERSCORE"`
+Default: `"VALUE_WITH_UNDERSCORE"`
 
-    ### <a name="input_number-1"></a> [number-1](#input\_number-1)
+### <a name="input_number-1"></a> [number-1](#input\_number-1)
 
-    Description: It's number number one.
+Description: It's number number one.
 
-    Type: `number`
+Type: `number`
 
-    Default: `42`
+Default: `42`
 
-    ### <a name="input_number-3"></a> [number-3](#input\_number-3)
+### <a name="input_number-3"></a> [number-3](#input\_number-3)
 
-    Description: n/a
+Description: n/a
 
-    Type: `number`
+Type: `number`
 
-    Default: `"19"`
+Default: `"19"`
 
-    ### <a name="input_number-4"></a> [number-4](#input\_number-4)
+### <a name="input_number-4"></a> [number-4](#input\_number-4)
 
-    Description: n/a
+Description: n/a
 
-    Type: `number`
+Type: `number`
 
-    Default: `15.75`
+Default: `15.75`
 
-    ### <a name="input_number_default_zero"></a> [number\_default\_zero](#input\_number\_default\_zero)
+### <a name="input_number_default_zero"></a> [number\_default\_zero](#input\_number\_default\_zero)
 
-    Description: n/a
+Description: n/a
 
-    Type: `number`
+Type: `number`
 
-    Default: `0`
+Default: `0`
 
-    ### <a name="input_object_default_empty"></a> [object\_default\_empty](#input\_object\_default\_empty)
+### <a name="input_object_default_empty"></a> [object\_default\_empty](#input\_object\_default\_empty)
 
-    Description: n/a
+Description: n/a
 
-    Type: `object({})`
+Type: `object({})`
 
-    Default: `{}`
+Default: `{}`
 
-    ### <a name="input_string-1"></a> [string-1](#input\_string-1)
+### <a name="input_string-1"></a> [string-1](#input\_string-1)
 
-    Description: It's string number one.
+Description: It's string number one.
 
-    Type: `string`
+Type: `string`
 
-    Default: `"bar"`
+Default: `"bar"`
 
-    ### <a name="input_string-3"></a> [string-3](#input\_string-3)
+### <a name="input_string-3"></a> [string-3](#input\_string-3)
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `""`
+Default: `""`
 
-    ### <a name="input_string-special-chars"></a> [string-special-chars](#input\_string-special-chars)
+### <a name="input_string-special-chars"></a> [string-special-chars](#input\_string-special-chars)
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `"\\.<>[]{}_-"`
+Default: `"\\.<>[]{}_-"`
 
-    ### <a name="input_string_default_empty"></a> [string\_default\_empty](#input\_string\_default\_empty)
+### <a name="input_string_default_empty"></a> [string\_default\_empty](#input\_string\_default\_empty)
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `""`
+Default: `""`
 
-    ### <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null)
+### <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null)
 
-    Description: n/a
+Description: n/a
 
-    Type: `string`
+Type: `string`
 
-    Default: `null`
+Default: `null`
 
-    ### <a name="input_with-url"></a> [with-url](#input\_with-url)
+### <a name="input_with-url"></a> [with-url](#input\_with-url)
 
-    Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+Description: The description contains url. https://www.domain.com/foo/bar_baz.html
 
-    Type: `string`
+Type: `string`
 
-    Default: `""`
+Default: `""`
 
-    ## Outputs
+## Outputs
 
-    The following outputs are exported:
+The following outputs are exported:
 
-    ### <a name="output_output-0.12"></a> [output-0.12](#output\_output-0.12)
+### <a name="output_output-0.12"></a> [output-0.12](#output\_output-0.12)
 
-    Description: terraform 0.12 only
+Description: terraform 0.12 only
 
-    ### <a name="output_output-1"></a> [output-1](#output\_output-1)
+### <a name="output_output-1"></a> [output-1](#output\_output-1)
 
-    Description: It's output number one.
+Description: It's output number one.
 
-    ### <a name="output_output-2"></a> [output-2](#output\_output-2)
+### <a name="output_output-2"></a> [output-2](#output\_output-2)
 
-    Description: It's output number two.
+Description: It's output number two.
 
-    ### <a name="output_unquoted"></a> [unquoted](#output\_unquoted)
+### <a name="output_unquoted"></a> [unquoted](#output\_unquoted)
 
-    Description: It's unquoted output.
+Description: It's unquoted output.
 
-    ## This is an example of a footer
+## This is an example of a footer
 
-    It looks exactly like a header, but is placed at the end of the document
+It looks exactly like a header, but is placed at the end of the document
+````
 
-[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+[testdata]: https://github.com/terraform-docs/terraform-docs/tree/master/testdata
