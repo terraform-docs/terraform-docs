@@ -13,7 +13,8 @@
       "provider": "foo",
       "source": "https://registry.acme.com/foo",
       "mode": "managed",
-      "version": "latest"
+      "version": "latest",
+      "description": null
     },
     {
       "type": "resource",
@@ -21,7 +22,8 @@
       "provider": "null",
       "source": "hashicorp/null",
       "mode": "managed",
-      "version": "latest"
+      "version": "latest",
+      "description": null
     },
     {
       "type": "private_key",
@@ -29,7 +31,8 @@
       "provider": "tls",
       "source": "hashicorp/tls",
       "mode": "managed",
-      "version": "latest"
+      "version": "latest",
+      "description": "this description for tls_private_key.baz which can be multiline."
     }
   ]
 }

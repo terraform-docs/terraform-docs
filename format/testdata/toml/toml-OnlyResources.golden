@@ -13,6 +13,7 @@ requirements = []
   source = "https://registry.acme.com/foo"
   mode = "managed"
   version = "latest"
+  description = ""
 
 [[resources]]
   type = "resource"
@@ -21,6 +22,7 @@ requirements = []
   source = "hashicorp/null"
   mode = "managed"
   version = "latest"
+  description = ""
 
 [[resources]]
   type = "private_key"
@@ -29,3 +31,4 @@ requirements = []
   source = "hashicorp/tls"
   mode = "managed"
   version = "latest"
+  description = "this description for tls_private_key.baz which can be multiline."

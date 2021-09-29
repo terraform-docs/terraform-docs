@@ -14,6 +14,7 @@
       <source>hashicorp/aws</source>
       <mode>data</mode>
       <version>latest</version>
+      <description xsi:nil="true"></description>
     </resource>
     <resource>
       <type>caller_identity</type>
@@ -22,6 +23,7 @@
       <source>hashicorp/aws</source>
       <mode>data</mode>
       <version>latest</version>
+      <description xsi:nil="true"></description>
     </resource>
   </resources>
 </module>

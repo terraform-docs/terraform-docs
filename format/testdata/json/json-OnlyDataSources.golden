@@ -13,7 +13,8 @@
       "provider": "aws",
       "source": "hashicorp/aws",
       "mode": "data",
-      "version": "latest"
+      "version": "latest",
+      "description": null
     },
     {
       "type": "caller_identity",
@@ -21,7 +22,8 @@
       "provider": "aws",
       "source": "hashicorp/aws",
       "mode": "data",
-      "version": "latest"
+      "version": "latest",
+      "description": null
     }
   ]
 }

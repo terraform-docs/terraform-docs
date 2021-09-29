@@ -66,14 +66,14 @@ func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, 
 	}
 
 	inputs, required, optional := loadInputs(tfmodule, config)
-	modulecalls := loadModulecalls(tfmodule)
+	modulecalls := loadModulecalls(tfmodule, config)
 	outputs, err := loadOutputs(tfmodule, config)
 	if err != nil {
 		return nil, err
 	}
 	providers := loadProviders(tfmodule, config)
 	requirements := loadRequirements(tfmodule)
-	resources := loadResources(tfmodule)
+	resources := loadResources(tfmodule, config)
 
 	return &Module{
 		Header:       header,
@@ -241,16 +241,23 @@ func formatSource(s, v string) (source, version string) {
 	return source, version
 }
 
-func loadModulecalls(tfmodule *tfconfig.Module) []*ModuleCall {
+func loadModulecalls(tfmodule *tfconfig.Module, config *print.Config) []*ModuleCall {
 	var modules = make([]*ModuleCall, 0)
 	var source, version string
 
 	for _, m := range tfmodule.ModuleCalls {
 		source, version = formatSource(m.Source, m.Version)
+
+		description := ""
+		if config.Settings.ReadComments {
+			description = loadComments(m.Pos.Filename, m.Pos.Line)
+		}
+
 		modules = append(modules, &ModuleCall{
-			Name:    m.Name,
-			Source:  source,
-			Version: version,
+			Name:        m.Name,
+			Source:      source,
+			Version:     version,
+			Description: types.String(description),
 			Position: Position{
 				Filename: m.Pos.Filename,
 				Line:     m.Pos.Line,
@@ -275,6 +282,7 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 		if description == "" && config.Settings.ReadComments {
 			description = loadComments(o.Pos.Filename, o.Pos.Line)
 		}
+
 		output := &Output{
 			Name:        o.Name,
 			Description: types.String(description),
@@ -284,6 +292,7 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 			},
 			ShowValue: config.OutputValues.Enabled,
 		}
+
 		if config.OutputValues.Enabled {
 			output.Sensitive = values[output.Name].Sensitive
 			if values[output.Name].Sensitive {
@@ -401,7 +410,7 @@ func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
 	return requirements
 }
 
-func loadResources(tfmodule *tfconfig.Module) []*Resource {
+func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource {
 	allResources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
 	discovered := make(map[string]*Resource)
 
@@ -421,6 +430,12 @@ func loadResources(tfmodule *tfconfig.Module) []*Resource {
 
 			rType := strings.TrimPrefix(r.Type, r.Provider.Name+"_")
 			key := fmt.Sprintf("%s.%s.%s.%s", r.Provider.Name, r.Mode, rType, r.Name)
+
+			description := ""
+			if config.Settings.ReadComments {
+				description = loadComments(r.Pos.Filename, r.Pos.Line)
+			}
+
 			discovered[key] = &Resource{
 				Type:           rType,
 				Name:           r.Name,
@@ -428,6 +443,7 @@ func loadResources(tfmodule *tfconfig.Module) []*Resource {
 				ProviderName:   r.Provider.Name,
 				ProviderSource: source,
 				Version:        types.String(version),
+				Description:    types.String(description),
 				Position: Position{
 					Filename: r.Pos.Filename,
 					Line:     r.Pos.Line,
