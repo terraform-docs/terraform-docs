@@ -1,13 +1,21 @@
-# # see: https://terraform-docs.io/user-guide/configuration/#version
+# # see: https://terraform-docs.io/user-guide/configuration/version
 # version: ">= 0.10, < 0.12"
 
-# see: https://terraform-docs.io/user-guide/configuration/#formatters
+# see: https://terraform-docs.io/user-guide/configuration/formatter
 formatter: markdown table
 
+# see: https://terraform-docs.io/user-guide/configuration/header-from
 header-from: doc.txt
+
+# see: https://terraform-docs.io/user-guide/configuration/footer-from
 footer-from: footer.md
 
-# see: https://terraform-docs.io/user-guide/configuration/#sections
+# see: https://terraform-docs.io/user-guide/configuration/recursive
+# recursive:
+#   enabled: false
+#   path: modules
+
+# see: https://terraform-docs.io/user-guide/configuration/sections
 sections:
   show:
     - header
@@ -16,7 +24,7 @@ sections:
     - modules
     - footer
 
-# # see: https://terraform-docs.io/user-guide/configuration/#content
+# # see: https://terraform-docs.io/user-guide/configuration/content
 # content: |-
 #   Any arbitrary text can be placed anywhere in the content
 #
@@ -38,7 +46,7 @@ sections:
 #
 #   {{ .Inputs }}
 
-# # see: https://terraform-docs.io/user-guide/configuration/#output
+# # see: https://terraform-docs.io/user-guide/configuration/output
 # output:
 #   file: README.md
 #   mode: inject
@@ -53,11 +61,17 @@ sections:
 #     You can also show something after it!
 #     <!-- END_TF_DOCS -->
 
-# see: https://terraform-docs.io/user-guide/configuration/#sort
+# see: https://terraform-docs.io/user-guide/configuration/sort
 sort:
   enabled: true
   by: required
 
+# # https://terraform-docs.io/user-guide/configuration/output-values/
+# output-values:
+#   enabled: false
+#   from: ""
+
+# see: https://terraform-docs.io/user-guide/configuration/settings
 settings:
   indent: 4
   escape: false

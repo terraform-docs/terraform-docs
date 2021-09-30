@@ -71,8 +71,15 @@ func (r *Runtime) PreRunEFunc(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("value of '--config' can't be empty")
 	}
 
-	// attempt to read config file and override them with corresponding flags
-	if err := r.readConfig(r.config, ""); err != nil {
+	// read config file and override them with corresponding flags
+	v := viper.New()
+
+	if err := r.readConfig(v, r.config.File, ""); err != nil {
+		return err
+	}
+
+	// and override them with corresponding flags
+	if err := r.unmarshalConfig(v, r.config); err != nil {
 		return err
 	}
 
@@ -95,7 +102,7 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
 	// Generating content recursively is only allowed when `config.Output.File`
 	// is set. Otherwise it would be impossible to distinguish where output of
 	// one module ends and the other begin, if content is outpput to stdout.
-	if r.config.Recursive && r.config.RecursivePath != "" {
+	if r.config.Recursive.Enabled && r.config.Recursive.Path != "" {
 		items, err := r.findSubmodules()
 		if err != nil {
 			return err
@@ -120,7 +127,7 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		if r.config.Recursive && cfg.Output.File == "" {
+		if r.config.Recursive.Enabled && cfg.Output.File == "" {
 			return fmt.Errorf("value of '--output-file' cannot be empty with '--recursive'")
 		}
 
@@ -135,11 +142,9 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
 // readConfig attempts to read config file, either default `.terraform-docs.yml`
 // or provided file with `-c, --config` flag. It will then attempt to override
 // them with corresponding flags (if set).
-func (r *Runtime) readConfig(config *print.Config, submoduleDir string) error {
-	v := viper.New()
-
+func (r *Runtime) readConfig(v *viper.Viper, file string, submoduleDir string) error {
 	if r.isFlagChanged("config") {
-		v.SetConfigFile(config.File)
+		v.SetConfigFile(file)
 	} else {
 		v.SetConfigName(".terraform-docs")
 		v.SetConfigType("yml")
@@ -159,7 +164,7 @@ func (r *Runtime) readConfig(config *print.Config, submoduleDir string) error {
 	if err := v.ReadInConfig(); err != nil {
 		var perr *os.PathError
 		if errors.As(err, &perr) {
-			return fmt.Errorf("config file %s not found", config.File)
+			return fmt.Errorf("config file %s not found", file)
 		}
 
 		var cerr viper.ConfigFileNotFoundError
@@ -174,6 +179,10 @@ func (r *Runtime) readConfig(config *print.Config, submoduleDir string) error {
 		}
 	}
 
+	return nil
+}
+
+func (r *Runtime) unmarshalConfig(v *viper.Viper, config *print.Config) error {
 	r.bindFlags(v)
 
 	if err := v.Unmarshal(config); err != nil {
@@ -188,7 +197,6 @@ func (r *Runtime) readConfig(config *print.Config, submoduleDir string) error {
 		config.Formatter = r.formatter
 	}
 
-	// TODO
 	config.Parse()
 
 	return nil
@@ -229,11 +237,27 @@ func (r *Runtime) bindFlags(v *viper.Viper) {
 	})
 }
 
+func (r *Runtime) mergeConfig(v *viper.Viper) (*print.Config, error) {
+	copy := *r.config
+	merged := &copy
+
+	if v.IsSet("sections.show") || v.IsSet("sections.hide") {
+		merged.Sections.Show = []string{}
+		merged.Sections.Hide = []string{}
+	}
+
+	if err := r.unmarshalConfig(v, merged); err != nil {
+		return nil, err
+	}
+
+	return merged, nil
+}
+
 // findSubmodules generates list of submodules in `rootDir/RecursivePath` if
 // `--recursive` flag is set. This keeps track of `.terraform-docs.yml` in any
 // of the submodules (if exists) to override the root configuration.
 func (r *Runtime) findSubmodules() ([]module, error) {
-	dir := filepath.Join(r.rootDir, r.config.RecursivePath)
+	dir := filepath.Join(r.rootDir, r.config.Recursive.Path)
 
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		return nil, err
@@ -257,9 +281,13 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 		cfgfile := filepath.Join(path, r.config.File)
 
 		if _, err := os.Stat(cfgfile); !os.IsNotExist(err) {
-			cfg = print.DefaultConfig()
+			v := viper.New()
 
-			if err := r.readConfig(cfg, path); err != nil {
+			if err = r.readConfig(v, cfgfile, path); err != nil {
+				return nil, err
+			}
+
+			if cfg, err = r.mergeConfig(v); err != nil {
 				return nil, err
 			}
 		}

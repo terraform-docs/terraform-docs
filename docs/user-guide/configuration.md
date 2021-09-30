@@ -76,6 +76,10 @@ version: ""
 header-from: main.tf
 footer-from: ""
 
+recursive:
+  enabled: false
+  path: modules
+
 sections:
   hide: []
   show: []

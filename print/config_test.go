@@ -561,8 +561,8 @@ func TestConfigValidate(t *testing.T) {
 		},
 		"RecursivePathEmpty": {
 			config: func(c *Config) {
-				c.Recursive = true
-				c.RecursivePath = ""
+				c.Recursive.Enabled = true
+				c.Recursive.Path = ""
 			},
 			wantErr: true,
 			errMsg:  "value of '--recursive-path' can't be empty",

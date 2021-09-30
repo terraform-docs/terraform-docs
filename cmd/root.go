@@ -60,8 +60,8 @@ func NewCommand() *cobra.Command {
 
 	// flags
 	cmd.PersistentFlags().StringVarP(&config.File, "config", "c", ".terraform-docs.yml", "config file name")
-	cmd.PersistentFlags().BoolVar(&config.Recursive, "recursive", false, "update submodules recursively (default false)")
-	cmd.PersistentFlags().StringVar(&config.RecursivePath, "recursive-path", "modules", "submodules path to recursively update")
+	cmd.PersistentFlags().BoolVar(&config.Recursive.Enabled, "recursive", false, "update submodules recursively (default false)")
+	cmd.PersistentFlags().StringVar(&config.Recursive.Path, "recursive-path", "modules", "submodules path to recursively update")
 
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+print.AllSections+"]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+print.AllSections+"]")
