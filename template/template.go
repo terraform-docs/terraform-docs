@@ -209,6 +209,17 @@ func builtinFuncs(config *print.Config) gotemplate.FuncMap { // nolint:gocyclo
 		"anchorNameAsciidoc": func(prefix string, value string) string {
 			return CreateAnchorAsciidoc(prefix, value, config.Settings.Anchor, config.Settings.Escape)
 		},
+
+		// resolving module urls
+		"moduleURL": func(s string) string {
+			if strings.HasPrefix(s, "git@") {
+				patched := strings.TrimPrefix(s, "git@")
+				patched = strings.Replace(patched, ":", "/", 1)
+				return "https://" + patched
+			} else {
+				return s
+			}
+		},
 	}
 }
 
