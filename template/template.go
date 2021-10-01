@@ -212,13 +212,13 @@ func builtinFuncs(config *print.Config) gotemplate.FuncMap { // nolint:gocyclo
 
 		// resolving module urls
 		"moduleURL": func(s string) string {
-			if strings.HasPrefix(s, "git@") {
-				patched := strings.TrimPrefix(s, "git@")
-				patched = strings.Replace(patched, ":", "/", 1)
-				return "https://" + patched
-			} else {
+			if !strings.HasPrefix(s, "git@") {
 				return s
 			}
+
+			patched := strings.TrimPrefix(s, "git@")
+			patched = strings.Replace(patched, ":", "/", 1)
+			return "https://" + patched
 		},
 	}
 }
