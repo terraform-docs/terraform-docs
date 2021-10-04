@@ -26,7 +26,7 @@ var prettyTpl []byte
 
 // pretty represents colorized pretty format.
 type pretty struct {
-	*print.Generator
+	*generator
 
 	config   *print.Config
 	template *template.Template
@@ -50,7 +50,7 @@ func NewPretty(config *print.Config) Type {
 	})
 
 	return &pretty{
-		Generator: print.NewGenerator("pretty", config.ModuleRoot),
+		generator: newGenerator(config, true),
 		config:    config,
 		template:  tt,
 	}
@@ -63,7 +63,8 @@ func (p *pretty) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	p.Generator.Funcs(print.WithContent(regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, "")))
+	p.generator.funcs(withContent(regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, "")))
+	p.generator.funcs(withModule(module))
 
 	return nil
 }

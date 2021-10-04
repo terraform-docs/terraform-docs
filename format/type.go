@@ -32,7 +32,7 @@ type Type interface {
 	Requirements() string // requirements section based on the underlying format
 	Resources() string    // resources section based on the underlying format
 
-	ExecuteTemplate(contentTmpl string) (string, error)
+	Render(tmpl string) (string, error)
 }
 
 // initializerFn returns a concrete implementation of an Engine.

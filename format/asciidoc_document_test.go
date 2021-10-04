@@ -153,10 +153,7 @@ func TestAsciidocDocument(t *testing.T) {
 			err = formatter.Generate(module)
 			assert.Nil(err)
 
-			actual, err := formatter.ExecuteTemplate("")
-
-			assert.Nil(err)
-			assert.Equal(expected, actual)
+			assert.Equal(expected, formatter.Content())
 		})
 	}
 }

@@ -8,128 +8,80 @@ You may obtain a copy of the License at the LICENSE file in
 the root directory of this source tree.
 */
 
-package print
+package format
 
 import (
+	"io/ioutil"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/terraform-docs/terraform-docs/terraform"
 )
-
-func TestIsCompatible(t *testing.T) {
-	tests := map[string]struct {
-		expected bool
-	}{
-		"asciidoc document": {
-			expected: true,
-		},
-		"asciidoc table": {
-			expected: true,
-		},
-		"markdown document": {
-			expected: true,
-		},
-		"markdown table": {
-			expected: true,
-		},
-		"markdown": {
-			expected: false,
-		},
-		"markdown-table": {
-			expected: false,
-		},
-		"md": {
-			expected: false,
-		},
-		"md tbl": {
-			expected: false,
-		},
-		"md-tbl": {
-			expected: false,
-		},
-		"json": {
-			expected: false,
-		},
-		"yaml": {
-			expected: false,
-		},
-		"xml": {
-			expected: false,
-		},
-	}
-	for name, tt := range tests {
-		t.Run(name, func(t *testing.T) {
-			assert := assert.New(t)
-
-			generator := NewGenerator(name, "")
-			actual := generator.isCompatible()
-
-			assert.Equal(tt.expected, actual)
-		})
-	}
-}
 
 func TestExecuteTemplate(t *testing.T) {
 	header := "this is the header"
 	footer := "this is the footer"
 	tests := map[string]struct {
-		name     string
+		complex  bool
 		content  string
 		template string
 		expected string
 		wantErr  bool
 	}{
 		"Compatible without template": {
-			name:     "markdown table",
+			complex:  true,
 			content:  "this is the header\nthis is the footer",
 			template: "",
 			expected: "this is the header\nthis is the footer",
 			wantErr:  false,
 		},
 		"Compatible with template not empty section": {
-			name:     "markdown table",
+			complex:  true,
 			content:  "this is the header\nthis is the footer",
 			template: "{{ .Header }}",
 			expected: "this is the header",
 			wantErr:  false,
 		},
 		"Compatible with template empty section": {
-			name:     "markdown table",
+			complex:  true,
 			content:  "this is the header\nthis is the footer",
 			template: "{{ .Inputs }}",
 			expected: "",
 			wantErr:  false,
 		},
 		"Compatible with template and unknown section": {
-			name:     "markdown table",
+			complex:  true,
 			content:  "this is the header\nthis is the footer",
 			template: "{{ .Unknown }}",
 			expected: "",
 			wantErr:  true,
 		},
 		"Compatible with template include file": {
-			name:     "markdown table",
+			complex:  true,
 			content:  "this is the header\nthis is the footer",
-			template: "{{ include \"testdata/sample-file.txt\" }}",
-			expected: "Sample file to be included.\n",
+			template: "{{ include \"testdata/generator/sample-file.txt\" }}",
+			expected: "Sample file to be included.",
 			wantErr:  false,
 		},
 		"Compatible with template include unknown file": {
-			name:     "markdown table",
+			complex:  true,
 			content:  "this is the header\nthis is the footer",
 			template: "{{ include \"file-not-found\" }}",
 			expected: "",
 			wantErr:  true,
 		},
 		"Incompatible without template": {
-			name:     "yaml",
+			complex:  false,
 			content:  "header: \"this is the header\"\nfooter: \"this is the footer\"",
 			template: "",
 			expected: "header: \"this is the header\"\nfooter: \"this is the footer\"",
 			wantErr:  false,
 		},
 		"Incompatible with template": {
-			name:     "yaml",
+			complex:  false,
 			content:  "header: \"this is the header\"\nfooter: \"this is the footer\"",
 			template: "{{ .Header }}",
 			expected: "header: \"this is the header\"\nfooter: \"this is the footer\"",
@@ -140,12 +92,14 @@ func TestExecuteTemplate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			generator := NewGenerator(tt.name, "")
+			config := print.DefaultConfig()
+
+			generator := newGenerator(config, tt.complex)
 			generator.content = tt.content
 			generator.header = header
 			generator.footer = footer
 
-			actual, err := generator.ExecuteTemplate(tt.template)
+			actual, err := generator.Render(tt.template)
 
 			if tt.wantErr {
 				assert.NotNil(err)
@@ -160,60 +114,92 @@ func TestExecuteTemplate(t *testing.T) {
 func TestGeneratorFunc(t *testing.T) {
 	text := "foo"
 	tests := map[string]struct {
-		fn     func(string) GenerateFunc
-		actual func(*Generator) string
+		fn     func(string) generateFunc
+		actual func(*generator) string
 	}{
-		"WithContent": {
-			fn:     WithContent,
-			actual: func(r *Generator) string { return r.content },
+		"withContent": {
+			fn:     withContent,
+			actual: func(r *generator) string { return r.content },
 		},
-		"WithHeader": {
-			fn:     WithHeader,
-			actual: func(r *Generator) string { return r.header },
+		"withHeader": {
+			fn:     withHeader,
+			actual: func(r *generator) string { return r.header },
 		},
-		"WithFooter": {
-			fn:     WithFooter,
-			actual: func(r *Generator) string { return r.footer },
+		"withFooter": {
+			fn:     withFooter,
+			actual: func(r *generator) string { return r.footer },
 		},
-		"WithInputs": {
-			fn:     WithInputs,
-			actual: func(r *Generator) string { return r.inputs },
+		"withInputs": {
+			fn:     withInputs,
+			actual: func(r *generator) string { return r.inputs },
 		},
-		"WithModules": {
-			fn:     WithModules,
-			actual: func(r *Generator) string { return r.modules },
+		"withModules": {
+			fn:     withModules,
+			actual: func(r *generator) string { return r.modules },
 		},
-		"WithOutputs": {
-			fn:     WithOutputs,
-			actual: func(r *Generator) string { return r.outputs },
+		"withOutputs": {
+			fn:     withOutputs,
+			actual: func(r *generator) string { return r.outputs },
 		},
-		"WithProviders": {
-			fn:     WithProviders,
-			actual: func(r *Generator) string { return r.providers },
+		"withProviders": {
+			fn:     withProviders,
+			actual: func(r *generator) string { return r.providers },
 		},
-		"WithRequirements": {
-			fn:     WithRequirements,
-			actual: func(r *Generator) string { return r.requirements },
+		"withRequirements": {
+			fn:     withRequirements,
+			actual: func(r *generator) string { return r.requirements },
 		},
-		"WithResources": {
-			fn:     WithResources,
-			actual: func(r *Generator) string { return r.resources },
+		"withResources": {
+			fn:     withResources,
+			actual: func(r *generator) string { return r.resources },
 		},
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			generator := NewGenerator(name, "", tt.fn(text))
+			config := print.DefaultConfig()
+			config.Sections.Footer = true
+
+			generator := newGenerator(config, false, tt.fn(text))
 
 			assert.Equal(text, tt.actual(generator))
 		})
 	}
 }
 
+func TestGeneratorFuncModule(t *testing.T) {
+	t.Run("withModule", func(t *testing.T) {
+		assert := assert.New(t)
+
+		config := print.DefaultConfig()
+		config.ModuleRoot = filepath.Join("..", "terraform", "testdata", "full-example")
+
+		module, err := terraform.LoadWithOptions(config)
+
+		assert.Nil(err)
+
+		generator := newGenerator(config, true, withModule(module))
+
+		path := filepath.Join("..", "terraform", "testdata", "expected", "full-example-mainTf-Header.golden")
+		data, err := ioutil.ReadFile(path)
+
+		assert.Nil(err)
+
+		expected := string(data)
+
+		assert.Equal(expected, generator.module.Header)
+		assert.Equal("", generator.module.Footer)
+		assert.Equal(7, len(generator.module.Inputs))
+		assert.Equal(3, len(generator.module.Outputs))
+	})
+}
+
 func TestForEach(t *testing.T) {
-	generator := NewGenerator("foo", "")
-	generator.ForEach(func(name string) (string, error) {
+	config := print.DefaultConfig()
+
+	generator := newGenerator(config, false)
+	generator.forEach(func(name string) (string, error) {
 		return name, nil
 	})
 

@@ -23,7 +23,7 @@ import (
 
 // tfvarsJSON represents Terraform tfvars JSON format.
 type tfvarsJSON struct {
-	*print.Generator
+	*generator
 
 	config *print.Config
 }
@@ -31,7 +31,7 @@ type tfvarsJSON struct {
 // NewTfvarsJSON returns new instance of TfvarsJSON.
 func NewTfvarsJSON(config *print.Config) Type {
 	return &tfvarsJSON{
-		Generator: print.NewGenerator("tfvars json", config.ModuleRoot),
+		generator: newGenerator(config, false),
 		config:    config,
 	}
 }
@@ -53,10 +53,9 @@ func (j *tfvarsJSON) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	j.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+	j.generator.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
 
 	return nil
-
 }
 
 func init() {

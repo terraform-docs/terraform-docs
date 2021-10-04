@@ -24,7 +24,7 @@ var markdownTableFS embed.FS
 
 // markdownTable represents Markdown Table format.
 type markdownTable struct {
-	*print.Generator
+	*generator
 
 	config   *print.Config
 	template *template.Template
@@ -50,7 +50,7 @@ func NewMarkdownTable(config *print.Config) Type {
 	})
 
 	return &markdownTable{
-		Generator: print.NewGenerator("markdown table", config.ModuleRoot),
+		generator: newGenerator(config, true),
 		config:    config,
 		template:  tt,
 	}
@@ -58,13 +58,15 @@ func NewMarkdownTable(config *print.Config) Type {
 
 // Generate a Terraform module as Markdown tables.
 func (t *markdownTable) Generate(module *terraform.Module) error {
-	err := t.Generator.ForEach(func(name string) (string, error) {
+	err := t.generator.forEach(func(name string) (string, error) {
 		rendered, err := t.template.Render(name, module)
 		if err != nil {
 			return "", err
 		}
 		return sanitize(rendered), nil
 	})
+
+	t.generator.funcs(withModule(module))
 
 	return err
 }

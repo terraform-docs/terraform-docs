@@ -29,18 +29,26 @@ will be ignored for other formatters.
 - `{{ .Requirements }}`
 - `{{ .Resources }}`
 
-and following functions:
-
-- `{{ include "relative/path/to/file" }}`
-
 These variables are the generated output of individual sections in the selected
 formatter. For example `{{ .Inputs }}` is Markdown Table representation of _inputs_
 when formatter is set to `markdown table`.
 
 {{< alert type="info" >}}
-Sections visibility (i.e. `sections.show` and `sections.hide`) takes
-precedence over the `content`.
+Sections visibility (i.e. `sections.show` and `sections.hide`) takes precedence
+over the `content`.
 {{< /alert >}}
+
+`content` also has the following function:
+
+- `{{ include "relative/path/to/file" }}`
+
+Additionally there's also one extra special variable avaialble to the `content`:
+
+- `{{ .Module }}`
+
+As opposed to the other variables mentioned above, which are generated sections
+based on a selected formatter, the `{{ .Module }}` variable is just a `struct`
+representing a [Terraform module].
 
 ## Options
 
@@ -93,7 +101,7 @@ content: |-
 ````
 
 In the following example, although `{{ .Providers }}` is defined it won't be
-rendered because `providers` is not set to be shown in `sections.show`.
+rendered because `providers` is not set to be shown in `sections.show`:
 
 ```yaml
 sections:
@@ -113,3 +121,16 @@ content: |-
 
   {{ .Outputs }}
 ```
+
+Building highly complex and highly customized content using `{{ .Module }}` struct:
+
+```yaml
+content: |-
+  ## Resources
+
+  {{ range .Module.Resources }}
+  - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
+  {{- end }}
+```
+
+[Terraform module]: https://pkg.go.dev/github.com/terraform-docs/terraform-docs/terraform#Module

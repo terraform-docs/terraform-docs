@@ -27,7 +27,7 @@ var tfvarsHCLTpl []byte
 
 // tfvarsHCL represents Terraform tfvars HCL format.
 type tfvarsHCL struct {
-	*print.Generator
+	*generator
 
 	config   *print.Config
 	template *template.Template
@@ -60,7 +60,7 @@ func NewTfvarsHCL(config *print.Config) Type {
 	})
 
 	return &tfvarsHCL{
-		Generator: print.NewGenerator("tfvars hcl", config.ModuleRoot),
+		generator: newGenerator(config, false),
 		config:    config,
 		template:  tt,
 	}
@@ -75,7 +75,7 @@ func (h *tfvarsHCL) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	h.Generator.Funcs(print.WithContent(strings.TrimSuffix(sanitize(rendered), "\n")))
+	h.generator.funcs(withContent(strings.TrimSuffix(sanitize(rendered), "\n")))
 
 	return nil
 }
