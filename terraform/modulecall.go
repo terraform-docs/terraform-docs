@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"sort"
 
-	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
 )
@@ -72,20 +71,4 @@ func (mm modulecalls) sort(enabled bool, by string) {
 			sortModulecallsByPosition(mm)
 		}
 	}
-}
-
-func (mm modulecalls) convert() []*terraformsdk.ModuleCall {
-	list := []*terraformsdk.ModuleCall{}
-	for _, m := range mm {
-		list = append(list, &terraformsdk.ModuleCall{
-			Name:    m.Name,
-			Source:  m.Source,
-			Version: m.Version,
-			Position: terraformsdk.Position{
-				Filename: m.Position.Filename,
-				Line:     m.Position.Line,
-			},
-		})
-	}
-	return list
 }

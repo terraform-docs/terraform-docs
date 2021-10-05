@@ -15,7 +15,6 @@ import (
 	"sort"
 	"strings"
 
-	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
@@ -86,24 +85,4 @@ type resources []*Resource
 func (rr resources) sort(enabled bool, by string) { //nolint:unparam
 	// always sort by type
 	sortResourcesByType(rr)
-}
-
-func (rr resources) convert() []*terraformsdk.Resource {
-	list := []*terraformsdk.Resource{}
-	for _, r := range rr {
-		list = append(list, &terraformsdk.Resource{
-			Type:           r.Type,
-			Name:           r.Name,
-			ProviderName:   r.ProviderName,
-			ProviderSource: r.ProviderSource,
-			Mode:           r.Mode,
-			Version:        fmt.Sprintf("%v", r.Version.Raw()),
-			Position: terraformsdk.Position{
-				Filename: r.Position.Filename,
-				Line:     r.Position.Line,
-			},
-		})
-	}
-
-	return list
 }

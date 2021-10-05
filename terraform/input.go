@@ -13,11 +13,9 @@ package terraform
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"sort"
 	"strings"
 
-	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
 )
@@ -109,22 +107,4 @@ func (ii inputs) sort(enabled bool, by string) {
 			sortInputsByPosition(ii)
 		}
 	}
-}
-
-func (ii inputs) convert() []*terraformsdk.Input {
-	list := []*terraformsdk.Input{}
-	for _, i := range ii {
-		list = append(list, &terraformsdk.Input{
-			Name:        i.Name,
-			Type:        fmt.Sprintf("%v", i.Type.Raw()),
-			Description: fmt.Sprintf("%v", i.Description.Raw()),
-			Default:     i.Default.Raw(),
-			Required:    i.Required,
-			Position: terraformsdk.Position{
-				Filename: i.Position.Filename,
-				Line:     i.Position.Line,
-			},
-		})
-	}
-	return list
 }

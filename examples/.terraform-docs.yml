@@ -2,7 +2,8 @@
 # version: ">= 0.10, < 0.12"
 
 # see: https://terraform-docs.io/user-guide/configuration/formatter
-formatter: markdown table
+# formatter: markdown table
+formatter: template
 
 # see: https://terraform-docs.io/user-guide/configuration/header-from
 header-from: doc.txt
