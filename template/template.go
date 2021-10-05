@@ -16,6 +16,8 @@ import (
 	"strings"
 	gotemplate "text/template"
 
+	sprig "github.com/Masterminds/sprig/v3"
+
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
@@ -131,7 +133,7 @@ func (t *Template) findByName(name string) *Item {
 }
 
 func builtinFuncs(config *print.Config) gotemplate.FuncMap { // nolint:gocyclo
-	return gotemplate.FuncMap{
+	fns := gotemplate.FuncMap{
 		"default": func(_default string, value string) string {
 			if value != "" {
 				return value
@@ -217,6 +219,14 @@ func builtinFuncs(config *print.Config) gotemplate.FuncMap { // nolint:gocyclo
 			return CreateAnchorAsciidoc(prefix, value, config.Settings.Anchor, config.Settings.Escape)
 		},
 	}
+
+	for name, fn := range sprig.FuncMap() {
+		if _, found := fns[name]; !found {
+			fns[name] = fn
+		}
+	}
+
+	return fns
 }
 
 // normalize the template and remove any space from all the lines. This makes
