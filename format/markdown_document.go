@@ -24,7 +24,7 @@ var markdownDocumentFS embed.FS
 
 // markdownDocument represents Markdown Document format.
 type markdownDocument struct {
-	*print.Generator
+	*generator
 
 	config   *print.Config
 	template *template.Template
@@ -59,7 +59,7 @@ func NewMarkdownDocument(config *print.Config) Type {
 	})
 
 	return &markdownDocument{
-		Generator: print.NewGenerator("json", config.ModuleRoot),
+		generator: newGenerator(config, true),
 		config:    config,
 		template:  tt,
 	}
@@ -67,13 +67,15 @@ func NewMarkdownDocument(config *print.Config) Type {
 
 // Generate a Terraform module as Markdown document.
 func (d *markdownDocument) Generate(module *terraform.Module) error {
-	err := d.Generator.ForEach(func(name string) (string, error) {
+	err := d.generator.forEach(func(name string) (string, error) {
 		rendered, err := d.template.Render(name, module)
 		if err != nil {
 			return "", err
 		}
 		return sanitize(rendered), nil
 	})
+
+	d.generator.funcs(withModule(module))
 
 	return err
 }

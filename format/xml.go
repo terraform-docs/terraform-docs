@@ -20,7 +20,7 @@ import (
 
 // xml represents XML format.
 type xml struct {
-	*print.Generator
+	*generator
 
 	config *print.Config
 }
@@ -28,7 +28,7 @@ type xml struct {
 // NewXML returns new instance of XML.
 func NewXML(config *print.Config) Type {
 	return &xml{
-		Generator: print.NewGenerator("xml", config.ModuleRoot),
+		generator: newGenerator(config, false),
 		config:    config,
 	}
 }
@@ -42,7 +42,7 @@ func (x *xml) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	x.Generator.Funcs(print.WithContent(strings.TrimSuffix(string(out), "\n")))
+	x.generator.funcs(withContent(strings.TrimSuffix(string(out), "\n")))
 
 	return nil
 }

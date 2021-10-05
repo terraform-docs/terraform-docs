@@ -312,11 +312,11 @@ func buildTerraformDocs(path string, tmpl string) (string, error) {
 
     // // Note: if you don't intend to provide additional template for the generated
     // // content, or the target format doesn't provide templating (e.g. json, yaml,
-    // // xml, or toml) you can use `Content()` function instead of `ExecuteTemplate()`.
+    // // xml, or toml) you can use `Content()` function instead of `Render()`.
     // // `Content()` returns all the sections combined with predefined order.
     // return formatter.Content(), nil
 
-    return formatter.ExecuteTemplate(tmpl)
+    return formatter.Render(tmpl)
 }
 ```
 

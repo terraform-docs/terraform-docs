@@ -11,8 +11,13 @@ the root directory of this source tree.
 package print
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"path"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 // Config represents all the available config options that can be accessed and
@@ -135,15 +140,15 @@ func defaultSections() sections {
 		Show: []string{},
 		Hide: []string{},
 
-		DataSources:  false,
-		Header:       false,
+		DataSources:  true,
+		Header:       true,
 		Footer:       false,
-		Inputs:       false,
-		ModuleCalls:  false,
-		Outputs:      false,
-		Providers:    false,
-		Requirements: false,
-		Resources:    false,
+		Inputs:       true,
+		ModuleCalls:  true,
+		Outputs:      true,
+		Providers:    true,
+		Requirements: true,
+		Resources:    true,
 	}
 }
 
@@ -465,4 +470,41 @@ func (c *Config) Validate() error {
 	}
 
 	return nil
+}
+
+// ReadConfig reads config file in `rootDir` with given `filename` and returns
+// instance of Config. It returns error if config file not found or there is a
+// problem with unmarshalling.
+func ReadConfig(rootDir string, filename string) (*Config, error) {
+	cfg := NewConfig()
+
+	v := viper.New()
+	v.SetConfigFile(path.Join(rootDir, filename))
+
+	if err := v.ReadInConfig(); err != nil {
+		var perr *os.PathError
+		if errors.As(err, &perr) {
+			return nil, fmt.Errorf("config file %s not found", filename)
+		}
+
+		var cerr viper.ConfigFileNotFoundError
+		if !errors.As(err, &cerr) {
+			return nil, err
+		}
+	}
+
+	if err := v.Unmarshal(cfg); err != nil {
+		return nil, fmt.Errorf("unable to decode config, %w", err)
+	}
+
+	cfg.ModuleRoot = rootDir
+
+	// process and validate configuration
+	if err := cfg.Validate(); err != nil {
+		return nil, err
+	}
+
+	cfg.Parse()
+
+	return cfg, nil
 }

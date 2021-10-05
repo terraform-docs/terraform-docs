@@ -22,7 +22,7 @@ import (
 
 // yaml represents YAML format.
 type yaml struct {
-	*print.Generator
+	*generator
 
 	config *print.Config
 }
@@ -30,7 +30,7 @@ type yaml struct {
 // NewYAML returns new instance of YAML.
 func NewYAML(config *print.Config) Type {
 	return &yaml{
-		Generator: print.NewGenerator("yaml", config.ModuleRoot),
+		generator: newGenerator(config, false),
 		config:    config,
 	}
 }
@@ -47,7 +47,7 @@ func (y *yaml) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	y.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+	y.generator.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
 
 	return nil
 }

@@ -24,7 +24,7 @@ var asciidocTableFS embed.FS
 
 // asciidocTable represents AsciiDoc Table format.
 type asciidocTable struct {
-	*print.Generator
+	*generator
 
 	config   *print.Config
 	template *template.Template
@@ -52,7 +52,7 @@ func NewAsciidocTable(config *print.Config) Type {
 	})
 
 	return &asciidocTable{
-		Generator: print.NewGenerator("json", config.ModuleRoot),
+		generator: newGenerator(config, true),
 		config:    config,
 		template:  tt,
 	}
@@ -60,13 +60,15 @@ func NewAsciidocTable(config *print.Config) Type {
 
 // Generate a Terraform module as AsciiDoc tables.
 func (t *asciidocTable) Generate(module *terraform.Module) error {
-	err := t.Generator.ForEach(func(name string) (string, error) {
+	err := t.generator.forEach(func(name string) (string, error) {
 		rendered, err := t.template.Render(name, module)
 		if err != nil {
 			return "", err
 		}
 		return sanitize(rendered), nil
 	})
+
+	t.generator.funcs(withModule(module))
 
 	return err
 }

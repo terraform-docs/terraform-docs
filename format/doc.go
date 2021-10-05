@@ -28,15 +28,15 @@ the root directory of this source tree.
 //         return err
 //     }
 //
-//     output, err := formatter.ExecuteTemplate("")
+//     output, err := formatter.Render"")
 //     if err != nil {
 //         return err
 //     }
 //
 // Note: if you don't intend to provide additional template for the generated
 // content, or the target format doesn't provide templating (e.g. json, yaml,
-// xml, or toml) you can use `Content()` function instead of `ExecuteTemplate()`.
-// `Content()` returns all the sections combined with predefined order.
+// xml, or toml) you can use `Content()` function instead of `Render)`. Note
+// that `Content()` returns all the sections combined with predefined order.
 //
 //     output := formatter.Content()
 //

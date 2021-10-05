@@ -360,7 +360,7 @@ func generateContent(config *print.Config) error {
 		return err
 	}
 
-	content, err := formatter.ExecuteTemplate(config.Content)
+	content, err := formatter.Render(config.Content)
 	if err != nil {
 		return err
 	}

@@ -34,9 +34,8 @@ the root directory of this source tree.
 // Generator holds a reference to all the sections (e.g. header, footer, inputs, etc)
 // and also it renders all of them, in a predefined order, in `Content()`.
 //
-// It also provides `ExecuteTemplate(string)` function to process and render the
-// template to generate the final output content. Following variables and functions are
-// available:
+// It also provides `Render(string)` function to process and render the template to generate
+// the final output content. Following variables and functions are available:
 //
 // • `{{ .Header }}`
 // • `{{ .Footer }}`

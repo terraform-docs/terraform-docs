@@ -74,6 +74,19 @@ func (t *Template) applyCustomFunc() {
 
 // Render template with given Module struct.
 func (t *Template) Render(name string, module *terraform.Module) (string, error) {
+	data := struct {
+		Config *print.Config
+		Module *terraform.Module
+	}{
+		Config: t.config,
+		Module: module,
+	}
+	return t.RenderContent(name, data)
+}
+
+// RenderContent template with given data. It can contain anything but most
+// probably it will only contain terraform.Module and print.generator.
+func (t *Template) RenderContent(name string, data interface{}) (string, error) {
 	if len(t.items) < 1 {
 		return "", fmt.Errorf("base template not found")
 	}
@@ -95,13 +108,7 @@ func (t *Template) Render(name string, module *terraform.Module) (string, error)
 		gotemplate.Must(tt.Parse(normalize(ii.Text)))
 	}
 
-	if err := tmpl.ExecuteTemplate(&buffer, item.Name, struct {
-		Module *terraform.Module
-		Config *print.Config
-	}{
-		Module: module,
-		Config: t.config,
-	}); err != nil {
+	if err := tmpl.ExecuteTemplate(&buffer, item.Name, data); err != nil {
 		return "", err
 	}
 

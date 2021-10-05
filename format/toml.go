@@ -22,7 +22,7 @@ import (
 
 // toml represents TOML format.
 type toml struct {
-	*print.Generator
+	*generator
 
 	config *print.Config
 }
@@ -30,7 +30,7 @@ type toml struct {
 // NewTOML returns new instance of TOML.
 func NewTOML(config *print.Config) Type {
 	return &toml{
-		Generator: print.NewGenerator("toml", config.ModuleRoot),
+		generator: newGenerator(config, false),
 		config:    config,
 	}
 }
@@ -46,7 +46,7 @@ func (t *toml) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	t.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+	t.generator.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
 
 	return nil
 

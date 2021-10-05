@@ -21,7 +21,7 @@ import (
 
 // json represents JSON format.
 type json struct {
-	*print.Generator
+	*generator
 
 	config *print.Config
 }
@@ -29,7 +29,7 @@ type json struct {
 // NewJSON returns new instance of JSON.
 func NewJSON(config *print.Config) Type {
 	return &json{
-		Generator: print.NewGenerator("json", config.ModuleRoot),
+		generator: newGenerator(config, false),
 		config:    config,
 	}
 }
@@ -47,7 +47,7 @@ func (j *json) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	j.Generator.Funcs(print.WithContent(strings.TrimSuffix(buffer.String(), "\n")))
+	j.generator.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
 
 	return nil
 }

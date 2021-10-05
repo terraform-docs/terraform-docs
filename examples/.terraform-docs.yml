@@ -32,6 +32,11 @@ sections:
 #
 #   and even in between sections
 #
+#   ## Resources
+#   {{ range .Module.Resources }}
+#   - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
+#   {{- end }}
+#
 #   ## Examples
 #
 #   ```hcl
