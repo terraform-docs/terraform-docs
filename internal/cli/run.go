@@ -22,10 +22,10 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	pluginsdk "github.com/terraform-docs/plugin-sdk/plugin"
 	"github.com/terraform-docs/terraform-docs/format"
 	"github.com/terraform-docs/terraform-docs/internal/plugin"
 	"github.com/terraform-docs/terraform-docs/internal/version"
+	pluginsdk "github.com/terraform-docs/terraform-docs/plugin"
 	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
@@ -344,9 +344,9 @@ func generateContent(config *print.Config) error {
 			return fmt.Errorf("formatter '%s' not found", config.Formatter)
 		}
 
-		content, cerr := client.Execute(pluginsdk.ExecuteArgs{
-			Module:   module.Convert(),
-			Settings: nil, // TODO settings.Convert(),
+		content, cerr := client.Execute(&pluginsdk.ExecuteArgs{
+			Module: module,
+			Config: config,
 		})
 		if cerr != nil {
 			return cerr

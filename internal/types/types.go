@@ -14,7 +14,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
-	"go/types"
 	"reflect"
 	"sort"
 )
@@ -94,7 +93,7 @@ func TypeOf(t string, v interface{}) String {
 }
 
 // Nil represents a 'nil' value which is marshaled to `null` when empty for JSON and YAML
-type Nil types.Nil
+type Nil struct{}
 
 // HasDefault return false for Nil, because there's no value set for the variable
 func (n Nil) HasDefault() bool {

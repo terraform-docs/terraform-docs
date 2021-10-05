@@ -14,10 +14,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
-	"fmt"
 	"sort"
 
-	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
@@ -153,22 +151,4 @@ func (oo outputs) sort(enabled bool, by string) { //nolint:unparam
 		// always sort by name if sorting is enabled
 		sortOutputsByName(oo)
 	}
-}
-
-func (oo outputs) convert() []*terraformsdk.Output {
-	list := []*terraformsdk.Output{}
-	for _, o := range oo {
-		list = append(list, &terraformsdk.Output{
-			Name:        o.Name,
-			Description: fmt.Sprintf("%v", o.Description.Raw()),
-			Value:       nil,
-			Sensitive:   o.Sensitive,
-			Position: terraformsdk.Position{
-				Filename: o.Position.Filename,
-				Line:     o.Position.Line,
-			},
-			ShowValue: o.ShowValue,
-		})
-	}
-	return list
 }

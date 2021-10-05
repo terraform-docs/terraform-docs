@@ -253,6 +253,14 @@ when formatter is set to `markdown table`.
 Note that sections visibility (i.e. `sections.show` and `sections.hide`) takes
 precedence over the `content`.
 
+Additionally there's also one extra special variable avaialble to the `content`:
+
+- `{{ .Module }}`
+
+As opposed to the other variables mentioned above, which are generated sections
+based on a selected formatter, the `{{ .Module }}` variable is just a `struct`
+representing a [Terraform module].
+
 ````yaml
 content: |-
   Any arbitrary text can be placed anywhere in the content
@@ -278,6 +286,12 @@ content: |-
   ```hcl
   {{ include "examples/foo/main.tf" }}
   ```
+
+  ## Resources
+
+  {{ range .Module.Resources }}
+  - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
+  {{- end }}
 ````
 
 ## Build on top of terraform-docs
@@ -320,6 +334,68 @@ func buildTerraformDocs(path string, tmpl string) (string, error) {
 }
 ```
 
+## Plugin
+
+Generated output can be heavily customized with [`content`], but if using that
+is not enough for your use-case, you can write your own plugin.
+
+In order to install a plugin the following steps are needed:
+
+- download the plugin and place it in `~/.tfdocs.d/plugins` (or `./.tfdocs.d/plugins`)
+- make sure the plugin file name is `tfdocs-format-<NAME>`
+- modify [`formatter`] of `.terraform-docs.yml` file to be `<NAME>`
+
+**Important notes:**
+
+- if the plugin file name is different than the example above, terraform-docs won't
+be able to to pick it up nor register it properly
+- you can only use plugin thorough `.terraform-docs.yml` file and it cannot be used
+with CLI arguments
+
+To create a new plugin create a new repository called `tfdocs-format-<NAME>` with
+following `main.go`:
+
+```go
+package main
+
+import (
+    _ "embed" //nolint
+
+    "github.com/terraform-docs/terraform-docs/plugin"
+    "github.com/terraform-docs/terraform-docs/print"
+    "github.com/terraform-docs/terraform-docs/template"
+    "github.com/terraform-docs/terraform-docs/terraform"
+)
+
+func main() {
+    plugin.Serve(&plugin.ServeOpts{
+        Name:    "<NAME>",
+        Version: "0.1.0",
+        Printer: printerFunc,
+    })
+}
+
+//go:embed sections.tmpl
+var tplCustom []byte
+
+// printerFunc the function being executed by the plugin client.
+func printerFunc(config *print.Config, module *terraform.Module) (string, error) {
+    tpl := template.New(config,
+        &template.Item{Name: "custom", Text: string(tplCustom)},
+    )
+
+    rendered, err := tpl.Render("custom", module)
+    if err != nil {
+        return "", err
+    }
+
+    return rendered, nil
+}
+```
+
+Please refer to [tfdocs-format-template] for more details. You can create a new
+repository from it by clicking on `Use this template` button.
+
 ## Documentation
 
 - **Users**
@@ -341,8 +417,10 @@ MIT License - Copyright (c) 2021 The terraform-docs Authors.
 
 [Chocolatey]: https://www.chocolatey.org
 [Config File Reference]: https://terraform-docs.io/user-guide/configuration/
+[`content`]: https://terraform-docs.io/user-guide/configuration/content/
 [Contributing Guide]: CONTRIBUTING.md
 [Formats Guide]: https://terraform-docs.io/reference/terraform-docs/
+[`formatter`]: https://terraform-docs.io/user-guide/configuration/formatter/
 [here]: https://golang.org/doc/code.html#GOPATH
 [Homebrew]: https://brew.sh
 [install pre-commit]: https://pre-commit.com/#install
@@ -351,5 +429,7 @@ MIT License - Copyright (c) 2021 The terraform-docs Authors.
 [Scoop]: https://scoop.sh/
 [Slack]: https://slack.terraform-docs.io/
 [terraform-docs GitHub Action]: https://github.com/terraform-docs/gh-actions
+[Terraform module]: https://pkg.go.dev/github.com/terraform-docs/terraform-docs/terraform#Module
+[tfdocs-format-template]: https://github.com/terraform-docs/tfdocs-format-template
 [our website]: https://terraform-docs.io/
 [User Guide]: https://terraform-docs.io/user-guide/introduction/

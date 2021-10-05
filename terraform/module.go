@@ -12,8 +12,6 @@ package terraform
 
 import (
 	"encoding/xml"
-
-	terraformsdk "github.com/terraform-docs/plugin-sdk/terraform"
 )
 
 // Module represents a Terraform module. It consists of
@@ -71,20 +69,4 @@ func (m *Module) HasRequirements() bool {
 // HasResources indicates if the module has resources.
 func (m *Module) HasResources() bool {
 	return len(m.Resources) > 0
-}
-
-// Convert internal Module to its equivalent in plugin-sdk
-func (m *Module) Convert() terraformsdk.Module {
-	return terraformsdk.NewModule(
-		terraformsdk.WithHeader(m.Header),
-		terraformsdk.WithFooter(m.Footer),
-		terraformsdk.WithInputs(inputs(m.Inputs).convert()),
-		terraformsdk.WithModuleCalls(modulecalls(m.ModuleCalls).convert()),
-		terraformsdk.WithOutputs(outputs(m.Outputs).convert()),
-		terraformsdk.WithProviders(providers(m.Providers).convert()),
-		terraformsdk.WithRequirements(requirements(m.Requirements).convert()),
-		terraformsdk.WithResources(resources(m.Resources).convert()),
-		terraformsdk.WithRequiredInputs(inputs(m.RequiredInputs).convert()),
-		terraformsdk.WithOptionalInputs(inputs(m.OptionalInputs).convert()),
-	)
 }
