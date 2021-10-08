@@ -21,7 +21,7 @@ RUN make build
 
 ################
 
-FROM alpine:3.14.0
+FROM alpine:3.14.2
 
 COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
 
