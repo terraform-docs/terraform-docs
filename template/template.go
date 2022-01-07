@@ -25,8 +25,9 @@ import (
 
 // Item represents a named templated which can reference other named templated too.
 type Item struct {
-	Name string
-	Text string
+	Name      string
+	Text      string
+	TrimSpace bool
 }
 
 // Template represents a new Template with given name and content to be rendered
@@ -102,12 +103,12 @@ func (t *Template) RenderContent(name string, data interface{}) (string, error) 
 
 	tmpl := gotemplate.New(item.Name)
 	tmpl.Funcs(t.funcMap)
-	gotemplate.Must(tmpl.Parse(normalize(item.Text)))
+	gotemplate.Must(tmpl.Parse(normalize(item.Text, item.TrimSpace)))
 
 	for _, ii := range t.items {
 		tt := tmpl.New(ii.Name)
 		tt.Funcs(t.funcMap)
-		gotemplate.Must(tt.Parse(normalize(ii.Text)))
+		gotemplate.Must(tt.Parse(normalize(ii.Text, ii.TrimSpace)))
 	}
 
 	if err := tmpl.ExecuteTemplate(&buffer, item.Name, data); err != nil {
@@ -232,14 +233,15 @@ func builtinFuncs(config *print.Config) gotemplate.FuncMap { // nolint:gocyclo
 // normalize the template and remove any space from all the lines. This makes
 // it possible to have a indented, human-readable template which doesn't affect
 // the rendering of them.
-func normalize(s string) string {
-	segments := strings.Split(s, "\n")
-	buffer := bytes.NewBufferString("")
-	for _, segment := range segments {
-		buffer.WriteString(strings.TrimSpace(segment)) // nolint:gosec
-		buffer.WriteString("\n")                       // nolint:gosec
+func normalize(s string, trimSpace bool) string {
+	if !trimSpace {
+		return s
 	}
-	return buffer.String()
+	splitted := strings.Split(s, "\n")
+	for i, v := range splitted {
+		splitted[i] = strings.TrimSpace(v)
+	}
+	return strings.Join(splitted, "\n")
 }
 
 // GenerateIndentation generates indentation of Markdown and AsciiDoc headers

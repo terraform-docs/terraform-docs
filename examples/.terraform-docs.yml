@@ -2,8 +2,7 @@
 # version: ">= 0.10, < 0.12"
 
 # see: https://terraform-docs.io/user-guide/configuration/formatter
-# formatter: markdown table
-formatter: template
+formatter: markdown table
 
 # see: https://terraform-docs.io/user-guide/configuration/header-from
 header-from: doc.txt
@@ -31,7 +30,13 @@ sections:
 #
 #   {{ .Header }}
 #
-#   and even in between sections
+#   and even in between sections. also spaces will be preserved:
+#
+#   - item 1
+#     - item 1-1
+#     - item 1-2
+#   - item 2
+#   - item 3
 #
 #   ## Resources
 #   {{ range .Module.Resources }}

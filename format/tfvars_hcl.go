@@ -38,8 +38,9 @@ var padding []int
 // NewTfvarsHCL returns new instance of TfvarsHCL.
 func NewTfvarsHCL(config *print.Config) Type {
 	tt := template.New(config, &template.Item{
-		Name: "tfvars",
-		Text: string(tfvarsHCLTpl),
+		Name:      "tfvars",
+		Text:      string(tfvarsHCLTpl),
+		TrimSpace: true,
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"align": func(s string, i int) string {

@@ -508,3 +508,51 @@ func TestGenerateIndentation(t *testing.T) {
 		})
 	}
 }
+
+func TestNormalize(t *testing.T) {
+	tests := []struct {
+		name     string
+		text     string
+		trim     bool
+		expected string
+	}{
+		{
+			name:     "normalize with trim space",
+			text:     "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit",
+			trim:     true,
+			expected: "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit",
+		},
+		{
+			name:     "normalize with trim space",
+			text:     "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit\n",
+			trim:     true,
+			expected: "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit\n",
+		},
+		{
+			name:     "normalize with trim space",
+			text:     "Lorem ipsum\ndolor sit amet,\n  consectetur\nadipiscing\nelit",
+			trim:     true,
+			expected: "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit",
+		},
+		{
+			name:     "normalize without trim space",
+			text:     "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit",
+			trim:     false,
+			expected: "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit",
+		},
+		{
+			name:     "normalize without trim space",
+			text:     "Lorem ipsum\ndolor sit amet,\n  consectetur\nadipiscing\nelit",
+			trim:     false,
+			expected: "Lorem ipsum\ndolor sit amet,\n  consectetur\nadipiscing\nelit",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+			actual := normalize(tt.text, tt.trim)
+
+			assert.Equal(tt.expected, actual)
+		})
+	}
+}

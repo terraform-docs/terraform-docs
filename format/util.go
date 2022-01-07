@@ -95,8 +95,9 @@ func readTemplateItems(efs embed.FS, prefix string) []*template.Item {
 		}
 
 		items = append(items, &template.Item{
-			Name: name,
-			Text: string(content),
+			Name:      name,
+			Text:      string(content),
+			TrimSpace: true,
 		})
 	}
 	return items
