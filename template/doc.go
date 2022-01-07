@@ -31,8 +31,9 @@ the root directory of this source tree.
 //
 //     func render(config *print.Config, module *terraform.Module) (string, error) {
 //         tt := template.New(config, &template.Item{
-//             Name: "main",
-//             Text: mainTpl,
+//             Name:      "main",
+//             Text:      mainTpl,
+//             TrimSpace: true,
 //         })
 //
 //         tt := template.New(config, items...)

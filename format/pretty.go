@@ -35,8 +35,9 @@ type pretty struct {
 // NewPretty returns new instance of Pretty.
 func NewPretty(config *print.Config) Type {
 	tt := template.New(config, &template.Item{
-		Name: "pretty",
-		Text: string(prettyTpl),
+		Name:      "pretty",
+		Text:      string(prettyTpl),
+		TrimSpace: true,
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"colorize": func(c string, s string) string {
