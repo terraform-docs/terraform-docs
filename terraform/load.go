@@ -278,7 +278,8 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 		}
 	}
 	for _, o := range tfmodule.Outputs {
-		description := o.Description
+		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/584)
+		description := strings.ReplaceAll(o.Description, "\r\n", "\n")
 		if description == "" && config.Settings.ReadComments {
 			description = loadComments(o.Pos.Filename, o.Pos.Line)
 		}
