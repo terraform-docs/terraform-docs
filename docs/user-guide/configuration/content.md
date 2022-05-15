@@ -42,7 +42,7 @@ over the `content`.
 
 - `{{ include "relative/path/to/file" }}`
 
-Additionally there's also one extra special variable avaialble to the `content`:
+Additionally there's also one extra special variable available to the `content`:
 
 - `{{ .Module }}`
 
