@@ -63,6 +63,5 @@ Sort by required (terraform-docs `< v0.13.0`):
 ```yaml
 sort:
   enabled: true
-  by:
-    - required
+  by: required
 ```
