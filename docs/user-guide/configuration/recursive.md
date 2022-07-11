@@ -32,6 +32,7 @@ Available options with their default values.
 recursive:
   enabled: false
   path: modules
+  include-main: true
 ```
 
 ## Examples
@@ -49,4 +50,13 @@ Provide alternative name of submodules folder.
 recursive:
   enabled: true
   path: submodules-folder
+```
+
+Skip the main module document, and only generate documents for submodules.
+
+```yaml
+recursive:
+  enabled: true
+  path: submodules-folder
+  include-main: false
 ```
