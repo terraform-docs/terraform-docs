@@ -180,6 +180,7 @@ footer-from: ""
 recursive:
   enabled: false
   path: modules
+  include-main: true
 
 sections:
   hide: []
