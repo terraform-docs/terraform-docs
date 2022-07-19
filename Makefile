@@ -147,7 +147,7 @@ endif
 .PHONY: golangci
 golangci:   ## Install golangci
 ifeq (, $(shell which golangci-lint))
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell $(GO) env GOPATH)/bin $(GOLANGCI_VERSION)
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell $(GO) env GOPATH)/bin $(GOLANGCI_VERSION)
 endif
 
 .PHONY: tools
