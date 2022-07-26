@@ -11,7 +11,6 @@ the root directory of this source tree.
 package reader
 
 import (
-	"path/filepath"
 	"strings"
 	"testing"
 
@@ -122,7 +121,7 @@ func TestReadLinesFromFile(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			lines := Lines{
-				FileName: filepath.Join(tt.fileName),
+				FileName: tt.fileName,
 				LineNum:  tt.lineNumber,
 				Condition: func(line string) bool {
 					line = strings.TrimSpace(line)

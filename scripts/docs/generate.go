@@ -70,13 +70,13 @@ func generate(cmd *cobra.Command, weight int, basename string) error {
 	}
 
 	filename := filepath.Join("docs", "reference", basename+".md")
-	f, err := os.Create(filename)
+	f, err := os.Create(filepath.Clean(filename))
 	if err != nil {
 		return err
 	}
 	defer f.Close() //nolint:errcheck,gosec
 
-	if _, err := io.WriteString(f, ""); err != nil {
+	if _, err := f.WriteString(""); err != nil {
 		return err
 	}
 	if err := generateMarkdown(cmd, weight, f); err != nil {

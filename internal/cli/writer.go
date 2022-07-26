@@ -28,7 +28,7 @@ type stdoutWriter struct{}
 
 // Write content to Stdout
 func (sw *stdoutWriter) Write(p []byte) (int, error) {
-	return os.Stdout.Write([]byte(string(p) + "\n"))
+	return os.Stdout.WriteString(string(p) + "\n")
 }
 
 // fileWriter writes content to file.
@@ -82,7 +82,7 @@ func (fw *fileWriter) Write(p []byte) (int, error) {
 		return fw.write(filename, buf.Bytes())
 	}
 
-	content, err := os.ReadFile(filename)
+	content, err := os.ReadFile(filepath.Clean(filename))
 	if err != nil {
 		// In mode 'inject', if target file not found:
 		// create it and save the generated output into it.
@@ -161,7 +161,7 @@ func (fw *fileWriter) inject(filename string, content string, generated string) 
 func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 	// if run in check mode return exit 1
 	if fw.check {
-		f, err := os.ReadFile(filename)
+		f, err := os.ReadFile(filepath.Clean(filename))
 		if err != nil {
 			return 0, err
 		}
