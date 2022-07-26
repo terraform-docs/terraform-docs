@@ -209,7 +209,7 @@ func (g *generator) Render(tpl string) (string, error) {
 	})
 	tt.CustomFunc(gotemplate.FuncMap{
 		"include": func(s string) string {
-			content, err := os.ReadFile(filepath.Join(g.path, s))
+			content, err := os.ReadFile(filepath.Join(g.path, filepath.Clean(s)))
 			if err != nil {
 				panic(err)
 			}

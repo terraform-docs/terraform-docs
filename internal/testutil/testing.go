@@ -65,5 +65,5 @@ func getExampleFolder(folder string) (string, error) {
 }
 
 func testDataPath() string {
-	return filepath.Join("testdata")
+	return "testdata"
 }

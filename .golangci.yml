@@ -124,6 +124,12 @@ issues:
         - unparam
         - goconst
 
+    # G306: Expect WriteFile permissions to be 0600 or less
+    # mainly seen in internal/cli/wrtier.go
+    - text: "G306:"
+      linters:
+        - gosec
+
     # - text: "should have a package comment"
     #   linters:
     #     - golint
