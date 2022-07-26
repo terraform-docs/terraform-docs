@@ -6,7 +6,7 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-FROM alpine:3.14.2
+FROM alpine:3.16.0
 
 COPY terraform-docs /usr/local/bin/terraform-docs
 
