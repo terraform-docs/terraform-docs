@@ -23,6 +23,6 @@ RUN make build
 
 FROM alpine:3.16.1
 
-COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
+COPY --from=builder /go/src/terraform-docs/bin/*/terraform-docs /usr/local/bin/
 
 ENTRYPOINT ["terraform-docs"]
