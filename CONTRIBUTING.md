@@ -56,7 +56,7 @@ Formatter tests are separated into different groups in order to be able to impro
 and maintain the code coverage and also prevent duplicating and running redundant
 test cases. For example there are `OnlyXXX` tests which makes sure all sections are
 hidden and only one is visible. This removes the need to test for `NotXXX` (which is
-no deprecated and removed). Please make sure when a new feature is added or an issue
+now deprecated and removed). Please make sure when a new feature is added or an issue
 is fixed the corresponding `.golden` files and test cases are also update accordingly.
 
 Once your change is written, tested, and documented the final step is to have it
