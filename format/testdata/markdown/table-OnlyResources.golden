@@ -1,7 +1,7 @@
 ## Resources
 
-| Name | Type |
-|------|------|
-| foo_resource.baz | resource |
-| [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
+| Resource Type | Resource Name | Type |
+|------|------|------|
+| foo_resource | baz | resource |
+| [null_resource](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | foo | resource |
+| [tls_private_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | baz | resource |
