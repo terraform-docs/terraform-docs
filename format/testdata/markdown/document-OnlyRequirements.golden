@@ -2,10 +2,10 @@
 
 The following requirements are needed by this module:
 
-- terraform (>= 0.12)
+- terraform - hashicorp/terraform (>= 0.12)
 
-- aws (>= 2.15.0)
+- aws - hashicorp/aws (>= 2.15.0)
 
-- foo (>= 1.0)
+- foo - https://registry.acme.com/foo (>= 1.0)
 
-- random (>= 2.2.0)
+- random - hashicorp/random (>= 2.2.0)

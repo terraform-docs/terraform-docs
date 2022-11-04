@@ -38,13 +38,13 @@ followed by another line of text.
 
 == Requirements
 
-[cols="a,a",options="header,autowidth"]
+[cols="a,a,a",options="header,autowidth"]
 |===
-|Name |Version
-|[[requirement_terraform]] <<requirement_terraform,terraform>> |>= 0.12
-|[[requirement_aws]] <<requirement_aws,aws>> |>= 2.15.0
-|[[requirement_foo]] <<requirement_foo,foo>> |>= 1.0
-|[[requirement_random]] <<requirement_random,random>> |>= 2.2.0
+|Name |Source |Version
+|[[requirement_terraform]] <<requirement_terraform,terraform>> |hashicorp/terraform |>= 0.12
+|[[requirement_aws]] <<requirement_aws,aws>> |hashicorp/aws |>= 2.15.0
+|[[requirement_foo]] <<requirement_foo,foo>> |https://registry.acme.com/foo |>= 1.0
+|[[requirement_random]] <<requirement_random,random>> |hashicorp/random |>= 2.2.0
 |===
 
 == Providers

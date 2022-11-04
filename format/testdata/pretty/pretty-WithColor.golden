@@ -37,10 +37,10 @@ followed by another line of text.
 | Bar  | Bar description |[0m
 
 
-[36mrequirement.terraform[0m (>= 0.12)
-[36mrequirement.aws[0m (>= 2.15.0)
-[36mrequirement.foo[0m (>= 1.0)
-[36mrequirement.random[0m (>= 2.2.0)
+[36mrequirement.terraform[0m - hashicorp/terraform (>= 0.12)
+[36mrequirement.aws[0m - hashicorp/aws (>= 2.15.0)
+[36mrequirement.foo[0m - https://registry.acme.com/foo (>= 1.0)
+[36mrequirement.random[0m - hashicorp/random (>= 2.2.0)
 
 
 [36mprovider.tls[0m
