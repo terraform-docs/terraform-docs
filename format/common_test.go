@@ -86,7 +86,7 @@ func TestCommonSort(t *testing.T) {
 				assert.Equal(expected.Requirements[ii], r.Name)
 			}
 			for ii, r := range module.Resources {
-				assert.Equal(expected.Resources[ii], r.Spec()+"__"+r.Mode)
+				assert.Equal(expected.Resources[ii], r.GetResourceType()+"."+r.GetResourceName()+"__"+r.Mode)
 			}
 		})
 	}
