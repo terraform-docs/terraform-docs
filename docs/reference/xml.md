@@ -376,18 +376,22 @@ generates the following output:
       <requirements>
         <requirement>
           <name>terraform</name>
+          <source>hashicorp/terraform</source>
           <version>&gt;= 0.12</version>
         </requirement>
         <requirement>
           <name>aws</name>
+          <source>hashicorp/aws</source>
           <version>&gt;= 2.15.0</version>
         </requirement>
         <requirement>
           <name>foo</name>
+          <source>https://registry.acme.com/foo</source>
           <version>&gt;= 1.0</version>
         </requirement>
         <requirement>
           <name>random</name>
+          <source>hashicorp/random</source>
           <version>&gt;= 2.2.0</version>
         </requirement>
       </requirements>

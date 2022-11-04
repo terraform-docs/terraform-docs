@@ -95,10 +95,10 @@ generates the following output:
     | Bar  | Bar description |
 
 
-    requirement.terraform (>= 0.12)
-    requirement.aws (>= 2.15.0)
-    requirement.foo (>= 1.0)
-    requirement.random (>= 2.2.0)
+    requirement.terraform - hashicorp/terraform (>= 0.12)
+    requirement.aws - hashicorp/aws (>= 2.15.0)
+    requirement.foo - https://registry.acme.com/foo (>= 1.0)
+    requirement.random - hashicorp/random (>= 2.2.0)
 
 
     provider.aws (>= 2.15.0)
