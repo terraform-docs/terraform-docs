@@ -187,10 +187,17 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 	var optional = make([]*Input, 0, len(tfmodule.Variables))
 
 	for _, input := range tfmodule.Variables {
+		comments := loadComments(input.Pos.Filename, input.Pos.Line)
+
+		// Skip over inputs that are marked as being ignored
+		if strings.Contains(comments, "terraform-docs-ignore") {
+			continue
+		}
+
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
 		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
 		if inputDescription == "" && config.Settings.ReadComments {
-			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
+			inputDescription = comments
 		}
 
 		i := &Input{
