@@ -6,7 +6,7 @@
 
 Sponsored by [Scalr - Terraform Automation & Collaboration Software](https://scalr.com/?utm_source=terraform-docs)
 
-<a href="https://www.scalr.com/?utm_source=terraform-docs" target="_blank"><img src="https://bit.ly/2T7Qm3U" alt="Scalr - Terraform Automation & Collaboration Software" width="175" height="40" /></a>
+<a href="https://www.scalr.com/?utm_source=terraform-docs" target="_blank"><img src="https://uploads-ssl.webflow.com/612d11332fb2f65fa3db1a2a/612d11332fb2f64794db1b5e_logo%2520copy-p-500.png" alt="Scalr - Terraform Automation & Collaboration Software" width="175" height="40" /></a>
 
 ## What is terraform-docs
 
