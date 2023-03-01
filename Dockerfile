@@ -21,7 +21,7 @@ RUN make build
 
 ################
 
-FROM alpine:3.18.4
+FROM alpine:3.18.5
 
 # Mitigate CVE-2023-5363
 RUN apk add --no-cache --upgrade "openssl>=3.1.4-r1"
