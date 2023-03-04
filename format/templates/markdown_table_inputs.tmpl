@@ -12,10 +12,12 @@
         {{- if .Config.Settings.Type }} Type |{{ end }}
         {{- if .Config.Settings.Default }} Default |{{ end }}
         {{- if .Config.Settings.Required }} Required |{{ end }}
+        {{- if .Config.Settings.Required }} Validation |{{ end }}
         |------|-------------|
         {{- if .Config.Settings.Type }}------|{{ end }}
         {{- if .Config.Settings.Default }}---------|{{ end }}
         {{- if .Config.Settings.Required }}:--------:|{{ end }}
+        {{- if .Config.Settings.Validation }}------------|{{ end }}
         {{- range .Module.Inputs }}
             | {{ anchorNameMarkdown "input" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
             {{- if $.Config.Settings.Type -}}
@@ -26,6 +28,15 @@
             {{- end -}}
             {{- if $.Config.Settings.Required -}}
                 {{ printf " " }}{{ ternary .Required "yes" "no" }} |
+            {{- end -}}
+            {{- if $.Config.Settings.Validation -}}
+                {{- printf " " -}}
+                {{- if .Validation -}}
+                    {{- range $index, $validation := .Validation -}}
+                        {{- if $index -}}<br>{{- end -}}
+                        {{- tostring $validation | sanitizeMarkdownTbl -}}
+                    {{- end -}}
+                {{- else -}}None{{- end }} |
             {{- end -}}
         {{- end }}
     {{ end }}
