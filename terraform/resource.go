@@ -50,6 +50,17 @@ func (r *Resource) GetMode() string {
 	}
 }
 
+
+// GetDescription returns the resource's description, or "N/A" if it's empty
+func (r *Resource) GetDescription() string {
+	switch r.Description {
+	case "":
+		return "N/A"
+	default:
+		return r.Description
+	}
+}
+
 // URL returns a best guess at the URL for resource documentation
 func (r *Resource) URL() string {
 	kind := ""

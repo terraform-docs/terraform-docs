@@ -76,6 +76,43 @@ func TestResourceMode(t *testing.T) {
 	}
 }
 
+func TestResourceDescription(t *testing.T) {
+	tests := map[string]struct {
+		resource    Resource
+		expectValue string
+	}{
+		"Present": {
+			resource: Resource{
+				Type:           "private_key",
+				ProviderName:   "tls",
+				ProviderSource: "hashicorp/tls",
+				Mode:           "managed",
+				Version:        types.String("latest"),
+				Description:    "a description",
+			},
+			expectValue: "a description",
+		},
+		"Empty": {
+			resource: Resource{
+				Type:           "caller_identity",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "data",
+				Version:        types.String("latest"),
+				Description:    "",
+			},
+			expectValue: "N/A",
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			assert.Equal(tt.expectValue, tt.resource.GetDescription())
+		})
+	}
+}
+
 func TestResourceURL(t *testing.T) {
 	tests := map[string]struct {
 		resource    Resource
