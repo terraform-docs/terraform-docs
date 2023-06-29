@@ -48,7 +48,7 @@ This depends on the bash-completion binary.  Example installation instructions:
     % terraform-doc completion zsh > "${fpath[1]}/_terraform-doc"
 
 # for fish users
-	$ terraform-doc completion fish | source
+	$ terraform-doc completion fish > ~/.config/fish/completions/terraform-docs.fish
 
 Additionally, you may want to output the completion to a file and source in your .bashrc
 Note for zsh users: [1] zsh completions are only supported in versions of zsh >= 5.2
