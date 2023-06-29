@@ -23,7 +23,7 @@ func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Args:  cobra.NoArgs,
 		Use:   "completion SHELL",
-		Short: "Generate shell completion code for the specified shell (bash,zsh,fish)",
+		Short: "Generate shell completion code for the specified shell (bash, zsh, fish)",
 		Long:  longDescription,
 	}
 
@@ -35,7 +35,7 @@ func NewCommand() *cobra.Command {
 	return cmd
 }
 
-const longDescription = `Outputs terraform-doc shell completion for the given shell (bash,zsh,fish)
+const longDescription = `Outputs terraform-doc shell completion for the given shell (bash, zsh, fish)
 This depends on the bash-completion binary.  Example installation instructions:
 # for bash users
 	$ terraform-doc completion bash > ~/.terraform-doc-completion
