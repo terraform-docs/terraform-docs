@@ -87,6 +87,13 @@ func withResources(resources string) generateFunc {
 	}
 }
 
+// withExamples specifies how the generator should add Examples.
+func withExamples(examples string) generateFunc {
+	return func(g *generator) {
+		g.examples = examples
+	}
+}
+
 // withModule specifies how the generator should add Resources.
 func withModule(module *terraform.Module) generateFunc {
 	return func(g *generator) {
@@ -122,6 +129,7 @@ type generator struct {
 	providers    string
 	requirements string
 	resources    string
+	examples     string
 
 	config *print.Config
 	module *terraform.Module
@@ -176,6 +184,9 @@ func (g *generator) Requirements() string { return g.requirements }
 
 // Resources returns generted requirements section based on the underlying format.
 func (g *generator) Resources() string { return g.resources }
+
+// Module returns generated example section based on the underlying format.
+func (g *generator) Examples() string { return g.examples }
 
 // Module returns generted requirements section based on the underlying format.
 func (g *generator) Module() *terraform.Module { return g.module }
@@ -253,6 +264,7 @@ func (g *generator) forEach(render func(string) (string, error)) error {
 		"providers":    withProviders,
 		"requirements": withRequirements,
 		"resources":    withResources,
+		"examples":     withExamples,
 	}
 	for name, callback := range mappings {
 		result, err := render(name)
