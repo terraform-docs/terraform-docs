@@ -20,6 +20,7 @@ type Module struct {
 
 	Header       string         `json:"header" toml:"header" xml:"header" yaml:"header"`
 	Footer       string         `json:"footer" toml:"footer" xml:"footer" yaml:"footer"`
+	Examples     []*Example     `json:"examples" toml:"examples" xml:"examples>example" yaml:"examples"`
 	Inputs       []*Input       `json:"inputs" toml:"inputs" xml:"inputs>input" yaml:"inputs"`
 	ModuleCalls  []*ModuleCall  `json:"modules" toml:"modules" xml:"modules>module" yaml:"modules"`
 	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
@@ -39,6 +40,11 @@ func (m *Module) HasHeader() bool {
 // HasFooter indicates if the module has footer.
 func (m *Module) HasFooter() bool {
 	return len(m.Footer) > 0
+}
+
+// Examples indicates if the module has any Examples.
+func (m *Module) HasExamples() bool {
+	return len(m.Examples) > 0
 }
 
 // HasInputs indicates if the module has inputs.

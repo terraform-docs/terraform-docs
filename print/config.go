@@ -20,6 +20,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Default file and folder settings for this config
+const defaultHeaderFile = "main.tf"
+const defaultExamplesFolder = "./examples"
+
 // Config represents all the available config options that can be accessed and
 // passed through CLI.
 type Config struct {
@@ -27,6 +31,7 @@ type Config struct {
 	Formatter    string       `mapstructure:"formatter"`
 	Version      string       `mapstructure:"version"`
 	HeaderFrom   string       `mapstructure:"header-from"`
+	ExamplesFrom string       `mapstructure:"examples-from"`
 	FooterFrom   string       `mapstructure:"footer-from"`
 	Recursive    recursive    `mapstructure:"recursive"`
 	Content      string       `mapstructure:"content"`
@@ -35,6 +40,7 @@ type Config struct {
 	OutputValues outputvalues `mapstructure:"output-values"`
 	Sort         sort         `mapstructure:"sort"`
 	Settings     settings     `mapstructure:"settings"`
+	Examples     examples     `mapstructure:"examples"`
 
 	ModuleRoot string
 }
@@ -42,13 +48,15 @@ type Config struct {
 // NewConfig returns neew instancee of Config with empty values.
 func NewConfig() *Config {
 	return &Config{
-		HeaderFrom:   "main.tf",
+		HeaderFrom:   defaultHeaderFile,
+		ExamplesFrom: defaultExamplesFolder,
 		Recursive:    recursive{},
 		Sections:     sections{},
 		Output:       output{},
 		OutputValues: outputvalues{},
 		Sort:         sort{},
 		Settings:     settings{},
+		Examples:     examples{},
 	}
 }
 
@@ -58,7 +66,8 @@ func DefaultConfig() *Config {
 		File:         "",
 		Formatter:    "",
 		Version:      "",
-		HeaderFrom:   "main.tf",
+		HeaderFrom:   defaultHeaderFile,
+		ExamplesFrom: defaultExamplesFolder,
 		FooterFrom:   "",
 		Recursive:    defaultRecursive(),
 		Content:      "",
@@ -67,6 +76,7 @@ func DefaultConfig() *Config {
 		OutputValues: defaultOutputValues(),
 		Sort:         defaultSort(),
 		Settings:     defaultSettings(),
+		Examples:     defaultExamples(),
 
 		ModuleRoot: "",
 	}
@@ -96,6 +106,7 @@ const (
 	sectionDataSources  = "data-sources"
 	sectionFooter       = "footer"
 	sectionHeader       = "header"
+	sectionExamples     = "examples"
 	sectionInputs       = "inputs"
 	sectionModules      = "modules"
 	sectionOutputs      = "outputs"
@@ -109,6 +120,7 @@ var allSections = []string{
 	sectionDataSources,
 	sectionFooter,
 	sectionHeader,
+	sectionExamples,
 	sectionInputs,
 	sectionModules,
 	sectionOutputs,
@@ -127,6 +139,7 @@ type sections struct {
 	DataSources  bool
 	Header       bool
 	Footer       bool
+	Examples     bool
 	Inputs       bool
 	ModuleCalls  bool
 	Outputs      bool
@@ -142,6 +155,7 @@ func defaultSections() sections {
 
 		DataSources:  true,
 		Header:       true,
+		Examples:     false,
 		Footer:       false,
 		Inputs:       true,
 		ModuleCalls:  true,
@@ -229,6 +243,22 @@ func defaultOutput() output {
 	}
 }
 
+type examples struct {
+	Include    []string `mapstructure:"include"`
+	Exclude    []string `mapstructure:"exclude"`
+	Limit      int      `mapstructure:"limit"`
+	HideTitles bool     `mapstructure:"hideTitles"`
+}
+
+func defaultExamples() examples {
+	return examples{
+		Include:    []string{},
+		Exclude:    []string{},
+		Limit:      0,
+		HideTitles: false,
+	}
+}
+
 func (o *output) validate() error {
 	if o.File == "" {
 		return nil
@@ -291,6 +321,29 @@ func (o *output) validate() error {
 
 	o.BeginComment = strings.TrimSpace(lines[0])
 	o.EndComment = strings.TrimSpace(lines[len(lines)-1])
+
+	return nil
+}
+
+func (e *examples) validate() error {
+
+	tests := []struct {
+		condition  func() bool
+		errMessage string
+	}{
+		{
+			condition: func() bool {
+				return len(e.Include) > 0 && len(e.Exclude) > 0
+			},
+			errMessage: "'include' and 'exclude' can't be used together in Example config.",
+		},
+	}
+
+	for _, t := range tests {
+		if t.condition() {
+			return fmt.Errorf(t.errMessage)
+		}
+	}
 
 	return nil
 }
@@ -421,6 +474,7 @@ func (c *Config) Parse() {
 	// sections
 	c.Sections.DataSources = c.Sections.visibility("data-sources")
 	c.Sections.Header = c.Sections.visibility("header")
+	c.Sections.Examples = c.Sections.visibility("examples")
 	c.Sections.Inputs = c.Sections.visibility("inputs")
 	c.Sections.ModuleCalls = c.Sections.visibility("modules")
 	c.Sections.Outputs = c.Sections.visibility("outputs")
@@ -463,6 +517,7 @@ func (c *Config) Validate() error {
 		c.OutputValues.validate,
 		c.Sort.validate,
 		c.Settings.validate,
+		c.Examples.validate,
 	} {
 		if err := fn(); err != nil {
 			return err
