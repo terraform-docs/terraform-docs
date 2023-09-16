@@ -55,6 +55,11 @@ func TestToml(t *testing.T) {
 		"OnlyDataSources": {
 			config: testutil.With(func(c *print.Config) { c.Sections.DataSources = true }),
 		},
+		"OnlyExamples": {
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Examples = true
+			}),
+		},
 		"OnlyHeader": {
 			config: testutil.With(func(c *print.Config) { c.Sections.Header = true }),
 		},
