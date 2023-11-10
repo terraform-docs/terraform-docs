@@ -6,7 +6,7 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-FROM golang:1.18.3-alpine AS builder
+FROM golang:1.18.4-alpine AS builder
 
 RUN apk add --update --no-cache make
 
@@ -21,7 +21,7 @@ RUN make build
 
 ################
 
-FROM alpine:3.16.1
+FROM alpine:3.18.4
 
 COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
 
