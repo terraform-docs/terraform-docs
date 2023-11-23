@@ -212,6 +212,7 @@ type output struct {
 	Mode     string `mapstructure:"mode"`
 	Template string `mapstructure:"template"`
 	Check    bool
+	CRLF     bool
 
 	BeginComment string
 	EndComment   string
@@ -223,6 +224,7 @@ func defaultOutput() output {
 		Mode:     OutputModeInject,
 		Template: OutputTemplate,
 		Check:    false,
+		CRLF:     false,
 
 		BeginComment: OutputBeginComment,
 		EndComment:   OutputEndComment,
