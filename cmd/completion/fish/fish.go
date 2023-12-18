@@ -21,7 +21,7 @@ func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Args:  cobra.NoArgs,
 		Use:   "fish",
-		Short: "Generate shel completion for fish",
+		Short: "Generate shell completion for fish",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return cmd.Parent().Parent().GenFishCompletion(os.Stdout, true)
 		},
