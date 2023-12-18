@@ -10,7 +10,7 @@ toc: false
 
 Since `v0.15.0`
 
-Considering the file strucutre below of main module and its submodules, it is
+Considering the file structure below of main module and its submodules, it is
 possible to generate documentation for the main and all its submodules in one
 execution, with `--recursive` flag.
 
