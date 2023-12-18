@@ -138,9 +138,15 @@ source <(terraform-docs completion bash)
 
 ### zsh
 
-```bash
+```zsh
 terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-docs
 autoload -U compinit && compinit
+```
+
+### fish
+
+```fish
+terraform-doc completion fish > ~/.config/fish/completions/terraform-docs.fish   
 ```
 
 To make this change permanent, the above commands can be added to `~/.profile` file.

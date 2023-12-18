@@ -347,24 +347,26 @@ func (s sortmapkeys) Less(i, j int) bool { return s[i] < s[j] }
 // MarshalXML custom marshal function which converts map to its literal
 // XML representation. For example:
 //
-// m := Map{
-//     "a": 1,
-//     "b": 2,
-//     "c": 3,
-// }
+//	m := Map{
+//	    "a": 1,
+//	    "b": 2,
+//	    "c": 3,
+//	}
 //
-// type foo struct {
-//     Value Map `xml:"value"`
-// }
+//	type foo struct {
+//	    Value Map `xml:"value"`
+//	}
 //
 // will get marshaled to:
 //
 // <foo>
-//   <value>
-//     <a>1</a>
-//     <b>2</b>
-//     <c>3</c>
-//   </value>
+//
+//	<value>
+//	  <a>1</a>
+//	  <b>2</b>
+//	  <c>3</c>
+//	</value>
+//
 // </foo>
 func (m Map) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if len(m) == 0 {
