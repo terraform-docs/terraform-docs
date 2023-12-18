@@ -99,7 +99,7 @@ output:
 
 ## Examples
 
-Inject the generated output into `README.md` between the sorrounding comments.
+Inject the generated output into `README.md` between the surrounding comments.
 
 ```yaml
 output:
