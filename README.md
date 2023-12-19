@@ -39,7 +39,7 @@ Stable binaries are also available on the [releases] page. To install, download 
 binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-$(uname)-amd64.tar.gz
+curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.17.0/terraform-docs-v0.17.0-$(uname)-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz
 chmod +x terraform-docs
 mv terraform-docs /usr/local/bin/terraform-docs
@@ -51,12 +51,12 @@ The latest version can be installed using `go install` or `go get`:
 
 ```bash
 # go1.17+
-go install github.com/terraform-docs/terraform-docs@v0.16.0
+go install github.com/terraform-docs/terraform-docs@v0.17.0
 ```
 
 ```bash
 # go1.16
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.16.0
+GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.17.0
 ```
 
 **NOTE:** please use the latest Go to do this, minimum `go1.16` is required.
@@ -88,14 +88,14 @@ terraform-docs can be run as a container by mounting a directory with `.tf`
 files in it and run the following command:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.16.0 markdown /terraform-docs
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.17.0 markdown /terraform-docs
 ```
 
 If `output.file` is not enabled for this module, generated output can be redirected
 back to a file:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.16.0 markdown /terraform-docs > doc.md
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.17.0 markdown /terraform-docs > doc.md
 ```
 
 **NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge`
@@ -142,7 +142,7 @@ in the root of your Git repo with at least the following content:
 ```yaml
 repos:
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: "v0.16.0"
+    rev: "v0.17.0"
     hooks:
       - id: terraform-docs-go
         args: ["markdown", "table", "--output-file", "README.md", "./mymodule/path"]
