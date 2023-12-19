@@ -7,7 +7,7 @@ on:
       - "!v*.*.*-*"
 
 env:
-  GO_VERSION: "1.18.10"
+  GO_VERSION: "1.21.5"
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
 
 jobs:

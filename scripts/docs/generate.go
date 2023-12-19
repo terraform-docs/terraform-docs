@@ -200,7 +200,7 @@ func example(ref *reference) error {
 		if s == "" {
 			buf.WriteString("\n")
 		} else {
-			buf.WriteString(fmt.Sprintf("    %s\n", s))
+			fmt.Fprintf(buf, "    %s\n", s)
 		}
 	}
 	ref.Example = buf.String()

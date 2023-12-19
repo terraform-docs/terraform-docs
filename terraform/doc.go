@@ -30,23 +30,22 @@ the root directory of this source tree.
 //
 // Usage
 //
-//     options := &terraform.Options{
-//         Path:           "./examples",
-//         ShowHeader:     true,
-//         HeaderFromFile: "main.tf",
-//         ShowFooter:     true,
-//         FooterFromFile: "footer.md",
-//         SortBy: &terraform.SortBy{
-//             Name: true,
-//         },
-//         ReadComments: true,
-//     }
+//	options := &terraform.Options{
+//	    Path:           "./examples",
+//	    ShowHeader:     true,
+//	    HeaderFromFile: "main.tf",
+//	    ShowFooter:     true,
+//	    FooterFromFile: "footer.md",
+//	    SortBy: &terraform.SortBy{
+//	        Name: true,
+//	    },
+//	    ReadComments: true,
+//	}
 //
-//     tfmodule, err := terraform.LoadWithOptions(options)
-//     if err != nil {
-//         log.Fatal(err)
-//     }
+//	tfmodule, err := terraform.LoadWithOptions(options)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
 //
-//     ...
-//
+//	...
 package terraform

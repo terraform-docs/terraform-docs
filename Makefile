@@ -38,7 +38,7 @@ DOCKER_IMAGE := quay.io/$(PROJECT_OWNER)/$(PROJECT_NAME)
 DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
-GOLANGCI_VERSION  := v1.47.2
+GOLANGCI_VERSION  := v1.55.2
 
 .PHONY: all
 all: clean verify checkfmt lint test build
@@ -69,7 +69,7 @@ lint:   ## Run linter
 .PHONY: staticcheck
 staticcheck:   ## Run staticcheck
 	@ $(MAKE) --no-print-directory log-$@
-	$(GO) run honnef.co/go/tools/cmd/staticcheck -- ./...
+	$(GO) run honnef.co/go/tools/cmd/staticcheck@2023.1.6 -- ./...
 
 .PHONY: test
 test:   ## Run tests

@@ -10,7 +10,7 @@ the root directory of this source tree.
 
 // Package print provides configuration, and a Generator.
 //
-// Configuration
+// # Configuration
 //
 // `print.Config` is the data structure representation for `.terraform-docs.yml`
 // which will be read and extracted upon execution of terraform-docs cli. On the
@@ -18,13 +18,13 @@ the root directory of this source tree.
 //
 // This will return an instance of `Config` with default values set:
 //
-//     config := print.DefaultConfig()
+//	config := print.DefaultConfig()
 //
 // Alternatively this will return an empty instance of `Config`:
 //
-//     config := print.NewConfig()
+//	config := print.NewConfig()
 //
-// Generator
+// # Generator
 //
 // `Generator` is an abstract implementation of `format.Type`. It doesn't implement
 // `Generate(*terraform.Module) error` function. It is used directly by different
@@ -46,5 +46,4 @@ the root directory of this source tree.
 // • `{{ .Requirements }}`
 // • `{{ .Resources }}`
 // • `{{ include "path/fo/file" }}`
-//
 package print

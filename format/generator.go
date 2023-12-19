@@ -135,6 +135,8 @@ type generator struct {
 // newGenerator returns a generator for specific formatter name and with
 // provided sets of GeneratorFunc functions to build and add individual
 // sections.
+//
+//nolint:unparam
 func newGenerator(config *print.Config, canRender bool, fns ...generateFunc) *generator {
 	g := &generator{
 		config: config,

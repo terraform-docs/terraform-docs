@@ -19,6 +19,7 @@ func contains(list []string, name string) bool {
 	return false
 }
 
+// nolint
 func index(list []string, name string) int {
 	for i, v := range list {
 		if v == name {
@@ -28,6 +29,7 @@ func index(list []string, name string) int {
 	return -1
 }
 
+// nolint
 func remove(list []string, name string) []string {
 	index := index(list, name)
 	if index < 0 {

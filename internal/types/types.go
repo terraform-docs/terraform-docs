@@ -286,7 +286,7 @@ func (l List) Raw() interface{} {
 }
 
 type xmllistentry struct {
-	XMLName xml.Name
+	XMLName xml.Name    `xml:"item"`
 	Value   interface{} `xml:",chardata"`
 }
 
@@ -334,7 +334,7 @@ func (m Map) Length() int {
 }
 
 type xmlmapentry struct {
-	XMLName xml.Name
+	XMLName xml.Name    `xml:","`
 	Value   interface{} `xml:",chardata"`
 }
 
