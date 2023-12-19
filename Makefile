@@ -38,7 +38,7 @@ DOCKER_IMAGE := quay.io/$(PROJECT_OWNER)/$(PROJECT_NAME)
 DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
-GOLANGCI_VERSION  := v1.47.2
+GOLANGCI_VERSION  := v1.55.2
 
 .PHONY: all
 all: clean verify checkfmt lint test build
