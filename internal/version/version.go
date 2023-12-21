@@ -17,8 +17,8 @@ import (
 
 // current version
 const (
-	coreVersion = "0.17.0"
-	prerelease  = ""
+	coreVersion = "0.18.0"
+	prerelease  = "alpha"
 )
 
 // Provisioned by ldflags
