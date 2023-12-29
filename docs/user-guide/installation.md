@@ -143,10 +143,17 @@ terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-d
 autoload -U compinit && compinit
 ```
 
+### ohmyzsh
+
+```zsh
+terraform-docs completion zsh > ~/.oh-my-zsh/completions/_terraform-docs
+omz reload
+```
+
 ### fish
 
 ```fish
-terraform-doc completion fish > ~/.config/fish/completions/terraform-docs.fish   
+terraform-doc completion fish > ~/.config/fish/completions/terraform-docs.fish
 ```
 
 To make this change permanent, the above commands can be added to `~/.profile` file.
