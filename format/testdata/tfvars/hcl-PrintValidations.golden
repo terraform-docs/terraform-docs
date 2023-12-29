@@ -45,15 +45,20 @@ long_type = {
   },
   "name": "hello"
 }
-no-escape-default-value       = "VALUE_WITH_UNDERSCORE"
-with-url                      = ""
-string_default_empty          = ""
-string_default_null           = ""
-string_no_default             = ""
-number_default_zero           = 0
-bool_default_false            = false
-list_default_empty            = []
-object_default_empty          = {}
-variable_with_no_validation   = ""
-variable_with_one_validation  = ""
+no-escape-default-value     = "VALUE_WITH_UNDERSCORE"
+with-url                    = ""
+string_default_empty        = ""
+string_default_null         = ""
+string_no_default           = ""
+number_default_zero         = 0
+bool_default_false          = false
+list_default_empty          = []
+object_default_empty        = {}
+variable_with_no_validation = ""
+
+# var.variable_with_one_validation must be empty or 10 characters long.
+variable_with_one_validation = ""
+
+# var.variable_with_two_validations must be 10 characters long.
+# var.variable_with_two_validations must start with 'magic'.
 variable_with_two_validations = ""
