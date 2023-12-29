@@ -52,6 +52,7 @@ terraform-docs markdown table [PATH] [flags]
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
       --type                        show Type column or section (default true)
+      --validation                  show Validation column or section (default true)
 ```
 
 ## Example
@@ -142,39 +143,42 @@ generates the following output:
 
     ## Inputs
 
-    | Name | Description | Type | Default | Required |
-    |------|-------------|------|---------|:--------:|
-    | <a name="input_bool-1"></a> [bool-1](#input\_bool-1) | It's bool number one. | `bool` | `true` | no |
-    | <a name="input_bool-2"></a> [bool-2](#input\_bool-2) | It's bool number two. | `bool` | `false` | no |
-    | <a name="input_bool-3"></a> [bool-3](#input\_bool-3) | n/a | `bool` | `true` | no |
-    | <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false) | n/a | `bool` | `false` | no |
-    | <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block) | This is a complicated one. We need a newline.<br/>And an example in a code block<pre>default     = [<br/>  "machine rack01:neptune"<br/>]</pre> | `list` | <pre>[<br/>  "name rack:location"<br/>]</pre> | no |
-    | <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe) | It includes v1 \| v2 \| v3 | `string` | `"v1"` | no |
-    | <a name="input_input_with_underscores"></a> [input\_with\_underscores](#input\_input\_with\_underscores) | A variable with underscores. | `any` | n/a | yes |
-    | <a name="input_list-1"></a> [list-1](#input\_list-1) | It's list number one. | `list` | <pre>[<br/>  "a",<br/>  "b",<br/>  "c"<br/>]</pre> | no |
-    | <a name="input_list-2"></a> [list-2](#input\_list-2) | It's list number two. | `list` | n/a | yes |
-    | <a name="input_list-3"></a> [list-3](#input\_list-3) | n/a | `list` | `[]` | no |
-    | <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty) | n/a | `list(string)` | `[]` | no |
-    | <a name="input_long_type"></a> [long\_type](#input\_long\_type) | This description is itself markdown.<br/><br/>It spans over multiple lines. | <pre>object({<br/>    name = string,<br/>    foo  = object({ foo = string, bar = string }),<br/>    bar  = object({ foo = string, bar = string }),<br/>    fizz = list(string),<br/>    buzz = list(string)<br/>  })</pre> | <pre>{<br/>  "bar": {<br/>    "bar": "bar",<br/>    "foo": "bar"<br/>  },<br/>  "buzz": [<br/>    "fizz",<br/>    "buzz"<br/>  ],<br/>  "fizz": [],<br/>  "foo": {<br/>    "bar": "foo",<br/>    "foo": "foo"<br/>  },<br/>  "name": "hello"<br/>}</pre> | no |
-    | <a name="input_map-1"></a> [map-1](#input\_map-1) | It's map number one. | `map` | <pre>{<br/>  "a": 1,<br/>  "b": 2,<br/>  "c": 3<br/>}</pre> | no |
-    | <a name="input_map-2"></a> [map-2](#input\_map-2) | It's map number two. | `map` | n/a | yes |
-    | <a name="input_map-3"></a> [map-3](#input\_map-3) | n/a | `map` | `{}` | no |
-    | <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value) | The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` | no |
-    | <a name="input_number-1"></a> [number-1](#input\_number-1) | It's number number one. | `number` | `42` | no |
-    | <a name="input_number-2"></a> [number-2](#input\_number-2) | It's number number two. | `number` | n/a | yes |
-    | <a name="input_number-3"></a> [number-3](#input\_number-3) | n/a | `number` | `"19"` | no |
-    | <a name="input_number-4"></a> [number-4](#input\_number-4) | n/a | `number` | `15.75` | no |
-    | <a name="input_number_default_zero"></a> [number\_default\_zero](#input\_number\_default\_zero) | n/a | `number` | `0` | no |
-    | <a name="input_object_default_empty"></a> [object\_default\_empty](#input\_object\_default\_empty) | n/a | `object({})` | `{}` | no |
-    | <a name="input_string-1"></a> [string-1](#input\_string-1) | It's string number one. | `string` | `"bar"` | no |
-    | <a name="input_string-2"></a> [string-2](#input\_string-2) | It's string number two. | `string` | n/a | yes |
-    | <a name="input_string-3"></a> [string-3](#input\_string-3) | n/a | `string` | `""` | no |
-    | <a name="input_string-special-chars"></a> [string-special-chars](#input\_string-special-chars) | n/a | `string` | `"\\.<>[]{}_-"` | no |
-    | <a name="input_string_default_empty"></a> [string\_default\_empty](#input\_string\_default\_empty) | n/a | `string` | `""` | no |
-    | <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null) | n/a | `string` | `null` | no |
-    | <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default) | n/a | `string` | n/a | yes |
-    | <a name="input_unquoted"></a> [unquoted](#input\_unquoted) | n/a | `any` | n/a | yes |
-    | <a name="input_with-url"></a> [with-url](#input\_with-url) | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` | no |
+    | Name | Description | Type | Default | Required | Validation |
+    |------|-------------|------|---------|:--------:|------------|
+    | <a name="input_bool-1"></a> [bool-1](#input\_bool-1) | It's bool number one. | `bool` | `true` | no | None |
+    | <a name="input_bool-2"></a> [bool-2](#input\_bool-2) | It's bool number two. | `bool` | `false` | no | None |
+    | <a name="input_bool-3"></a> [bool-3](#input\_bool-3) | n/a | `bool` | `true` | no | None |
+    | <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false) | n/a | `bool` | `false` | no | None |
+    | <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block) | This is a complicated one. We need a newline.<br>And an example in a code block<pre>default     = [<br>  "machine rack01:neptune"<br>]</pre> | `list` | <pre>[<br>  "name rack:location"<br>]</pre> | no | None |
+    | <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe) | It includes v1 \| v2 \| v3 | `string` | `"v1"` | no | None |
+    | <a name="input_input_with_underscores"></a> [input\_with\_underscores](#input\_input\_with\_underscores) | A variable with underscores. | `any` | n/a | yes | None |
+    | <a name="input_list-1"></a> [list-1](#input\_list-1) | It's list number one. | `list` | <pre>[<br>  "a",<br>  "b",<br>  "c"<br>]</pre> | no | None |
+    | <a name="input_list-2"></a> [list-2](#input\_list-2) | It's list number two. | `list` | n/a | yes | None |
+    | <a name="input_list-3"></a> [list-3](#input\_list-3) | n/a | `list` | `[]` | no | None |
+    | <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty) | n/a | `list(string)` | `[]` | no | None |
+    | <a name="input_long_type"></a> [long\_type](#input\_long\_type) | This description is itself markdown.<br><br>It spans over multiple lines. | <pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })</pre> | <pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}</pre> | no | None |
+    | <a name="input_map-1"></a> [map-1](#input\_map-1) | It's map number one. | `map` | <pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}</pre> | no | None |
+    | <a name="input_map-2"></a> [map-2](#input\_map-2) | It's map number two. | `map` | n/a | yes | None |
+    | <a name="input_map-3"></a> [map-3](#input\_map-3) | n/a | `map` | `{}` | no | None |
+    | <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value) | The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` | no | None |
+    | <a name="input_number-1"></a> [number-1](#input\_number-1) | It's number number one. | `number` | `42` | no | None |
+    | <a name="input_number-2"></a> [number-2](#input\_number-2) | It's number number two. | `number` | n/a | yes | None |
+    | <a name="input_number-3"></a> [number-3](#input\_number-3) | n/a | `number` | `"19"` | no | None |
+    | <a name="input_number-4"></a> [number-4](#input\_number-4) | n/a | `number` | `15.75` | no | None |
+    | <a name="input_number_default_zero"></a> [number\_default\_zero](#input\_number\_default\_zero) | n/a | `number` | `0` | no | None |
+    | <a name="input_object_default_empty"></a> [object\_default\_empty](#input\_object\_default\_empty) | n/a | `object({})` | `{}` | no | None |
+    | <a name="input_string-1"></a> [string-1](#input\_string-1) | It's string number one. | `string` | `"bar"` | no | None |
+    | <a name="input_string-2"></a> [string-2](#input\_string-2) | It's string number two. | `string` | n/a | yes | None |
+    | <a name="input_string-3"></a> [string-3](#input\_string-3) | n/a | `string` | `""` | no | None |
+    | <a name="input_string-special-chars"></a> [string-special-chars](#input\_string-special-chars) | n/a | `string` | `"\\.<>[]{}_-"` | no | None |
+    | <a name="input_string_default_empty"></a> [string\_default\_empty](#input\_string\_default\_empty) | n/a | `string` | `""` | no | None |
+    | <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null) | n/a | `string` | `null` | no | None |
+    | <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default) | n/a | `string` | n/a | yes | None |
+    | <a name="input_unquoted"></a> [unquoted](#input\_unquoted) | n/a | `any` | n/a | yes | None |
+    | <a name="input_variable_with_no_validation"></a> [variable\_with\_no\_validation](#input\_variable\_with\_no\_validation) | This variable has no validation | `string` | `""` | no | None |
+    | <a name="input_variable_with_one_validation"></a> [variable\_with\_one\_validation](#input\_variable\_with\_one\_validation) | This variable has one validation | `string` | `""` | no | var.variable\_with\_one\_validation must be empty or 10 characters long. |
+    | <a name="input_variable_with_two_validations"></a> [variable\_with\_two\_validations](#input\_variable\_with\_two\_validations) | This variable has two validations | `string` | n/a | yes | var.variable\_with\_two\_validations must be 10 characters long.<br>var.variable\_with\_two\_validations must start with 'magic'. |
+    | <a name="input_with-url"></a> [with-url](#input\_with-url) | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` | no | None |
 
     ## Outputs
 
