@@ -30,6 +30,9 @@
     "string_default_null",
     "string_no_default",
     "unquoted",
+    "variable_with_no_validation",
+    "variable_with_one_validation",
+    "variable_with_two_validations",
     "with-url"
   ],
   "modules": [

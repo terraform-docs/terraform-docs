@@ -30,7 +30,10 @@
     "number_default_zero",
     "bool_default_false",
     "list_default_empty",
-    "object_default_empty"
+    "object_default_empty",
+    "variable_with_no_validation",
+    "variable_with_one_validation",
+    "variable_with_two_validations"
   ],
   "modules": [
     "bar-baz",

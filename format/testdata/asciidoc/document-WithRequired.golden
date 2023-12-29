@@ -146,6 +146,12 @@ Description: n/a
 
 Type: `string`
 
+=== variable_with_two_validations
+
+Description: This variable has two validations
+
+Type: `string`
+
 == Optional Inputs
 
 The following input variables are optional (have default values):
@@ -400,6 +406,22 @@ Description: n/a
 Type: `object({})`
 
 Default: `{}`
+
+=== variable_with_no_validation
+
+Description: This variable has no validation
+
+Type: `string`
+
+Default: `""`
+
+=== variable_with_one_validation
+
+Description: This variable has one validation
+
+Type: `string`
+
+Default: `""`
 
 == Outputs
 

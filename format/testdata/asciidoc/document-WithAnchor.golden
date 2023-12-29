@@ -411,6 +411,30 @@ Type: `object({})`
 
 Default: `{}`
 
+=== [[input_variable_with_no_validation]] <<input_variable_with_no_validation,variable_with_no_validation>>
+
+Description: This variable has no validation
+
+Type: `string`
+
+Default: `""`
+
+=== [[input_variable_with_one_validation]] <<input_variable_with_one_validation,variable_with_one_validation>>
+
+Description: This variable has one validation
+
+Type: `string`
+
+Default: `""`
+
+=== [[input_variable_with_two_validations]] <<input_variable_with_two_validations,variable_with_two_validations>>
+
+Description: This variable has two validations
+
+Type: `string`
+
+Default: n/a
+
 == Outputs
 
 The following outputs are exported:

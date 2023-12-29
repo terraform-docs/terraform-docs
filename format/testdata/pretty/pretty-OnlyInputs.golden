@@ -123,3 +123,12 @@ n/a
 
 input.object_default_empty ({})
 n/a
+
+input.variable_with_no_validation ("")
+This variable has no validation
+
+input.variable_with_one_validation ("")
+This variable has one validation
+
+input.variable_with_two_validations (required)
+This variable has two validations

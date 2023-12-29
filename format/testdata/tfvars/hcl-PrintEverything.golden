@@ -106,7 +106,10 @@ object_default_empty = {}
 variable_with_no_validation = ""
 
 # This variable has one validation
+# var.variable_with_one_validation must be empty or 10 characters long.
 variable_with_one_validation = ""
 
 # This variable has two validations
+# var.variable_with_two_validations must be 10 characters long.
+# var.variable_with_two_validations must start with 'magic'.
 variable_with_two_validations = ""
