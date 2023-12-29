@@ -58,6 +58,9 @@ func NewTfvarsHCL(config *print.Config) Type {
 		"showDescription": func() bool {
 			return config.Settings.Description
 		},
+		"showValidation": func() bool {
+			return config.Settings.Validation
+		},
 	})
 
 	return &tfvarsHCL{
