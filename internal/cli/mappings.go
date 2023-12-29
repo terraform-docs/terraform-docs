@@ -42,4 +42,5 @@ var flagMappings = map[string]string{
 	"required":      "settings.required",
 	"sensitive":     "settings.sensitive",
 	"type":          "settings.type",
+	"validation":    "settings.validation",
 }
