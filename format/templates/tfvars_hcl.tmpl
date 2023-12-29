@@ -1,11 +1,18 @@
 {{- if .Module.Inputs -}}
-    {{- range $i, $k := .Module.Inputs -}}
-      {{ if and $k.Description showDescription -}} 
-          {{ convertToComment $k.Description }}
-          {{ align $k.Name $i }} = {{ value $k.GetValue }}
+  {{- range $i, $k := .Module.Inputs -}}
+    {{- if or (and $k.Description showDescription) (and $k.Validation showValidation) -}}
+      {{- if and $k.Description showDescription -}}
+        {{ convertToComment $k.Description }}
+      {{- end }}
+      {{- if and $k.Validation showValidation -}}
+        {{- range $validation := $k.Validation -}}
+          {{ convertToComment $validation }}
+        {{- end }}
+      {{- end }}
+      {{ align $k.Name $i }} = {{ value $k.GetValue }}
 
-      {{ else -}}
-        {{ align $k.Name $i }} = {{ value $k.GetValue }}
-      {{ end -}}
+    {{ else -}}
+      {{ align $k.Name $i }} = {{ value $k.GetValue }}
     {{ end -}}
+  {{ end -}}
 {{- end -}}

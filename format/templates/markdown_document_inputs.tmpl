@@ -20,6 +20,15 @@
                     Type: {{ tostring .Type | type }}
                 {{- end }}
 
+                {{ if $.Config.Settings.Validation -}}
+                    {{ if .Validation }}
+                        Validations:
+                        {{ range $index, $validation := .Validation }}
+                            - {{ tostring $validation | sanitizeDoc }}
+                        {{- end }}
+                    {{- end }}
+                {{- end }}
+
                 {{ if $.Config.Settings.Default }}
                     {{ if or .HasDefault (not isRequired) }}
                         Default: {{ default "n/a" .GetValue | value }}
@@ -45,6 +54,15 @@
 
                 {{ if $.Config.Settings.Type -}}
                     Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Config.Settings.Validation -}}
+                    {{ if .Validation }}
+                        Validations:
+                        {{ range $index, $validation := .Validation }}
+                            - {{ tostring $validation | sanitizeDoc }}
+                        {{- end }}
+                    {{- end }}
                 {{- end }}
 
                 {{ if $.Config.Settings.Default }}
@@ -73,6 +91,15 @@
 
                 {{ if $.Config.Settings.Type -}}
                     Type: {{ tostring .Type | type }}
+                {{- end }}
+
+                {{ if $.Config.Settings.Validation -}}
+                    {{ if .Validation }}
+                        Validations:
+                        {{ range $index, $validation := .Validation }}
+                            - {{ tostring $validation | sanitizeDoc }}
+                        {{- end }}
+                    {{- end }}
                 {{- end }}
 
                 {{ if $.Config.Settings.Default }}
