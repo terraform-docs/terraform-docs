@@ -93,8 +93,9 @@ func alignments(inputs []*terraform.Input, config *print.Config) {
 	index := 0
 	for i, input := range inputs {
 		isDescribed := config.Settings.Description && input.Description.Length() > 0
+		isValidated := config.Settings.Validation && input.Validation.Length() > 0
 		l := len(input.Name)
-		if isMultilineFormat(input) || isDescribed {
+		if isMultilineFormat(input) || isDescribed || isValidated {
 			for j := index; j < i; j++ {
 				padding[j] = maxlen
 			}
