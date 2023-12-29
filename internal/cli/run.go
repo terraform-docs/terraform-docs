@@ -103,7 +103,7 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error { //nolint:g
 
 	// Generating content recursively is only allowed when `config.Output.File`
 	// is set. Otherwise it would be impossible to distinguish where output of
-	// one module ends and the other begin, if content is outpput to stdout.
+	// one module ends and the other begin, if content is output to stdout.
 	if r.config.Recursive.Enabled && r.config.Recursive.Path != "" {
 		items, err := r.findSubmodules()
 		if err != nil {

@@ -28,7 +28,7 @@ import (
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
-// These are practiaclly a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go
+// These are practically a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go
 // The reason we've decided to bring them over and not use them directly
 // from cobra module was that we wanted to inject custom "Example" section
 // with generated output based on the "examples" folder.

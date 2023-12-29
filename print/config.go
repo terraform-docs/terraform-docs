@@ -39,7 +39,7 @@ type Config struct {
 	ModuleRoot string
 }
 
-// NewConfig returns neew instancee of Config with empty values.
+// NewConfig returns new instances of Config with empty values.
 func NewConfig() *Config {
 	return &Config{
 		HeaderFrom:   "main.tf",
