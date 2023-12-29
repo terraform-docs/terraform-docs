@@ -110,6 +110,8 @@ github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjR
 github.com/rogpeppe/go-internal v1.10.0/go.mod h1:UQnix2H7Ngw/k4C5ijL5+65zddjncjaFoBhdsK/akog=
 github.com/rquadling/terraform-config-inspect v0.0.0-20230303172622-9dd357c8a974 h1:iUSNgwjav+yZfRPSGUyywed1cvQdJPw8HaDRR1TMfw0=
 github.com/rquadling/terraform-config-inspect v0.0.0-20230303172622-9dd357c8a974/go.mod h1:l8HcFPm9cQh6Q0KSWoYPiePqMvRFenybP1CH2MjKdlg=
+github.com/rquadling/terraform-config-inspect v0.0.0-20231228173330-dceb5f6e1579 h1:JY8Wd6zO6W8mJVcSomrUsXce48Ujde1cTHMXpOEH80s=
+github.com/rquadling/terraform-config-inspect v0.0.0-20231228173330-dceb5f6e1579/go.mod h1:l8HcFPm9cQh6Q0KSWoYPiePqMvRFenybP1CH2MjKdlg=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sagikazarmark/locafero v0.6.0 h1:ON7AQg37yzcRPU69mt7gwhFEBwxI6P9T4Qu3N51bwOk=
 github.com/sagikazarmark/locafero v0.6.0/go.mod h1:77OmuIc6VTraTXKXIs/uvUxKGUXjE1GbemJYHqdNjX0=

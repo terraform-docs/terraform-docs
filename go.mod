@@ -20,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
 	gopkg.in/yaml.v3 v3.0.1
-	honnef.co/go/tools v0.3.2
+	honnef.co/go/tools v0.4.6
 	mvdan.cc/xurls/v2 v2.5.0
 )
 
@@ -74,4 +74,4 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
 
-replace github.com/hashicorp/terraform-config-inspect => github.com/rquadling/terraform-config-inspect v0.0.0-20230303172622-9dd357c8a974
+replace github.com/hashicorp/terraform-config-inspect => github.com/rquadling/terraform-config-inspect v0.0.0-20231228173330-dceb5f6e1579
