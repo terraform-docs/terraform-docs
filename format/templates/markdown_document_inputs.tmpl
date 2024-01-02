@@ -2,17 +2,17 @@
     {{- if .Config.Settings.Required -}}
         {{- if not .Module.RequiredInputs -}}
             {{- if not .Config.Settings.HideEmpty -}}
-                {{- indent 0 "#" }} Required Inputs
+                {{- indent 0 "#" }} Required Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
                 No required inputs.
             {{ end }}
         {{ else }}
-            {{- indent 0 "#" }} Required Inputs
+            {{- indent 0 "#" }} Required Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             The following input variables are required:
             {{- range .Module.RequiredInputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}
+                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -29,17 +29,17 @@
         {{- end }}
         {{- if not .Module.OptionalInputs -}}
             {{- if not .Config.Settings.HideEmpty -}}
-                {{- indent 0 "#" }} Optional Inputs
+                {{- indent 0 "#" }} Optional Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
                 No optional inputs.
             {{ end }}
         {{ else }}
-            {{- indent 0 "#" }} Optional Inputs
+            {{- indent 0 "#" }} Optional Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             The following input variables are optional (have default values):
             {{- range .Module.OptionalInputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}
+                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
@@ -57,17 +57,17 @@
     {{ else -}}
         {{- if not .Module.Inputs -}}
             {{- if not .Config.Settings.HideEmpty -}}
-                {{- indent 0 "#" }} Inputs
+                {{- indent 0 "#" }} Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
                 No inputs.
             {{ end }}
         {{ else }}
-            {{- indent 0 "#" }} Inputs
+            {{- indent 0 "#" }} Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             The following input variables are supported:
             {{- range .Module.Inputs }}
                 {{ printf "\n" }}
-                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}
+                {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
                 Description: {{ tostring .Description | sanitizeDoc }}
 
