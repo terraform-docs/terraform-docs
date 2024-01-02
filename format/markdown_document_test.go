@@ -138,6 +138,23 @@ func TestMarkdownDocument(t *testing.T) {
 				}),
 			),
 		},
+		"WithAtxClosed": {
+			config: testutil.WithSections(
+				testutil.WithHTML(),
+				testutil.With(func(c *print.Config) {
+					c.Settings.AtxClosed = true
+				}),
+			),
+		},
+		"EmptyWithAtxClosed": {
+			config: testutil.WithDefaultSections(
+				testutil.WithHTML(),
+				testutil.With(func(c *print.Config) {
+					c.ModuleRoot = "empty"
+					c.Settings.AtxClosed = true
+				}),
+			),
+		},
 
 		// Only section
 		"OnlyDataSources": {
