@@ -1,17 +1,17 @@
 {{- if .Config.Sections.ModuleCalls -}}
     {{- if not .Module.ModuleCalls -}}
         {{- if not .Config.Settings.HideEmpty -}}
-            {{- indent 0 "#" }} Modules
+            {{- indent 0 "#" }} Modules{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             No modules.
         {{ end }}
     {{ else }}
-        {{- indent 0 "#" }} Modules
+        {{- indent 0 "#" }} Modules{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         The following Modules are called:
         {{- range .Module.ModuleCalls }}
 
-            {{ indent 1 "#" }} {{ anchorNameMarkdown "module" .Name }}
+            {{ indent 1 "#" }} {{ anchorNameMarkdown "module" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
             Source: {{ .Source }}
 
