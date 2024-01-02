@@ -1,12 +1,12 @@
 {{- if .Config.Sections.Outputs -}}
     {{- if not .Module.Outputs -}}
         {{- if not .Config.Settings.HideEmpty -}}
-            {{- indent 0 "#" }} Outputs
+            {{- indent 0 "#" }} Outputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             No outputs.
         {{ end }}
     {{ else }}
-        {{- indent 0 "#" }} Outputs
+        {{- indent 0 "#" }} Outputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         | Name | Description |{{ if .Config.OutputValues.Enabled }} Value |{{ if $.Config.Settings.Sensitive }} Sensitive |{{ end }}{{ end }}
         |------|-------------|{{ if .Config.OutputValues.Enabled }}-------|{{ if $.Config.Settings.Sensitive }}:---------:|{{ end }}{{ end }}
