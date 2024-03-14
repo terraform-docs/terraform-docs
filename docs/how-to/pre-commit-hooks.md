@@ -30,7 +30,7 @@ in the root of your Git repo with at least the following content:
    Just be sure to adjust the `args:` to pass the path you want terraform-docs to scan.
    {{< /alert >}}
 
-1. install [`pre-commit`] and run `pre-commit` to activate the hooks.
+1. install [`pre-commit`] and run `pre-commit install` to activate the hooks.
 
 1. make a Terraform change, `git add` and `git commit`.
 pre-commit will regenerate your Terraform docs, after which you can
