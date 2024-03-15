@@ -11,7 +11,7 @@ the root directory of this source tree.
 package terraform
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"sort"
 	"testing"
@@ -226,7 +226,7 @@ func TestLoadHeader(t *testing.T) {
 			showHeader: true,
 			expectedData: func() (string, error) {
 				path := filepath.Join("testdata", "expected", "full-example-mainTf-Header.golden")
-				data, err := ioutil.ReadFile(path)
+				data, err := os.ReadFile(path)
 				return string(data), err
 			},
 		},
@@ -272,7 +272,7 @@ func TestLoadFooter(t *testing.T) {
 			showFooter: true,
 			expectedData: func() (string, error) {
 				path := filepath.Join("testdata", "expected", "full-example-mainTf-Header.golden")
-				data, err := ioutil.ReadFile(path)
+				data, err := os.ReadFile(path)
 				return string(data), err
 			},
 		},

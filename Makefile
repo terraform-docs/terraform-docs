@@ -141,7 +141,7 @@ major: release   ## Prepare Major release
 .PHONY: goimports
 goimports:   ## Install goimports
 ifeq (, $(shell which goimports))
-	GO111MODULE=off $(GO) get -u golang.org/x/tools/cmd/goimports
+	$(GO) install golang.org/x/tools/cmd/goimports@latest
 endif
 
 .PHONY: golangci
