@@ -29,14 +29,14 @@ func TestAnchorMarkdown(t *testing.T) {
 			name:        "banana_anchor_escape",
 			anchor:      true,
 			escape:      true,
-			expected:    "<a name=\"module_banana_anchor_escape\"></a> [banana\\_anchor\\_escape](#module\\_banana\\_anchor\\_escape)",
+			expected:    "<a id=\"module_banana_anchor_escape\"></a> [banana\\_anchor\\_escape](#module\\_banana\\_anchor\\_escape)",
 		},
 		{
 			typeSection: "module",
 			name:        "banana_anchor_noescape",
 			anchor:      true,
 			escape:      false,
-			expected:    "<a name=\"module_banana_anchor_noescape\"></a> [banana_anchor_noescape](#module_banana_anchor_noescape)",
+			expected:    "<a id=\"module_banana_anchor_noescape\"></a> [banana_anchor_noescape](#module_banana_anchor_noescape)",
 		},
 		{
 			typeSection: "module",

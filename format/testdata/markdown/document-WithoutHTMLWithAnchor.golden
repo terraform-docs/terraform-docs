@@ -40,51 +40,51 @@ followed by another line of text.
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement_terraform) (>= 0.12)
+- <a id="requirement_terraform"></a> [terraform](#requirement_terraform) (>= 0.12)
 
-- <a name="requirement_aws"></a> [aws](#requirement_aws) (>= 2.15.0)
+- <a id="requirement_aws"></a> [aws](#requirement_aws) (>= 2.15.0)
 
-- <a name="requirement_foo"></a> [foo](#requirement_foo) (>= 1.0)
+- <a id="requirement_foo"></a> [foo](#requirement_foo) (>= 1.0)
 
-- <a name="requirement_random"></a> [random](#requirement_random) (>= 2.2.0)
+- <a id="requirement_random"></a> [random](#requirement_random) (>= 2.2.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_tls"></a> [tls](#provider_tls)
+- <a id="provider_tls"></a> [tls](#provider_tls)
 
-- <a name="provider_foo"></a> [foo](#provider_foo) (>= 1.0)
+- <a id="provider_foo"></a> [foo](#provider_foo) (>= 1.0)
 
-- <a name="provider_aws"></a> [aws](#provider_aws) (>= 2.15.0)
+- <a id="provider_aws"></a> [aws](#provider_aws) (>= 2.15.0)
 
-- <a name="provider_aws.ident"></a> [aws.ident](#provider_aws.ident) (>= 2.15.0)
+- <a id="provider_aws.ident"></a> [aws.ident](#provider_aws.ident) (>= 2.15.0)
 
-- <a name="provider_null"></a> [null](#provider_null)
+- <a id="provider_null"></a> [null](#provider_null)
 
 ## Modules
 
 The following Modules are called:
 
-### <a name="module_bar"></a> [bar](#module_bar)
+### <a id="module_bar"></a> [bar](#module_bar)
 
 Source: baz
 
 Version: 4.5.6
 
-### <a name="module_foo"></a> [foo](#module_foo)
+### <a id="module_foo"></a> [foo](#module_foo)
 
 Source: bar
 
 Version: 1.2.3
 
-### <a name="module_baz"></a> [baz](#module_baz)
+### <a id="module_baz"></a> [baz](#module_baz)
 
 Source: baz
 
 Version: 4.5.6
 
-### <a name="module_foobar"></a> [foobar](#module_foobar)
+### <a id="module_foobar"></a> [foobar](#module_foobar)
 
 Source: git@github.com:module/path
 
@@ -104,7 +104,7 @@ The following resources are used by this module:
 
 The following input variables are supported:
 
-### <a name="input_unquoted"></a> [unquoted](#input_unquoted)
+### <a id="input_unquoted"></a> [unquoted](#input_unquoted)
 
 Description: n/a
 
@@ -112,7 +112,7 @@ Type: `any`
 
 Default: n/a
 
-### <a name="input_bool-3"></a> [bool-3](#input_bool-3)
+### <a id="input_bool-3"></a> [bool-3](#input_bool-3)
 
 Description: n/a
 
@@ -120,7 +120,7 @@ Type: `bool`
 
 Default: `true`
 
-### <a name="input_bool-2"></a> [bool-2](#input_bool-2)
+### <a id="input_bool-2"></a> [bool-2](#input_bool-2)
 
 Description: It's bool number two.
 
@@ -128,7 +128,7 @@ Type: `bool`
 
 Default: `false`
 
-### <a name="input_bool-1"></a> [bool-1](#input_bool-1)
+### <a id="input_bool-1"></a> [bool-1](#input_bool-1)
 
 Description: It's bool number one.
 
@@ -136,7 +136,7 @@ Type: `bool`
 
 Default: `true`
 
-### <a name="input_string-3"></a> [string-3](#input_string-3)
+### <a id="input_string-3"></a> [string-3](#input_string-3)
 
 Description: n/a
 
@@ -144,7 +144,7 @@ Type: `string`
 
 Default: `""`
 
-### <a name="input_string-2"></a> [string-2](#input_string-2)
+### <a id="input_string-2"></a> [string-2](#input_string-2)
 
 Description: It's string number two.
 
@@ -152,7 +152,7 @@ Type: `string`
 
 Default: n/a
 
-### <a name="input_string-1"></a> [string-1](#input_string-1)
+### <a id="input_string-1"></a> [string-1](#input_string-1)
 
 Description: It's string number one.
 
@@ -160,7 +160,7 @@ Type: `string`
 
 Default: `"bar"`
 
-### <a name="input_string-special-chars"></a> [string-special-chars](#input_string-special-chars)
+### <a id="input_string-special-chars"></a> [string-special-chars](#input_string-special-chars)
 
 Description: n/a
 
@@ -168,7 +168,7 @@ Type: `string`
 
 Default: `"\\.<>[]{}_-"`
 
-### <a name="input_number-3"></a> [number-3](#input_number-3)
+### <a id="input_number-3"></a> [number-3](#input_number-3)
 
 Description: n/a
 
@@ -176,7 +176,7 @@ Type: `number`
 
 Default: `"19"`
 
-### <a name="input_number-4"></a> [number-4](#input_number-4)
+### <a id="input_number-4"></a> [number-4](#input_number-4)
 
 Description: n/a
 
@@ -184,7 +184,7 @@ Type: `number`
 
 Default: `15.75`
 
-### <a name="input_number-2"></a> [number-2](#input_number-2)
+### <a id="input_number-2"></a> [number-2](#input_number-2)
 
 Description: It's number number two.
 
@@ -192,7 +192,7 @@ Type: `number`
 
 Default: n/a
 
-### <a name="input_number-1"></a> [number-1](#input_number-1)
+### <a id="input_number-1"></a> [number-1](#input_number-1)
 
 Description: It's number number one.
 
@@ -200,7 +200,7 @@ Type: `number`
 
 Default: `42`
 
-### <a name="input_map-3"></a> [map-3](#input_map-3)
+### <a id="input_map-3"></a> [map-3](#input_map-3)
 
 Description: n/a
 
@@ -208,7 +208,7 @@ Type: `map`
 
 Default: `{}`
 
-### <a name="input_map-2"></a> [map-2](#input_map-2)
+### <a id="input_map-2"></a> [map-2](#input_map-2)
 
 Description: It's map number two.
 
@@ -216,7 +216,7 @@ Type: `map`
 
 Default: n/a
 
-### <a name="input_map-1"></a> [map-1](#input_map-1)
+### <a id="input_map-1"></a> [map-1](#input_map-1)
 
 Description: It's map number one.
 
@@ -232,7 +232,7 @@ Default:
 }
 ```
 
-### <a name="input_list-3"></a> [list-3](#input_list-3)
+### <a id="input_list-3"></a> [list-3](#input_list-3)
 
 Description: n/a
 
@@ -240,7 +240,7 @@ Type: `list`
 
 Default: `[]`
 
-### <a name="input_list-2"></a> [list-2](#input_list-2)
+### <a id="input_list-2"></a> [list-2](#input_list-2)
 
 Description: It's list number two.
 
@@ -248,7 +248,7 @@ Type: `list`
 
 Default: n/a
 
-### <a name="input_list-1"></a> [list-1](#input_list-1)
+### <a id="input_list-1"></a> [list-1](#input_list-1)
 
 Description: It's list number one.
 
@@ -264,7 +264,7 @@ Default:
 ]
 ```
 
-### <a name="input_input_with_underscores"></a> [input_with_underscores](#input_input_with_underscores)
+### <a id="input_input_with_underscores"></a> [input_with_underscores](#input_input_with_underscores)
 
 Description: A variable with underscores.
 
@@ -272,7 +272,7 @@ Type: `any`
 
 Default: n/a
 
-### <a name="input_input-with-pipe"></a> [input-with-pipe](#input_input-with-pipe)
+### <a id="input_input-with-pipe"></a> [input-with-pipe](#input_input-with-pipe)
 
 Description: It includes v1 | v2 | v3
 
@@ -280,7 +280,7 @@ Type: `string`
 
 Default: `"v1"`
 
-### <a name="input_input-with-code-block"></a> [input-with-code-block](#input_input-with-code-block)
+### <a id="input_input-with-code-block"></a> [input-with-code-block](#input_input-with-code-block)
 
 Description: This is a complicated one. We need a newline.  
 And an example in a code block
@@ -300,7 +300,7 @@ Default:
 ]
 ```
 
-### <a name="input_long_type"></a> [long_type](#input_long_type)
+### <a id="input_long_type"></a> [long_type](#input_long_type)
 
 Description: This description is itself markdown.
 
@@ -339,7 +339,7 @@ Default:
 }
 ```
 
-### <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input_no-escape-default-value)
+### <a id="input_no-escape-default-value"></a> [no-escape-default-value](#input_no-escape-default-value)
 
 Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
 
@@ -347,7 +347,7 @@ Type: `string`
 
 Default: `"VALUE_WITH_UNDERSCORE"`
 
-### <a name="input_with-url"></a> [with-url](#input_with-url)
+### <a id="input_with-url"></a> [with-url](#input_with-url)
 
 Description: The description contains url. https://www.domain.com/foo/bar_baz.html
 
@@ -355,7 +355,7 @@ Type: `string`
 
 Default: `""`
 
-### <a name="input_string_default_empty"></a> [string_default_empty](#input_string_default_empty)
+### <a id="input_string_default_empty"></a> [string_default_empty](#input_string_default_empty)
 
 Description: n/a
 
@@ -363,7 +363,7 @@ Type: `string`
 
 Default: `""`
 
-### <a name="input_string_default_null"></a> [string_default_null](#input_string_default_null)
+### <a id="input_string_default_null"></a> [string_default_null](#input_string_default_null)
 
 Description: n/a
 
@@ -371,7 +371,7 @@ Type: `string`
 
 Default: `null`
 
-### <a name="input_string_no_default"></a> [string_no_default](#input_string_no_default)
+### <a id="input_string_no_default"></a> [string_no_default](#input_string_no_default)
 
 Description: n/a
 
@@ -379,7 +379,7 @@ Type: `string`
 
 Default: n/a
 
-### <a name="input_number_default_zero"></a> [number_default_zero](#input_number_default_zero)
+### <a id="input_number_default_zero"></a> [number_default_zero](#input_number_default_zero)
 
 Description: n/a
 
@@ -387,7 +387,7 @@ Type: `number`
 
 Default: `0`
 
-### <a name="input_bool_default_false"></a> [bool_default_false](#input_bool_default_false)
+### <a id="input_bool_default_false"></a> [bool_default_false](#input_bool_default_false)
 
 Description: n/a
 
@@ -395,7 +395,7 @@ Type: `bool`
 
 Default: `false`
 
-### <a name="input_list_default_empty"></a> [list_default_empty](#input_list_default_empty)
+### <a id="input_list_default_empty"></a> [list_default_empty](#input_list_default_empty)
 
 Description: n/a
 
@@ -403,7 +403,7 @@ Type: `list(string)`
 
 Default: `[]`
 
-### <a name="input_object_default_empty"></a> [object_default_empty](#input_object_default_empty)
+### <a id="input_object_default_empty"></a> [object_default_empty](#input_object_default_empty)
 
 Description: n/a
 
@@ -415,19 +415,19 @@ Default: `{}`
 
 The following outputs are exported:
 
-### <a name="output_unquoted"></a> [unquoted](#output_unquoted)
+### <a id="output_unquoted"></a> [unquoted](#output_unquoted)
 
 Description: It's unquoted output.
 
-### <a name="output_output-2"></a> [output-2](#output_output-2)
+### <a id="output_output-2"></a> [output-2](#output_output-2)
 
 Description: It's output number two.
 
-### <a name="output_output-1"></a> [output-1](#output_output-1)
+### <a id="output_output-1"></a> [output-1](#output_output-1)
 
 Description: It's output number one.
 
-### <a name="output_output-0.12"></a> [output-0.12](#output_output-0.12)
+### <a id="output_output-0.12"></a> [output-0.12](#output_output-0.12)
 
 Description: terraform 0.12 only
 
