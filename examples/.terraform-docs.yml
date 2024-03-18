@@ -19,6 +19,7 @@ footer-from: footer.md
 sections:
   show:
     - header
+    - examples
     - inputs
     - providers
     - modules
@@ -87,5 +88,5 @@ settings:
   indent: 4
   escape: false
   default: false
-  required: false
+  required: true
   type: true
