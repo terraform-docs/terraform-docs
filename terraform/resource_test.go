@@ -18,7 +18,7 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
-func TestResourceSpec(t *testing.T) {
+func TestResourceType(t *testing.T) {
 	assert := assert.New(t)
 	resource := Resource{
 		Type:           "private_key",
@@ -28,7 +28,20 @@ func TestResourceSpec(t *testing.T) {
 		Mode:           "managed",
 		Version:        types.String("latest"),
 	}
-	assert.Equal("tls_private_key.baz", resource.Spec())
+	assert.Equal("tls_private_key", resource.GetResourceType())
+}
+
+func TestResourceName(t *testing.T) {
+	assert := assert.New(t)
+	resource := Resource{
+		Type:           "private_key",
+		Name:           "baz",
+		ProviderName:   "tls",
+		ProviderSource: "hashicorp/tls",
+		Mode:           "managed",
+		Version:        types.String("latest"),
+	}
+	assert.Equal("baz", resource.GetResourceName())
 }
 
 func TestResourceMode(t *testing.T) {
@@ -121,7 +134,7 @@ func TestResourcesSortedByType(t *testing.T) {
 	actual := make([]string, len(resources))
 
 	for k, i := range resources {
-		actual[k] = i.Spec()
+		actual[k] = i.GetResourceType() + "." + i.GetResourceName()
 	}
 
 	assert.Equal(expected, actual)
@@ -144,7 +157,7 @@ func TestResourcesSortedByTypeAndMode(t *testing.T) {
 		case "data":
 			mode = " (d)"
 		}
-		actual[k] = i.Spec() + mode
+		actual[k] = i.GetResourceType() + "." + i.GetResourceName() + mode
 	}
 
 	assert.Equal(expected, actual)
