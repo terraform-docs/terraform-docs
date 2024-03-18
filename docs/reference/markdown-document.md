@@ -133,25 +133,25 @@ generates the following output:
 
     ### <a name="module_bar"></a> [bar](#module\_bar)
 
-    Source: baz
+    Source: [baz](baz)
 
     Version: 4.5.6
 
     ### <a name="module_baz"></a> [baz](#module\_baz)
 
-    Source: baz
+    Source: [baz](baz)
 
     Version: 4.5.6
 
     ### <a name="module_foo"></a> [foo](#module\_foo)
 
-    Source: bar
+    Source: [bar](bar)
 
     Version: 1.2.3
 
     ### <a name="module_foobar"></a> [foobar](#module\_foobar)
 
-    Source: git@github.com:module/path
+    Source: [git@github.com:module/path](https://github.com/module/path)
 
     Version: v7.8.9
 
