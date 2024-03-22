@@ -243,6 +243,15 @@ generates the following output:
     input.unquoted (required)
     n/a
 
+    input.variable_with_no_validation ("")
+    This variable has no validation
+
+    input.variable_with_one_validation ("")
+    This variable has one validation
+
+    input.variable_with_two_validations (required)
+    This variable has two validations
+
     input.with-url ("")
     The description contains url. https://www.domain.com/foo/bar_baz.html
 

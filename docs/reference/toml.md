@@ -280,6 +280,29 @@ generates the following output:
       [inputs.default]
 
     [[inputs]]
+      name = "variable_with_no_validation"
+      type = "string"
+      description = "This variable has no validation"
+      default = ""
+      required = false
+
+    [[inputs]]
+      name = "variable_with_one_validation"
+      type = "string"
+      description = "This variable has one validation"
+      default = ""
+      required = false
+      validation = ["var.variable_with_one_validation must be empty or 10 characters long."]
+
+    [[inputs]]
+      name = "variable_with_two_validations"
+      type = "string"
+      description = "This variable has two validations"
+      required = true
+      validation = ["var.variable_with_two_validations must be 10 characters long.", "var.variable_with_two_validations must start with 'magic'."]
+      [inputs.default]
+
+    [[inputs]]
       name = "with-url"
       type = "string"
       description = "The description contains url. https://www.domain.com/foo/bar_baz.html"

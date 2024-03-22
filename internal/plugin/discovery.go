@@ -12,7 +12,6 @@ package plugin
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -56,7 +55,7 @@ func findPlugins(dir string) (*List, error) {
 	clients := map[string]*goplugin.Client{}
 	formatters := map[string]*pluginsdk.Client{}
 
-	files, err := ioutil.ReadDir(dir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}

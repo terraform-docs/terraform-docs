@@ -109,6 +109,9 @@ followed by another line of text.
 | bool_default_false | n/a | `bool` | `false` |
 | list_default_empty | n/a | `list(string)` | `[]` |
 | object_default_empty | n/a | `object({})` | `{}` |
+| variable_with_no_validation | This variable has no validation | `string` | `""` |
+| variable_with_one_validation | This variable has one validation | `string` | `""` |
+| variable_with_two_validations | This variable has two validations | `string` | n/a |
 
 #### Outputs
 

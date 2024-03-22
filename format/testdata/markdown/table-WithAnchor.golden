@@ -109,6 +109,9 @@ followed by another line of text.
 | <a name="input_bool_default_false"></a> [bool_default_false](#input_bool_default_false) | n/a | `bool` | `false` |
 | <a name="input_list_default_empty"></a> [list_default_empty](#input_list_default_empty) | n/a | `list(string)` | `[]` |
 | <a name="input_object_default_empty"></a> [object_default_empty](#input_object_default_empty) | n/a | `object({})` | `{}` |
+| <a name="input_variable_with_no_validation"></a> [variable_with_no_validation](#input_variable_with_no_validation) | This variable has no validation | `string` | `""` |
+| <a name="input_variable_with_one_validation"></a> [variable_with_one_validation](#input_variable_with_one_validation) | This variable has one validation | `string` | `""` |
+| <a name="input_variable_with_two_validations"></a> [variable_with_two_validations](#input_variable_with_two_validations) | This variable has two validations | `string` | n/a |
 
 ## Outputs
 
