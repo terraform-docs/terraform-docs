@@ -153,7 +153,7 @@ omz reload
 ### fish
 
 ```fish
-terraform-doc completion fish > ~/.config/fish/completions/terraform-docs.fish
+terraform-docs completion fish > ~/.config/fish/completions/terraform-docs.fish
 ```
 
 To make this change permanent, the above commands can be added to `~/.profile` file.
