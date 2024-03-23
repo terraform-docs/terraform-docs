@@ -35,17 +35,25 @@ func NewCommand() *cobra.Command {
 	return cmd
 }
 
-const longDescription = `Outputs terraform-doc shell completion for the given shell (bash, zsh, fish)
+const longDescription = `Outputs terraform-docs shell completion for the given shell (bash, zsh, fish)
 This depends on the bash-completion binary.  Example installation instructions:
 # for bash users
-	$ terraform-docs completion bash > ~/.terraform-doc-completion
-	$ source ~/.terraform-doc-completion
+	$ terraform-docs completion bash > ~/.terraform-docs-completion
+	$ source ~/.terraform-docs-completion
+
+	# or the one-liner below
+
+	$ source <(terraform-docs completion bash)
 
 # for zsh users
-	% terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-doc
+	% terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-docs
 	% autoload -U compinit && compinit
 # or if zsh-completion is installed via homebrew
-    % terraform-docs completion zsh > "${fpath[1]}/_terraform-doc"
+	% terraform-docs completion zsh > "${fpath[1]}/_terraform-docs"
+
+# for ohmyzsh
+	$ terraform-docs completion zsh > ~/.oh-my-zsh/completions/_terraform-docs
+	$ omz reload
 
 # for fish users
 	$ terraform-docs completion fish > ~/.config/fish/completions/terraform-docs.fish

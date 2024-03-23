@@ -214,7 +214,7 @@ func (r *Runtime) bindFlags(v *viper.Viper) {
 		switch f.Name {
 		case "show", "hide":
 			// If '--show' or '--hide' CLI flag is used, explicitly override and remove
-			// all items from 'show' and 'hide' set in '.terraform-doc.yml'.
+			// all items from 'show' and 'hide' set in '.terraform-docs.yml'.
 			if !sectionsCleared {
 				v.Set("sections.show", []string{})
 				v.Set("sections.hide", []string{})
