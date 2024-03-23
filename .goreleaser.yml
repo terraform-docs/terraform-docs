@@ -48,8 +48,21 @@ changelog:
 dockers:
   - dockerfile: scripts/release/Dockerfile
     image_templates:
-      - "quay.io/terraform-docs/terraform-docs:latest"
-      - "quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}"
+      - "quay.io/terraform-docs/terraform-docs:latest-amd64"
+      - "quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}-amd64"
+    use: buildx
+    build_flag_templates:
+    - "--pull"
+    - "--platform=linux/amd64"
+  - dockerfile: scripts/release/Dockerfile
+    image_templates:
+      - "quay.io/terraform-docs/terraform-docs:latest-arm64"
+      - "quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}-arm64"
+    use: buildx
+    build_flag_templates:
+    - "--pull"
+    - "--platform=linux/arm64"
+    goarch: arm64
 
 brews:
   - tap:
