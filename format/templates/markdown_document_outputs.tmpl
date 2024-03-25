@@ -1,17 +1,17 @@
 {{- if .Config.Sections.Outputs -}}
     {{- if not .Module.Outputs -}}
         {{- if not .Config.Settings.HideEmpty -}}
-            {{- indent 0 "#" }} Outputs
+            {{- indent 0 "#" }} Outputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             No outputs.
         {{ end }}
     {{ else }}
-        {{- indent 0 "#" }} Outputs
+        {{- indent 0 "#" }} Outputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         The following outputs are exported:
         {{- range .Module.Outputs }}
 
-            {{ indent 1 "#" }} {{ anchorNameMarkdown "output" .Name }}
+            {{ indent 1 "#" }} {{ anchorNameMarkdown "output" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
             Description: {{ tostring .Description | sanitizeDoc }}
 
