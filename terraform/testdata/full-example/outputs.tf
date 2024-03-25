@@ -12,3 +12,8 @@ output "A" {
 output "B" {
   value = "b"
 }
+
+// D null result
+output "D" {
+  value = null
+}

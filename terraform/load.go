@@ -294,11 +294,15 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 		}
 
 		if config.OutputValues.Enabled {
-			output.Sensitive = values[output.Name].Sensitive
-			if values[output.Name].Sensitive {
-				output.Value = types.ValueOf(`<sensitive>`)
+			if value, ok := values[output.Name]; ok {
+				output.Sensitive = value.Sensitive
+				output.Value = types.ValueOf(value.Value)
 			} else {
-				output.Value = types.ValueOf(values[output.Name].Value)
+				output.Value = types.ValueOf("null")
+			}
+
+			if output.Sensitive {
+				output.Value = types.ValueOf(`<sensitive>`)
 			}
 		}
 		outputs = append(outputs, output)
