@@ -10,7 +10,7 @@ toc: true
 
 Since `v0.12.0`
 
-Relative path to a file to extract footer for the generated output from. Supported
+Relative path to a file or external source (http, https, s3) to extract footer for the generated output from. Supported
 file formats are `.adoc`, `.md`, `.tf`, and `.txt`.
 
 {{< alert type="info" >}}
@@ -67,4 +67,10 @@ Read `docs/.footer.md` to extract footer:
 
 ```yaml
 footer-from: "docs/.footer.md"
+```
+
+Read `https://raw.githubusercontent.com/terraform-docs/terraform-docs/master/terraform/testdata/full-example/doc.md` to extract footer:
+
+```yaml
+header-from: "https://raw.githubusercontent.com/terraform-docs/terraform-docs/master/terraform/testdata/full-example/doc.md"
 ```

@@ -11,15 +11,19 @@ the root directory of this source tree.
 package terraform
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
@@ -114,6 +118,74 @@ func isFileFormatSupported(filename string, section string) (bool, error) {
 	return false, fmt.Errorf("only .adoc, .md, .tf, and .txt formats are supported to read %s from", section)
 }
 
+func getSource(filename string) string {
+	// Default source is local
+	source := "local"
+
+	// Identify another source different from the local for the filename
+	if strings.HasPrefix(filename, "http") || strings.HasPrefix(filename, "https") || strings.HasPrefix(filename, "s3") {
+		source = "web"
+	}
+
+	return source
+}
+
+func sendHTTPRequest(url string) (string, error) {
+	// Creation of context
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Send GET request
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil) // #nosec G107
+	if err != nil {
+		fmt.Println("Error:", err)
+		return "", err
+	}
+
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return "", err
+	}
+
+	defer func() {
+		errDefer := resp.Body.Close()
+		if errDefer != nil {
+			fmt.Println("Error closing response body:", errDefer)
+		}
+	}()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return "", err
+	}
+
+	return string(body), nil
+}
+
+func createTempFile(config *print.Config, url string, content string) (string, error) {
+	// Creation of context
+	fileFormat := getFileFormat(url)
+	tempFile, err := os.CreateTemp("", "temp-*"+fileFormat) // Pattern with temp-*.* extension
+	if err != nil {
+		fmt.Println("Error creating temporary file:", err)
+		return "", err
+	}
+
+	// overrride file name, otherwise it will use the URL and not the temp file created
+	filename := filepath.Join("/", config.ModuleRoot, tempFile.Name())
+
+	// Write the content to the temporary file
+	if _, err := tempFile.WriteString(content); err != nil {
+		fmt.Println("Error writing to temporary file:", err)
+		return "", err
+	}
+
+	return filename, nil
+}
+
 func loadHeader(config *print.Config) (string, error) {
 	if !config.Sections.Header {
 		return "", nil
@@ -140,6 +212,32 @@ func loadSection(config *print.Config, file string, section string) (string, err
 	if ok, err := isFileFormatSupported(file, section); !ok {
 		return "", err
 	}
+	sourceType := getSource(file)
+
+	if sourceType == "web" {
+		// Request content of the URL
+		response, err := sendHTTPRequest(file)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return "", err
+		}
+
+		// Create temp file with the remote content
+		filename, err = createTempFile(config, file, response)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return "", err
+		}
+
+		// Ensure the temporary file is removed
+		defer func() {
+			errDefer := os.Remove(filename)
+			if errDefer != nil {
+				fmt.Println("Error removing temporary file:", errDefer)
+			}
+		}()
+	}
+
 	if info, err := os.Stat(filename); os.IsNotExist(err) || info.IsDir() {
 		if section == "header" && file == "main.tf" {
 			return "", nil // absorb the error to not break workflow for default value of header and missing 'main.tf'

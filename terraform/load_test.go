@@ -11,6 +11,8 @@ the root directory of this source tree.
 package terraform
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"sort"
@@ -447,6 +449,138 @@ func TestLoadSections(t *testing.T) {
 			} else {
 				assert.Nil(err)
 				assert.Equal(tt.expected, actual)
+			}
+		})
+	}
+}
+func TestLoadSectionsFromUrl(t *testing.T) {
+	tests := []struct {
+		name     string
+		file     string
+		expected string
+		wantErr  bool
+		errText  string
+		section  string
+	}{
+		{
+			name:     "load module header from url",
+			file:     "https://raw.githubusercontent.com/terraform-docs/terraform-docs/master/terraform/testdata/full-example/doc.md",
+			expected: "# Custom Header\n\nExample of 'foo_bar' module in `foo_bar.tf`.\n\n- list item 1\n- list item 2\n",
+			wantErr:  false,
+			errText:  "",
+			section:  "header",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			config := print.NewConfig()
+			actual, err := loadSection(config, tt.file, tt.section)
+			if tt.wantErr {
+				assert.NotNil(err)
+				assert.Equal(tt.errText, err.Error())
+			} else {
+				assert.Nil(err)
+				assert.Equal(tt.expected, actual)
+			}
+		})
+	}
+}
+
+func TestGetSource(t *testing.T) {
+	tests := []struct {
+		name     string
+		filename string
+		expected string
+	}{
+		{
+			name:     "Local file",
+			filename: "file.txt",
+			expected: "local",
+		},
+		{
+			name:     "HTTP file",
+			filename: "http://example.com/file.txt",
+			expected: "web",
+		},
+		{
+			name:     "HTTPS file",
+			filename: "https://example.com/file.txt",
+			expected: "web",
+		},
+		{
+			name:     "S3 file",
+			filename: "s3://bucket/file.txt",
+			expected: "web",
+		},
+		{
+			name:     "Empty filename",
+			filename: "",
+			expected: "local",
+		},
+		{
+			name:     "Non-standard URL",
+			filename: "ftp://example.com/file.txt",
+			expected: "local",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual := getSource(tt.filename)
+			if actual != tt.expected {
+				t.Errorf("Expected source for %s: %s, got: %s", tt.filename, tt.expected, actual)
+			}
+		})
+	}
+}
+
+func TestSendHTTPRequest(t *testing.T) {
+	// Create a mock server
+	mockHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Mock response"))
+	})
+	mockServer := httptest.NewServer(mockHandler)
+	defer mockServer.Close()
+
+	tests := []struct {
+		name          string
+		url           string
+		responseCode  int
+		responseBody  string
+		expectedBody  string
+		expectedError bool
+	}{
+		{
+			name:          "Successful request",
+			url:           mockServer.URL,
+			responseCode:  http.StatusOK,
+			responseBody:  "Mock response",
+			expectedBody:  "Mock response",
+			expectedError: false,
+		},
+		{
+			name:          "Timeout",
+			url:           "http://unreachable",
+			responseCode:  0, // No response code due to timeout
+			responseBody:  "",
+			expectedBody:  "",
+			expectedError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actualBody, actualErr := sendHTTPRequest(tt.url)
+
+			if actualErr != nil && !tt.expectedError {
+				t.Errorf("Expected no error, got: %v", actualErr)
+			}
+
+			if actualBody != tt.expectedBody {
+				t.Errorf("Expected body: %s, got: %s", tt.expectedBody, actualBody)
 			}
 		})
 	}
