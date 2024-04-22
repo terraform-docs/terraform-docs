@@ -19,6 +19,16 @@ RUN go mod download
 COPY . .
 RUN make build
 
+# Detect architecture and prepare a generic output path
+RUN ARCH=$(uname -m); \
+    if [ "$ARCH" = "x86_64" ]; then \
+      cp /go/src/terraform-docs/bin/linux-amd64/terraform-docs /go/src/terraform-docs/bin/terraform-docs; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+      cp /go/src/terraform-docs/bin/linux-arm64/terraform-docs /go/src/terraform-docs/bin/terraform-docs; \
+    else \
+      echo "Unsupported architecture"; exit 1; \
+    fi
+
 ################
 
 FROM alpine:3.19.0
@@ -26,6 +36,6 @@ FROM alpine:3.19.0
 # Mitigate CVE-2023-5363
 RUN apk add --no-cache --upgrade "openssl>=3.1.4-r1"
 
-COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
+COPY --from=builder /go/src/terraform-docs/bin/terraform-docs /usr/local/bin/
 
 ENTRYPOINT ["terraform-docs"]

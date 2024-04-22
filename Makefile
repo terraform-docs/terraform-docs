@@ -37,6 +37,16 @@ DEFAULT_TAG  ?= $(shell echo "$(CUR_VERSION)" | tr -d 'v')
 DOCKER_IMAGE := quay.io/$(PROJECT_OWNER)/$(PROJECT_NAME)
 DOCKER_TAG   ?= $(DEFAULT_TAG)
 
+# Docker multi-architecture variables
+DOCKER_ARCH := $(GOARCH)
+ifeq ($(DOCKER_ARCH),amd64)
+    DOCKER_ARCH_SUFFIX = -amd64
+else ifeq ($(DOCKER_ARCH),arm64)
+    DOCKER_ARCH_SUFFIX = -arm64
+else
+    $(error Unsupported architecture)
+endif
+
 # Binary versions
 GOLANGCI_VERSION  := v1.55.2
 
@@ -103,6 +113,26 @@ docker:   ## Build Docker image
 push:   ## Push Docker image
 	@ $(MAKE) --no-print-directory log-$@
 	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)
+
+.PHONY: docker-multiarch
+docker-multiarch:   ## Build Docker image for multiple architectures
+	@ $(MAKE) --no-print-directory log-$@
+	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG)$(DOCKER_ARCH_SUFFIX) --file Dockerfile .
+
+.PHONY: push-multiarch
+push-multiarch:   ## Push Docker image with architecture suffix
+	@ $(MAKE) --no-print-directory log-$@
+	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)$(DOCKER_ARCH_SUFFIX)
+
+.PHONY: push-multiarch-manifests
+push-multiarch-manifests:   ## Create and push multiarch manifests
+	@ $(MAKE) --no-print-directory log-$@
+	docker pull $(DOCKER_IMAGE):$(DEFAULT_TAG)-amd64
+	docker pull $(DOCKER_IMAGE):$(DEFAULT_TAG)-arm64
+	docker manifest create $(DOCKER_IMAGE):$(DEFAULT_TAG) \
+		$(DOCKER_IMAGE):$(DEFAULT_TAG)-amd64 \
+		$(DOCKER_IMAGE):$(DEFAULT_TAG)-arm64
+	docker manifest push --purge $(DOCKER_IMAGE):$(DEFAULT_TAG)
 
 .PHONY: docs
 docs:   ## Generate document of formatter commands
