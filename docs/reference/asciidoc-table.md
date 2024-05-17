@@ -49,6 +49,7 @@ terraform-docs asciidoc table [PATH] [flags]
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
       --type                        show Type column or section (default true)
+      --validation                  show Validation column or section (default true)
 ```
 
 ## Example
@@ -149,28 +150,32 @@ generates the following output:
 
     [cols="a,a,a,a,a",options="header,autowidth"]
     |===
-    |Name |Description |Type |Default |Required
+    |Name |Description |Type |Validation |Default |Required
     |[[input_bool-1]] <<input_bool-1,bool-1>>
     |It's bool number one.
     |`bool`
+    |None
     |`true`
     |no
 
     |[[input_bool-2]] <<input_bool-2,bool-2>>
     |It's bool number two.
     |`bool`
+    |None
     |`false`
     |no
 
     |[[input_bool-3]] <<input_bool-3,bool-3>>
     |n/a
     |`bool`
+    |None
     |`true`
     |no
 
     |[[input_bool_default_false]] <<input_bool_default_false,bool_default_false>>
     |n/a
     |`bool`
+    |None
     |`false`
     |no
 
@@ -185,6 +190,7 @@ generates the following output:
     ----
 
     |`list`
+    |None
     |
 
     [source]
@@ -199,18 +205,21 @@ generates the following output:
     |[[input_input-with-pipe]] <<input_input-with-pipe,input-with-pipe>>
     |It includes v1 \| v2 \| v3
     |`string`
+    |None
     |`"v1"`
     |no
 
     |[[input_input_with_underscores]] <<input_input_with_underscores,input_with_underscores>>
     |A variable with underscores.
     |`any`
+    |None
     |n/a
     |yes
 
     |[[input_list-1]] <<input_list-1,list-1>>
     |It's list number one.
     |`list`
+    |None
     |
 
     [source]
@@ -227,18 +236,21 @@ generates the following output:
     |[[input_list-2]] <<input_list-2,list-2>>
     |It's list number two.
     |`list`
+    |None
     |n/a
     |yes
 
     |[[input_list-3]] <<input_list-3,list-3>>
     |n/a
     |`list`
+    |None
     |`[]`
     |no
 
     |[[input_list_default_empty]] <<input_list_default_empty,list_default_empty>>
     |n/a
     |`list(string)`
+    |None
     |`[]`
     |no
 
@@ -260,6 +272,7 @@ generates the following output:
       })
     ----
 
+    |None
     |
 
     [source]
@@ -287,6 +300,7 @@ generates the following output:
     |[[input_map-1]] <<input_map-1,map-1>>
     |It's map number one.
     |`map`
+    |None
     |
 
     [source]
@@ -303,108 +317,147 @@ generates the following output:
     |[[input_map-2]] <<input_map-2,map-2>>
     |It's map number two.
     |`map`
+    |None
     |n/a
     |yes
 
     |[[input_map-3]] <<input_map-3,map-3>>
     |n/a
     |`map`
+    |None
     |`{}`
     |no
 
     |[[input_no-escape-default-value]] <<input_no-escape-default-value,no-escape-default-value>>
     |The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
     |`string`
+    |None
     |`"VALUE_WITH_UNDERSCORE"`
     |no
 
     |[[input_number-1]] <<input_number-1,number-1>>
     |It's number number one.
     |`number`
+    |None
     |`42`
     |no
 
     |[[input_number-2]] <<input_number-2,number-2>>
     |It's number number two.
     |`number`
+    |None
     |n/a
     |yes
 
     |[[input_number-3]] <<input_number-3,number-3>>
     |n/a
     |`number`
+    |None
     |`"19"`
     |no
 
     |[[input_number-4]] <<input_number-4,number-4>>
     |n/a
     |`number`
+    |None
     |`15.75`
     |no
 
     |[[input_number_default_zero]] <<input_number_default_zero,number_default_zero>>
     |n/a
     |`number`
+    |None
     |`0`
     |no
 
     |[[input_object_default_empty]] <<input_object_default_empty,object_default_empty>>
     |n/a
     |`object({})`
+    |None
     |`{}`
     |no
 
     |[[input_string-1]] <<input_string-1,string-1>>
     |It's string number one.
     |`string`
+    |None
     |`"bar"`
     |no
 
     |[[input_string-2]] <<input_string-2,string-2>>
     |It's string number two.
     |`string`
+    |None
     |n/a
     |yes
 
     |[[input_string-3]] <<input_string-3,string-3>>
     |n/a
     |`string`
+    |None
     |`""`
     |no
 
     |[[input_string-special-chars]] <<input_string-special-chars,string-special-chars>>
     |n/a
     |`string`
+    |None
     |`"\\.<>[]{}_-"`
     |no
 
     |[[input_string_default_empty]] <<input_string_default_empty,string_default_empty>>
     |n/a
     |`string`
+    |None
     |`""`
     |no
 
     |[[input_string_default_null]] <<input_string_default_null,string_default_null>>
     |n/a
     |`string`
+    |None
     |`null`
     |no
 
     |[[input_string_no_default]] <<input_string_no_default,string_no_default>>
     |n/a
     |`string`
+    |None
     |n/a
     |yes
 
     |[[input_unquoted]] <<input_unquoted,unquoted>>
     |n/a
     |`any`
+    |None
+    |n/a
+    |yes
+
+    |[[input_variable_with_no_validation]] <<input_variable_with_no_validation,variable_with_no_validation>>
+    |This variable has no validation
+    |`string`
+    |None
+    |`""`
+    |no
+
+    |[[input_variable_with_one_validation]] <<input_variable_with_one_validation,variable_with_one_validation>>
+    |This variable has one validation
+    |`string`
+    |var.variable_with_one_validation must be empty or 10 characters long.
+    |`""`
+    |no
+
+    |[[input_variable_with_two_validations]] <<input_variable_with_two_validations,variable_with_two_validations>>
+    |This variable has two validations
+    |`string`
+    |var.variable_with_two_validations must be 10 characters long.+var.variable_with_two_validations must start with 'magic'.
     |n/a
     |yes
 
     |[[input_with-url]] <<input_with-url,with-url>>
     |The description contains url. https://www.domain.com/foo/bar_baz.html
     |`string`
+    |None
     |`""`
     |no
 

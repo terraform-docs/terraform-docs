@@ -51,6 +51,7 @@ terraform-docs markdown document [PATH] [flags]
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
       --type                        show Type column or section (default true)
+      --validation                  show Validation column or section (default true)
 ```
 
 ## Example
@@ -210,6 +211,17 @@ generates the following output:
     Description: n/a
 
     Type: `any`
+
+    ### <a name="input_variable_with_two_validations"></a> [variable\_with\_two\_validations](#input\_variable\_with\_two\_validations)
+
+    Description: This variable has two validations
+
+    Type: `string`
+
+    Validations:
+
+    - var.variable\_with\_two\_validations must be 10 characters long.
+    - var.variable\_with\_two\_validations must start with 'magic'.
 
     ## Optional Inputs
 
@@ -457,6 +469,26 @@ generates the following output:
     Type: `string`
 
     Default: `null`
+
+    ### <a name="input_variable_with_no_validation"></a> [variable\_with\_no\_validation](#input\_variable\_with\_no\_validation)
+
+    Description: This variable has no validation
+
+    Type: `string`
+
+    Default: `""`
+
+    ### <a name="input_variable_with_one_validation"></a> [variable\_with\_one\_validation](#input\_variable\_with\_one\_validation)
+
+    Description: This variable has one validation
+
+    Type: `string`
+
+    Validations:
+
+    - var.variable\_with\_one\_validation must be empty or 10 characters long.
+
+    Default: `""`
 
     ### <a name="input_with-url"></a> [with-url](#input\_with-url)
 
