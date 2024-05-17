@@ -72,7 +72,8 @@ if [[ $RELEASE_VERSION != *"-alpha"* && $RELEASE_VERSION != *"-beta"* && $RELEAS
     git add README.md docs/user-guide/installation.md
 fi
 
-sed -i -E "s|v${RELEASE_VERSION}-alpha|v${RELEASE_VERSION}|g" internal/version/version.go
+sed -i -E "s|coreVersion([[:space:]]*)= \"(.*)\"|coreVersion\1= \"${RELEASE_VERSION}\"|g" internal/version/version.go
+sed -i -E "s|prerelease([[:space:]]*)= \"(.*)\"|prerelease\1= \"\"|g" internal/version/version.go
 git add internal/version/version.go
 
 # Commit changes

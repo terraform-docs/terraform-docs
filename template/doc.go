@@ -12,43 +12,42 @@ the root directory of this source tree.
 //
 // Usage
 //
-//     import (
-//         "fmt"
-//         gotemplate "text/template"
+//	import (
+//	    "fmt"
+//	    gotemplate "text/template"
 //
-//         "github.com/terraform-docs/terraform-docs/print"
-//         "github.com/terraform-docs/terraform-docs/template"
-//         "github.com/terraform-docs/terraform-docs/terraform"
-//     )
+//	    "github.com/terraform-docs/terraform-docs/print"
+//	    "github.com/terraform-docs/terraform-docs/template"
+//	    "github.com/terraform-docs/terraform-docs/terraform"
+//	)
 //
-//     const mainTpl =`
-//     {{- if .Config.Sections.Header -}}
-//         {{- with .Module.Header -}}
-//             {{ colorize "\033[90m" . }}
-//         {{ end -}}
-//         {{- printf "\n\n" -}}
-//     {{ end -}}`
+//	const mainTpl =`
+//	{{- if .Config.Sections.Header -}}
+//	    {{- with .Module.Header -}}
+//	        {{ colorize "\033[90m" . }}
+//	    {{ end -}}
+//	    {{- printf "\n\n" -}}
+//	{{ end -}}`
 //
-//     func render(config *print.Config, module *terraform.Module) (string, error) {
-//         tt := template.New(config, &template.Item{
-//             Name:      "main",
-//             Text:      mainTpl,
-//             TrimSpace: true,
-//         })
+//	func render(config *print.Config, module *terraform.Module) (string, error) {
+//	    tt := template.New(config, &template.Item{
+//	        Name:      "main",
+//	        Text:      mainTpl,
+//	        TrimSpace: true,
+//	    })
 //
-//         tt := template.New(config, items...)
-//         tt.CustomFunc(gotemplate.FuncMap{
-//             "colorize": func(color string, s string) string {
-//                 reset := "\033[0m"
-//                 if !config.Settings.Color {
-//                     color = ""
-//                     reset = ""
-//                 }
-//                 return fmt.Sprintf("%s%s%s", color, s, reset)
-//             },
-//         })
+//	    tt := template.New(config, items...)
+//	    tt.CustomFunc(gotemplate.FuncMap{
+//	        "colorize": func(color string, s string) string {
+//	            reset := "\033[0m"
+//	            if !config.Settings.Color {
+//	                color = ""
+//	                reset = ""
+//	            }
+//	            return fmt.Sprintf("%s%s%s", color, s, reset)
+//	        },
+//	    })
 //
-//         return tt.Render("main", module)
-//     }
-//
+//	    return tt.Render("main", module)
+//	}
 package template

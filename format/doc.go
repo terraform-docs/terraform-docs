@@ -10,35 +10,35 @@ the root directory of this source tree.
 
 // Package format provides different, out of the box supported, output format types.
 //
-// Usage
+// # Usage
 //
 // A specific format can be instantiated either with `format.New()` function or
 // directly calling its function (e.g. `NewMarkdownTable`, etc)
 //
-//     config := print.DefaultConfig()
-//     config.Formatter = "markdown table"
+//	config := print.DefaultConfig()
+//	config.Formatter = "markdown table"
 //
-//     formatter, err := format.New(config)
-//     if err != nil {
-//         return err
-//     }
+//	formatter, err := format.New(config)
+//	if err != nil {
+//	    return err
+//	}
 //
-//     err := formatter.Generate(tfmodule)
-//     if err != nil {
-//         return err
-//     }
+//	err := formatter.Generate(tfmodule)
+//	if err != nil {
+//	    return err
+//	}
 //
-//     output, err := formatter.Render"")
-//     if err != nil {
-//         return err
-//     }
+//	output, err := formatter.Render"")
+//	if err != nil {
+//	    return err
+//	}
 //
 // Note: if you don't intend to provide additional template for the generated
 // content, or the target format doesn't provide templating (e.g. json, yaml,
 // xml, or toml) you can use `Content()` function instead of `Render)`. Note
 // that `Content()` returns all the sections combined with predefined order.
 //
-//     output := formatter.Content()
+//	output := formatter.Content()
 //
 // Supported formats are:
 //
@@ -53,5 +53,4 @@ the root directory of this source tree.
 // • `NewTOML`
 // • `NewXML`
 // • `NewYAML`
-//
 package format

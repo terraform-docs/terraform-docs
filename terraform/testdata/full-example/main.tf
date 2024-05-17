@@ -29,5 +29,9 @@ module "foo" {
 }
 
 module "foobar" {
-  source  = "git@github.com:module/path?ref=v7.8.9"
+  source = "git@github.com:module/path?ref=v7.8.9"
+}
+
+locals {
+  arn = provider::aws::arn_parse("arn:aws:iam::444455556666:role/example")
 }

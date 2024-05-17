@@ -7,7 +7,7 @@ on:
       - "!v*.*.*-*"
 
 env:
-  GO_VERSION: "1.18.3"
+  GO_VERSION: "1.22.1"
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
 
 jobs:
@@ -16,17 +16,17 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Login to Docker
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         if: env.REGISTRY_USERNAME != ''
         with:
           registry: quay.io
@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         if: env.REGISTRY_USERNAME != ''
         with:
           version: latest
@@ -66,7 +66,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Bump Homebrew formula version
-        uses: dawidd6/action-homebrew-bump-formula@v3.8.0
+        uses: dawidd6/action-homebrew-bump-formula@v3.11.0
         if: "!contains(github.ref, '-')" # skip prereleases
         with:
           token: ${{ secrets.COMMITTER_TOKEN }}

@@ -11,7 +11,7 @@ the root directory of this source tree.
 package format
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -182,7 +182,7 @@ func TestGeneratorFuncModule(t *testing.T) {
 		generator := newGenerator(config, true, withModule(module))
 
 		path := filepath.Join("..", "terraform", "testdata", "expected", "full-example-mainTf-Header.golden")
-		data, err := ioutil.ReadFile(path)
+		data, err := os.ReadFile(path)
 
 		assert.Nil(err)
 

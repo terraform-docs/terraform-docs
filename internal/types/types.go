@@ -286,7 +286,7 @@ func (l List) Raw() interface{} {
 }
 
 type xmllistentry struct {
-	XMLName xml.Name
+	XMLName xml.Name    `xml:"item"`
 	Value   interface{} `xml:",chardata"`
 }
 
@@ -334,7 +334,7 @@ func (m Map) Length() int {
 }
 
 type xmlmapentry struct {
-	XMLName xml.Name
+	XMLName xml.Name    `xml:","`
 	Value   interface{} `xml:",chardata"`
 }
 
@@ -347,24 +347,26 @@ func (s sortmapkeys) Less(i, j int) bool { return s[i] < s[j] }
 // MarshalXML custom marshal function which converts map to its literal
 // XML representation. For example:
 //
-// m := Map{
-//     "a": 1,
-//     "b": 2,
-//     "c": 3,
-// }
+//	m := Map{
+//	    "a": 1,
+//	    "b": 2,
+//	    "c": 3,
+//	}
 //
-// type foo struct {
-//     Value Map `xml:"value"`
-// }
+//	type foo struct {
+//	    Value Map `xml:"value"`
+//	}
 //
 // will get marshaled to:
 //
 // <foo>
-//   <value>
-//     <a>1</a>
-//     <b>2</b>
-//     <c>3</c>
-//   </value>
+//
+//	<value>
+//	  <a>1</a>
+//	  <b>2</b>
+//	  <c>3</c>
+//	</value>
+//
 // </foo>
 func (m Map) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if len(m) == 0 {

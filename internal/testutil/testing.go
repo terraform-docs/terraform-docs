@@ -11,7 +11,6 @@ the root directory of this source tree.
 package testutil
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -43,7 +42,7 @@ func GetModule(config *print.Config) (*terraform.Module, error) {
 // GetExpected returns 'example' Module and expected Golden file content
 func GetExpected(format, name string) (string, error) {
 	path := filepath.Join(testDataPath(), format, name+".golden")
-	bytes, err := ioutil.ReadFile(filepath.Clean(path))
+	bytes, err := os.ReadFile(filepath.Clean(path))
 	if err != nil {
 		return "", err
 	}
