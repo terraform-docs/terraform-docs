@@ -30,7 +30,7 @@ variable "G" {
 }
 
 # terraform-docs-ignore
-variable "H" {
+variable "ignored" {
   description = "H description"
   default = null
 }

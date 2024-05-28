@@ -4,7 +4,7 @@ description: "How to insert generated terraform-docs output to file"
 menu:
   docs:
     parent: "how-to"
-weight: 204
+weight: 205
 toc: false
 ---
 

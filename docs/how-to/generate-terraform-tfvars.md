@@ -4,7 +4,7 @@ description: "How to generate terraform.tfvars file with terraform-docs"
 menu:
   docs:
     parent: "how-to"
-weight: 207
+weight: 208
 toc: false
 ---
 
