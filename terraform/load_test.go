@@ -11,12 +11,14 @@ the root directory of this source tree.
 package terraform
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/exp/slices"
 
 	"github.com/terraform-docs/terraform-docs/print"
 )
@@ -38,6 +40,7 @@ func TestLoadModuleWithOptions(t *testing.T) {
 	assert.Equal(true, module.HasModuleCalls())
 	assert.Equal(true, module.HasProviders())
 	assert.Equal(true, module.HasRequirements())
+	assert.Equal(true, module.HasResources())
 
 	config.Sections.Header = false
 	config.Sections.Footer = true
@@ -770,6 +773,87 @@ func TestLoadProviders(t *testing.T) {
 			sort.Strings(actual)
 
 			assert.Equal(tt.expected.providers, actual)
+		})
+	}
+}
+
+func TestLoadRequirements(t *testing.T) {
+	type expected struct {
+		requirements []string
+	}
+	tests := []struct {
+		name     string
+		path     string
+		expected expected
+	}{
+		{
+			name: "load module requirements from path",
+			path: "full-example",
+			expected: expected{
+				requirements: []string{"terraform >= 0.12", "aws >= 2.15.0"},
+			},
+		},
+		{
+			name: "load module requirements from path",
+			path: "no-requirements",
+			expected: expected{
+				requirements: []string{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			requirements := loadRequirements(module)
+
+			assert.Equal(len(tt.expected.requirements), len(requirements))
+
+			for i, r := range tt.expected.requirements {
+				assert.Equal(r, fmt.Sprintf("%s %s", requirements[i].Name, requirements[i].Version))
+			}
+		})
+	}
+}
+
+func TestLoadResources(t *testing.T) {
+	type expected struct {
+		resources []string
+	}
+	tests := []struct {
+		name     string
+		path     string
+		expected expected
+	}{
+		{
+			name: "load module resources from path",
+			path: "full-example",
+			expected: expected{
+				resources: []string{"tls_private_key.baz", "aws_caller_identity.current", "null_resource.foo"},
+			},
+		},
+		{
+			name: "load module resources from path",
+			path: "no-resources",
+			expected: expected{
+				resources: []string{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			config := print.NewConfig()
+			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			resources := loadResources(module, config)
+
+			assert.Equal(len(tt.expected.resources), len(resources))
+
+			for _, r := range resources {
+				assert.True(slices.Contains(tt.expected.resources, fmt.Sprintf("%s_%s.%s", r.ProviderName, r.Type, r.Name)))
+			}
 		})
 	}
 }

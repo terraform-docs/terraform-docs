@@ -187,10 +187,17 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 	var optional = make([]*Input, 0, len(tfmodule.Variables))
 
 	for _, input := range tfmodule.Variables {
+		comments := loadComments(input.Pos.Filename, input.Pos.Line)
+
+		// skip over inputs that are marked as being ignored
+		if strings.Contains(comments, "terraform-docs-ignore") {
+			continue
+		}
+
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
 		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
 		if inputDescription == "" && config.Settings.ReadComments {
-			inputDescription = loadComments(input.Pos.Filename, input.Pos.Line)
+			inputDescription = comments
 		}
 
 		i := &Input{
@@ -245,12 +252,19 @@ func loadModulecalls(tfmodule *tfconfig.Module, config *print.Config) []*ModuleC
 	var source, version string
 
 	for _, m := range tfmodule.ModuleCalls {
-		source, version = formatSource(m.Source, m.Version)
+		comments := loadComments(m.Pos.Filename, m.Pos.Line)
+
+		// skip over modules that are marked as being ignored
+		if strings.Contains(comments, "terraform-docs-ignore") {
+			continue
+		}
 
 		description := ""
 		if config.Settings.ReadComments {
-			description = loadComments(m.Pos.Filename, m.Pos.Line)
+			description = comments
 		}
+
+		source, version = formatSource(m.Source, m.Version)
 
 		modules = append(modules, &ModuleCall{
 			Name:        m.Name,
@@ -277,10 +291,17 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 		}
 	}
 	for _, o := range tfmodule.Outputs {
+		comments := loadComments(o.Pos.Filename, o.Pos.Line)
+
+		// skip over outputs that are marked as being ignored
+		if strings.Contains(comments, "terraform-docs-ignore") {
+			continue
+		}
+
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/584)
 		description := strings.ReplaceAll(o.Description, "\r\n", "\n")
 		if description == "" && config.Settings.ReadComments {
-			description = loadComments(o.Pos.Filename, o.Pos.Line)
+			description = comments
 		}
 
 		output := &Output{
@@ -330,7 +351,11 @@ func loadOutputValues(config *print.Config) (map[string]*output, error) {
 	return terraformOutputs, err
 }
 
-func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider {
+func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider { //nolint:gocyclo
+	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
+	// Be wary when adding branches, and look for functionality that could
+	// be reasonably moved into an injected dependency.
+
 	type provider struct {
 		Name        string   `hcl:"name,label"`
 		Version     string   `hcl:"version"`
@@ -360,6 +385,13 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 
 	for _, resource := range resources {
 		for _, r := range resource {
+			comments := loadComments(r.Pos.Filename, r.Pos.Line)
+
+			// skip over resources that are marked as being ignored
+			if strings.Contains(comments, "terraform-docs-ignore") {
+				continue
+			}
+
 			var version = ""
 			if l, ok := lock[r.Provider.Name]; ok {
 				version = l.Version
@@ -368,6 +400,10 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 			}
 
 			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
+			if _, ok := discovered[key]; ok {
+				continue
+			}
+
 			discovered[key] = &Provider{
 				Name:    r.Provider.Name,
 				Alias:   types.String(r.Provider.Alias),
@@ -384,6 +420,7 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 	for _, provider := range discovered {
 		providers = append(providers, provider)
 	}
+
 	return providers
 }
 
@@ -420,6 +457,13 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 
 	for _, resource := range allResources {
 		for _, r := range resource {
+			comments := loadComments(r.Pos.Filename, r.Pos.Line)
+
+			// skip over resources that are marked as being ignored
+			if strings.Contains(comments, "terraform-docs-ignore") {
+				continue
+			}
+
 			var version string
 			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok {
 				version = resourceVersion(rv.VersionConstraints)
@@ -437,7 +481,7 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 
 			description := ""
 			if config.Settings.ReadComments {
-				description = loadComments(r.Pos.Filename, r.Pos.Line)
+				description = comments
 			}
 
 			discovered[key] = &Resource{
