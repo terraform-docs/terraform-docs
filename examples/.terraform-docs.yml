@@ -14,6 +14,7 @@ footer-from: footer.md
 # recursive:
 #   enabled: false
 #   path: modules
+#   include-main: false
 
 # see: https://terraform-docs.io/user-guide/configuration/sections
 sections:

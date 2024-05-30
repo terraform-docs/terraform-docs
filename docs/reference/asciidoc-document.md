@@ -42,6 +42,7 @@ terraform-docs asciidoc document [PATH] [flags]
       --output-values-from string   inject output values from file into outputs (default "")
       --read-comments               use comments as description when description is empty (default true)
       --recursive                   update submodules recursively (default false)
+      --recursive-include-main      include the main module (default true)
       --recursive-path string       submodules path to recursively update (default "modules")
       --required                    show Required column or section (default true)
       --sensitive                   show Sensitive column or section (default true)
