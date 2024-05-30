@@ -97,7 +97,7 @@ type module struct {
 func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error { //nolint:gocyclo
 	modules := []module{}
 
-	if r.config.Recursive.IncludeMain {
+	if !r.config.Recursive.Enabled || r.config.Recursive.IncludeMain {
 		modules = append(modules, module{r.rootDir, r.config})
 	}
 
