@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         if: env.REGISTRY_USERNAME != ''
         with:
           distribution: goreleaser
