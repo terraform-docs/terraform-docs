@@ -26,6 +26,6 @@ FROM docker.io/library/alpine:3.20.0
 # Mitigate CVE-2023-5363
 RUN apk add --no-cache --upgrade "openssl>=3.1.4-r1"
 
-COPY --from=builder /go/src/terraform-docs/bin/linux-amd64/terraform-docs /usr/local/bin/
+COPY --from=builder /go/src/terraform-docs/bin/linux-*/terraform-docs /usr/local/bin/
 
 ENTRYPOINT ["terraform-docs"]
