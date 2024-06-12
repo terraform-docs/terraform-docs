@@ -22,7 +22,7 @@ func CreateAnchorMarkdown(prefix string, value string, anchor bool, escape bool)
 		anchorName := fmt.Sprintf("%s_%s", prefix, value)
 		sanitizedAnchorName := SanitizeName(anchorName, escape)
 		// the <a> link is purposely not sanitized as this breaks markdown formatting
-		return fmt.Sprintf("<a name=\"%s\"></a> [%s](#%s)", anchorName, sanitizedName, sanitizedAnchorName)
+		return fmt.Sprintf("<a id=\"%s\"></a> [%s](#%s)", anchorName, sanitizedName, sanitizedAnchorName)
 	}
 
 	return sanitizedName
