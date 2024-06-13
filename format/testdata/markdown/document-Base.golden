@@ -68,25 +68,25 @@ The following Modules are called:
 
 ### bar
 
-Source: baz
+Source: [baz](baz)
 
 Version: 4.5.6
 
 ### foo
 
-Source: bar
+Source: [bar](bar)
 
 Version: 1.2.3
 
 ### baz
 
-Source: baz
+Source: [baz](baz)
 
 Version: 4.5.6
 
 ### foobar
 
-Source: git@github.com:module/path
+Source: [git@github.com:module/path](https://github.com/module/path)
 
 Version: v7.8.9
 
