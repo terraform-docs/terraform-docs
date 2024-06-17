@@ -184,6 +184,33 @@ func TestConfigOutput(t *testing.T) {
 			wantErr: false,
 			errMsg:  "",
 		},
+		"TemplateLiteralLineBreakLeadingWhitespace": {
+			output: output{
+				File:     "README.md",
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("   %s\\n%s\\n%s", OutputBeginComment, OutputContent, OutputEndComment),
+			},
+			wantErr: false,
+			errMsg:  "",
+		},
+		"TemplateLiteralLineBreakTrailingWhitespace": {
+			output: output{
+				File:     "README.md",
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("%s\\n%s\\n%s   ", OutputBeginComment, OutputContent, OutputEndComment),
+			},
+			wantErr: false,
+			errMsg:  "",
+		},
+		"TemplateLiteralLineBreakLeadingAndTrailingWhitespace": {
+			output: output{
+				File:     "README.md",
+				Mode:     OutputModeInject,
+				Template: fmt.Sprintf("   %s\\n%s\\n%s   ", OutputBeginComment, OutputContent, OutputEndComment),
+			},
+			wantErr: false,
+			errMsg:  "",
+		},
 		"NoExtraValidationModeReplace": {
 			output: output{
 				File:     "README.md",
