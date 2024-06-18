@@ -1,0 +1,62 @@
+name: prepare-release
+run-name: prepare release v${{ github.event.inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The version to be released"
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ secrets.COMMITTER_TOKEN }}
+
+      - name: Get variables
+        run: |
+          release_version="${{ inputs.version }}"
+          echo "release_version=${release_version//v/}" >> "$GITHUB_ENV"
+
+      - name: Prepare v${{ env.release_version }} Release
+        run: |
+          make -C .github/scripts release VERSION=${{ env.release_version }}
+
+      - name: Generate commit message
+        id: commit-message
+        run: |
+          if [[ ${{ env.release_version }} == *"-alpha"* ]]; then
+            echo "release_commit_message=chore: bump version to v${{ env.release_version }}" >> "$GITHUB_ENV"
+          else
+            echo "release_commit_message=Release version v${{ env.release_version }}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Push v${{ env.release_version }} Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
+        with:
+          file_pattern: "README.md docs/user-guide/installation.md internal/version/version.go"
+          commit_message: "${{ env.release_commit_message }}"
+          commit_user_name: terraform-docs-bot
+          commit_user_email: bot@terraform-docs.io
+          commit_author: "terraform-docs-bot <bot@terraform-docs.io>"
+
+      - name: Cut v${{ env.release_version }} Release
+        if: "!contains(env.release_version, '-alpha')" # skip when starting new release cycle
+        run: |
+          git config --global user.name terraform-docs-bot
+          git config --global user.email bot@terraform-docs.io
+
+          git tag --annotate --message "v${{ env.release_version }} Release" "v${{ env.release_version }}"
+          git push origin "v${{ env.release_version }}"

@@ -11,7 +11,7 @@ the root directory of this source tree.
 package template
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -129,12 +129,12 @@ func TestSanitizeSection(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".golden"))
+			bytes, err := os.ReadFile(filepath.Join("testdata", "section", tt.filename+".golden"))
 			assert.Nil(err)
 
 			actual := SanitizeSection(string(bytes), tt.escape, false)
 
-			expected, err := ioutil.ReadFile(filepath.Join("testdata", "section", tt.filename+".expected"))
+			expected, err := os.ReadFile(filepath.Join("testdata", "section", tt.filename+".expected"))
 			assert.Nil(err)
 
 			assert.Equal(string(expected), actual)
@@ -168,12 +168,12 @@ func TestSanitizeDocument(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".golden"))
+			bytes, err := os.ReadFile(filepath.Join("testdata", "document", tt.filename+".golden"))
 			assert.Nil(err)
 
 			actual := SanitizeDocument(string(bytes), tt.escape, false)
 
-			expected, err := ioutil.ReadFile(filepath.Join("testdata", "document", tt.filename+".expected"))
+			expected, err := os.ReadFile(filepath.Join("testdata", "document", tt.filename+".expected"))
 			assert.Nil(err)
 
 			assert.Equal(string(expected), actual)
@@ -229,12 +229,12 @@ func TestSanitizeMarkdownTable(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
+			bytes, err := os.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
 			actual := SanitizeMarkdownTable(string(bytes), tt.escape, tt.html)
 
-			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.expected+".markdown.expected"))
+			expected, err := os.ReadFile(filepath.Join("testdata", "table", tt.expected+".markdown.expected"))
 			assert.Nil(err)
 
 			assert.Equal(string(expected), actual)
@@ -268,12 +268,12 @@ func TestSanitizeAsciidocTable(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			bytes, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
+			bytes, err := os.ReadFile(filepath.Join("testdata", "table", tt.filename+".golden"))
 			assert.Nil(err)
 
 			actual := SanitizeAsciidocTable(string(bytes), tt.escape, false)
 
-			expected, err := ioutil.ReadFile(filepath.Join("testdata", "table", tt.filename+".asciidoc.expected"))
+			expected, err := os.ReadFile(filepath.Join("testdata", "table", tt.filename+".asciidoc.expected"))
 			assert.Nil(err)
 
 			assert.Equal(string(expected), actual)
@@ -400,7 +400,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			assert := assert.New(t)
 
 			path := filepath.Join("testdata", "multiline", tt.filename+".golden")
-			bytes, err := ioutil.ReadFile(path)
+			bytes, err := os.ReadFile(path)
 			assert.Nil(err)
 
 			actual := ConvertMultiLineText(string(bytes), tt.isTable, false, tt.showHTML)

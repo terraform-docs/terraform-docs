@@ -94,9 +94,11 @@ type module struct {
 // RunEFunc is the 'cobra.Command#RunE' function for 'formatter' commands. It attempts
 // to discover submodules, on `--recursive` flag, and generates the content for them
 // as well as the root module.
-func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
-	modules := []module{
-		{rootDir: r.rootDir, config: r.config},
+func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error { //nolint:gocyclo
+	modules := []module{}
+
+	if !r.config.Recursive.Enabled || r.config.Recursive.IncludeMain {
+		modules = append(modules, module{r.rootDir, r.config})
 	}
 
 	// Generating content recursively is only allowed when `config.Output.File`
@@ -214,7 +216,7 @@ func (r *Runtime) bindFlags(v *viper.Viper) {
 		switch f.Name {
 		case "show", "hide":
 			// If '--show' or '--hide' CLI flag is used, explicitly override and remove
-			// all items from 'show' and 'hide' set in '.terraform-doc.yml'.
+			// all items from 'show' and 'hide' set in '.terraform-docs.yml'.
 			if !sectionsCleared {
 				v.Set("sections.show", []string{})
 				v.Set("sections.hide", []string{})

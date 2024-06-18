@@ -34,6 +34,7 @@ Generate terraform.tfvars of inputs.
       --output-values-from string   inject output values from file into outputs (default "")
       --read-comments               use comments as description when description is empty (default true)
       --recursive                   update submodules recursively (default false)
+      --recursive-include-main      include the main module (default true)
       --recursive-path string       submodules path to recursively update (default "modules")
       --show strings                show section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --sort                        sort items (default true)

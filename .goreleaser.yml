@@ -38,12 +38,46 @@ checksum:
 snapshot:
   name_template: "{{ .Tag }}-dev"
 
+release:
+  github:
+    owner: terraform-docs
+    name: terraform-docs
+  header: |
+    ## Notable Updates
+  footer: |
+    ## Docker images
+
+    - `docker pull quay.io/terraform-docs/terraform-docs:latest`
+    - `docker pull quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}`
+
+    ## Contributors
+
+    Very special thanks to the contributors.
+
+    {{ .Env.Contributors }}
+
 changelog:
   sort: asc
   filters:
     exclude:
       - "^docs:"
       - "^test:"
+      - "^Merge pull request"
+  groups:
+    - title: Dependency updates
+      regexp: '^.*?(.+)\(deps\)!?:.+$'
+      order: 300
+    - title: "Features"
+      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      order: 100
+    - title: "Security updates"
+      regexp: '^.*?sec(\(.+\))??!?:.+$'
+      order: 150
+    - title: "Bug Fixes"
+      regexp: '^.*?(fix|refactor)(\(.+\))??!?:.+$'
+      order: 200
+    - title: "Chores"
+      order: 9999
 
 dockers:
   - dockerfile: scripts/release/Dockerfile
@@ -65,7 +99,7 @@ dockers:
     goarch: arm64
 
 brews:
-  - tap:
+  - repository:
       owner: terraform-docs
       name: homebrew-tap
     commit_author:
@@ -77,20 +111,15 @@ brews:
     test: |
       system "#{bin}/terraform-docs version"
 
-scoop:
-  bucket:
-    owner: terraform-docs
-    name: scoop-bucket
-  commit_author:
-    name: terraform-docs-bot
-    email: bot@terraform-docs.io
-  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
-  url_template: "https://github.com/terraform-docs/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-  homepage: "https://github.com/terraform-docs/"
-  description: "Generate documentation from Terraform modules in various output formats"
-  license: MIT
-
-# Uncomment these lines if you want to experiment with other
-# parts of the release process without releasing new binaries.
-# release:
-#  disable: true
+scoops:
+  - repository:
+      owner: terraform-docs
+      name: scoop-bucket
+    commit_author:
+      name: terraform-docs-bot
+      email: bot@terraform-docs.io
+    commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+    url_template: "https://github.com/terraform-docs/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    homepage: "https://github.com/terraform-docs/"
+    description: "Generate documentation from Terraform modules in various output formats"
+    license: MIT

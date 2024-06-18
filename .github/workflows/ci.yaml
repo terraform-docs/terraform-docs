@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  GO_VERSION: "1.21.5"
+  GO_VERSION: "1.22.3"
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
         run: make test
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.out
@@ -73,7 +73,7 @@ jobs:
 
       - name: Check License headers
         run: |
-          GO111MODULE=off go get github.com/google/addlicense
+          go install github.com/google/addlicense@latest
 
           addlicense -check $(find . -type f -name "*.go")
           addlicense -check $(find . -type f -name "*.sh")

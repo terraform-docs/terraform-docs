@@ -17,3 +17,8 @@ output "output-0.12" {
   value       = join(",", var.list-3)
   description = "terraform 0.12 only"
 }
+
+// terraform-docs-ignore
+output "ignored" {
+  value = "ignored"
+}

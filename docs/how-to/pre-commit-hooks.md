@@ -4,7 +4,7 @@ description: "How to use pre-commit hooks with terraform-docs"
 menu:
   docs:
     parent: "how-to"
-weight: 209
+weight: 210
 toc: false
 ---
 

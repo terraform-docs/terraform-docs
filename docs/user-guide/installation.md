@@ -51,14 +51,14 @@ terraform-docs can be run as a container by mounting a directory with `.tf`
 files in it and run the following command:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.17.0 markdown /terraform-docs
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.18.0 markdown /terraform-docs
 ```
 
 If `output.file` is not enabled for this module, generated output can be redirected
 back to a file:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.17.0 markdown /terraform-docs > doc.md
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.18.0 markdown /terraform-docs > doc.md
 ```
 
 {{< alert type="primary" >}}
@@ -73,7 +73,7 @@ Stable binaries are available on the GitHub [Release] page. To install, download
 the file for your platform from "Assets" and place it into your `$PATH`:
 
 ```bash
-curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.17.0/terraform-docs-v0.17.0-$(uname)-amd64.tar.gz
+curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.18.0/terraform-docs-v0.18.0-$(uname)-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz
 chmod +x terraform-docs
 mv terraform-docs /some-dir-in-your-PATH/terraform-docs
@@ -89,12 +89,12 @@ The latest version can be installed using `go install` or `go get`:
 
 ```bash
 # go1.17+
-go install github.com/terraform-docs/terraform-docs@v0.17.0
+go install github.com/terraform-docs/terraform-docs@v0.18.0
 ```
 
 ```bash
 # go1.16
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.17.0
+GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.18.0
 ```
 
 {{< alert type="warning" >}}
@@ -143,10 +143,17 @@ terraform-docs completion zsh > /usr/local/share/zsh/site-functions/_terraform-d
 autoload -U compinit && compinit
 ```
 
+### ohmyzsh
+
+```zsh
+terraform-docs completion zsh > ~/.oh-my-zsh/completions/_terraform-docs
+omz reload
+```
+
 ### fish
 
 ```fish
-terraform-doc completion fish > ~/.config/fish/completions/terraform-docs.fish   
+terraform-docs completion fish > ~/.config/fish/completions/terraform-docs.fish
 ```
 
 To make this change permanent, the above commands can be added to `~/.profile` file.

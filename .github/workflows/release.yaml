@@ -7,7 +7,7 @@ on:
       - "!v*.*.*-*"
 
 env:
-  GO_VERSION: "1.21.5"
+  GO_VERSION: "1.22.3"
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
 
 jobs:
@@ -31,6 +31,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Generate Contributors list
+        id: contributors
+        run: |
+          make -C .github/scripts contributors NEW_VERSION=${GITHUB_REF:11}
+          echo "contributors_list=$(cat .github/scripts/contributors.list)" >> "$GITHUB_ENV"
+
       - name: Login to Docker
         uses: docker/login-action@v3
         if: env.REGISTRY_USERNAME != ''
@@ -40,40 +46,80 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         if: env.REGISTRY_USERNAME != ''
         with:
-          version: latest
-          args: release --rm-dist --skip-sign
+          distribution: goreleaser
+          version: 1.26.2
+          args: release --clean --skip=sign
         env:
           GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
-
-      - name: Set version output
-        id: vars
-        run: echo ::set-output name=tag::${GITHUB_REF:11} # tag name without leading 'v'
-
-      - name: Update Chocolatey package
-        run: ./scripts/release/update-choco.sh "${{ steps.vars.outputs.tag }}"
-
-      - name: Update Chocolatey package
-        uses: drud/action-cross-commit@master
-        with:
-          source-folder: scripts/release/chocolatey-package
-          destination-repository: https://${{ secrets.COMMITTER_USERNAME }}:${{ secrets.COMMITTER_TOKEN }}@github.com/terraform-docs/chocolatey-package
-          destination-folder: .
-          destination-branch: main
-          git-user: terraform-docs-bot
-          git-user-email: bot@terraform-docs.io
-          git-commit-message: "Chocolatey update for terraform-docs version v${{ steps.vars.outputs.tag }}"
-          excludes: README.md:LICENSE:DCO:.git:.github
+          Contributors: ${{ env.contributors_list }}
 
   homebrew:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    needs: [assets]
     steps:
       - name: Bump Homebrew formula version
-        uses: dawidd6/action-homebrew-bump-formula@v3.10.1
-        if: "!contains(github.ref, '-')" # skip prereleases
+        uses: dawidd6/action-homebrew-bump-formula@v3.11.0
         with:
           token: ${{ secrets.COMMITTER_TOKEN }}
           formula: terraform-docs
+
+  chocolatey:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    needs: [assets]
+    steps:
+      - name: Update Chocolatey package
+        run: |
+          # get closest GA tag, ignore alpha, beta and rc tags
+          function getClosestVersion() {
+              for t in $(git tag --sort=-creatordate); do
+                  tag="$t"
+                  if [[ "$tag" == *"-alpha"* ]] || [[ "$tag" == *"-beta"* ]] || [[ "$tag" == *"-rc"* ]]; then
+                      continue
+                  fi
+                  if [ "$tag" == "${GITHUB_REF:11}" ]; then
+                    continue
+                  fi
+                  break
+              done
+              echo "${tag//v/}"
+          }
+          CLOSEST_VERSION=$(getClosestVersion)
+
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.COMMITTER_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/terraform-docs/chocolatey-package/dispatches \
+            -d "{\
+              \"event_type\": \"trigger-workflow\", \
+              \"client_payload\": {\
+                \"current-version\": \"${CLOSEST_VERSION}\", \
+                \"release-version\": \"${GITHUB_REF:11}\" \
+              }\
+            }"
+
+  gh-actions:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    needs: [assets]
+    steps:
+      - name: Update GitHub Actions
+        run: |
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.COMMITTER_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/terraform-docs/chocolatey-package/dispatches \
+            -d "{\
+              \"event_type\": \"trigger-workflow\", \
+              \"client_payload\": {\
+                \"release-version\": \"${GITHUB_REF:11}\" \
+              }\
+            }"
