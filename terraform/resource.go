@@ -30,12 +30,17 @@ type Resource struct {
 	Position       Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 
-// Spec returns the resource spec addresses a specific resource in the config.
-// It takes the form: resource_type.resource_name[resource index]
-// For more details, see:
-// https://www.terraform.io/docs/cli/state/resource-addressing.html#resource-spec
-func (r *Resource) Spec() string {
-	return r.ProviderName + "_" + r.Type + "." + r.Name
+// GetResourceType returns the type of a specific resource in the config.
+// Concatenating it with the provider name
+// It takes the form: provider-name_resource-type
+// e.g. aws_iam_role
+func (r *Resource) GetResourceType() string {
+	return r.ProviderName + "_" + r.Type
+}
+
+// GetResourceName returns the name of a specific resource in the config.
+func (r *Resource) GetResourceName() string {
+	return r.Name
 }
 
 // GetMode returns normalized resource type as "resource" or "data source"
@@ -71,10 +76,10 @@ func (r *Resource) URL() string {
 func sortResourcesByType(x []*Resource) {
 	sort.Slice(x, func(i, j int) bool {
 		if x[i].Mode == x[j].Mode {
-			if x[i].Spec() == x[j].Spec() {
+			if x[i].GetResourceType() == x[j].GetResourceType() {
 				return x[i].Name <= x[j].Name
 			}
-			return x[i].Spec() < x[j].Spec()
+			return x[i].GetResourceType() < x[j].GetResourceType()
 		}
 		return x[i].Mode > x[j].Mode
 	})
