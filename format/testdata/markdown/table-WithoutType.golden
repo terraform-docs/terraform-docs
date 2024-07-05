@@ -16,14 +16,14 @@
 | number-1 | It's number number one. | `42` |
 | map-3 | n/a | `{}` |
 | map-2 | It's map number two. | n/a |
-| map-1 | It's map number one. | <pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}</pre> |
+| map-1 | It's map number one. | <pre>{<br/>  "a": 1,<br/>  "b": 2,<br/>  "c": 3<br/>}</pre> |
 | list-3 | n/a | `[]` |
 | list-2 | It's list number two. | n/a |
-| list-1 | It's list number one. | <pre>[<br>  "a",<br>  "b",<br>  "c"<br>]</pre> |
+| list-1 | It's list number one. | <pre>[<br/>  "a",<br/>  "b",<br/>  "c"<br/>]</pre> |
 | input_with_underscores | A variable with underscores. | n/a |
 | input-with-pipe | It includes v1 \| v2 \| v3 | `"v1"` |
-| input-with-code-block | This is a complicated one. We need a newline.<br>And an example in a code block<pre>default     = [<br>  "machine rack01:neptune"<br>]</pre> | <pre>[<br>  "name rack:location"<br>]</pre> |
-| long_type | This description is itself markdown.<br><br>It spans over multiple lines. | <pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}</pre> |
+| input-with-code-block | This is a complicated one. We need a newline.<br/>And an example in a code block<pre>default     = [<br/>  "machine rack01:neptune"<br/>]</pre> | <pre>[<br/>  "name rack:location"<br/>]</pre> |
+| long_type | This description is itself markdown.<br/><br/>It spans over multiple lines. | <pre>{<br/>  "bar": {<br/>    "bar": "bar",<br/>    "foo": "bar"<br/>  },<br/>  "buzz": [<br/>    "fizz",<br/>    "buzz"<br/>  ],<br/>  "fizz": [],<br/>  "foo": {<br/>    "bar": "foo",<br/>    "foo": "foo"<br/>  },<br/>  "name": "hello"<br/>}</pre> |
 | no-escape-default-value | The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'. | `"VALUE_WITH_UNDERSCORE"` |
 | with-url | The description contains url. https://www.domain.com/foo/bar_baz.html | `""` |
 | string_default_empty | n/a | `""` |

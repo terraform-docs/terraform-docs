@@ -301,7 +301,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			filename: "newline-single",
 			isTable:  true,
 			showHTML: true,
-			expected: "Lorem ipsum dolor sit amet,<br><br>consectetur adipiscing elit,<br><br>sed do eiusmod tempor incididunt<br><br>ut labore et dolore magna aliqua.",
+			expected: "Lorem ipsum dolor sit amet,<br/><br/>consectetur adipiscing elit,<br/><br/>sed do eiusmod tempor incididunt<br/><br/>ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line newline-single",
@@ -322,7 +322,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			filename: "newline-double",
 			isTable:  true,
 			showHTML: true,
-			expected: "Lorem ipsum dolor sit amet,<br><br><br>consectetur adipiscing elit,<br><br><br>sed do eiusmod tempor incididunt<br><br><br>ut labore et dolore magna aliqua.",
+			expected: "Lorem ipsum dolor sit amet,<br/><br/><br/>consectetur adipiscing elit,<br/><br/><br/>sed do eiusmod tempor incididunt<br/><br/><br/>ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line newline-double",
@@ -343,7 +343,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			filename: "paragraph",
 			isTable:  true,
 			showHTML: true,
-			expected: "Lorem ipsum dolor sit amet,<br>consectetur adipiscing elit,<br>sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.",
+			expected: "Lorem ipsum dolor sit amet,<br/>consectetur adipiscing elit,<br/>sed do eiusmod tempor incididunt<br/>ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line paragraph",
@@ -364,7 +364,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			filename: "list",
 			isTable:  true,
 			showHTML: true,
-			expected: "- Lorem ipsum dolor sit amet,<br>  * Lorem ipsum dolor sit amet,<br>  * consectetur adipiscing elit,<br>- consectetur adipiscing elit,<br>- sed do eiusmod tempor incididunt<br>- ut labore et dolore magna aliqua.",
+			expected: "- Lorem ipsum dolor sit amet,<br/>  * Lorem ipsum dolor sit amet,<br/>  * consectetur adipiscing elit,<br/>- consectetur adipiscing elit,<br/>- sed do eiusmod tempor incididunt<br/>- ut labore et dolore magna aliqua.",
 		},
 		{
 			name:     "convert multi-line list",
@@ -385,7 +385,7 @@ func TestConvertMultiLineText(t *testing.T) {
 			filename: "indentations",
 			isTable:  true,
 			showHTML: true,
-			expected: "This is is a multline test which works<br><br>Key<br>  Foo1: blah<br>  Foo2: blah<br><br>Key2<br>Foo1: bar1<br>Foo2: bar2",
+			expected: "This is is a multline test which works<br/><br/>Key<br/>  Foo1: blah<br/>  Foo2: blah<br/><br/>Key2<br/>Foo1: bar1<br/>Foo2: bar2",
 		},
 		{
 			name:     "convert multi-line indentations",

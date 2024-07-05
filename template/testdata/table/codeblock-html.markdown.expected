@@ -1,1 +1,1 @@
-This is a complicated one. We need a newline.<br>And an example in a code block. Availeble options<br>are: foo \| bar \| baz<pre>default = [<br>  "foo"<br>]</pre>
+This is a complicated one. We need a newline.<br/>And an example in a code block. Availeble options<br/>are: foo \| bar \| baz<pre>default = [<br/>  "foo"<br/>]</pre>
