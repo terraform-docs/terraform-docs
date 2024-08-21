@@ -14,6 +14,11 @@ variable "bool-1" {
   default = true
 }
 
+# terraform-docs-ignore
+variable "ignored" {
+  default = ""
+}
+
 variable "string-3" {
   default = ""
 }

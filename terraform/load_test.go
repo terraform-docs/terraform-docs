@@ -13,12 +13,14 @@ package terraform
 import (
 	"net/http"
 	"net/http/httptest"
+	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/exp/slices"
 
 	"github.com/terraform-docs/terraform-docs/print"
 )
@@ -40,6 +42,7 @@ func TestLoadModuleWithOptions(t *testing.T) {
 	assert.Equal(true, module.HasModuleCalls())
 	assert.Equal(true, module.HasProviders())
 	assert.Equal(true, module.HasRequirements())
+	assert.Equal(true, module.HasResources())
 
 	config.Sections.Header = false
 	config.Sections.Footer = true
@@ -723,7 +726,7 @@ func TestLoadOutputs(t *testing.T) {
 			name: "load module outputs from path",
 			path: "full-example",
 			expected: expected{
-				outputs: 3,
+				outputs: 4,
 			},
 		},
 		{
@@ -799,7 +802,7 @@ func TestLoadOutputsValues(t *testing.T) {
 			path:       "full-example",
 			outputPath: "output-values.json",
 			expected: expected{
-				outputs: 3,
+				outputs: 4,
 			},
 			wantErr: false,
 		},
@@ -904,6 +907,87 @@ func TestLoadProviders(t *testing.T) {
 			sort.Strings(actual)
 
 			assert.Equal(tt.expected.providers, actual)
+		})
+	}
+}
+
+func TestLoadRequirements(t *testing.T) {
+	type expected struct {
+		requirements []string
+	}
+	tests := []struct {
+		name     string
+		path     string
+		expected expected
+	}{
+		{
+			name: "load module requirements from path",
+			path: "full-example",
+			expected: expected{
+				requirements: []string{"terraform >= 0.12", "aws >= 2.15.0"},
+			},
+		},
+		{
+			name: "load module requirements from path",
+			path: "no-requirements",
+			expected: expected{
+				requirements: []string{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			requirements := loadRequirements(module)
+
+			assert.Equal(len(tt.expected.requirements), len(requirements))
+
+			for i, r := range tt.expected.requirements {
+				assert.Equal(r, fmt.Sprintf("%s %s", requirements[i].Name, requirements[i].Version))
+			}
+		})
+	}
+}
+
+func TestLoadResources(t *testing.T) {
+	type expected struct {
+		resources []string
+	}
+	tests := []struct {
+		name     string
+		path     string
+		expected expected
+	}{
+		{
+			name: "load module resources from path",
+			path: "full-example",
+			expected: expected{
+				resources: []string{"tls_private_key.baz", "aws_caller_identity.current", "null_resource.foo"},
+			},
+		},
+		{
+			name: "load module resources from path",
+			path: "no-resources",
+			expected: expected{
+				resources: []string{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			config := print.NewConfig()
+			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			resources := loadResources(module, config)
+
+			assert.Equal(len(tt.expected.resources), len(resources))
+
+			for _, r := range resources {
+				assert.True(slices.Contains(tt.expected.resources, fmt.Sprintf("%s_%s.%s", r.ProviderName, r.Type, r.Name)))
+			}
 		})
 	}
 }
@@ -1030,7 +1114,7 @@ func TestSortItems(t *testing.T) {
 				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
 				required:  []string{"A", "F"},
 				optional:  []string{"D", "B", "E", "C", "G"},
-				outputs:   []string{"C", "A", "B"},
+				outputs:   []string{"C", "A", "B", "D"},
 				providers: []string{"tls", "aws", "null"},
 			},
 		},
@@ -1043,7 +1127,7 @@ func TestSortItems(t *testing.T) {
 				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
 				required:  []string{"A", "F"},
 				optional:  []string{"D", "B", "E", "C", "G"},
-				outputs:   []string{"C", "A", "B"},
+				outputs:   []string{"C", "A", "B", "D"},
 				providers: []string{"tls", "aws", "null"},
 			},
 		},
@@ -1056,7 +1140,7 @@ func TestSortItems(t *testing.T) {
 				inputs:    []string{"D", "B", "E", "A", "C", "F", "G"},
 				required:  []string{"A", "F"},
 				optional:  []string{"D", "B", "E", "C", "G"},
-				outputs:   []string{"C", "A", "B"},
+				outputs:   []string{"C", "A", "B", "D"},
 				providers: []string{"tls", "aws", "null"},
 			},
 		},
@@ -1069,7 +1153,7 @@ func TestSortItems(t *testing.T) {
 				inputs:    []string{"A", "B", "C", "D", "E", "F", "G"},
 				required:  []string{"A", "F"},
 				optional:  []string{"B", "C", "D", "E", "G"},
-				outputs:   []string{"A", "B", "C"},
+				outputs:   []string{"A", "B", "C", "D"},
 				providers: []string{"aws", "null", "tls"},
 			},
 		},
@@ -1082,7 +1166,7 @@ func TestSortItems(t *testing.T) {
 				inputs:    []string{"A", "F", "B", "C", "D", "E", "G"},
 				required:  []string{"A", "F"},
 				optional:  []string{"B", "C", "D", "E", "G"},
-				outputs:   []string{"A", "B", "C"},
+				outputs:   []string{"A", "B", "C", "D"},
 				providers: []string{"aws", "null", "tls"},
 			},
 		},
@@ -1095,7 +1179,7 @@ func TestSortItems(t *testing.T) {
 				inputs:    []string{"A", "F", "G", "B", "C", "D", "E"},
 				required:  []string{"A", "F"},
 				optional:  []string{"G", "B", "C", "D", "E"},
-				outputs:   []string{"A", "B", "C"},
+				outputs:   []string{"A", "B", "C", "D"},
 				providers: []string{"aws", "null", "tls"},
 			},
 		},

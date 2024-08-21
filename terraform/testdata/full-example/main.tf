@@ -21,7 +21,15 @@ data "aws_caller_identity" "current" {
   provider = "aws"
 }
 
+# terraform-docs-ignore
+data "aws_caller_identity" "ignored" {
+  provider = "aws"
+}
+
 resource "null_resource" "foo" {}
+
+# terraform-docs-ignore
+resource "null_resource" "ignored" {}
 
 module "foo" {
   source  = "bar"
@@ -29,5 +37,15 @@ module "foo" {
 }
 
 module "foobar" {
-  source  = "git@github.com:module/path?ref=v7.8.9"
+  source = "git@github.com:module/path?ref=v7.8.9"
+}
+
+locals {
+  arn = provider::aws::arn_parse("arn:aws:iam::444455556666:role/example")
+}
+
+// terraform-docs-ignore
+module "ignored" {
+  source  = "baz"
+  version = "1.2.3"
 }

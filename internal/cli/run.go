@@ -94,9 +94,11 @@ type module struct {
 // RunEFunc is the 'cobra.Command#RunE' function for 'formatter' commands. It attempts
 // to discover submodules, on `--recursive` flag, and generates the content for them
 // as well as the root module.
-func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error {
-	modules := []module{
-		{rootDir: r.rootDir, config: r.config},
+func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error { //nolint:gocyclo
+	modules := []module{}
+
+	if !r.config.Recursive.Enabled || r.config.Recursive.IncludeMain {
+		modules = append(modules, module{r.rootDir, r.config})
 	}
 
 	// Generating content recursively is only allowed when `config.Output.File`

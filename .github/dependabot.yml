@@ -19,7 +19,7 @@ updates:
     interval: daily
   open-pull-requests-limit: 1
 - package-ecosystem: docker
-  directory: "/scripts"
+  directory: "/scripts/release"
   schedule:
     interval: daily
   open-pull-requests-limit: 1

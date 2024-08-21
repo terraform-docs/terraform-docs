@@ -12,3 +12,13 @@ output "A" {
 output "B" {
   value = "b"
 }
+
+// D null result
+output "D" {
+  value = null
+}
+
+# terraform-docs-ignore
+output "ignored" {
+  value = "e"
+}

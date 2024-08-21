@@ -4,7 +4,7 @@ description: "How to use terraform-docs with GitHub Actions"
 menu:
   docs:
     parent: "how-to"
-weight: 208
+weight: 209
 toc: false
 ---
 

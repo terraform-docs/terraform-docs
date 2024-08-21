@@ -7,3 +7,8 @@ variable "B" {
 output "B" {
   value = "b"
 }
+
+// terraform-docs-ignore
+output "ignored" {
+  value = "c"
+}

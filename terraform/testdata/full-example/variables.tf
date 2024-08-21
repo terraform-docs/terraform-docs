@@ -28,3 +28,9 @@ variable "G" {
   description = "G description"
   default     = null
 }
+
+# terraform-docs-ignore
+variable "ignored" {
+  description = "H description"
+  default = null
+}

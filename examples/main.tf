@@ -63,7 +63,19 @@ data "aws_caller_identity" "ident" {
   provider = "aws.ident"
 }
 
+# terraform-docs-ignore
+data "aws_caller_identity" "ignored" {
+  provider = "aws"
+}
+
 resource "null_resource" "foo" {}
+
+# This resource is going to get ignored from generated
+# output by using the following known comment.
+# terraform-docs-ignore
+# And the ignore keyword also doesn't have to be the first,
+# last, or only thing in a leading comment
+resource "null_resource" "ignored" {}
 
 module "bar" {
   source  = "baz"
@@ -83,4 +95,10 @@ module "baz" {
 
 module "foobar" {
   source = "git@github.com:module/path?ref=v7.8.9"
+}
+
+// terraform-docs-ignore
+module "ignored" {
+  source  = "foobaz"
+  version = "7.8.9"
 }
