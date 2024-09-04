@@ -111,7 +111,7 @@ jobs:
           outputs: "type=registry,push=true"
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/${{ env.REPO_OWNER }}/terraform-docs:edge
+          tags: quay.io/${{ env.GITHUB_REPOSITORY_OWNER }}/terraform-docs:edge
 
   publish:
     runs-on: ubuntu-latest
