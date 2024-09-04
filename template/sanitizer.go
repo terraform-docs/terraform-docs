@@ -114,7 +114,7 @@ func SanitizeMarkdownTable(s string, escape bool, html bool) string {
 			return segment
 		},
 		func(segment string, first bool, last bool) string {
-			linebreak := "<br>"
+			linebreak := "<br/>"
 			codestart := "<pre>"
 			codeend := "</pre>"
 
@@ -189,11 +189,11 @@ func ConvertMultiLineText(s string, isTable bool, isHeader bool, showHTML bool) 
 		return s
 	}
 
-	// representation of line break. <br> if showHTML is true, <space> if false.
+	// representation of line break. <br/> if showHTML is true, <space> if false.
 	linebreak := " "
 
 	if showHTML {
-		linebreak = "<br>"
+		linebreak = "<br/>"
 	}
 
 	// Convert space-space-newline to 'linebreak'.

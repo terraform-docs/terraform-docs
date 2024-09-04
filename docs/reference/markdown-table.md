@@ -148,15 +148,15 @@ generates the following output:
     | <a name="input_bool-2"></a> [bool-2](#input\_bool-2) | It's bool number two. | `bool` | `false` | no |
     | <a name="input_bool-3"></a> [bool-3](#input\_bool-3) | n/a | `bool` | `true` | no |
     | <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false) | n/a | `bool` | `false` | no |
-    | <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block) | This is a complicated one. We need a newline.<br>And an example in a code block<pre>default     = [<br>  "machine rack01:neptune"<br>]</pre> | `list` | <pre>[<br>  "name rack:location"<br>]</pre> | no |
+    | <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block) | This is a complicated one. We need a newline.<br/>And an example in a code block<pre>default     = [<br/>  "machine rack01:neptune"<br/>]</pre> | `list` | <pre>[<br/>  "name rack:location"<br/>]</pre> | no |
     | <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe) | It includes v1 \| v2 \| v3 | `string` | `"v1"` | no |
     | <a name="input_input_with_underscores"></a> [input\_with\_underscores](#input\_input\_with\_underscores) | A variable with underscores. | `any` | n/a | yes |
-    | <a name="input_list-1"></a> [list-1](#input\_list-1) | It's list number one. | `list` | <pre>[<br>  "a",<br>  "b",<br>  "c"<br>]</pre> | no |
+    | <a name="input_list-1"></a> [list-1](#input\_list-1) | It's list number one. | `list` | <pre>[<br/>  "a",<br/>  "b",<br/>  "c"<br/>]</pre> | no |
     | <a name="input_list-2"></a> [list-2](#input\_list-2) | It's list number two. | `list` | n/a | yes |
     | <a name="input_list-3"></a> [list-3](#input\_list-3) | n/a | `list` | `[]` | no |
     | <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty) | n/a | `list(string)` | `[]` | no |
-    | <a name="input_long_type"></a> [long\_type](#input\_long\_type) | This description is itself markdown.<br><br>It spans over multiple lines. | <pre>object({<br>    name = string,<br>    foo  = object({ foo = string, bar = string }),<br>    bar  = object({ foo = string, bar = string }),<br>    fizz = list(string),<br>    buzz = list(string)<br>  })</pre> | <pre>{<br>  "bar": {<br>    "bar": "bar",<br>    "foo": "bar"<br>  },<br>  "buzz": [<br>    "fizz",<br>    "buzz"<br>  ],<br>  "fizz": [],<br>  "foo": {<br>    "bar": "foo",<br>    "foo": "foo"<br>  },<br>  "name": "hello"<br>}</pre> | no |
-    | <a name="input_map-1"></a> [map-1](#input\_map-1) | It's map number one. | `map` | <pre>{<br>  "a": 1,<br>  "b": 2,<br>  "c": 3<br>}</pre> | no |
+    | <a name="input_long_type"></a> [long\_type](#input\_long\_type) | This description is itself markdown.<br/><br/>It spans over multiple lines. | <pre>object({<br/>    name = string,<br/>    foo  = object({ foo = string, bar = string }),<br/>    bar  = object({ foo = string, bar = string }),<br/>    fizz = list(string),<br/>    buzz = list(string)<br/>  })</pre> | <pre>{<br/>  "bar": {<br/>    "bar": "bar",<br/>    "foo": "bar"<br/>  },<br/>  "buzz": [<br/>    "fizz",<br/>    "buzz"<br/>  ],<br/>  "fizz": [],<br/>  "foo": {<br/>    "bar": "foo",<br/>    "foo": "foo"<br/>  },<br/>  "name": "hello"<br/>}</pre> | no |
+    | <a name="input_map-1"></a> [map-1](#input\_map-1) | It's map number one. | `map` | <pre>{<br/>  "a": 1,<br/>  "b": 2,<br/>  "c": 3<br/>}</pre> | no |
     | <a name="input_map-2"></a> [map-2](#input\_map-2) | It's map number two. | `map` | n/a | yes |
     | <a name="input_map-3"></a> [map-3](#input\_map-3) | n/a | `map` | `{}` | no |
     | <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value) | The description contains `something_with_underscore`. Defaults to 'VALUE\_WITH\_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` | no |
