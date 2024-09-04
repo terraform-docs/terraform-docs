@@ -75,6 +75,6 @@ jobs:
           outputs: "type=registry,push=true"
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/${{ env.GITHUB_REPOSITORY_OWNER }}/terraform-docs:${{ steps.vars.outputs.tag }}
+          tags: quay.io/${{ github.event.repository.name }}/terraform-docs:${{ steps.vars.outputs.tag }}
 
 
