@@ -106,7 +106,7 @@ jobs:
 
       - name: Build and push Docker image
         if: env.REGISTRY_USERNAME != '' && contains(github.ref, 'refs/heads/master')
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           outputs: "type=registry,push=true"
           platforms: linux/amd64,linux/arm64
