@@ -21,7 +21,7 @@ RUN make build
 
 ################
 
-FROM docker.io/library/alpine:3.20.2
+FROM docker.io/library/alpine:3.20.3
 
 # Mitigate CVE-2023-5363
 RUN apk add --no-cache --upgrade "openssl>=3.1.4-r1"
