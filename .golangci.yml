@@ -3,16 +3,17 @@ run:
   tests: false
 
 output:
-  format: tab
+  formats:
+    - format: tab
 
 linters-settings:
-  govet:
-    # report about shadowed variables
-    check-shadowing: true
+  # govet:
+  #   # report about shadowed variables
+  #   check-shadowing: true
 
-  golint:
-    # minimal confidence for issues, default is 0.8
-    min-confidence: 0.8
+  # golint:
+  #   # minimal confidence for issues, default is 0.8
+  #   min-confidence: 0.8
 
   gofmt:
     # simplify code: gofmt with `-s` option, true by default
@@ -27,9 +28,9 @@ linters-settings:
     # minimal code complexity to report, 30 by default (but we recommend 10-20)
     min-complexity: 10
 
-  maligned:
-    # print struct with more effective memory layout or not, false by default
-    suggest-new: true
+  # maligned:
+  #   # print struct with more effective memory layout or not, false by default
+  #   suggest-new: true
 
   dupl:
     # tokens count to trigger issue, 150 by default
@@ -50,7 +51,7 @@ linters-settings:
     # XXX: if you enable this setting, unused will report a lot of false-positives in text editors:
     # if it's called for subdir of a project it can't find funcs usages. All text editor integrations
     # with golangci-lint call it on a directory with the changed file.
-    check-exported: false
+    exported-fields-are-used: false
 
   unparam:
     # Inspect exported functions, default is false. Set to true if no external program/library imports your code.
@@ -89,6 +90,7 @@ linters-settings:
     locale: US
 
 linters:
+  disable-all: true
   enable:
     - megacheck
     - govet
@@ -121,6 +123,9 @@ issues:
         - scopelint
         - unparam
         - goconst
+    - path: (.*).go
+      linters:
+        - typecheck
 
     # G306: Expect WriteFile permissions to be 0600 or less
     # mainly seen in internal/cli/wrtier.go
@@ -146,8 +151,8 @@ issues:
   # Default is false.
   new: false
 
-  # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
-  max-per-linter: 0
+  # # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
+  # max-issues-per-linter: 0
 
   # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
   max-same-issues: 0
