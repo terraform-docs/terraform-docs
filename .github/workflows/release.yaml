@@ -35,7 +35,7 @@ jobs:
         id: contributors
         run: |
           make -C .github/scripts contributors NEW_VERSION=${GITHUB_REF:11}
-          echo "contributors_list=$(cat .github/scripts/contributors.list)" >> "$GITHUB_ENV"
+          echo "contributors_list=$(cat .github/scripts/contributors.list | sed -z 's/\n/\\n/g')" >> "$GITHUB_ENV"
 
       - name: Login to Docker
         uses: docker/login-action@v3
