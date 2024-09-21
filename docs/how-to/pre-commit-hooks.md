@@ -76,7 +76,7 @@ done
 ```
 
 {{< alert type="warning" >}}
-This is very basic and higly simplified version of [pre-commit-terraform](https://github.com/antonbabenko/pre-commit-terraform).
+This is very basic and highly simplified version of [pre-commit-terraform](https://github.com/antonbabenko/pre-commit-terraform).
 Please refer to it for complete examples and guides.
 {{< /alert >}}
 
