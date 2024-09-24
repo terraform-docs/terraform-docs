@@ -20,6 +20,7 @@ terraform-docs markdown [PATH] [flags]
 
 ```console
       --anchor       create anchor links (default true)
+      --atx-closed   close ATX style headers
       --default      show Default column or section (default true)
       --escape       escape special characters (default true)
   -h, --help         help for markdown
