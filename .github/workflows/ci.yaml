@@ -113,28 +113,28 @@ jobs:
           push: true
           tags: quay.io/${{ github.event.repository.name }}/terraform-docs:edge
 
-  publish:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Prepare docs
-        if: contains(github.ref, 'refs/heads/master')
-        run: ./scripts/docs/prepare-site.sh
-
-      - name: Publish to website
-        uses: drud/action-cross-commit@master
-        if: contains(github.ref, 'refs/heads/master')
-        with:
-          source-folder: site/content
-          destination-repository: https://${{ secrets.COMMITTER_USERNAME }}:${{ secrets.COMMITTER_TOKEN }}@github.com/terraform-docs/website
-          destination-folder: content
-          destination-branch: main
-          git-user: terraform-docs-bot
-          git-user-email: bot@terraform-docs.io
-          git-commit-message: |-
-            Update website content
-
-            from: https://github.com/terraform-docs/terraform-docs/commit/${{ github.sha }}
+#  publish:
+#    runs-on: ubuntu-latest
+#    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Prepare docs
+#        if: contains(github.ref, 'refs/heads/master')
+#        run: ./scripts/docs/prepare-site.sh
+#
+#      - name: Publish to website
+#        uses: drud/action-cross-commit@master
+#        if: contains(github.ref, 'refs/heads/master')
+#        with:
+#          source-folder: site/content
+#          destination-repository: https://${{ secrets.COMMITTER_USERNAME }}:${{ secrets.COMMITTER_TOKEN }}@github.com/terraform-docs/website
+#          destination-folder: content
+#          destination-branch: main
+#          git-user: terraform-docs-bot
+#          git-user-email: bot@terraform-docs.io
+#          git-commit-message: |-
+#            Update website content
+#
+#            from: https://github.com/terraform-docs/terraform-docs/commit/${{ github.sha }}
