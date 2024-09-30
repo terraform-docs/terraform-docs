@@ -1,6 +1,6 @@
 module github.com/terraform-docs/terraform-docs
 
-go 1.23
+go 1.23.0
 
 require (
 	github.com/BurntSushi/toml v1.4.0
@@ -12,14 +12,14 @@ require (
 	github.com/iancoleman/orderedmap v0.3.0
 	github.com/imdario/mergo v0.3.16
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/rquadling/terraform-config-inspect v0.0.0-20240930095033-1cdb1a202cc3
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
-	github.com/terraform-docs/terraform-config-inspect v0.0.0-20210728164355-9c1f178932fa
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
 	gopkg.in/yaml.v3 v3.0.1
-	honnef.co/go/tools v0.3.2
+	honnef.co/go/tools v0.4.6
 	mvdan.cc/xurls/v2 v2.5.0
 )
 
@@ -60,7 +60,7 @@ require (
 	github.com/zclconf/go-cty v1.15.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.27.0 // indirect
-	golang.org/x/exp/typeparams v0.0.0-20220722155223-a9213eeb770e // indirect
+	golang.org/x/exp/typeparams v0.0.0-20221208152030-732eee02a75a // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect

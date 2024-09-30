@@ -41,6 +41,7 @@ func NewCommand(runtime *cli.Runtime, config *print.Config) *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Settings.Required, "required", true, "show Required column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Sensitive, "sensitive", true, "show Sensitive column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Type, "type", true, "show Type column or section")
+	cmd.PersistentFlags().BoolVar(&config.Settings.Validation, "validation", true, "show Validation column or section")
 
 	// subcommands
 	cmd.AddCommand(document.NewCommand(runtime, config))

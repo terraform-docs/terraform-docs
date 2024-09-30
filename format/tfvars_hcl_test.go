@@ -48,6 +48,21 @@ func TestTfvarsHcl(t *testing.T) {
 				}),
 			),
 		},
+		"PrintValidations": {
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Settings.Validation = true
+				}),
+			),
+		},
+		"PrintEverything": {
+			config: testutil.WithSections(
+				testutil.With(func(c *print.Config) {
+					c.Settings.Description = true
+					c.Settings.Validation = true
+				}),
+			),
+		},
 		"SortByName": {
 			config: testutil.WithSections(
 				testutil.With(func(c *print.Config) {

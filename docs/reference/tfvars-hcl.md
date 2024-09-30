@@ -21,6 +21,7 @@ terraform-docs tfvars hcl [PATH] [flags]
 ```console
       --description   show Descriptions on variables
   -h, --help          help for hcl
+      --validation    show Validations on variables
 ```
 
 ## Inherited Options
@@ -94,23 +95,32 @@ generates the following output:
       "b": 2,
       "c": 3
     }
-    map-2                   = ""
-    map-3                   = {}
-    no-escape-default-value = "VALUE_WITH_UNDERSCORE"
-    number-1                = 42
-    number-2                = ""
-    number-3                = "19"
-    number-4                = 15.75
-    number_default_zero     = 0
-    object_default_empty    = {}
-    string-1                = "bar"
-    string-2                = ""
-    string-3                = ""
-    string-special-chars    = "\\.<>[]{}_-"
-    string_default_empty    = ""
-    string_default_null     = ""
-    string_no_default       = ""
-    unquoted                = ""
-    with-url                = ""
+    map-2                       = ""
+    map-3                       = {}
+    no-escape-default-value     = "VALUE_WITH_UNDERSCORE"
+    number-1                    = 42
+    number-2                    = ""
+    number-3                    = "19"
+    number-4                    = 15.75
+    number_default_zero         = 0
+    object_default_empty        = {}
+    string-1                    = "bar"
+    string-2                    = ""
+    string-3                    = ""
+    string-special-chars        = "\\.<>[]{}_-"
+    string_default_empty        = ""
+    string_default_null         = ""
+    string_no_default           = ""
+    unquoted                    = ""
+    variable_with_no_validation = ""
+
+    # var.variable_with_one_validation must be empty or 10 characters long.
+    variable_with_one_validation = ""
+
+    # var.variable_with_two_validations must be 10 characters long.
+    # var.variable_with_two_validations must start with 'magic'.
+    variable_with_two_validations = ""
+
+    with-url = ""
 
 [examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
