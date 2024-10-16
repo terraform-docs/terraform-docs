@@ -17,5 +17,6 @@ import (
 // Requirement represents a requirement for Terraform module.
 type Requirement struct {
 	Name    string       `json:"name" toml:"name" xml:"name" yaml:"name"`
+	Source  types.String `json:"source" toml:"source" xml:"source" yaml:"source"`
 	Version types.String `json:"version" toml:"version" xml:"version" yaml:"version"`
 }
