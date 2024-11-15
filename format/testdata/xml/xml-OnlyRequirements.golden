@@ -13,6 +13,7 @@
     <requirement>
       <name>aws</name>
       <version>&gt;= 2.15.0</version>
+      <aliases>aws,aws.ident</aliases>
     </requirement>
     <requirement>
       <name>foo</name>

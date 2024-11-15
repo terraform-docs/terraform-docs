@@ -96,7 +96,7 @@ generates the following output:
 
 
     requirement.terraform (>= 0.12)
-    requirement.aws (>= 2.15.0)
+    requirement.aws (>= 2.15.0) (aliases: aws,aws.ident)
     requirement.foo (>= 1.0)
     requirement.random (>= 2.2.0)
 
@@ -136,7 +136,7 @@ generates the following output:
     input.input-with-code-block ([
       "name rack:location"
     ])
-    This is a complicated one. We need a newline.  
+    This is a complicated one. We need a newline.
     And an example in a code block
     ```
     default     = [

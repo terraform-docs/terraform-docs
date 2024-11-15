@@ -38,12 +38,12 @@ followed by another line of text.
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.12 |
-| <a name="requirement_aws"></a> [aws](#requirement_aws) | >= 2.15.0 |
-| <a name="requirement_foo"></a> [foo](#requirement_foo) | >= 1.0 |
-| <a name="requirement_random"></a> [random](#requirement_random) | >= 2.2.0 |
+| Name | Version | Aliases |
+|------|---------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.12 | n/a |
+| <a name="requirement_aws"></a> [aws](#requirement_aws) | >= 2.15.0 | aws,aws.ident |
+| <a name="requirement_foo"></a> [foo](#requirement_foo) | >= 1.0 | n/a |
+| <a name="requirement_random"></a> [random](#requirement_random) | >= 2.2.0 | n/a |
 
 ## Providers
 

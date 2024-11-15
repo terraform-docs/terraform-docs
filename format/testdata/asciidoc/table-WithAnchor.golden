@@ -40,11 +40,11 @@ followed by another line of text.
 
 [cols="a,a",options="header,autowidth"]
 |===
-|Name |Version
-|[[requirement_terraform]] <<requirement_terraform,terraform>> |>= 0.12
-|[[requirement_aws]] <<requirement_aws,aws>> |>= 2.15.0
-|[[requirement_foo]] <<requirement_foo,foo>> |>= 1.0
-|[[requirement_random]] <<requirement_random,random>> |>= 2.2.0
+|Name |Version |Aliases
+|[[requirement_terraform]] <<requirement_terraform,terraform>> |>= 0.12 |n/a
+|[[requirement_aws]] <<requirement_aws,aws>> |>= 2.15.0 |aws,aws.ident
+|[[requirement_foo]] <<requirement_foo,foo>> |>= 1.0 |n/a
+|[[requirement_random]] <<requirement_random,random>> |>= 2.2.0 |n/a
 |===
 
 == Providers

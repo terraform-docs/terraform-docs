@@ -11,7 +11,13 @@
 terraform {
   required_version = ">= 0.12"
   required_providers {
-    aws = ">= 2.15.0"
+    aws = {
+      version = ">= 2.15.0"
+      configuration_aliases = [
+        aws,
+        aws.ident
+      ]
+    }
   }
 }
 
@@ -19,6 +25,10 @@ resource "tls_private_key" "baz" {}
 
 data "aws_caller_identity" "current" {
   provider = "aws"
+}
+
+data "aws_caller_identity" "ident" {
+    provider = "aws.ident"
 }
 
 # terraform-docs-ignore

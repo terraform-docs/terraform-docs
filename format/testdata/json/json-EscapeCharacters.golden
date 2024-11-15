@@ -323,7 +323,8 @@
     },
     {
       "name": "aws",
-      "version": "\u003e= 2.15.0"
+      "version": "\u003e= 2.15.0",
+      "aliases": "aws,aws.ident"
     },
     {
       "name": "foo",

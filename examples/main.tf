@@ -42,7 +42,13 @@ terraform {
   required_version = ">= 0.12"
   required_providers {
     random = ">= 2.2.0"
-    aws    = ">= 2.15.0"
+    aws    = {
+      version = ">= 2.15.0"
+      configuration_aliases = [
+        aws,
+        aws.ident
+      ]
+    }
     foo = {
       source  = "https://registry.acme.com/foo"
       version = ">= 1.0"
