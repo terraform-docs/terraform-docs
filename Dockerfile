@@ -6,7 +6,7 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-FROM docker.io/library/golang:1.23.1-alpine AS builder
+FROM docker.io/library/golang:1.23.4-alpine AS builder
 
 RUN apk add --update --no-cache make
 
