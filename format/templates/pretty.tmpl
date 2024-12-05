@@ -9,7 +9,8 @@
     {{- with .Module.Requirements }}
         {{- range . }}
             {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            {{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
+            {{- $aliases := ternary (tostring .ConfigurationAliases) (printf " (aliases: %s)" .ConfigurationAliases) "" }}
+            {{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}{{ $aliases }}
         {{ end -}}
     {{ end -}}
     {{- printf "\n\n" -}}

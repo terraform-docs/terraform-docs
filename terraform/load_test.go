@@ -727,7 +727,7 @@ func TestLoadProviders(t *testing.T) {
 			path:     "full-example",
 			lockfile: false,
 			expected: expected{
-				providers: []string{"aws->= 2.15.0", "null-", "tls-"},
+				providers: []string{"aws->= 2.15.0", "aws.ident->= 2.15.0", "null-", "tls-"},
 			},
 		},
 		{
@@ -830,7 +830,7 @@ func TestLoadResources(t *testing.T) {
 			name: "load module resources from path",
 			path: "full-example",
 			expected: expected{
-				resources: []string{"tls_private_key.baz", "aws_caller_identity.current", "null_resource.foo"},
+				resources: []string{"tls_private_key.baz", "aws_caller_identity.current", "aws_caller_identity.ident", "null_resource.foo"},
 			},
 		},
 		{
@@ -981,7 +981,7 @@ func TestSortItems(t *testing.T) {
 				required:  []string{"A", "F"},
 				optional:  []string{"D", "B", "E", "C", "G"},
 				outputs:   []string{"C", "A", "B", "D"},
-				providers: []string{"tls", "aws", "null"},
+				providers: []string{"tls", "aws", "aws", "null"},
 			},
 		},
 		{
@@ -994,7 +994,7 @@ func TestSortItems(t *testing.T) {
 				required:  []string{"A", "F"},
 				optional:  []string{"D", "B", "E", "C", "G"},
 				outputs:   []string{"C", "A", "B", "D"},
-				providers: []string{"tls", "aws", "null"},
+				providers: []string{"tls", "aws", "aws", "null"},
 			},
 		},
 		{
@@ -1007,7 +1007,7 @@ func TestSortItems(t *testing.T) {
 				required:  []string{"A", "F"},
 				optional:  []string{"D", "B", "E", "C", "G"},
 				outputs:   []string{"C", "A", "B", "D"},
-				providers: []string{"tls", "aws", "null"},
+				providers: []string{"tls", "aws", "aws", "null"},
 			},
 		},
 		{
@@ -1020,7 +1020,7 @@ func TestSortItems(t *testing.T) {
 				required:  []string{"A", "F"},
 				optional:  []string{"B", "C", "D", "E", "G"},
 				outputs:   []string{"A", "B", "C", "D"},
-				providers: []string{"aws", "null", "tls"},
+				providers: []string{"aws", "aws", "null", "tls"},
 			},
 		},
 		{
@@ -1033,7 +1033,7 @@ func TestSortItems(t *testing.T) {
 				required:  []string{"A", "F"},
 				optional:  []string{"B", "C", "D", "E", "G"},
 				outputs:   []string{"A", "B", "C", "D"},
-				providers: []string{"aws", "null", "tls"},
+				providers: []string{"aws", "aws", "null", "tls"},
 			},
 		},
 		{
@@ -1046,7 +1046,7 @@ func TestSortItems(t *testing.T) {
 				required:  []string{"A", "F"},
 				optional:  []string{"G", "B", "C", "D", "E"},
 				outputs:   []string{"A", "B", "C", "D"},
-				providers: []string{"aws", "null", "tls"},
+				providers: []string{"aws", "aws", "null", "tls"},
 			},
 		},
 	}

@@ -11,7 +11,8 @@
         The following requirements are needed by this module:
         {{- range .Module.Requirements }}
             {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            - {{ anchorNameMarkdown "requirement" .Name }}{{ $version }}
+            {{ $aliases := ternary (tostring .ConfigurationAliases) (printf " (aliases: %s)" .ConfigurationAliases) "" }}
+            - {{ anchorNameMarkdown "requirement" .Name }}{{ $version }}{{ $aliases }}
         {{- end }}
     {{ end }}
 {{ end -}}

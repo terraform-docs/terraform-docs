@@ -13,6 +13,7 @@ resources = []
 [[requirements]]
   name = "aws"
   version = ">= 2.15.0"
+  aliases = "aws,aws.ident"
 
 [[requirements]]
   name = "foo"

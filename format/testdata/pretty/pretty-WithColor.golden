@@ -38,7 +38,7 @@ followed by another line of text.
 
 
 [36mrequirement.terraform[0m (>= 0.12)
-[36mrequirement.aws[0m (>= 2.15.0)
+[36mrequirement.aws[0m (>= 2.15.0) (aliases: aws,aws.ident)
 [36mrequirement.foo[0m (>= 1.0)
 [36mrequirement.random[0m (>= 2.2.0)
 
