@@ -39,7 +39,7 @@ type Config struct {
 	ModuleRoot string
 }
 
-// NewConfig returns neew instancee of Config with empty values.
+// NewConfig returns new instances of Config with empty values.
 func NewConfig() *Config {
 	return &Config{
 		HeaderFrom:   "main.tf",
@@ -394,6 +394,7 @@ type settings struct {
 	Required     bool `mapstructure:"required"`
 	Sensitive    bool `mapstructure:"sensitive"`
 	Type         bool `mapstructure:"type"`
+	Validation   bool `mapstructure:"validation"`
 }
 
 func defaultSettings() settings {
@@ -411,6 +412,7 @@ func defaultSettings() settings {
 		Required:     true,
 		Sensitive:    true,
 		Type:         true,
+		Validation:   true,
 	}
 }
 
