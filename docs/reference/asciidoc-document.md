@@ -104,13 +104,13 @@ generates the following output:
 
     The following requirements are needed by this module:
 
-    - [[requirement_terraform]] <<requirement_terraform,terraform>> (>= 0.12)
+    - [[requirement_terraform]] <<requirement_terraform,terraform>> - hashicorp/terraform (>= 0.12)
 
-    - [[requirement_aws]] <<requirement_aws,aws>> (>= 2.15.0)
+    - [[requirement_aws]] <<requirement_aws,aws>> - hashicorp/aws (>= 2.15.0)
 
-    - [[requirement_foo]] <<requirement_foo,foo>> (>= 1.0)
+    - [[requirement_foo]] <<requirement_foo,foo>> - https://registry.acme.com/foo (>= 1.0)
 
-    - [[requirement_random]] <<requirement_random,random>> (>= 2.2.0)
+    - [[requirement_random]] <<requirement_random,random>> - hashicorp/random (>= 2.2.0)
 
     == Providers
 
