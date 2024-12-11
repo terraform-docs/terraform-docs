@@ -16,6 +16,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	goversion "github.com/hashicorp/go-version"
 	"github.com/spf13/cobra"
@@ -392,6 +393,11 @@ func writeContent(config *print.Config, content string) error {
 	} else {
 		// writing to stdout
 		w = &stdoutWriter{}
+	}
+
+	// Replace the content with CRLF line endings if --output-crlf is provided
+	if config.Output.CRLF {
+		content = strings.ReplaceAll(content, "\n", "\r\n")
 	}
 
 	_, err := io.WriteString(w, content)
