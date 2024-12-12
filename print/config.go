@@ -205,7 +205,7 @@ const (
 
 // Output to file template and modes.
 var (
-	OutputTemplate = fmt.Sprintf("%s\n%s\n%s", OutputBeginComment, OutputContent, OutputEndComment)
+	OutputTemplate = fmt.Sprintf("%s\n%s\n%s\n", OutputBeginComment, OutputContent, OutputEndComment)
 	OutputModes    = strings.Join([]string{OutputModeInject, OutputModeReplace}, ", ")
 )
 
