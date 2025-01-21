@@ -42,7 +42,7 @@ The following requirements are needed by this module:
 
 - terraform (>= 0.12)
 
-- aws (>= 2.15.0)
+- aws (>= 2.15.0) (aliases: aws,aws.ident)
 
 - foo (>= 1.0)
 

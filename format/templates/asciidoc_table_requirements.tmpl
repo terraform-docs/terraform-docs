@@ -10,9 +10,9 @@
 
         [cols="a,a",options="header,autowidth"]
         |===
-        |Name |Version
+        |Name |Version |Aliases
         {{- range .Module.Requirements }}
-            |{{ anchorNameAsciidoc "requirement" .Name }} |{{ tostring .Version | default "n/a" }}
+            |{{ anchorNameAsciidoc "requirement" .Name }} |{{ tostring .Version | default "n/a" }} |{{ tostring .ConfigurationAliases | default "n/a" }} 
         {{- end }}
         |===
     {{ end }}
