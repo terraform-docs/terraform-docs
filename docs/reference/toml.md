@@ -354,18 +354,22 @@ generates the following output:
 
     [[requirements]]
       name = "terraform"
+      source = "hashicorp/terraform"
       version = ">= 0.12"
 
     [[requirements]]
       name = "aws"
+      source = "hashicorp/aws"
       version = ">= 2.15.0"
 
     [[requirements]]
       name = "foo"
+      source = "https://registry.acme.com/foo"
       version = ">= 1.0"
 
     [[requirements]]
       name = "random"
+      source = "hashicorp/random"
       version = ">= 2.2.0"
 
     [[resources]]
