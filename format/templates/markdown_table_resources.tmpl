@@ -8,14 +8,14 @@
     {{ else }}
         {{- indent 0 "#" }} Resources
 
-        | Name | Type |
-        |------|------|
+        | Resource Type | Resource Name | Type |
+        |------|------|------|
         {{- range .Module.Resources }}
             {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
             {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
             {{- if or $isResource $isDataResource }}
-                {{- $fullspec := ternary .URL (printf "[%s](%s)" .Spec .URL) .Spec }}
-                | {{ $fullspec }} | {{ .GetMode }} |
+                {{- $resourceType := ternary .URL (printf "[%s](%s)" .GetResourceType .URL) .GetResourceType }}
+                | {{ $resourceType }} | {{ .GetResourceName }} | {{ .GetMode }} |
             {{- end }}
         {{- end }}
     {{ end }}
