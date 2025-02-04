@@ -108,10 +108,10 @@ func isFileFormatSupported(filename string, section string) (bool, error) {
 		return false, fmt.Errorf("--%s-from value is missing", section)
 	}
 	switch getFileFormat(filename) {
-	case ".adoc", ".md", ".tf", ".txt":
+	case ".adoc", ".md", ".tf", ".tofu", ".txt":
 		return true, nil
 	}
-	return false, fmt.Errorf("only .adoc, .md, .tf, and .txt formats are supported to read %s from", section)
+	return false, fmt.Errorf("only .adoc, .md, .tf, .tofu and .txt formats are supported to read %s from", section)
 }
 
 func loadHeader(config *print.Config) (string, error) {
@@ -146,7 +146,8 @@ func loadSection(config *print.Config, file string, section string) (string, err
 		}
 		return "", err // user explicitly asked for a file which doesn't exist
 	}
-	if getFileFormat(file) != ".tf" {
+	format := getFileFormat(file)
+	if format != ".tf" && format != ".tofu" {
 		content, err := os.ReadFile(filepath.Clean(filename))
 		if err != nil {
 			return "", err
