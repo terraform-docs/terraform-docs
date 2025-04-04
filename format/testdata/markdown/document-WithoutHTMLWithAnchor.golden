@@ -42,7 +42,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement_terraform) (>= 0.12)
 
-- <a name="requirement_aws"></a> [aws](#requirement_aws) (>= 2.15.0)
+- <a name="requirement_aws"></a> [aws](#requirement_aws) (>= 2.15.0) (aliases: aws,aws.ident)
 
 - <a name="requirement_foo"></a> [foo](#requirement_foo) (>= 1.0)
 
