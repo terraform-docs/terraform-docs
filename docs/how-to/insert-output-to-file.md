@@ -10,8 +10,8 @@ toc: false
 
 Since `v0.12.0`
 
-Generated output can be insterted directly into the file. There are two modes of
-insersion: `inject` (default) or `replace`. Take a look at [output] configuration
+Generated output can be inserted directly into the file. There are two modes of
+insertion: `inject` (default) or `replace`. Take a look at [output] configuration
 for all the details.
 
 ```bash
