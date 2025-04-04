@@ -11,14 +11,14 @@ toc: true
 Since `v0.10.0`
 
 Relative path to a file to extract header for the generated output from. Supported
-file formats are `.adoc`, `.md`, `.tf`, and `.txt`.
+file formats are `.adoc`, `.md`, `.tf`, `.tofu`, and `.txt`.
 
 {{< alert type="info" >}}
 The whole file content is being extracted as module header when extracting from
 `.adoc`, `.md`, or `.txt`.
 {{< /alert >}}
 
-To extract header from `.tf` file you need to use following javascript, c, or java
+To extract header from `.tf` or `.tofu` file you need to use following javascript, c, or java
 like multi-line comment.
 
 ```tf
@@ -37,7 +37,7 @@ resource "foo" "bar" { ... }
 ```
 
 {{< alert type="info" >}}
-This comment must start at the immediate first line of the `.tf` file
+This comment must start at the immediate first line of the `.tf` or `.tofu` file
 before any `resource`, `variable`, `module`, etc.
 {{< /alert >}}
 
