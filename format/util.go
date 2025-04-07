@@ -20,6 +20,7 @@ import (
 	"github.com/terraform-docs/terraform-docs/print"
 	"github.com/terraform-docs/terraform-docs/template"
 	"github.com/terraform-docs/terraform-docs/terraform"
+	"mvdan.cc/xurls/v2"
 )
 
 // sanitize cleans a Markdown document to soothe linters.
@@ -43,7 +44,50 @@ func sanitize(markdown string) string {
 	result = regexp.MustCompile(`(\r?\n){3,}`).ReplaceAllString(result, "$1$1")
 	result = regexp.MustCompile(`(\r?\n){2,}$`).ReplaceAllString(result, "")
 
+	result = SanitizeBareLinks(result)
+
 	return result
+}
+
+// SanitizeBareLinks converts bare links to Markdown representation.
+func SanitizeBareLinks(s string) string {
+	urlRegex := xurls.Strict()
+	matches := urlRegex.FindAllStringIndex(s, -1)
+	if matches == nil {
+		return s
+	}
+
+	var result strings.Builder
+	lastIndex := 0
+
+	for _, match := range matches {
+		start, end := match[0], match[1]
+
+		// Check if the URL is already wrapped in <{url}> or
+		if start > 0 && s[start-1] == '<' && end < len(s) && s[end] == '>' {
+			continue
+		}
+
+		// Check if the URL is already wrapped in ]({url})
+		if start > 1 && s[start-2:start] == "](" && end < len(s) && s[end] == ')' {
+			continue
+		}
+
+		// Append text before the URL
+		result.WriteString(s[lastIndex:start])
+
+		// Wrap the URL in <>
+		url := s[start:end]
+		result.WriteString("<")
+		result.WriteString(url)
+		result.WriteString(">")
+
+		lastIndex = end
+	}
+
+	// Append the remaining part of the line
+	result.WriteString(s[lastIndex:])
+	return result.String()
 }
 
 // PrintFencedCodeBlock prints codes in fences, it automatically detects if

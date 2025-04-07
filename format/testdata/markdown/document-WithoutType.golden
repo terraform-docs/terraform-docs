@@ -191,7 +191,7 @@ Default: `"VALUE_WITH_UNDERSCORE"`
 
 ### with-url
 
-Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+Description: The description contains url. <https://www.domain.com/foo/bar_baz.html>
 
 Default: `""`
 
