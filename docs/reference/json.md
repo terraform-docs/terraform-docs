@@ -65,28 +65,32 @@ generates the following output:
           "type": "bool",
           "description": "It's bool number one.",
           "default": true,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "bool-2",
           "type": "bool",
           "description": "It's bool number two.",
           "default": false,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "bool-3",
           "type": "bool",
           "description": null,
           "default": true,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "bool_default_false",
           "type": "bool",
           "description": null,
           "default": false,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "input-with-code-block",
@@ -95,21 +99,24 @@ generates the following output:
           "default": [
             "name rack:location"
           ],
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "input-with-pipe",
           "type": "string",
           "description": "It includes v1 | v2 | v3",
           "default": "v1",
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "input_with_underscores",
           "type": "any",
           "description": "A variable with underscores.",
           "default": null,
-          "required": true
+          "required": true,
+          "validation": null
         },
         {
           "name": "list-1",
@@ -120,28 +127,32 @@ generates the following output:
             "b",
             "c"
           ],
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "list-2",
           "type": "list",
           "description": "It's list number two.",
           "default": null,
-          "required": true
+          "required": true,
+          "validation": null
         },
         {
           "name": "list-3",
           "type": "list",
           "description": null,
           "default": [],
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "list_default_empty",
           "type": "list(string)",
           "description": null,
           "default": [],
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "long_type",
@@ -163,7 +174,8 @@ generates the following output:
             },
             "name": "hello"
           },
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "map-1",
@@ -174,133 +186,181 @@ generates the following output:
             "b": 2,
             "c": 3
           },
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "map-2",
           "type": "map",
           "description": "It's map number two.",
           "default": null,
-          "required": true
+          "required": true,
+          "validation": null
         },
         {
           "name": "map-3",
           "type": "map",
           "description": null,
           "default": {},
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "no-escape-default-value",
           "type": "string",
           "description": "The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.",
           "default": "VALUE_WITH_UNDERSCORE",
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "number-1",
           "type": "number",
           "description": "It's number number one.",
           "default": 42,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "number-2",
           "type": "number",
           "description": "It's number number two.",
           "default": null,
-          "required": true
+          "required": true,
+          "validation": null
         },
         {
           "name": "number-3",
           "type": "number",
           "description": null,
           "default": "19",
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "number-4",
           "type": "number",
           "description": null,
           "default": 15.75,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "number_default_zero",
           "type": "number",
           "description": null,
           "default": 0,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "object_default_empty",
           "type": "object({})",
           "description": null,
           "default": {},
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "string-1",
           "type": "string",
           "description": "It's string number one.",
           "default": "bar",
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "string-2",
           "type": "string",
           "description": "It's string number two.",
           "default": null,
-          "required": true
+          "required": true,
+          "validation": null
         },
         {
           "name": "string-3",
           "type": "string",
           "description": null,
           "default": "",
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "string-special-chars",
           "type": "string",
           "description": null,
           "default": "\\.\u003c\u003e[]{}_-",
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "string_default_empty",
           "type": "string",
           "description": null,
           "default": "",
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "string_default_null",
           "type": "string",
           "description": null,
           "default": null,
-          "required": false
+          "required": false,
+          "validation": null
         },
         {
           "name": "string_no_default",
           "type": "string",
           "description": null,
           "default": null,
-          "required": true
+          "required": true,
+          "validation": null
         },
         {
           "name": "unquoted",
           "type": "any",
           "description": null,
           "default": null,
-          "required": true
+          "required": true,
+          "validation": null
+        },
+        {
+          "name": "variable_with_no_validation",
+          "type": "string",
+          "description": "This variable has no validation",
+          "default": "",
+          "required": false,
+          "validation": null
+        },
+        {
+          "name": "variable_with_one_validation",
+          "type": "string",
+          "description": "This variable has one validation",
+          "default": "",
+          "required": false,
+          "validation": [
+            "var.variable_with_one_validation must be empty or 10 characters long."
+          ]
+        },
+        {
+          "name": "variable_with_two_validations",
+          "type": "string",
+          "description": "This variable has two validations",
+          "default": null,
+          "required": true,
+          "validation": [
+            "var.variable_with_two_validations must be 10 characters long.",
+            "var.variable_with_two_validations must start with 'magic'."
+          ]
         },
         {
           "name": "with-url",
           "type": "string",
           "description": "The description contains url. https://www.domain.com/foo/bar_baz.html",
           "default": "",
-          "required": false
+          "required": false,
+          "validation": null
         }
       ],
       "modules": [
