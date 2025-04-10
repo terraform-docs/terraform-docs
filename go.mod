@@ -62,7 +62,7 @@ require (
 	github.com/zclconf/go-cty v1.15.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/exp/typeparams v0.0.0-20220722155223-a9213eeb770e // indirect
+	golang.org/x/exp/typeparams v0.0.0-20221208152030-732eee02a75a // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
@@ -75,4 +75,4 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
 
-replace github.com/hashicorp/terraform-config-inspect => github.com/rquadling/terraform-config-inspect v0.0.0-20231228173330-dceb5f6e1579
+replace github.com/hashicorp/terraform-config-inspect => github.com/rquadling/terraform-config-inspect v0.0.0-20250410190937-d2660c82eb6802b33b0ade565381536e8d79ba7c
