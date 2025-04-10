@@ -38,12 +38,12 @@ followed by another line of text.
 
 #### Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | >= 0.12 |
-| aws | >= 2.15.0 |
-| foo | >= 1.0 |
-| random | >= 2.2.0 |
+| Name | Version | Aliases |
+|------|---------|---------|
+| terraform | >= 0.12 | n/a |
+| aws | >= 2.15.0 | aws,aws.ident |
+| foo | >= 1.0 | n/a |
+| random | >= 2.2.0 | n/a |
 
 #### Providers
 

@@ -38,7 +38,7 @@ followed by another line of text.
 
 
 requirement.terraform (>= 0.12)
-requirement.aws (>= 2.15.0)
+requirement.aws (>= 2.15.0) (aliases: aws,aws.ident)
 requirement.foo (>= 1.0)
 requirement.random (>= 2.2.0)
 
