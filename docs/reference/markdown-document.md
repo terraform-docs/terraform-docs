@@ -250,7 +250,7 @@ generates the following output:
 
     ### <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block)
 
-    Description: This is a complicated one. We need a newline.  
+    Description: This is a complicated one. We need a newline.
     And an example in a code block
     ```
     default     = [
@@ -461,7 +461,7 @@ generates the following output:
 
     ### <a name="input_with-url"></a> [with-url](#input\_with-url)
 
-    Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+    Description: The description contains url. <https://www.domain.com/foo/bar_baz.html>
 
     Type: `string`
 

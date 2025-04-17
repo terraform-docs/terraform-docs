@@ -283,7 +283,7 @@ generates the following output:
     [[inputs]]
       name = "with-url"
       type = "string"
-      description = "The description contains url. https://www.domain.com/foo/bar_baz.html"
+      description = "The description contains url. <https://www.domain.com/foo/bar_baz.html>"
       default = ""
       required = false
 

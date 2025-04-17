@@ -136,7 +136,7 @@ generates the following output:
     input.input-with-code-block ([
       "name rack:location"
     ])
-    This is a complicated one. We need a newline.  
+    This is a complicated one. We need a newline.
     And an example in a code block
     ```
     default     = [
@@ -245,7 +245,7 @@ generates the following output:
     n/a
 
     input.with-url ("")
-    The description contains url. https://www.domain.com/foo/bar_baz.html
+    The description contains url. <https://www.domain.com/foo/bar_baz.html>
 
 
     output.output-0.12

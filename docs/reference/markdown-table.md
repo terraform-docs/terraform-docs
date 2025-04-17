@@ -174,7 +174,7 @@ generates the following output:
     | <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null) | n/a | `string` | `null` | no |
     | <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default) | n/a | `string` | n/a | yes |
     | <a name="input_unquoted"></a> [unquoted](#input\_unquoted) | n/a | `any` | n/a | yes |
-    | <a name="input_with-url"></a> [with-url](#input\_with-url) | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` | no |
+    | <a name="input_with-url"></a> [with-url](#input\_with-url) | The description contains url. <https://www.domain.com/foo/bar_baz.html> | `string` | `""` | no |
 
     ## Outputs
 

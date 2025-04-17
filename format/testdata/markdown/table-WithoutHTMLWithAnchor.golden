@@ -101,7 +101,7 @@ followed by another line of text.
 | <a name="input_input-with-code-block"></a> [input-with-code-block](#input_input-with-code-block) | This is a complicated one. We need a newline. And an example in a code block ```default = [ "machine rack01:neptune" ]``` | `list` | ```[ "name rack:location" ]``` |
 | <a name="input_long_type"></a> [long_type](#input_long_type) | This description is itself markdown.  It spans over multiple lines. | ```object({ name = string, foo = object({ foo = string, bar = string }), bar = object({ foo = string, bar = string }), fizz = list(string), buzz = list(string) })``` | ```{ "bar": { "bar": "bar", "foo": "bar" }, "buzz": [ "fizz", "buzz" ], "fizz": [], "foo": { "bar": "foo", "foo": "foo" }, "name": "hello" }``` |
 | <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input_no-escape-default-value) | The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'. | `string` | `"VALUE_WITH_UNDERSCORE"` |
-| <a name="input_with-url"></a> [with-url](#input_with-url) | The description contains url. https://www.domain.com/foo/bar_baz.html | `string` | `""` |
+| <a name="input_with-url"></a> [with-url](#input_with-url) | The description contains url. <https://www.domain.com/foo/bar_baz.html> | `string` | `""` |
 | <a name="input_string_default_empty"></a> [string_default_empty](#input_string_default_empty) | n/a | `string` | `""` |
 | <a name="input_string_default_null"></a> [string_default_null](#input_string_default_null) | n/a | `string` | `null` |
 | <a name="input_string_no_default"></a> [string_no_default](#input_string_no_default) | n/a | `string` | n/a |

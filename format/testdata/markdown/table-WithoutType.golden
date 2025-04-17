@@ -25,7 +25,7 @@
 | input-with-code-block | This is a complicated one. We need a newline.<br/>And an example in a code block<pre>default     = [<br/>  "machine rack01:neptune"<br/>]</pre> | <pre>[<br/>  "name rack:location"<br/>]</pre> |
 | long_type | This description is itself markdown.<br/><br/>It spans over multiple lines. | <pre>{<br/>  "bar": {<br/>    "bar": "bar",<br/>    "foo": "bar"<br/>  },<br/>  "buzz": [<br/>    "fizz",<br/>    "buzz"<br/>  ],<br/>  "fizz": [],<br/>  "foo": {<br/>    "bar": "foo",<br/>    "foo": "foo"<br/>  },<br/>  "name": "hello"<br/>}</pre> |
 | no-escape-default-value | The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'. | `"VALUE_WITH_UNDERSCORE"` |
-| with-url | The description contains url. https://www.domain.com/foo/bar_baz.html | `""` |
+| with-url | The description contains url. <https://www.domain.com/foo/bar_baz.html> | `""` |
 | string_default_empty | n/a | `""` |
 | string_default_null | n/a | `null` |
 | string_no_default | n/a | n/a |

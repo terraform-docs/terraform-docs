@@ -91,7 +91,7 @@ long_type = {
 # The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
 no-escape-default-value = "VALUE_WITH_UNDERSCORE"
 
-# The description contains url. https://www.domain.com/foo/bar_baz.html
+# The description contains url. <https://www.domain.com/foo/bar_baz.html>
 with-url = ""
 
 string_default_empty = ""
