@@ -8,8 +8,9 @@
 {{- if .Config.Sections.Requirements -}}
     {{- with .Module.Requirements }}
         {{- range . }}
+            {{- $source := ternary (tostring .Source) (printf " - %s" .Source) "" }}
             {{- $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            {{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $version }}
+            {{- printf "requirement.%s" .Name | colorize "\033[36m" }}{{ $source }}{{ $version }}
         {{ end -}}
     {{ end -}}
     {{- printf "\n\n" -}}
