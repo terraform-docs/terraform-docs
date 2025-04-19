@@ -1,6 +1,7 @@
 {
   "header": "",
   "footer": "",
+  "examples": [],
   "inputs": [
     {
       "name": "unquoted",

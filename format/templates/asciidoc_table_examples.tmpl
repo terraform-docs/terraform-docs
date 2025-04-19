@@ -1,0 +1,22 @@
+{{- if .Config.Sections.Examples -}}
+    {{- if not .Module.Examples -}}
+        {{- if not .Config.Settings.HideEmpty -}}
+            {{- indent 0 "=" }} Examples
+
+            No examples.
+        {{ end }}
+    {{ else }}
+        {{- indent 0 "=" }} Examples 
+
+        {{$hideTitles := .Config.Examples.HideTitles}} 
+        {{- range .Module.Examples }}
+            {{- if not $hideTitles }}
+                {{ indent 1 "=" }} {{ .Name }}
+            {{- end }}
+            ```hcl
+            {{ .Content }}
+            ```
+
+        {{ end }}
+    {{ end }}
+{{ end -}}
