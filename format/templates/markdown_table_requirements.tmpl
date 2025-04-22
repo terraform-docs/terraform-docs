@@ -8,10 +8,10 @@
     {{ else }}
         {{- indent 0 "#" }} Requirements
 
-        | Name | Version |
-        |------|---------|
+        | Name | Version | Aliases |
+        |------|---------|---------|
         {{- range .Module.Requirements }}
-            | {{ anchorNameMarkdown "requirement" .Name }} | {{ tostring .Version | default "n/a" }} |
+            | {{ anchorNameMarkdown "requirement" .Name }} | {{ tostring .Version | default "n/a" }} | {{ tostring .ConfigurationAliases | default "n/a" }} | 
         {{- end }}
     {{ end }}
 {{ end -}}
