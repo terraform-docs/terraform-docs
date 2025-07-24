@@ -10,8 +10,9 @@
 
         The following requirements are needed by this module:
         {{- range .Module.Requirements }}
+            {{ $source := ternary (tostring .Source) (printf " - %s" .Source) "" }}
             {{ $version := ternary (tostring .Version) (printf " (%s)" .Version) "" }}
-            - {{ anchorNameAsciidoc "requirement" .Name }}{{ $version }}
+            - {{ anchorNameAsciidoc "requirement" .Name }}{{ $source }}{{ $version }}
         {{- end }}
     {{ end }}
 {{ end -}}
