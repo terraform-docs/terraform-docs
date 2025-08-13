@@ -28,6 +28,7 @@ type Input struct {
 	Default     types.Value  `json:"default" toml:"default" xml:"default" yaml:"default"`
 	Required    bool         `json:"required" toml:"required" xml:"required" yaml:"required"`
 	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
+	Sensitive   bool         `json:"sensitive" toml:"sensitive" xml:"sensitive" yaml:"sensitive"`
 }
 
 // GetValue returns JSON representation of the 'Default' value, which is an 'interface'.
