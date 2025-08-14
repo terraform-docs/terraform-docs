@@ -6,6 +6,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   type = "any"
   description = ""
   required = true
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -14,6 +15,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = true
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "bool-2"
@@ -21,6 +23,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "It's bool number two."
   default = false
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "bool-1"
@@ -28,6 +31,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "It's bool number one."
   default = true
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "string-3"
@@ -35,12 +39,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = ""
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "string-2"
   type = "string"
   description = "It's string number two."
   required = true
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -49,6 +55,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "It's string number one."
   default = "bar"
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "string-special-chars"
@@ -56,6 +63,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = "\\.<>[]{}_-"
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "number-3"
@@ -63,6 +71,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = "19"
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "number-4"
@@ -70,12 +79,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = 15.75
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "number-2"
   type = "number"
   description = "It's number number two."
   required = true
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -84,12 +95,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "It's number number one."
   default = 42.0
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "map-3"
   type = "map"
   description = ""
   required = false
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -97,6 +110,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   type = "map"
   description = "It's map number two."
   required = true
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -104,6 +118,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   type = "map"
   description = "It's map number one."
   required = false
+  sensitive = false
   [inputs.default]
     a = 1.0
     b = 2.0
@@ -115,12 +130,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = []
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "list-2"
   type = "list"
   description = "It's list number two."
   required = true
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -129,12 +146,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "It's list number one."
   default = ["a", "b", "c"]
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "input_with_underscores"
   type = "any"
   description = "A variable with underscores."
   required = true
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -143,6 +162,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "It includes v1 | v2 | v3"
   default = "v1"
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "input-with-code-block"
@@ -150,12 +170,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n"
   default = ["name rack:location"]
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "long_type"
   type = "object({\n    name = string,\n    foo  = object({ foo = string, bar = string }),\n    bar  = object({ foo = string, bar = string }),\n    fizz = list(string),\n    buzz = list(string)\n  })"
   description = "This description is itself markdown.\n\nIt spans over multiple lines.\n"
   required = false
+  sensitive = false
   [inputs.default]
     buzz = ["fizz", "buzz"]
     fizz = []
@@ -173,6 +195,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'."
   default = "VALUE_WITH_UNDERSCORE"
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "with-url"
@@ -180,6 +203,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = "The description contains url. https://www.domain.com/foo/bar_baz.html"
   default = ""
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "string_default_empty"
@@ -187,12 +211,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = ""
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "string_default_null"
   type = "string"
   description = ""
   required = false
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -200,6 +226,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   type = "string"
   description = ""
   required = true
+  sensitive = false
   [inputs.default]
 
 [[inputs]]
@@ -208,6 +235,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = 0.0
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "bool_default_false"
@@ -215,6 +243,7 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = false
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "list_default_empty"
@@ -222,12 +251,14 @@ footer = "## This is an example of a footer\n\nIt looks exactly like a header, b
   description = ""
   default = []
   required = false
+  sensitive = false
 
 [[inputs]]
   name = "object_default_empty"
   type = "object({})"
   description = ""
   required = false
+  sensitive = false
   [inputs.default]
 
 [[modules]]

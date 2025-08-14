@@ -18,7 +18,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
-	github.com/terraform-docs/terraform-config-inspect v0.0.0-20210728164355-9c1f178932fa
+	github.com/terraform-docs/terraform-config-inspect v0.0.0-20250408153412-5b88c7ed5b63
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
 	gopkg.in/yaml.v3 v3.0.1
 	honnef.co/go/tools v0.3.2

@@ -211,6 +211,7 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,
 			},
+			Sensitive: input.Sensitive,
 		}
 
 		inputs = append(inputs, i)
