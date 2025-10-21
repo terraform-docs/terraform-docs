@@ -6,6 +6,7 @@
   "string-2": null,
   "string_no_default": null,
   "unquoted": null,
+  "variable_with_two_validations": null,
   "bool-1": true,
   "bool-2": false,
   "bool-3": true,
@@ -54,5 +55,7 @@
   "string-special-chars": "\\.<>[]{}_-",
   "string_default_empty": "",
   "string_default_null": null,
+  "variable_with_no_validation": "",
+  "variable_with_one_validation": "",
   "with-url": ""
 }

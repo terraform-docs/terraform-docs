@@ -205,3 +205,21 @@ Type: `list(string)`
 Description: n/a
 
 Type: `object({})`
+
+### variable_with_no_validation
+
+Description: This variable has no validation
+
+Type: `string`
+
+### variable_with_one_validation
+
+Description: This variable has one validation
+
+Type: `string`
+
+### variable_with_two_validations
+
+Description: This variable has two validations
+
+Type: `string`

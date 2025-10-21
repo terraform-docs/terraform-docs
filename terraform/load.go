@@ -23,7 +23,8 @@ import (
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
-	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
+	"github.com/rquadling/terraform-config-inspect/tfconfig"
+
 	"github.com/terraform-docs/terraform-docs/internal/reader"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
@@ -211,6 +212,10 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,
 			},
+		}
+
+		for _, validation := range input.Validation {
+			i.Validation = append(i.Validation, types.String(validation))
 		}
 
 		inputs = append(inputs, i)

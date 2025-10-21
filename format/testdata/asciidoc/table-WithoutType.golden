@@ -183,4 +183,16 @@ It spans over multiple lines.
 |n/a
 |`{}`
 
+|variable_with_no_validation
+|This variable has no validation
+|`""`
+
+|variable_with_one_validation
+|This variable has one validation
+|`""`
+
+|variable_with_two_validations
+|This variable has two validations
+|n/a
+
 |===

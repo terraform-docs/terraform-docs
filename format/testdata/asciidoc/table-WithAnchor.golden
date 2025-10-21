@@ -310,6 +310,21 @@ object({
 |`object({})`
 |`{}`
 
+|[[input_variable_with_no_validation]] <<input_variable_with_no_validation,variable_with_no_validation>>
+|This variable has no validation
+|`string`
+|`""`
+
+|[[input_variable_with_one_validation]] <<input_variable_with_one_validation,variable_with_one_validation>>
+|This variable has one validation
+|`string`
+|`""`
+
+|[[input_variable_with_two_validations]] <<input_variable_with_two_validations,variable_with_two_validations>>
+|This variable has two validations
+|`string`
+|n/a
+
 |===
 
 == Outputs

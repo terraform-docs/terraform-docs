@@ -411,6 +411,30 @@ Type: `object({})`
 
 Default: `{}`
 
+### variable\_with\_no\_validation
+
+Description: This variable has no validation
+
+Type: `string`
+
+Default: `""`
+
+### variable\_with\_one\_validation
+
+Description: This variable has one validation
+
+Type: `string`
+
+Default: `""`
+
+### variable\_with\_two\_validations
+
+Description: This variable has two validations
+
+Type: `string`
+
+Default: n/a
+
 ## Outputs
 
 The following outputs are exported:
