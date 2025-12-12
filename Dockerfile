@@ -6,7 +6,7 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-FROM docker.io/library/golang:1.24.2-alpine AS builder
+FROM docker.io/library/golang:1.25.3-alpine AS builder
 
 RUN apk add --update --no-cache make
 
@@ -21,7 +21,7 @@ RUN make build
 
 ################
 
-FROM docker.io/library/alpine:3.21.3
+FROM docker.io/library/alpine:3.22.2
 
 # Mitigate CVE-2023-5363
 RUN apk add --no-cache --upgrade "openssl>=3.1.4-r1"
