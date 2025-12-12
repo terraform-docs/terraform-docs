@@ -11,6 +11,7 @@ the root directory of this source tree.
 package plugin
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -71,7 +72,7 @@ func findPlugins(dir string) (*List, error) {
 		// path on the fly per directory.
 		//
 		// nolint:gosec
-		cmd := exec.Command(path)
+		cmd := exec.CommandContext(context.TODO(), path)
 
 		client := pluginsdk.NewClient(&pluginsdk.ClientOpts{
 			Cmd: cmd,

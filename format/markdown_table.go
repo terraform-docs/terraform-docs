@@ -58,7 +58,7 @@ func NewMarkdownTable(config *print.Config) Type {
 
 // Generate a Terraform module as Markdown tables.
 func (t *markdownTable) Generate(module *terraform.Module) error {
-	err := t.generator.forEach(func(name string) (string, error) {
+	err := t.forEach(func(name string) (string, error) {
 		rendered, err := t.template.Render(name, module)
 		if err != nil {
 			return "", err
@@ -66,7 +66,7 @@ func (t *markdownTable) Generate(module *terraform.Module) error {
 		return sanitize(rendered), nil
 	})
 
-	t.generator.funcs(withModule(module))
+	t.funcs(withModule(module))
 
 	return err
 }

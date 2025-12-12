@@ -42,7 +42,7 @@ func (x *xml) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	x.generator.funcs(withContent(strings.TrimSuffix(string(out), "\n")))
+	x.funcs(withContent(strings.TrimSuffix(string(out), "\n")))
 
 	return nil
 }

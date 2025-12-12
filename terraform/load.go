@@ -11,6 +11,7 @@ the root directory of this source tree.
 package terraform
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -336,7 +337,7 @@ func loadOutputValues(config *print.Config) (map[string]*output, error) {
 	var out []byte
 	var err error
 	if config.OutputValues.From == "" {
-		cmd := exec.Command("terraform", "output", "-json")
+		cmd := exec.CommandContext(context.TODO(), "terraform", "output", "-json")
 		cmd.Dir = config.ModuleRoot
 		if out, err = cmd.Output(); err != nil {
 			return nil, fmt.Errorf("caught error while reading the terraform outputs: %w", err)

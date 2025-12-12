@@ -51,7 +51,7 @@ func New(config *print.Config, items ...*Item) *Template {
 }
 
 // Funcs return available template out of the box and custom functions.
-func (t Template) Funcs() gotemplate.FuncMap {
+func (t *Template) Funcs() gotemplate.FuncMap {
 	return t.funcMap
 }
 
