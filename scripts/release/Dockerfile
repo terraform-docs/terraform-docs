@@ -6,7 +6,7 @@
 # You may obtain a copy of the License at the LICENSE file in
 # the root directory of this source tree.
 
-FROM docker.io/library/alpine:3.21.3
+FROM docker.io/library/alpine:3.22.2
 
 COPY terraform-docs /usr/local/bin/terraform-docs
 

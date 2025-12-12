@@ -1,147 +1,136 @@
+version: "2"
 run:
-  timeout: 10m
   tests: false
-
 output:
   formats:
-    - format: tab
-
-linters-settings:
-  # govet:
-  #   # report about shadowed variables
-  #   check-shadowing: true
-
-  # golint:
-  #   # minimal confidence for issues, default is 0.8
-  #   min-confidence: 0.8
-
-  gofmt:
-    # simplify code: gofmt with `-s` option, true by default
-    simplify: true
-
-  goimports:
-    # put imports beginning with prefix after 3rd-party packages;
-    # it's a comma-separated list of prefixes
-    local-prefixes: github.com/terraform-docs/
-
-  gocyclo:
-    # minimal code complexity to report, 30 by default (but we recommend 10-20)
-    min-complexity: 10
-
-  # maligned:
-  #   # print struct with more effective memory layout or not, false by default
-  #   suggest-new: true
-
-  dupl:
-    # tokens count to trigger issue, 150 by default
-    threshold: 100
-
-  goconst:
-    # minimal length of string constant, 3 by default
-    min-len: 3
-    # minimal occurrences count to trigger, 3 by default
-    min-occurrences: 5
-
-  lll:
-    # tab width in spaces. Default to 1.
-    tab-width: 1
-
-  unused:
-    # treat code as a program (not a library) and report unused exported identifiers; default is false.
-    # XXX: if you enable this setting, unused will report a lot of false-positives in text editors:
-    # if it's called for subdir of a project it can't find funcs usages. All text editor integrations
-    # with golangci-lint call it on a directory with the changed file.
-    exported-fields-are-used: false
-
-  unparam:
-    # Inspect exported functions, default is false. Set to true if no external program/library imports your code.
-    # XXX: if you enable this setting, unparam will report a lot of false-positives in text editors:
-    # if it's called for subdir of a project it can't find external interfaces. All text editor integrations
-    # with golangci-lint call it on a directory with the changed file.
-    check-exported: false
-
-  nakedret:
-    # make an issue if func has more lines of code than this setting and it has naked returns; default is 30
-    max-func-lines: 30
-
-  prealloc:
-    # XXX: we don't recommend using this linter before doing performance profiling.
-    # For most programs usage of prealloc will be a premature optimization.
-
-    # Report preallocation suggestions only on simple loops that have no returns/breaks/continues/gotos in them.
-    # True by default.
-    simple: true
-    range-loops: true # Report preallocation suggestions on range loops, true by default
-    for-loops: false # Report preallocation suggestions on for loops, false by default
-
-  gocritic:
-    # Enable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint` run to see all tags and checks.
-    # Empty list by default. See https://github.com/go-critic/go-critic#usage -> section "Tags".
-    enabled-tags:
-      - performance
-
-    settings: # settings passed to gocritic
-      captLocal: # must be valid enabled check name
-        paramsOnly: true
-      rangeValCopy:
-        sizeThreshold: 32
-
-  misspell:
-    locale: US
-
+    tab:
+      path: stdout
+      colors: false
 linters:
-  disable-all: true
+  default: none
   enable:
-    - megacheck
-    - govet
-    - gocyclo
-    - gocritic
+    - asasalint
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - contextcheck
+    - durationcheck
+    - errcheck
+    - errchkjson
+    - errorlint
+    - exhaustive
+    - gocheckcompilerdirectives
+    - gochecksumtype
     - goconst
-    - goimports
-    - gofmt  # We enable this as well as goimports for its simplify mode.
-    - prealloc
-    # - golint # deprecated as of upgrading to 1.55.2
-    - unconvert
+    - gocritic
+    - gocyclo
+    - gosec
+    - gosmopolitan
+    - govet
+    - ineffassign
+    - loggercheck
+    - makezero
     - misspell
+    - musttag
     - nakedret
-
-  presets:
-    - bugs
+    - nilerr
+    - nilnesserr
+    - noctx
+    - prealloc
+    - protogetter
+    - reassign
+    - recvcheck
+    - rowserrcheck
+    - spancheck
+    - sqlclosecheck
+    - staticcheck
+    - testifylint
+    - unconvert
+    - unparam
     - unused
-  fast: false
+    - zerologlint
+  settings:
+    dupl:
+      # tokens count to trigger issue, 150 by default
+      threshold: 100
+    goconst:
+      # minimal length of string constant, 3 by default
+      min-len: 3
+      # minimal occurrences count to trigger, 3 by default
+      min-occurrences: 5
+    gocritic:
+      # Enable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint` run to see all tags and checks.
+      # Empty list by default. See https://github.com/go-critic/go-critic#usage -> section "Tags".
+      enabled-tags:
+        - performance
+      settings: # settings passed to gocritic
+        captLocal: # must be valid enabled check name
+          paramsOnly: true
+        rangeValCopy:
+          sizeThreshold: 32
+    gocyclo:
+      # minimal code complexity to report, 30 by default (but we recommend 10-20)
+      min-complexity: 10
+    lll:
+      # tab width in spaces. Default to 1.
+      tab-width: 1
+    misspell:
+      locale: US
+    nakedret:
+      # make an issue if func has more lines of code than this setting and it has naked returns; default is 30
+      max-func-lines: 30
+    prealloc:
+      # XXX: we don't recommend using this linter before doing performance profiling.
+      # For most programs usage of prealloc will be a premature optimization.
 
-issues:
+      # Report preallocation suggestions only on simple loops that have no returns/breaks/continues/gotos in them.
+      # True by default.
+      simple: true
+      range-loops: true # Report preallocation suggestions on range loops, true by default
+      for-loops: false # Report preallocation suggestions on for loops, false by default
+    unparam:
+      # Inspect exported functions, default is false. Set to true if no external program/library imports your code.
+      # XXX: if you enable this setting, unparam will report a lot of false-positives in text editors:
+      # if it's called for subdir of a project it can't find external interfaces. All text editor integrations
+      # with golangci-lint call it on a directory with the changed file.
+      check-exported: false
+    unused:
+      # treat code as a program (not a library) and report unused exported identifiers; default is false.
+      # XXX: if you enable this setting, unused will report a lot of false-positives in text editors:
+      # if it's called for subdir of a project it can't find funcs usages. All text editor integrations
+      # with golangci-lint call it on a directory with the changed file.
+      exported-fields-are-used: false
   # Excluding configuration per-path and per-linter
-  exclude-rules:
-    # Exclude some linters from running on tests files.
-    - path: _test(ing)?\.go
-      linters:
-        - gocyclo
-        - errcheck
-        - dupl
-        - gosec
-        - scopelint
-        - unparam
-        - goconst
-    - path: (.*).go
-      linters:
-        - typecheck
+  exclusions:
+    generated: lax
+    rules:
+      # Exclude some linters from running on tests files.
+      - path: _test(ing)?\.go
+        linters:
+          - dupl
+          - errcheck
+          - goconst
+          - gocyclo
+          - gosec
+          - scopelint
+          - unparam
+      # G306: Expect WriteFile permissions to be 0600 or less
+      # mainly seen in internal/cli/wrtier.go
+      - text: 'G306:'
+        linters:
+          - gosec
 
-    # G306: Expect WriteFile permissions to be 0600 or less
-    # mainly seen in internal/cli/wrtier.go
-    - text: "G306:"
-      linters:
-        - gosec
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+issues:
 
-    # - text: "should have a package comment"
-    #   linters:
-    #     - golint
+  # # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
+  # max-issues-per-linter: 0
 
-  # Independently from option `exclude` we use default exclude patterns,
-  # it can be disabled by this option. To list all
-  # excluded by default patterns execute `golangci-lint run --help`.
-  # Default value for this option is true.
-  exclude-use-default: false
+  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
+  max-same-issues: 0
 
   # Show only new issues: if there are unstaged changes or untracked files,
   # only those changes are analyzed, else only changes in HEAD~ are analyzed.
@@ -150,9 +139,22 @@ issues:
   # of integration: much better don't allow issues in new code.
   # Default is false.
   new: false
-
-  # # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
-  # max-issues-per-linter: 0
-
-  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
-  max-same-issues: 0
+formatters:
+  enable:
+    - gofmt  # We enable this as well as goimports for its simplify mode.
+    - goimports
+  settings:
+    gofmt:
+      # simplify code: gofmt with `-s` option, true by default
+      simplify: true
+    goimports:
+      # put imports beginning with prefix after 3rd-party packages;
+      # it's a comma-separated list of prefixes
+      local-prefixes:
+        - github.com/terraform-docs/
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

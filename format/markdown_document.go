@@ -67,7 +67,7 @@ func NewMarkdownDocument(config *print.Config) Type {
 
 // Generate a Terraform module as Markdown document.
 func (d *markdownDocument) Generate(module *terraform.Module) error {
-	err := d.generator.forEach(func(name string) (string, error) {
+	err := d.forEach(func(name string) (string, error) {
 		rendered, err := d.template.Render(name, module)
 		if err != nil {
 			return "", err
@@ -75,7 +75,7 @@ func (d *markdownDocument) Generate(module *terraform.Module) error {
 		return sanitize(rendered), nil
 	})
 
-	d.generator.funcs(withModule(module))
+	d.funcs(withModule(module))
 
 	return err
 }

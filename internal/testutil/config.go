@@ -11,7 +11,7 @@ the root directory of this source tree.
 package testutil
 
 import (
-	"github.com/imdario/mergo"
+	"dario.cat/mergo"
 
 	"github.com/terraform-docs/terraform-docs/print"
 )

@@ -64,8 +64,8 @@ func (p *pretty) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	p.generator.funcs(withContent(regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, "")))
-	p.generator.funcs(withModule(module))
+	p.funcs(withContent(regexp.MustCompile(`(\r?\n)*$`).ReplaceAllString(rendered, "")))
+	p.funcs(withModule(module))
 
 	return nil
 }
