@@ -91,5 +91,5 @@ to review and accept.
 [good git commit hygiene]: https://www.futurelearn.com/info/blog/telling-stories-with-your-git-history
 [Developer Certificate of Origin]: https://github.com/apps/dco
 [gofmt]: https://blog.golang.org/go-fmt-your-code
-[code review comments]: https://github.com/golang/go/wiki/CodeReviewComments
-[test review comments]: https://github.com/golang/go/wiki/TestComments
+[code review comments]: https://go.dev/wiki/CodeReviewComments
+[test review comments]: https://go.dev/wiki/TestComments
