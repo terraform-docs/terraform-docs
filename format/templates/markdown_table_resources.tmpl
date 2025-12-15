@@ -1,12 +1,12 @@
 {{- if or .Config.Sections.Resources .Config.Sections.DataSources -}}
     {{- if not .Module.Resources -}}
         {{- if not .Config.Settings.HideEmpty -}}
-            {{- indent 0 "#" }} Resources
+            {{- indent 0 "#" }} Resources{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             No resources.
         {{ end }}
     {{ else }}
-        {{- indent 0 "#" }} Resources
+        {{- indent 0 "#" }} Resources{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         | Name | Type |
         |------|------|

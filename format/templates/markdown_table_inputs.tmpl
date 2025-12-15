@@ -1,12 +1,12 @@
 {{- if .Config.Sections.Inputs -}}
     {{- if not .Module.Inputs -}}
         {{- if not .Config.Settings.HideEmpty -}}
-            {{- indent 0 "#" }} Inputs
+            {{- indent 0 "#" }} Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             No inputs.
         {{- end }}
     {{ else }}
-        {{- indent 0 "#" }} Inputs
+        {{- indent 0 "#" }} Inputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         | Name | Description |
         {{- if .Config.Settings.Type }} Type |{{ end }}

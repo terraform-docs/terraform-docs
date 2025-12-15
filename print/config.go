@@ -382,6 +382,7 @@ func (s *sort) validate() error {
 
 type settings struct {
 	Anchor       bool `mapstructure:"anchor"`
+	AtxClosed    bool `mapstructure:"atx-closed"`
 	Color        bool `mapstructure:"color"`
 	Default      bool `mapstructure:"default"`
 	Description  bool `mapstructure:"description"`
@@ -399,6 +400,7 @@ type settings struct {
 func defaultSettings() settings {
 	return settings{
 		Anchor:       true,
+		AtxClosed:    false,
 		Color:        true,
 		Default:      true,
 		Description:  false,

@@ -1,12 +1,12 @@
 {{- if .Config.Sections.Providers -}}
     {{- if not .Module.Providers -}}
         {{- if not .Config.Settings.HideEmpty -}}
-            {{- indent 0 "#" }} Providers
+            {{- indent 0 "#" }} Providers{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
             No providers.
         {{ end }}
     {{ else }}
-        {{- indent 0 "#" }} Providers
+        {{- indent 0 "#" }} Providers{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         | Name | Version |
         |------|---------|

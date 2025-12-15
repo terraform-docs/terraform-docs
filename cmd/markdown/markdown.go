@@ -33,6 +33,7 @@ func NewCommand(runtime *cli.Runtime, config *print.Config) *cobra.Command {
 
 	// flags
 	cmd.PersistentFlags().BoolVar(&config.Settings.Anchor, "anchor", true, "create anchor links")
+	cmd.PersistentFlags().BoolVar(&config.Settings.AtxClosed, "atx-closed", false, "close ATX style headers")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Default, "default", true, "show Default column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Escape, "escape", true, "escape special characters")
 	cmd.PersistentFlags().BoolVar(&config.Settings.HTML, "html", true, "use HTML tags in genereted output")
