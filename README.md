@@ -242,6 +242,7 @@ will be ignored for other formatters.
 and following functions:
 
 - `{{ include "relative/path/to/file" }}`
+- `{{ include_optional "relative/path/to/file" "fallback" }}`
 
 These variables are the generated output of individual sections in the selected
 formatter. For example `{{ .Inputs }}` is Markdown Table representation of _inputs_

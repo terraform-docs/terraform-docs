@@ -45,3 +45,21 @@ content: |-
 
   {{ .Outputs }}
 ````
+
+Files can also be optionally included, with a fallback value that is used if the file is not present:
+
+````yaml
+# .terraform-docs.yml
+content: |-
+  {{ .Header }}
+
+  ## Example
+
+  ```hcl
+  {{ include_optional "examples/example-1/does-not-exist.tf" "File was not found" }}
+  ```
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+````
