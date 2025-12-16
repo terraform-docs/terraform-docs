@@ -445,12 +445,27 @@ func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
 	for _, name := range names {
 		for _, version := range tfmodule.RequiredProviders[name].VersionConstraints {
 			requirements = append(requirements, &Requirement{
-				Name:    name,
-				Version: types.String(version),
+				Name:                 name,
+				Version:              types.String(version),
+				ConfigurationAliases: getConfigurationAliases(tfmodule.RequiredProviders[name].ConfigurationAliases),
 			})
 		}
 	}
 	return requirements
+}
+
+func getConfigurationAliases(aliases []tfconfig.ProviderRef) types.String {
+	var configurationAliases []string
+
+	for _, alias := range aliases {
+		configurationAlias := alias.Name
+		if alias.Alias != "" {
+			configurationAlias += "." + alias.Alias
+		}
+		configurationAliases = append(configurationAliases, configurationAlias)
+	}
+
+	return types.String(strings.Join(configurationAliases, ","))
 }
 
 func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource {

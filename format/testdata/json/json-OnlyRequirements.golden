@@ -12,7 +12,8 @@
     },
     {
       "name": "aws",
-      "version": ">= 2.15.0"
+      "version": ">= 2.15.0",
+      "aliases": "aws,aws.ident"
     },
     {
       "name": "foo",

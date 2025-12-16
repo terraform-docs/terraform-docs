@@ -9,6 +9,7 @@ requirements:
     version: '>= 0.12'
   - name: aws
     version: '>= 2.15.0'
+    aliases: aws,aws.ident
   - name: foo
     version: '>= 1.0'
   - name: random
