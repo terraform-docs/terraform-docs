@@ -287,7 +287,7 @@ content: |-
   ## Resources
 
   {{ range .Module.Resources }}
-  - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
+  - {{ .GetMode }}.{{ .GetResourceType }} {{ .GetResourceName }} ({{ .Position.Filename }}#{{ .Position.Line }})
   {{- end }}
 ````
 
