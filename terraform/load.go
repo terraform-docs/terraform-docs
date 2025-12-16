@@ -431,6 +431,7 @@ func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
 	for _, core := range tfmodule.RequiredCore {
 		requirements = append(requirements, &Requirement{
 			Name:    "terraform",
+			Source:  "hashicorp/terraform",
 			Version: types.String(core),
 		})
 	}
@@ -444,8 +445,16 @@ func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
 
 	for _, name := range names {
 		for _, version := range tfmodule.RequiredProviders[name].VersionConstraints {
+			var source string
+			if len(tfmodule.RequiredProviders[name].Source) > 0 {
+				source = tfmodule.RequiredProviders[name].Source
+			} else {
+				source = fmt.Sprintf("%s/%s", "hashicorp", name)
+			}
+
 			requirements = append(requirements, &Requirement{
 				Name:    name,
+				Source:  types.String(source),
 				Version: types.String(version),
 			})
 		}

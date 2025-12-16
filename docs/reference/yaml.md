@@ -325,12 +325,16 @@ generates the following output:
         version: null
     requirements:
       - name: terraform
+        source: hashicorp/terraform
         version: '>= 0.12'
       - name: aws
+        source: hashicorp/aws
         version: '>= 2.15.0'
       - name: foo
+        source: https://registry.acme.com/foo
         version: '>= 1.0'
       - name: random
+        source: hashicorp/random
         version: '>= 2.2.0'
     resources:
       - type: resource

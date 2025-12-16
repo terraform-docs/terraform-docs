@@ -106,13 +106,13 @@ generates the following output:
 
     The following requirements are needed by this module:
 
-    - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 0.12)
+    - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) - hashicorp/terraform (>= 0.12)
 
-    - <a name="requirement_aws"></a> [aws](#requirement\_aws) (>= 2.15.0)
+    - <a name="requirement_aws"></a> [aws](#requirement\_aws) - hashicorp/aws (>= 2.15.0)
 
-    - <a name="requirement_foo"></a> [foo](#requirement\_foo) (>= 1.0)
+    - <a name="requirement_foo"></a> [foo](#requirement\_foo) - https://registry.acme.com/foo (>= 1.0)
 
-    - <a name="requirement_random"></a> [random](#requirement\_random) (>= 2.2.0)
+    - <a name="requirement_random"></a> [random](#requirement\_random) - hashicorp/random (>= 2.2.0)
 
     ## Providers
 
