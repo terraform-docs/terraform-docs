@@ -166,7 +166,7 @@ It spans over multiple lines.[0m
 [90mThe description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.[0m
 
 [36minput.with-url[0m ("")
-[90mThe description contains url. https://www.domain.com/foo/bar_baz.html[0m
+[90mThe description contains url. <https://www.domain.com/foo/bar_baz.html>[0m
 
 [36minput.string_default_empty[0m ("")
 [90mn/a[0m

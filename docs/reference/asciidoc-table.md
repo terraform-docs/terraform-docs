@@ -140,10 +140,10 @@ generates the following output:
     |===
     |Name |Type
     |foo_resource.baz |resource
-    |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] |resource
-    |https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] |resource
-    |https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.current] |data source
-    |https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity[aws_caller_identity.ident] |data source
+    |[null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) |resource
+    |[tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) |resource
+    |[aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |data source
+    |[aws_caller_identity.ident](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |data source
     |===
 
     == Inputs
@@ -176,7 +176,7 @@ generates the following output:
     |no
 
     |[[input_input-with-code-block]] <<input_input-with-code-block,input-with-code-block>>
-    |This is a complicated one. We need a newline.  
+    |This is a complicated one. We need a newline.
     And an example in a code block
     [source]
     ----
@@ -404,7 +404,7 @@ generates the following output:
     |yes
 
     |[[input_with-url]] <<input_with-url,with-url>>
-    |The description contains url. https://www.domain.com/foo/bar_baz.html
+    |The description contains url. <https://www.domain.com/foo/bar_baz.html>
     |`string`
     |`""`
     |no
