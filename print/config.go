@@ -273,13 +273,13 @@ func (o *output) validate() error {
 		},
 		{
 			condition: func() bool {
-				return !isInlineComment(lines[0])
+				return !isInlineComment(strings.TrimSpace(lines[0]))
 			},
 			errMessage: "value of '--output-template' is missing begin comment",
 		},
 		{
 			condition: func() bool {
-				return !isInlineComment(lines[len(lines)-1])
+				return !isInlineComment(strings.TrimSpace(lines[len(lines)-1]))
 			},
 			errMessage: "value of '--output-template' is missing end comment",
 		},
