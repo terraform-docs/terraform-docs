@@ -11,7 +11,7 @@
         | Name | Source | Version |
         |------|--------|---------|
         {{- range .Module.ModuleCalls }}
-            | {{ anchorNameMarkdown "module" .Name }} | {{ .Source }} | {{ .Version | default "n/a" }} |
+            | {{ anchorNameMarkdown "module" .Name }} | [{{ .Source }}]({{ moduleURL .Source }}) | {{ .Version | default "n/a" }} |
         {{- end }}
     {{ end }}
 {{ end -}}
