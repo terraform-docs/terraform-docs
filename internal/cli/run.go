@@ -261,7 +261,12 @@ func (r *Runtime) mergeConfig(v *viper.Viper) (*print.Config, error) {
 func (r *Runtime) findSubmodules() ([]module, error) {
 	dir := filepath.Join(r.rootDir, r.config.Recursive.Path)
 
-	if _, err := os.Stat(dir); os.IsNotExist(err) {
+	if _, err := os.Stat(dir); err != nil {
+
+		if os.IsNotExist(err) {
+			return []module{}, nil
+		}
+
 		return nil, err
 	}
 
