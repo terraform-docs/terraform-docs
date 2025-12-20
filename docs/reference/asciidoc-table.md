@@ -35,6 +35,7 @@ terraform-docs asciidoc table [PATH] [flags]
       --indent int                  indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
       --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-check                check if content of output file is up to date (default false)
+      --output-crlf                 Whether to enable CRLF line endings
       --output-file string          file path to insert output into (default "")
       --output-mode string          output to file method [inject, replace] (default "inject")
       --output-template string      output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")

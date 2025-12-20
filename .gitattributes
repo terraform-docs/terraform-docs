@@ -1,0 +1,2 @@
+# All files should use LF, as tests are tightly coupled to LF
+* text eol=lf

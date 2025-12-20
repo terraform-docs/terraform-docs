@@ -71,6 +71,7 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.Output.Mode, "output-mode", "inject", "output to file method ["+print.OutputModes+"]")
 	cmd.PersistentFlags().StringVar(&config.Output.Template, "output-template", print.OutputTemplate, "output template")
 	cmd.PersistentFlags().BoolVar(&config.Output.Check, "output-check", false, "check if content of output file is up to date (default false)")
+	cmd.PersistentFlags().BoolVar(&config.Output.CRLF, "output-crlf", false, "Whether to enable CRLF line endings")
 
 	cmd.PersistentFlags().BoolVar(&config.Sort.Enabled, "sort", true, "sort items")
 	cmd.PersistentFlags().StringVar(&config.Sort.By, "sort-by", "name", "sort items by criteria ["+print.SortTypes+"]")
