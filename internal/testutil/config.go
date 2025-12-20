@@ -49,17 +49,19 @@ func With(fn func(*print.Config)) print.Config {
 	return base
 }
 
-// WithSections shows all sections (including footer) to provided print.Config.
+// WithSections shows all sections (including footer & examples) to provided print.Config.
 func WithSections(override ...print.Config) print.Config {
 	base := baseSections()
 
 	base.Sections.Footer = true
 	base.FooterFrom = "footer.md"
 
+	base.Sections.Examples = true
+
 	return apply(base, override...)
 }
 
-// WithDefaultSections shows default sections (everything except footer) to provided print.Config.
+// WithDefaultSections shows default sections (everything except footer & examples) to provided print.Config.
 func WithDefaultSections(override ...print.Config) print.Config {
 	base := baseSections()
 

@@ -37,6 +37,26 @@ followed by another line of text.
 | Bar  | Bar description |[0m
 
 
+[36mexample.exampleA[0m
+[90mmodule full-example{
+    source = "github.com/terraform-docs/terraform-docs//examples"
+
+    input_with_underscores = "input_any"
+    list-2 = [
+        "value_1",
+        "value_2"
+    ]
+    map-2 = {
+        "1" = "value"
+        "2" = "value_2"
+    }
+    number-2 = 2
+    string-2 = "2"
+    string_no_default = "string_value"
+    unquoted = test
+}[0m
+
+
 [36mrequirement.terraform[0m (>= 0.12)
 [36mrequirement.aws[0m (>= 2.15.0)
 [36mrequirement.foo[0m (>= 1.0)

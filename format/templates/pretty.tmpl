@@ -5,6 +5,17 @@
     {{- printf "\n\n" -}}
 {{ end -}}
 
+{{- if .Config.Sections.Examples -}}
+    {{- with .Module.Examples }}
+        {{- range . }}
+            {{- printf "example.%s" .Name | colorize "\033[36m" }}
+            {{ tostring .Content | colorize "\033[90m" }}
+            {{- printf "\n\n" -}}
+        {{ end -}}
+    {{ end -}}
+    {{- printf "\n" -}}
+{{ end -}}
+
 {{- if .Config.Sections.Requirements -}}
     {{- with .Module.Requirements }}
         {{- range . }}

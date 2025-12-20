@@ -108,6 +108,7 @@ func copySections(config *print.Config, src *terraform.Module) *terraform.Module
 	dest := &terraform.Module{
 		Header:       "",
 		Footer:       "",
+		Examples:     make([]*terraform.Example, 0),
 		Inputs:       make([]*terraform.Input, 0),
 		ModuleCalls:  make([]*terraform.ModuleCall, 0),
 		Outputs:      make([]*terraform.Output, 0),
@@ -121,6 +122,9 @@ func copySections(config *print.Config, src *terraform.Module) *terraform.Module
 	}
 	if config.Sections.Footer {
 		dest.Footer = src.Footer
+	}
+	if config.Sections.Examples {
+		dest.Examples = src.Examples
 	}
 	if config.Sections.Inputs {
 		dest.Inputs = src.Inputs

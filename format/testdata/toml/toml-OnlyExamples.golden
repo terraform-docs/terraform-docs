@@ -1,0 +1,12 @@
+header = ""
+footer = ""
+inputs = []
+modules = []
+outputs = []
+providers = []
+requirements = []
+resources = []
+
+[[examples]]
+  name = "exampleA"
+  content = "module full-example{\n    source = \"github.com/terraform-docs/terraform-docs//examples\"\n\n    input_with_underscores = \"input_any\"\n    list-2 = [\n        \"value_1\",\n        \"value_2\"\n    ]\n    map-2 = {\n        \"1\" = \"value\"\n        \"2\" = \"value_2\"\n    }\n    number-2 = 2\n    string-2 = \"2\"\n    string_no_default = \"string_value\"\n    unquoted = test\n}"

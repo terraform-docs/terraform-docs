@@ -51,7 +51,6 @@ func TestMarkdownTable(t *testing.T) {
 				c.HeaderFrom = "bad.tf"
 			}),
 		},
-
 		// Settings
 		"WithRequired": {
 			config: testutil.WithSections(
@@ -142,6 +141,11 @@ func TestMarkdownTable(t *testing.T) {
 		// Only section
 		"OnlyDataSources": {
 			config: testutil.With(func(c *print.Config) { c.Sections.DataSources = true }),
+		},
+		"OnlyExamples": {
+			config: testutil.With(func(c *print.Config) {
+				c.Sections.Examples = true
+			}),
 		},
 		"OnlyHeader": {
 			config: testutil.With(func(c *print.Config) { c.Sections.Header = true }),
