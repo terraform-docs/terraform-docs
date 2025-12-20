@@ -179,6 +179,9 @@ func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 		return fw.writer.Write(p)
 	}
 
-	fmt.Printf("%s updated successfully\n", filename)
-	return len(p), os.WriteFile(filename, p, 0644)
+	err := os.WriteFile(filename, p, 0644)
+	if err == nil {
+		fmt.Printf("%s updated successfully\n", filename)
+	}
+	return len(p), err
 }
