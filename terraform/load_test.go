@@ -1092,3 +1092,26 @@ func TestSortItems(t *testing.T) {
 		})
 	}
 }
+func TestLoadOpenTofuProviders(t *testing.T) {
+	assert := assert.New(t)
+
+	config := print.NewConfig()
+	config.ModuleRoot = filepath.Join("testdata", "opentofu-for-each")
+
+	module, err := LoadWithOptions(config)
+	assert.Nil(err)
+	assert.Equal(true, module.HasProviders())
+
+	found := false
+	for _, p := range module.Providers {
+		if p.Name == "aws" && string(p.Alias) == "main" {
+			found = true
+			break
+		}
+	}
+	assert.True(found, "aws.main provider should be found")
+
+	assert.Equal(true, module.HasResources())
+	assert.Equal(1, len(module.Resources))
+	assert.Equal("aws", module.Resources[0].ProviderName)
+}
