@@ -47,7 +47,7 @@ func (j *json) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	j.generator.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
+	j.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
 
 	return nil
 }

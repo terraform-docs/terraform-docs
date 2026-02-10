@@ -46,7 +46,7 @@ func (t *toml) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	t.generator.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
+	t.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
 
 	return nil
 

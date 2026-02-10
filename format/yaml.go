@@ -47,7 +47,7 @@ func (y *yaml) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	y.generator.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
+	y.funcs(withContent(strings.TrimSuffix(buffer.String(), "\n")))
 
 	return nil
 }

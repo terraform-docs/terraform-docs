@@ -287,7 +287,7 @@ func (o *output) validate() error {
 
 	for _, t := range tests {
 		if t.condition() {
-			return fmt.Errorf(t.errMessage)
+			return fmt.Errorf("%s", t.errMessage)
 		}
 	}
 

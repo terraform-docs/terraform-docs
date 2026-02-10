@@ -19,6 +19,9 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
+// Ensure formatter fully satisfy plugin interface.
+var _ goplugin.Plugin = &formatter{}
+
 // handshakeConfig is used for UX. ProcotolVersion will be updated by incompatible changes.
 var handshakeConfig = goplugin.HandshakeConfig{
 	ProtocolVersion:  7,
@@ -59,7 +62,7 @@ func (f *formatter) Server(b *goplugin.MuxBroker) (interface{}, error) {
 }
 
 // Client returns an RPC client for the host.
-func (formatter) Client(b *goplugin.MuxBroker, c *rpc.Client) (interface{}, error) {
+func (*formatter) Client(b *goplugin.MuxBroker, c *rpc.Client) (interface{}, error) {
 	return &Client{rpcClient: c, broker: b}, nil
 }
 

@@ -76,7 +76,7 @@ func (h *tfvarsHCL) Generate(module *terraform.Module) error {
 		return err
 	}
 
-	h.generator.funcs(withContent(strings.TrimSuffix(sanitize(rendered), "\n")))
+	h.funcs(withContent(strings.TrimSuffix(sanitize(rendered), "\n")))
 
 	return nil
 }
