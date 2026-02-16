@@ -1,6 +1,6 @@
 # terraform-docs
 
-[![Build Status](https://github.com/terraform-docs/terraform-docs/workflows/ci/badge.svg)](https://github.com/terraform-docs/terraform-docs/actions) [![GoDoc](https://pkg.go.dev/badge/github.com/terraform-docs/terraform-docs)](https://pkg.go.dev/github.com/terraform-docs/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/terraform-docs/terraform-docs)](https://goreportcard.com/report/github.com/terraform-docs/terraform-docs) [![Codecov Report](https://codecov.io/gh/terraform-docs/terraform-docs/branch/master/graph/badge.svg)](https://codecov.io/gh/terraform-docs/terraform-docs) [![License](https://img.shields.io/github/license/terraform-docs/terraform-docs)](https://github.com/terraform-docs/terraform-docs/blob/master/LICENSE) [![Latest release](https://img.shields.io/github/v/release/terraform-docs/terraform-docs)](https://github.com/terraform-docs/terraform-docs/releases) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/3500/badge)](https://www.bestpractices.dev/projects/3500)
+[![Build Status](https://github.com/rquadling/terraform-docs/workflows/ci/badge.svg)](https://github.com/rquadling/terraform-docs/actions) [![GoDoc](https://pkg.go.dev/badge/github.com/rquadling/terraform-docs)](https://pkg.go.dev/github.com/rquadling/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/rquadling/terraform-docs)](https://goreportcard.com/report/github.com/rquadling/terraform-docs) [![Codecov Report](https://codecov.io/gh/rquadling/terraform-docs/branch/master/graph/badge.svg)](https://codecov.io/gh/rquadling/terraform-docs) [![License](https://img.shields.io/github/license/rquadling/terraform-docs)](https://github.com/rquadling/terraform-docs/blob/master/LICENSE) [![Latest release](https://img.shields.io/github/v/release/rquadling/terraform-docs)](https://github.com/rquadling/terraform-docs/releases) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/3500/badge)](https://www.bestpractices.dev/projects/3500)
 
 ![terraform-docs-teaser](./images/terraform-docs-teaser.png)
 
@@ -39,7 +39,7 @@ Stable binaries are also available on the [releases] page. To install, download 
 binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.21.0/terraform-docs-v0.21.0-$(uname)-amd64.tar.gz
+curl -Lo ./terraform-docs.tar.gz https://github.com/rquadling/terraform-docs/releases/download/v0.21.0/terraform-docs-v0.21.0-$(uname)-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz
 chmod +x terraform-docs
 mv terraform-docs /usr/local/bin/terraform-docs
@@ -51,12 +51,12 @@ The latest version can be installed using `go install` or `go get`:
 
 ```bash
 # go1.17+
-go install github.com/terraform-docs/terraform-docs@v0.21.0
+go install github.com/rquadling/terraform-docs@v0.21.0
 ```
 
 ```bash
 # go1.16
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.21.0
+GO111MODULE="on" go get github.com/rquadling/terraform-docs@v0.21.0
 ```
 
 **NOTE:** please use the latest Go to do this, minimum `go1.16` is required.
@@ -67,7 +67,7 @@ that directory to your `$PATH` as shown [here] or do a manual installation by cl
 the repo and run `make build` from the repository which will put `terraform-docs` in:
 
 ```bash
-$(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
+$(go env GOPATH)/src/github.com/rquadling/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
 ```
 
 ## Usage
@@ -88,14 +88,14 @@ terraform-docs can be run as a container by mounting a directory with `.tf`
 files in it and run the following command:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0 markdown /terraform-docs
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/rquadling/terraform-docs:0.21.0 markdown /terraform-docs
 ```
 
 If `output.file` is not enabled for this module, generated output can be redirected
 back to a file:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0 markdown /terraform-docs > doc.md
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/rquadling/terraform-docs:0.21.0 markdown /terraform-docs > doc.md
 ```
 
 **NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge`
@@ -141,7 +141,7 @@ in the root of your Git repo with at least the following content:
 
 ```yaml
 repos:
-  - repo: https://github.com/terraform-docs/terraform-docs
+  - repo: https://github.com/rquadling/terraform-docs
     rev: "v0.21.0"
     hooks:
       - id: terraform-docs-go
@@ -299,9 +299,9 @@ as a library.
 
 ```go
 import (
-    "github.com/terraform-docs/terraform-docs/format"
-    "github.com/terraform-docs/terraform-docs/print"
-    "github.com/terraform-docs/terraform-docs/terraform"
+    "github.com/rquadling/terraform-docs/format"
+    "github.com/rquadling/terraform-docs/print"
+    "github.com/rquadling/terraform-docs/terraform"
 )
 
 // buildTerraformDocs for module root `path` and provided content `tmpl`.
@@ -358,10 +358,10 @@ package main
 import (
     _ "embed" //nolint
 
-    "github.com/terraform-docs/terraform-docs/plugin"
-    "github.com/terraform-docs/terraform-docs/print"
-    "github.com/terraform-docs/terraform-docs/template"
-    "github.com/terraform-docs/terraform-docs/terraform"
+    "github.com/rquadling/terraform-docs/plugin"
+    "github.com/rquadling/terraform-docs/print"
+    "github.com/rquadling/terraform-docs/template"
+    "github.com/rquadling/terraform-docs/terraform"
 )
 
 func main() {
@@ -422,11 +422,11 @@ MIT License - Copyright (c) 2021 The terraform-docs Authors.
 [Homebrew]: https://brew.sh
 [install pre-commit]: https://pre-commit.com/#install
 [`output`]: https://terraform-docs.io/user-guide/configuration/output/
-[releases]: https://github.com/terraform-docs/terraform-docs/releases
+[releases]: https://github.com/rquadling/terraform-docs/releases
 [Scoop]: https://scoop.sh/
 [Slack]: https://slack.terraform-docs.io/
 [terraform-docs GitHub Action]: https://github.com/terraform-docs/gh-actions
-[Terraform module]: https://pkg.go.dev/github.com/terraform-docs/terraform-docs/terraform#Module
+[Terraform module]: https://pkg.go.dev/github.com/rquadling/terraform-docs/terraform#Module
 [tfdocs-format-template]: https://github.com/terraform-docs/tfdocs-format-template
 [our website]: https://terraform-docs.io/
 [User Guide]: https://terraform-docs.io/user-guide/introduction/

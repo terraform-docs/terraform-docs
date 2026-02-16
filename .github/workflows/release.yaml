@@ -62,7 +62,7 @@ jobs:
     needs: [assets]
     steps:
       - name: Bump Homebrew formula version
-        uses: dawidd6/action-homebrew-bump-formula@v3.11.0
+        uses: dawidd6/action-homebrew-bump-formula@v5
         with:
           token: ${{ secrets.COMMITTER_TOKEN }}
           formula: terraform-docs

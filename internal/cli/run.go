@@ -22,12 +22,12 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	"github.com/terraform-docs/terraform-docs/format"
-	"github.com/terraform-docs/terraform-docs/internal/plugin"
-	"github.com/terraform-docs/terraform-docs/internal/version"
-	pluginsdk "github.com/terraform-docs/terraform-docs/plugin"
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/format"
+	"github.com/rquadling/terraform-docs/internal/plugin"
+	"github.com/rquadling/terraform-docs/internal/version"
+	pluginsdk "github.com/rquadling/terraform-docs/plugin"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
 // Runtime represents the execution runtime for CLI.
@@ -103,7 +103,7 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error { //nolint:g
 
 	// Generating content recursively is only allowed when `config.Output.File`
 	// is set. Otherwise it would be impossible to distinguish where output of
-	// one module ends and the other begin, if content is outpput to stdout.
+	// one module ends and the other begin, if content is output to stdout.
 	if r.config.Recursive.Enabled && r.config.Recursive.Path != "" {
 		items, err := r.findSubmodules()
 		if err != nil {

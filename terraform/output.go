@@ -16,7 +16,7 @@ import (
 	"encoding/xml"
 	"sort"
 
-	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/internal/types"
 )
 
 // Output represents a Terraform output.

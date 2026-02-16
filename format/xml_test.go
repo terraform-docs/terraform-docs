@@ -15,8 +15,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/testutil"
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/internal/testutil"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 func TestXml(t *testing.T) {

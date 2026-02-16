@@ -50,6 +50,7 @@ terraform-docs asciidoc document [PATH] [flags]
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
       --type                        show Type column or section (default true)
+      --validation                  show Validation column or section (default true)
 ```
 
 ## Example
@@ -210,6 +211,17 @@ generates the following output:
 
     Type: `any`
 
+    === [[input_variable_with_two_validations]] <<input_variable_with_two_validations,variable_with_two_validations>>
+
+    Description: This variable has two validations
+
+    Type: `string`
+
+    Validations:
+
+    - var.variable_with_two_validations must be 10 characters long.
+    - var.variable_with_two_validations must start with 'magic'.
+
     == Optional Inputs
 
     The following input variables are optional (have default values):
@@ -248,7 +260,7 @@ generates the following output:
 
     === [[input_input-with-code-block]] <<input_input-with-code-block,input-with-code-block>>
 
-    Description: This is a complicated one. We need a newline.  
+    Description: This is a complicated one. We need a newline.
     And an example in a code block
     ```
     default     = [
@@ -457,6 +469,26 @@ generates the following output:
 
     Default: `null`
 
+    === [[input_variable_with_no_validation]] <<input_variable_with_no_validation,variable_with_no_validation>>
+
+    Description: This variable has no validation
+
+    Type: `string`
+
+    Default: `""`
+
+    === [[input_variable_with_one_validation]] <<input_variable_with_one_validation,variable_with_one_validation>>
+
+    Description: This variable has one validation
+
+    Type: `string`
+
+    Validations:
+
+    - var.variable_with_one_validation must be empty or 10 characters long.
+
+    Default: `""`
+
     === [[input_with-url]] <<input_with-url,with-url>>
 
     Description: The description contains url. https://www.domain.com/foo/bar_baz.html
@@ -489,4 +521,4 @@ generates the following output:
 
     It looks exactly like a header, but is placed at the end of the document
 
-[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+[examples]: https://github.com/rquadling/terraform-docs/tree/master/examples

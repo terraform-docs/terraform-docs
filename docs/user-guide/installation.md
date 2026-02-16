@@ -51,14 +51,14 @@ terraform-docs can be run as a container by mounting a directory with `.tf`
 files in it and run the following command:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0 markdown /terraform-docs
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/rquadling/terraform-docs:0.21.0 markdown /terraform-docs
 ```
 
 If `output.file` is not enabled for this module, generated output can be redirected
 back to a file:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0 markdown /terraform-docs > doc.md
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/rquadling/terraform-docs:0.21.0 markdown /terraform-docs > doc.md
 ```
 
 {{< alert type="primary" >}}
@@ -89,12 +89,12 @@ The latest version can be installed using `go install` or `go get`:
 
 ```bash
 # go1.17+
-go install github.com/terraform-docs/terraform-docs@v0.21.0
+go install github.com/rquadling/terraform-docs@v0.21.0
 ```
 
 ```bash
 # go1.16
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.21.0
+GO111MODULE="on" go get github.com/rquadling/terraform-docs@v0.21.0
 ```
 
 {{< alert type="warning" >}}
@@ -117,7 +117,7 @@ that directory to your `$PATH` as shown [here] or do a manual installation by cl
 the repo and run `make build` from the repository which will put `terraform-docs` in:
 
 ```bash
-$(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
+$(go env GOPATH)/src/github.com/rquadling/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
 ```
 
 ## Code Completion
@@ -160,5 +160,5 @@ To make this change permanent, the above commands can be added to `~/.profile` f
 
 [Chocolatey]: https://www.chocolatey.org
 [Homebrew]: https://brew.sh
-[Release]: https://github.com/terraform-docs/terraform-docs/releases
+[Release]: https://github.com/rquadling/terraform-docs/releases
 [Scoop]: https://scoop.sh/

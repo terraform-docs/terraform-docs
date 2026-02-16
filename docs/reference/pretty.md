@@ -136,7 +136,7 @@ generates the following output:
     input.input-with-code-block ([
       "name rack:location"
     ])
-    This is a complicated one. We need a newline.  
+    This is a complicated one. We need a newline.
     And an example in a code block
     ```
     default     = [
@@ -244,6 +244,15 @@ generates the following output:
     input.unquoted (required)
     n/a
 
+    input.variable_with_no_validation ("")
+    This variable has no validation
+
+    input.variable_with_one_validation ("")
+    This variable has one validation
+
+    input.variable_with_two_validations (required)
+    This variable has two validations
+
     input.with-url ("")
     The description contains url. https://www.domain.com/foo/bar_baz.html
 
@@ -264,4 +273,4 @@ generates the following output:
 
     It looks exactly like a header, but is placed at the end of the document
 
-[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+[examples]: https://github.com/rquadling/terraform-docs/tree/master/examples

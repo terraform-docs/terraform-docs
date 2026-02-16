@@ -111,7 +111,10 @@ generates the following output:
       "string_default_null": null,
       "string_no_default": null,
       "unquoted": null,
+      "variable_with_no_validation": "",
+      "variable_with_one_validation": "",
+      "variable_with_two_validations": null,
       "with-url": ""
     }
 
-[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+[examples]: https://github.com/rquadling/terraform-docs/tree/master/examples

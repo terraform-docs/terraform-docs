@@ -43,14 +43,17 @@ long_type = {
   },
   "name": "hello"
 }
-object_default_empty    = {}
-input-with-pipe         = "v1"
-no-escape-default-value = "VALUE_WITH_UNDERSCORE"
-string-1                = "bar"
-string-2                = ""
-string-3                = ""
-string-special-chars    = "\\.<>[]{}_-"
-string_default_empty    = ""
-string_default_null     = ""
-string_no_default       = ""
-with-url                = ""
+object_default_empty          = {}
+input-with-pipe               = "v1"
+no-escape-default-value       = "VALUE_WITH_UNDERSCORE"
+string-1                      = "bar"
+string-2                      = ""
+string-3                      = ""
+string-special-chars          = "\\.<>[]{}_-"
+string_default_empty          = ""
+string_default_null           = ""
+string_no_default             = ""
+variable_with_no_validation   = ""
+variable_with_one_validation  = ""
+variable_with_two_validations = ""
+with-url                      = ""

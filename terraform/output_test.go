@@ -18,7 +18,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/internal/types"
 )
 
 func TestOutputValue(t *testing.T) {

@@ -1,14 +1,15 @@
-input_with_underscores = ""
-list-2                 = ""
-map-2                  = ""
-number-2               = ""
-string-2               = ""
-string_no_default      = ""
-unquoted               = ""
-bool-1                 = true
-bool-2                 = false
-bool-3                 = true
-bool_default_false     = false
+input_with_underscores        = ""
+list-2                        = ""
+map-2                         = ""
+number-2                      = ""
+string-2                      = ""
+string_no_default             = ""
+unquoted                      = ""
+variable_with_two_validations = ""
+bool-1                        = true
+bool-2                        = false
+bool-3                        = true
+bool_default_false            = false
 input-with-code-block = [
   "name rack:location"
 ]
@@ -41,16 +42,18 @@ map-1 = {
   "b": 2,
   "c": 3
 }
-map-3                   = {}
-no-escape-default-value = "VALUE_WITH_UNDERSCORE"
-number-1                = 42
-number-3                = "19"
-number-4                = 15.75
-number_default_zero     = 0
-object_default_empty    = {}
-string-1                = "bar"
-string-3                = ""
-string-special-chars    = "\\.<>[]{}_-"
-string_default_empty    = ""
-string_default_null     = ""
-with-url                = ""
+map-3                        = {}
+no-escape-default-value      = "VALUE_WITH_UNDERSCORE"
+number-1                     = 42
+number-3                     = "19"
+number-4                     = 15.75
+number_default_zero          = 0
+object_default_empty         = {}
+string-1                     = "bar"
+string-3                     = ""
+string-special-chars         = "\\.<>[]{}_-"
+string_default_empty         = ""
+string_default_null          = ""
+variable_with_no_validation  = ""
+variable_with_one_validation = ""
+with-url                     = ""

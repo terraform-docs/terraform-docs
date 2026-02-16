@@ -56,7 +56,7 @@ func SanitizeSection(s string, escape bool, html bool) string {
 			}
 
 			// Adjust indention and linebreak for indented codeblock
-			// https://github.com/terraform-docs/terraform-docs/issues/521
+			// https://github.com/rquadling/terraform-docs/issues/521
 			lastindent := ""
 			lines := strings.Split(segment, "\n")
 			if len(strings.TrimSpace(lines[len(lines)-1])) == 0 {
