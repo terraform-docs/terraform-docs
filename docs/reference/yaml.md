@@ -90,7 +90,7 @@ generates the following output:
       followed by another line of text.
 
       | Name | Description     |
-      |------|-----------------|
+      | ---- | --------------- |
       | Foo  | Foo description |
       | Bar  | Bar description |
     footer: |-
