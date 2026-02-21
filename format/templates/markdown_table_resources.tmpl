@@ -9,7 +9,7 @@
         {{- indent 0 "#" }} Resources
 
         | Name | Type |
-        |------|------|
+        | ---- | ---- |
         {{- range .Module.Resources }}
             {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
             {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}

@@ -9,7 +9,7 @@
         {{- indent 0 "#" }} Providers
 
         | Name | Version |
-        |------|---------|
+        | ---- | ------- |
         {{- range .Module.Providers }}
             | {{ anchorNameMarkdown "provider" .FullName }} | {{ tostring .Version | default "n/a" }} |
         {{- end }}
