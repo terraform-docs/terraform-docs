@@ -47,18 +47,28 @@ choco install terraform-docs
 
 ## Docker
 
-terraform-docs can be run as a container by mounting a directory with `.tf`
+terraform-docs can be run as a container on both `amd64` and `arm64` machines by mounting a directory with `.tf`
 files in it and run the following command:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0 markdown /terraform-docs
+# specify IMAGE_TAG-ARCHITECTURE
+
+# amd64
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0-amd64 markdown /terraform-docs
+
+# arm64
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0-arm64 markdown /terraform-docs
 ```
 
 If `output.file` is not enabled for this module, generated output can be redirected
 back to a file:
 
 ```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0 markdown /terraform-docs > doc.md
+# amd64
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0-amd64  markdown /terraform-docs > doc.md
+
+# arm64
+docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.21.0-amd64  markdown /terraform-docs > doc.md
 ```
 
 {{< alert type="primary" >}}
