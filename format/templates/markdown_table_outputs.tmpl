@@ -9,7 +9,7 @@
         {{- indent 0 "#" }} Outputs{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         | Name | Description |{{ if .Config.OutputValues.Enabled }} Value |{{ if $.Config.Settings.Sensitive }} Sensitive |{{ end }}{{ end }}
-        |------|-------------|{{ if .Config.OutputValues.Enabled }}-------|{{ if $.Config.Settings.Sensitive }}:---------:|{{ end }}{{ end }}
+        | ---- | ----------- |{{ if .Config.OutputValues.Enabled }} ----- |{{ if $.Config.Settings.Sensitive }} :-------: |{{ end }}{{ end }}
         {{- range .Module.Outputs }}
             | {{ anchorNameMarkdown "output" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
             {{- if $.Config.OutputValues.Enabled -}}

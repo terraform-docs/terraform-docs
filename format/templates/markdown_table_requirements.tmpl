@@ -9,7 +9,7 @@
         {{- indent 0 "#" }} Requirements{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         | Name | Version |
-        |------|---------|
+        | ---- | ------- |
         {{- range .Module.Requirements }}
             | {{ anchorNameMarkdown "requirement" .Name }} | {{ tostring .Version | default "n/a" }} |
         {{- end }}

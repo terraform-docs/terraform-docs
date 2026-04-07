@@ -99,14 +99,14 @@ generates the following output:
     followed by another line of text.
 
     | Name | Description     |
-    |------|-----------------|
+    | ---- | --------------- |
     | Foo  | Foo description |
     | Bar  | Bar description |
 
     ## Requirements
 
     | Name | Version |
-    |------|---------|
+    | ---- | ------- |
     | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12 |
     | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 2.15.0 |
     | <a name="requirement_foo"></a> [foo](#requirement\_foo) | >= 1.0 |
@@ -115,7 +115,7 @@ generates the following output:
     ## Providers
 
     | Name | Version |
-    |------|---------|
+    | ---- | ------- |
     | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 2.15.0 |
     | <a name="provider_aws.ident"></a> [aws.ident](#provider\_aws.ident) | >= 2.15.0 |
     | <a name="provider_foo"></a> [foo](#provider\_foo) | >= 1.0 |
@@ -125,7 +125,7 @@ generates the following output:
     ## Modules
 
     | Name | Source | Version |
-    |------|--------|---------|
+    | ---- | ------ | ------- |
     | <a name="module_bar"></a> [bar](#module\_bar) | baz | 4.5.6 |
     | <a name="module_baz"></a> [baz](#module\_baz) | baz | 4.5.6 |
     | <a name="module_foo"></a> [foo](#module\_foo) | bar | 1.2.3 |
@@ -134,7 +134,7 @@ generates the following output:
     ## Resources
 
     | Name | Type |
-    |------|------|
+    | ---- | ---- |
     | foo_resource.baz | resource |
     | [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
     | [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
@@ -144,7 +144,7 @@ generates the following output:
     ## Inputs
 
     | Name | Description | Type | Default | Required |
-    |------|-------------|------|---------|:--------:|
+    | ---- | ----------- | ---- | ------- | :------: |
     | <a name="input_bool-1"></a> [bool-1](#input\_bool-1) | It's bool number one. | `bool` | `true` | no |
     | <a name="input_bool-2"></a> [bool-2](#input\_bool-2) | It's bool number two. | `bool` | `false` | no |
     | <a name="input_bool-3"></a> [bool-3](#input\_bool-3) | n/a | `bool` | `true` | no |
@@ -180,7 +180,7 @@ generates the following output:
     ## Outputs
 
     | Name | Description |
-    |------|-------------|
+    | ---- | ----------- |
     | <a name="output_output-0.12"></a> [output-0.12](#output\_output-0.12) | terraform 0.12 only |
     | <a name="output_output-1"></a> [output-1](#output\_output-1) | It's output number one. |
     | <a name="output_output-2"></a> [output-2](#output\_output-2) | It's output number two. |

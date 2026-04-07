@@ -9,7 +9,7 @@
         {{- indent 0 "#" }} Modules{{ if .Config.Settings.AtxClosed }} {{ indent 0 "#" }}{{ end }}
 
         | Name | Source | Version |
-        |------|--------|---------|
+        | ---- | ------ | ------- |
         {{- range .Module.ModuleCalls }}
             | {{ anchorNameMarkdown "module" .Name }} | {{ .Source }} | {{ .Version | default "n/a" }} |
         {{- end }}
