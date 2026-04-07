@@ -494,6 +494,7 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 				ProviderSource: source,
 				Version:        types.String(version),
 				Description:    types.String(description),
+				RegistryURL:    config.Settings.RegistryURL,
 				Position: Position{
 					Filename: r.Pos.Filename,
 					Line:     r.Pos.Line,

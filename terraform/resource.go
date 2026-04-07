@@ -11,9 +11,10 @@ the root directory of this source tree.
 package terraform
 
 import (
-	"fmt"
+	"bytes"
 	"sort"
 	"strings"
+	gotemplate "text/template"
 
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
@@ -28,7 +29,10 @@ type Resource struct {
 	Version        types.String `json:"version" toml:"version" xml:"version" yaml:"version"`
 	Description    types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
 	Position       Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
+	RegistryURL    string       `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
+
+const defaultRegistryURLTemplate = "https://registry.terraform.io/providers/{{.Namespace}}/{{.Provider}}/{{.Version}}/docs/{{.Kind}}/{{.Type}}"
 
 // Spec returns the resource spec addresses a specific resource in the config.
 // It takes the form: resource_type.resource_name[resource index]
@@ -50,7 +54,8 @@ func (r *Resource) GetMode() string {
 	}
 }
 
-// URL returns a best guess at the URL for resource documentation
+// URL returns the URL for resource documentation using the configured registry URL template.
+// If no custom template is set, it defaults to the Terraform public registry.
 func (r *Resource) URL() string {
 	kind := ""
 	switch r.Mode {
@@ -65,7 +70,51 @@ func (r *Resource) URL() string {
 	if strings.Count(r.ProviderSource, "/") > 1 {
 		return ""
 	}
-	return fmt.Sprintf("https://registry.terraform.io/providers/%s/%s/docs/%s/%s", r.ProviderSource, r.Version, kind, r.Type)
+
+	parts := strings.SplitN(r.ProviderSource, "/", 2)
+	namespace := parts[0]
+	provider := parts[0]
+	if len(parts) == 2 {
+		provider = parts[1]
+	}
+
+	version := string(r.Version)
+	versionWithV := version
+	if version != "latest" && version != "" {
+		versionWithV = "v" + version
+	}
+
+	urlTemplate := r.RegistryURL
+	if urlTemplate == "" {
+		urlTemplate = defaultRegistryURLTemplate
+	}
+
+	tpl, err := gotemplate.New("registry-url").Parse(urlTemplate)
+	if err != nil {
+		return ""
+	}
+
+	data := struct {
+		Namespace    string
+		Provider     string
+		Version      string
+		VersionWithV string
+		Kind         string
+		Type         string
+	}{
+		Namespace:    namespace,
+		Provider:     provider,
+		Version:      version,
+		VersionWithV: versionWithV,
+		Kind:         kind,
+		Type:         r.Type,
+	}
+
+	var buf bytes.Buffer
+	if err := tpl.Execute(&buf, data); err != nil {
+		return ""
+	}
+	return buf.String()
 }
 
 func sortResourcesByType(x []*Resource) {

@@ -84,6 +84,7 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&config.OutputValues.From, "output-values-from", "", "inject output values from file into outputs (default \"\")")
 
 	cmd.PersistentFlags().BoolVar(&config.Settings.ReadComments, "read-comments", true, "use comments as description when description is empty")
+	cmd.PersistentFlags().StringVar(&config.Settings.RegistryURL, "registry-url", "", "registry URL template for resource links; supports Go template variables: {{.Namespace}}, {{.Provider}}, {{.Version}}, {{.VersionWithV}}, {{.Kind}}, {{.Type}} (default Terraform registry)")
 
 	// formatter subcommands
 	cmd.AddCommand(asciidoc.NewCommand(runtime, config))
