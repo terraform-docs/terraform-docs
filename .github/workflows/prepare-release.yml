@@ -42,7 +42,7 @@ jobs:
           fi
 
       - name: Push v${{ env.release_version }} Changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         env:
           GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
         with:
