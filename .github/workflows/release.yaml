@@ -56,17 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
           Contributors: ${{ env.contributors_list }}
 
-  homebrew:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
-    needs: [assets]
-    steps:
-      - name: Bump Homebrew formula version
-        uses: dawidd6/action-homebrew-bump-formula@v3.11.0
-        with:
-          token: ${{ secrets.COMMITTER_TOKEN }}
-          formula: terraform-docs
-
   chocolatey:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
