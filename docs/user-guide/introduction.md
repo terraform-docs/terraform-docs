@@ -40,7 +40,7 @@ Read all about available [formats].
 
 ## Compatibility
 
-terraform-docs compatiblity matrix with Terraform can be found below:
+terraform-docs compatibility matrix with Terraform can be found below:
 
 <table class="table pure-table">
   <thead>
