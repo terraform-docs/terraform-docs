@@ -11,10 +11,62 @@ the root directory of this source tree.
 package cli
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/terraform-docs/terraform-docs/print"
 )
+
+func TestReadConfigAbsolutePath(t *testing.T) {
+	dir := t.TempDir()
+	configFile := filepath.Join(dir, ".terraform-docs.yml")
+
+	err := os.WriteFile(configFile, []byte("formatter: markdown table\n"), 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tests := map[string]struct {
+		file    string
+		wantErr bool
+	}{
+		"AbsolutePath": {
+			file:    configFile,
+			wantErr: false,
+		},
+		"NonExistentAbsolutePath": {
+			file:    filepath.Join(dir, "nonexistent.yml"),
+			wantErr: true,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			runtime := &Runtime{
+				formatter: "markdown",
+				config:    print.DefaultConfig(),
+				isFlagChanged: func(flag string) bool {
+					return flag == "config"
+				},
+			}
+
+			v := viper.New()
+			err := runtime.readConfig(v, tt.file, "")
+
+			if tt.wantErr {
+				assert.NotNil(err)
+			} else {
+				assert.Nil(err)
+			}
+		})
+	}
+}
 
 func TestVersionConstraint(t *testing.T) {
 	type tuple struct {

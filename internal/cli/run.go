@@ -146,6 +146,9 @@ func (r *Runtime) RunEFunc(cmd *cobra.Command, args []string) error { //nolint:g
 // them with corresponding flags (if set).
 func (r *Runtime) readConfig(v *viper.Viper, file string, submoduleDir string) error {
 	if r.isFlagChanged("config") {
+		if absFile, err := filepath.Abs(file); err == nil {
+			file = absFile
+		}
 		v.SetConfigFile(file)
 	} else {
 		v.SetConfigName(".terraform-docs")

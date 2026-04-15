@@ -12,6 +12,8 @@ package print
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -604,6 +606,46 @@ func TestConfigValidate(t *testing.T) {
 			if tt.wantErr {
 				assert.NotNil(err)
 				assert.Equal(tt.errMsg, err.Error())
+			} else {
+				assert.Nil(err)
+			}
+		})
+	}
+}
+
+func TestReadConfig(t *testing.T) {
+	dir := t.TempDir()
+
+	err := os.WriteFile(filepath.Join(dir, ".terraform-docs.yml"), []byte("formatter: markdown table\nsort:\n  enabled: true\n  by: name\n"), 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tests := map[string]struct {
+		rootDir  string
+		filename string
+		wantErr  bool
+	}{
+		"Found": {
+			rootDir:  dir,
+			filename: ".terraform-docs.yml",
+			wantErr:  false,
+		},
+		"NotFound": {
+			rootDir:  dir,
+			filename: "nonexistent.yml",
+			wantErr:  true,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			_, err := ReadConfig(tt.rootDir, tt.filename)
+
+			if tt.wantErr {
+				assert.NotNil(err)
 			} else {
 				assert.Nil(err)
 			}

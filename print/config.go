@@ -14,7 +14,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -483,7 +483,7 @@ func ReadConfig(rootDir string, filename string) (*Config, error) {
 	cfg := NewConfig()
 
 	v := viper.New()
-	v.SetConfigFile(path.Join(rootDir, filename))
+	v.SetConfigFile(filepath.Join(rootDir, filename))
 
 	if err := v.ReadInConfig(); err != nil {
 		var perr *os.PathError
