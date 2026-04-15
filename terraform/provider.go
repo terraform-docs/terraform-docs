@@ -45,6 +45,9 @@ func sortProvidersByName(x []*Provider) {
 func sortProvidersByPosition(x []*Provider) {
 	sort.Slice(x, func(i, j int) bool {
 		if x[i].Position.Filename == x[j].Position.Filename {
+			if x[i].Position.Line == x[j].Position.Line {
+				return x[i].FullName() < x[j].FullName()
+			}
 			return x[i].Position.Line < x[j].Position.Line
 		}
 		return x[i].Position.Filename < x[j].Position.Filename
