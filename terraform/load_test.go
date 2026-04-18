@@ -885,6 +885,18 @@ func TestLoadProvidersDeterministic(t *testing.T) {
 			sortenabled: true,
 			expected:    []string{"aws", "tls"},
 		},
+		{
+			name:        "position sort preserves file order when providers appear in non-alphabetical order",
+			path:        "providers-non-alpha-order",
+			sortenabled: false,
+			expected:    []string{"tls", "aws"},
+		},
+		{
+			name:        "name sort returns alphabetical order regardless of file order",
+			path:        "providers-non-alpha-order",
+			sortenabled: true,
+			expected:    []string{"aws", "tls"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
