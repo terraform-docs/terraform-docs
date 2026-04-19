@@ -16,6 +16,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	goversion "github.com/hashicorp/go-version"
 	"github.com/spf13/cobra"
@@ -265,36 +266,42 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 		return nil, err
 	}
 
-	info, err := os.ReadDir(dir)
-	if err != nil {
-		return nil, err
-	}
-
 	modules := []module{}
 
-	for _, file := range info {
-		if !file.IsDir() {
-			continue
+	err := filepath.WalkDir(dir, func(path string, file os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !file.IsDir() || path == dir {
+			return nil
+		}
+
+		if file.IsDir() && strings.HasPrefix(file.Name(), ".") {
+			return filepath.SkipDir
 		}
 
 		var cfg *print.Config
 
-		path := filepath.Join(dir, file.Name())
 		cfgfile := filepath.Join(path, r.config.File)
-
 		if _, err := os.Stat(cfgfile); !os.IsNotExist(err) {
 			v := viper.New()
 
 			if err = r.readConfig(v, cfgfile, path); err != nil {
-				return nil, err
+				return err
 			}
 
 			if cfg, err = r.mergeConfig(v); err != nil {
-				return nil, err
+				return err
 			}
 		}
 
 		modules = append(modules, module{rootDir: path, config: cfg})
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
 	}
 
 	return modules, nil
