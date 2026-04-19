@@ -16,6 +16,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	goversion "github.com/hashicorp/go-version"
@@ -277,7 +278,7 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 			return nil
 		}
 
-		if file.IsDir() && strings.HasPrefix(file.Name(), ".") {
+		if strings.HasPrefix(file.Name(), ".") || slices.Contains(r.config.Recursive.Exclude, file.Name()) {
 			return filepath.SkipDir
 		}
 

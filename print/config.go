@@ -73,9 +73,10 @@ func DefaultConfig() *Config {
 }
 
 type recursive struct {
-	Enabled     bool   `mapstructure:"enabled"`
-	Path        string `mapstructure:"path"`
-	IncludeMain bool   `mapstructure:"include-main"`
+	Enabled     bool     `mapstructure:"enabled"`
+	Path        string   `mapstructure:"path"`
+	IncludeMain bool     `mapstructure:"include-main"`
+	Exclude     []string `mapstructure:"exclude"`
 }
 
 func defaultRecursive() recursive {
@@ -83,6 +84,7 @@ func defaultRecursive() recursive {
 		Enabled:     false,
 		Path:        "modules",
 		IncludeMain: true,
+		Exclude:     []string{},
 	}
 }
 
