@@ -1,7 +1,7 @@
 ## Outputs
 
 | Name | Description | Value |
-|------|-------------|-------|
+| ---- | ----------- | ----- |
 | unquoted | It's unquoted output. | <pre>{<br/>  "leon": "cat"<br/>}</pre> |
 | output-2 | It's output number two. | <pre>[<br/>  "jack",<br/>  "lola"<br/>]</pre> |
 | output-1 | It's output number one. | `1` |

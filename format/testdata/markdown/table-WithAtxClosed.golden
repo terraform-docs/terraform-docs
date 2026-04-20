@@ -36,7 +36,7 @@ followed by another line of text.
 | Foo  | Foo description |
 | Bar  | Bar description |
 
-## Requirements
+## Requirements ##
 
 | Name | Version |
 | ---- | ------- |
@@ -45,7 +45,7 @@ followed by another line of text.
 | foo | >= 1.0 |
 | random | >= 2.2.0 |
 
-## Providers
+## Providers ##
 
 | Name | Version |
 | ---- | ------- |
@@ -55,7 +55,7 @@ followed by another line of text.
 | aws.ident | >= 2.15.0 |
 | null | n/a |
 
-## Modules
+## Modules ##
 
 | Name | Source | Version |
 | ---- | ------ | ------- |
@@ -64,7 +64,7 @@ followed by another line of text.
 | baz | baz | 4.5.6 |
 | foobar | git@github.com:module/path | v7.8.9 |
 
-## Resources
+## Resources ##
 
 | Name | Type |
 | ---- | ---- |
@@ -74,7 +74,7 @@ followed by another line of text.
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_caller_identity.ident](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 
-## Inputs
+## Inputs ##
 
 | Name | Description | Type | Default |
 | ---- | ----------- | ---- | ------- |
@@ -110,7 +110,7 @@ followed by another line of text.
 | list_default_empty | n/a | `list(string)` | `[]` |
 | object_default_empty | n/a | `object({})` | `{}` |
 
-## Outputs
+## Outputs ##
 
 | Name | Description |
 | ---- | ----------- |

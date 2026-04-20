@@ -32,14 +32,14 @@ Here is some trailing text after code block,
 followed by another line of text.
 
 | Name | Description     |
-|------|-----------------|
+| ---- | --------------- |
 | Foo  | Foo description |
 | Bar  | Bar description |
 
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.12 |
 | <a name="requirement_aws"></a> [aws](#requirement_aws) | >= 2.15.0 |
 | <a name="requirement_foo"></a> [foo](#requirement_foo) | >= 1.0 |
@@ -48,7 +48,7 @@ followed by another line of text.
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_tls"></a> [tls](#provider_tls) | n/a |
 | <a name="provider_foo"></a> [foo](#provider_foo) | >= 1.0 |
 | <a name="provider_aws"></a> [aws](#provider_aws) | >= 2.15.0 |
@@ -58,7 +58,7 @@ followed by another line of text.
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_bar"></a> [bar](#module_bar) | baz | 4.5.6 |
 | <a name="module_foo"></a> [foo](#module_foo) | bar | 1.2.3 |
 | <a name="module_baz"></a> [baz](#module_baz) | baz | 4.5.6 |
@@ -67,7 +67,7 @@ followed by another line of text.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | foo_resource.baz | resource |
 | [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
@@ -77,7 +77,7 @@ followed by another line of text.
 ## Inputs
 
 | Name | Description | Type | Default |
-|------|-------------|------|---------|
+| ---- | ----------- | ---- | ------- |
 | <a name="input_unquoted"></a> [unquoted](#input_unquoted) | n/a | `any` | n/a |
 | <a name="input_bool-3"></a> [bool-3](#input_bool-3) | n/a | `bool` | `true` |
 | <a name="input_bool-2"></a> [bool-2](#input_bool-2) | It's bool number two. | `bool` | `false` |
@@ -113,7 +113,7 @@ followed by another line of text.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_unquoted"></a> [unquoted](#output_unquoted) | It's unquoted output. |
 | <a name="output_output-2"></a> [output-2](#output_output-2) | It's output number two. |
 | <a name="output_output-1"></a> [output-1](#output_output-1) | It's output number one. |

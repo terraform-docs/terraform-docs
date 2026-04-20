@@ -1,7 +1,7 @@
 ## Inputs
 
 | Name | Description | Type | Default |
-|------|-------------|------|---------|
+| ---- | ----------- | ---- | ------- |
 | unquoted | n/a | `any` | n/a |
 | bool-3 | n/a | `bool` | `true` |
 | bool-2 | It's bool number two. | `bool` | `false` |

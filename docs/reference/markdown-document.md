@@ -26,6 +26,7 @@ terraform-docs markdown document [PATH] [flags]
 
 ```console
       --anchor                      create anchor links (default true)
+      --atx-closed                  close ATX style headers
   -c, --config string               config file name (default ".terraform-docs.yml")
       --default                     show Default column or section (default true)
       --escape                      escape special characters (default true)
@@ -98,7 +99,7 @@ generates the following output:
     followed by another line of text.
 
     | Name | Description     |
-    |------|-----------------|
+    | ---- | --------------- |
     | Foo  | Foo description |
     | Bar  | Bar description |
 

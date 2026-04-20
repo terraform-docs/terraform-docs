@@ -32,14 +32,14 @@ Here is some trailing text after code block,
 followed by another line of text.
 
 | Name | Description     |
-|------|-----------------|
+| ---- | --------------- |
 | Foo  | Foo description |
 | Bar  | Bar description |
 
 #### Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | terraform | >= 0.12 |
 | aws | >= 2.15.0 |
 | foo | >= 1.0 |
@@ -48,7 +48,7 @@ followed by another line of text.
 #### Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | tls | n/a |
 | foo | >= 1.0 |
 | aws | >= 2.15.0 |
@@ -58,7 +58,7 @@ followed by another line of text.
 #### Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | bar | baz | 4.5.6 |
 | foo | bar | 1.2.3 |
 | baz | baz | 4.5.6 |
@@ -67,7 +67,7 @@ followed by another line of text.
 #### Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | foo_resource.baz | resource |
 | [null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
@@ -77,7 +77,7 @@ followed by another line of text.
 #### Inputs
 
 | Name | Description | Type | Default |
-|------|-------------|------|---------|
+| ---- | ----------- | ---- | ------- |
 | unquoted | n/a | `any` | n/a |
 | bool-3 | n/a | `bool` | `true` |
 | bool-2 | It's bool number two. | `bool` | `false` |
@@ -113,7 +113,7 @@ followed by another line of text.
 #### Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | unquoted | It's unquoted output. |
 | output-2 | It's output number two. |
 | output-1 | It's output number one. |

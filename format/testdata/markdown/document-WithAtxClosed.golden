@@ -36,7 +36,7 @@ followed by another line of text.
 | Foo  | Foo description |
 | Bar  | Bar description |
 
-## Requirements
+## Requirements ##
 
 The following requirements are needed by this module:
 
@@ -48,7 +48,7 @@ The following requirements are needed by this module:
 
 - random (>= 2.2.0)
 
-## Providers
+## Providers ##
 
 The following providers are used by this module:
 
@@ -62,35 +62,35 @@ The following providers are used by this module:
 
 - null
 
-## Modules
+## Modules ##
 
 The following Modules are called:
 
-### bar
+### bar ###
 
 Source: baz
 
 Version: 4.5.6
 
-### foo
+### foo ###
 
 Source: bar
 
 Version: 1.2.3
 
-### baz
+### baz ###
 
 Source: baz
 
 Version: 4.5.6
 
-### foobar
+### foobar ###
 
 Source: git@github.com:module/path
 
 Version: v7.8.9
 
-## Resources
+## Resources ##
 
 The following resources are used by this module:
 
@@ -100,11 +100,11 @@ The following resources are used by this module:
 - [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)
 - [aws_caller_identity.ident](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)
 
-## Inputs
+## Inputs ##
 
 The following input variables are supported:
 
-### unquoted
+### unquoted ###
 
 Description: n/a
 
@@ -112,7 +112,7 @@ Type: `any`
 
 Default: n/a
 
-### bool-3
+### bool-3 ###
 
 Description: n/a
 
@@ -120,7 +120,7 @@ Type: `bool`
 
 Default: `true`
 
-### bool-2
+### bool-2 ###
 
 Description: It's bool number two.
 
@@ -128,7 +128,7 @@ Type: `bool`
 
 Default: `false`
 
-### bool-1
+### bool-1 ###
 
 Description: It's bool number one.
 
@@ -136,7 +136,7 @@ Type: `bool`
 
 Default: `true`
 
-### string-3
+### string-3 ###
 
 Description: n/a
 
@@ -144,7 +144,7 @@ Type: `string`
 
 Default: `""`
 
-### string-2
+### string-2 ###
 
 Description: It's string number two.
 
@@ -152,7 +152,7 @@ Type: `string`
 
 Default: n/a
 
-### string-1
+### string-1 ###
 
 Description: It's string number one.
 
@@ -160,7 +160,7 @@ Type: `string`
 
 Default: `"bar"`
 
-### string-special-chars
+### string-special-chars ###
 
 Description: n/a
 
@@ -168,7 +168,7 @@ Type: `string`
 
 Default: `"\\.<>[]{}_-"`
 
-### number-3
+### number-3 ###
 
 Description: n/a
 
@@ -176,7 +176,7 @@ Type: `number`
 
 Default: `"19"`
 
-### number-4
+### number-4 ###
 
 Description: n/a
 
@@ -184,7 +184,7 @@ Type: `number`
 
 Default: `15.75`
 
-### number-2
+### number-2 ###
 
 Description: It's number number two.
 
@@ -192,7 +192,7 @@ Type: `number`
 
 Default: n/a
 
-### number-1
+### number-1 ###
 
 Description: It's number number one.
 
@@ -200,7 +200,7 @@ Type: `number`
 
 Default: `42`
 
-### map-3
+### map-3 ###
 
 Description: n/a
 
@@ -208,7 +208,7 @@ Type: `map`
 
 Default: `{}`
 
-### map-2
+### map-2 ###
 
 Description: It's map number two.
 
@@ -216,7 +216,7 @@ Type: `map`
 
 Default: n/a
 
-### map-1
+### map-1 ###
 
 Description: It's map number one.
 
@@ -232,7 +232,7 @@ Default:
 }
 ```
 
-### list-3
+### list-3 ###
 
 Description: n/a
 
@@ -240,7 +240,7 @@ Type: `list`
 
 Default: `[]`
 
-### list-2
+### list-2 ###
 
 Description: It's list number two.
 
@@ -248,7 +248,7 @@ Type: `list`
 
 Default: n/a
 
-### list-1
+### list-1 ###
 
 Description: It's list number one.
 
@@ -264,7 +264,7 @@ Default:
 ]
 ```
 
-### input_with_underscores
+### input_with_underscores ###
 
 Description: A variable with underscores.
 
@@ -272,7 +272,7 @@ Type: `any`
 
 Default: n/a
 
-### input-with-pipe
+### input-with-pipe ###
 
 Description: It includes v1 | v2 | v3
 
@@ -280,7 +280,7 @@ Type: `string`
 
 Default: `"v1"`
 
-### input-with-code-block
+### input-with-code-block ###
 
 Description: This is a complicated one. We need a newline.  
 And an example in a code block
@@ -300,7 +300,7 @@ Default:
 ]
 ```
 
-### long_type
+### long_type ###
 
 Description: This description is itself markdown.
 
@@ -339,7 +339,7 @@ Default:
 }
 ```
 
-### no-escape-default-value
+### no-escape-default-value ###
 
 Description: The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'.
 
@@ -347,7 +347,7 @@ Type: `string`
 
 Default: `"VALUE_WITH_UNDERSCORE"`
 
-### with-url
+### with-url ###
 
 Description: The description contains url. https://www.domain.com/foo/bar_baz.html
 
@@ -355,7 +355,7 @@ Type: `string`
 
 Default: `""`
 
-### string_default_empty
+### string_default_empty ###
 
 Description: n/a
 
@@ -363,7 +363,7 @@ Type: `string`
 
 Default: `""`
 
-### string_default_null
+### string_default_null ###
 
 Description: n/a
 
@@ -371,7 +371,7 @@ Type: `string`
 
 Default: `null`
 
-### string_no_default
+### string_no_default ###
 
 Description: n/a
 
@@ -379,7 +379,7 @@ Type: `string`
 
 Default: n/a
 
-### number_default_zero
+### number_default_zero ###
 
 Description: n/a
 
@@ -387,7 +387,7 @@ Type: `number`
 
 Default: `0`
 
-### bool_default_false
+### bool_default_false ###
 
 Description: n/a
 
@@ -395,7 +395,7 @@ Type: `bool`
 
 Default: `false`
 
-### list_default_empty
+### list_default_empty ###
 
 Description: n/a
 
@@ -403,7 +403,7 @@ Type: `list(string)`
 
 Default: `[]`
 
-### object_default_empty
+### object_default_empty ###
 
 Description: n/a
 
@@ -411,23 +411,23 @@ Type: `object({})`
 
 Default: `{}`
 
-## Outputs
+## Outputs ##
 
 The following outputs are exported:
 
-### unquoted
+### unquoted ###
 
 Description: It's unquoted output.
 
-### output-2
+### output-2 ###
 
 Description: It's output number two.
 
-### output-1
+### output-1 ###
 
 Description: It's output number one.
 
-### output-0.12
+### output-0.12 ###
 
 Description: terraform 0.12 only
 
