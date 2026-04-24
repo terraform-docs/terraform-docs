@@ -866,6 +866,93 @@ func TestLoadResources(t *testing.T) {
 	}
 }
 
+func TestLoadProvidersDeterministic(t *testing.T) {
+	tests := []struct {
+		name        string
+		path        string
+		sortenabled bool
+		expected    []string
+	}{
+		{
+			name:        "position sort is deterministic when a provider has multiple resources",
+			path:        "multi-provider-resources",
+			sortenabled: false,
+			expected:    []string{"aws", "tls"},
+		},
+		{
+			name:        "name sort is deterministic when a provider has multiple resources",
+			path:        "multi-provider-resources",
+			sortenabled: true,
+			expected:    []string{"aws", "tls"},
+		},
+		{
+			name:        "position sort preserves file order when providers appear in non-alphabetical order",
+			path:        "providers-non-alpha-order",
+			sortenabled: false,
+			expected:    []string{"tls", "aws"},
+		},
+		{
+			name:        "name sort returns alphabetical order regardless of file order",
+			path:        "providers-non-alpha-order",
+			sortenabled: true,
+			expected:    []string{"aws", "tls"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			config := print.NewConfig()
+			module, err := loadModule(filepath.Join("testdata", tt.path))
+			assert.Nil(err)
+
+			for i := 0; i < 100; i++ {
+				pp := loadProviders(module, config)
+				providers(pp).sort(tt.sortenabled, "")
+
+				actual := make([]string, len(pp))
+				for j, p := range pp {
+					actual[j] = p.FullName()
+				}
+				assert.Equal(tt.expected, actual, "iteration %d", i)
+			}
+		})
+	}
+}
+
+func TestLoadResourcesDeterministic(t *testing.T) {
+	tests := []struct {
+		name     string
+		path     string
+		expected []string
+	}{
+		{
+			name:     "resource order is deterministic when multiple resources share a provider",
+			path:     "multi-provider-resources",
+			expected: []string{"aws_instance.second", "aws_s3_bucket.first", "tls_private_key.key"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			config := print.NewConfig()
+			module, err := loadModule(filepath.Join("testdata", tt.path))
+			assert.Nil(err)
+
+			for i := 0; i < 100; i++ {
+				rr := loadResources(module, config)
+
+				actual := make([]string, len(rr))
+				for j, r := range rr {
+					actual[j] = r.Spec()
+				}
+				assert.Equal(tt.expected, actual, "iteration %d", i)
+			}
+		})
+	}
+}
+
 func TestLoadComments(t *testing.T) {
 	tests := []struct {
 		name       string

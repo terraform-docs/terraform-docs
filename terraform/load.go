@@ -402,7 +402,12 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 			}
 
 			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
-			if _, ok := discovered[key]; ok {
+			if existing, ok := discovered[key]; ok {
+				// keep the earliest position across all resources of this provider
+				if r.Pos.Filename < existing.Position.Filename ||
+					(r.Pos.Filename == existing.Position.Filename && r.Pos.Line < existing.Position.Line) {
+					existing.Position = Position{Filename: r.Pos.Filename, Line: r.Pos.Line}
+				}
 				continue
 			}
 
@@ -418,9 +423,15 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 		}
 	}
 
+	keys := make([]string, 0, len(discovered))
+	for key := range discovered {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
 	providers := make([]*Provider, 0, len(discovered))
-	for _, provider := range discovered {
-		providers = append(providers, provider)
+	for _, key := range keys {
+		providers = append(providers, discovered[key])
 	}
 
 	return providers
@@ -502,9 +513,15 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 		}
 	}
 
+	resourceKeys := make([]string, 0, len(discovered))
+	for key := range discovered {
+		resourceKeys = append(resourceKeys, key)
+	}
+	sort.Strings(resourceKeys)
+
 	resources := make([]*Resource, 0, len(discovered))
-	for _, resource := range discovered {
-		resources = append(resources, resource)
+	for _, key := range resourceKeys {
+		resources = append(resources, discovered[key])
 	}
 	return resources
 }
