@@ -63,6 +63,7 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Recursive.Enabled, "recursive", false, "update submodules recursively (default false)")
 	cmd.PersistentFlags().StringVar(&config.Recursive.Path, "recursive-path", "modules", "submodules path to recursively update")
 	cmd.PersistentFlags().BoolVar(&config.Recursive.IncludeMain, "recursive-include-main", true, "include the main module")
+	cmd.PersistentFlags().StringSliceVar(&config.Recursive.Exclude, "recursive-exclude", []string{}, "exclude directories from recursive update")
 
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Show, "show", []string{}, "show section ["+print.AllSections+"]")
 	cmd.PersistentFlags().StringSliceVar(&config.Sections.Hide, "hide", []string{}, "hide section ["+print.AllSections+"]")
