@@ -31,6 +31,7 @@ terraform-docs xml [PATH] [flags]
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-check                check if content of output file is up to date (default false)
+      --output-crlf                 Whether to enable CRLF line endings
       --output-file string          file path to insert output into (default "")
       --output-mode string          output to file method [inject, replace] (default "inject")
       --output-template string      output template (default "<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->")
