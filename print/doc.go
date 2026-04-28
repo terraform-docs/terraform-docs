@@ -43,6 +43,7 @@ the root directory of this source tree.
 // • `{{ .Modules }}`
 // • `{{ .Outputs }}`
 // • `{{ .Providers }}`
+// • `{{ .Module.ProviderFunctions }}`
 // • `{{ .Requirements }}`
 // • `{{ .Resources }}`
 // • `{{ include "path/fo/file" }}`

@@ -97,15 +97,16 @@ func (r *recursive) validate() error {
 
 const (
 	sectionAll          = "all"
-	sectionDataSources  = "data-sources"
-	sectionFooter       = "footer"
-	sectionHeader       = "header"
-	sectionInputs       = "inputs"
-	sectionModules      = "modules"
-	sectionOutputs      = "outputs"
-	sectionProviders    = "providers"
-	sectionRequirements = "requirements"
-	sectionResources    = "resources"
+	sectionDataSources      = "data-sources"
+	sectionFooter           = "footer"
+	sectionHeader           = "header"
+	sectionInputs           = "inputs"
+	sectionModules          = "modules"
+	sectionOutputs          = "outputs"
+	sectionProviders        = "providers"
+	sectionProviderFunctions = "provider-functions"
+	sectionRequirements     = "requirements"
+	sectionResources        = "resources"
 )
 
 var allSections = []string{
@@ -117,6 +118,7 @@ var allSections = []string{
 	sectionModules,
 	sectionOutputs,
 	sectionProviders,
+	sectionProviderFunctions,
 	sectionRequirements,
 	sectionResources,
 }
@@ -128,15 +130,16 @@ type sections struct {
 	Show []string `mapstructure:"show"`
 	Hide []string `mapstructure:"hide"`
 
-	DataSources  bool
-	Header       bool
-	Footer       bool
-	Inputs       bool
-	ModuleCalls  bool
-	Outputs      bool
-	Providers    bool
-	Requirements bool
-	Resources    bool
+	DataSources       bool
+	Header            bool
+	Footer            bool
+	Inputs            bool
+	ModuleCalls       bool
+	Outputs           bool
+	Providers         bool
+	ProviderFunctions bool
+	Requirements      bool
+	Resources         bool
 }
 
 func defaultSections() sections {
@@ -144,15 +147,16 @@ func defaultSections() sections {
 		Show: []string{},
 		Hide: []string{},
 
-		DataSources:  true,
-		Header:       true,
-		Footer:       false,
-		Inputs:       true,
-		ModuleCalls:  true,
-		Outputs:      true,
-		Providers:    true,
-		Requirements: true,
-		Resources:    true,
+		DataSources:       true,
+		Header:            true,
+		Footer:            false,
+		Inputs:            true,
+		ModuleCalls:       true,
+		Outputs:           true,
+		Providers:         true,
+		ProviderFunctions: true,
+		Requirements:      true,
+		Resources:         true,
 	}
 }
 
@@ -431,6 +435,7 @@ func (c *Config) Parse() {
 	c.Sections.ModuleCalls = c.Sections.visibility("modules")
 	c.Sections.Outputs = c.Sections.visibility("outputs")
 	c.Sections.Providers = c.Sections.visibility("providers")
+	c.Sections.ProviderFunctions = c.Sections.visibility("provider-functions")
 	c.Sections.Requirements = c.Sections.visibility("requirements")
 	c.Sections.Resources = c.Sections.visibility("resources")
 

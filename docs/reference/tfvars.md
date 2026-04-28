@@ -24,7 +24,7 @@ Generate terraform.tfvars of inputs.
   -c, --config string               config file name (default ".terraform-docs.yml")
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
-      --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, provider-functions, requirements, resources]
       --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-check                check if content of output file is up to date (default false)
       --output-file string          file path to insert output into (default "")
@@ -36,7 +36,7 @@ Generate terraform.tfvars of inputs.
       --recursive                   update submodules recursively (default false)
       --recursive-include-main      include the main module (default true)
       --recursive-path string       submodules path to recursively update (default "modules")
-      --show strings                show section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --show strings                show section [all, data-sources, footer, header, inputs, modules, outputs, providers, provider-functions, requirements, resources]
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
 ```
