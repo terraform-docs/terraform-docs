@@ -32,7 +32,7 @@ terraform-docs markdown document [PATH] [flags]
       --escape                      escape special characters (default true)
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
-      --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, provider-functions, requirements, resources]
       --hide-empty                  hide empty sections (default false)
       --html                        use HTML tags in genereted output (default true)
       --indent int                  indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
@@ -49,7 +49,7 @@ terraform-docs markdown document [PATH] [flags]
       --recursive-path string       submodules path to recursively update (default "modules")
       --required                    show Required column or section (default true)
       --sensitive                   show Sensitive column or section (default true)
-      --show strings                show section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
+      --show strings                show section [all, data-sources, footer, header, inputs, modules, outputs, providers, provider-functions, requirements, resources]
       --sort                        sort items (default true)
       --sort-by string              sort items by criteria [name, required, type] (default "name")
       --type                        show Type column or section (default true)
