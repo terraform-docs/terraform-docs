@@ -84,8 +84,12 @@ Check [`output`] configuration for more details and examples.
 
 ### Using docker
 
+> **Note:** terraform-docs container images are published on Quay  
+> (`quay.io/terraform-docs/terraform-docs`). Docker Hub is not used.
+
 terraform-docs can be run as a container by mounting a directory with `.tf`
 files in it and run the following command:
+
 
 ```bash
 docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.22.0 markdown /terraform-docs
