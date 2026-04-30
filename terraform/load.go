@@ -22,7 +22,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/hashicorp/hcl/v2"
+	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/hashicorp/hcl/v2/hclsimple"
+	"github.com/hashicorp/hcl/v2/hclsyntax"
 
 	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
 	"github.com/terraform-docs/terraform-docs/internal/reader"
@@ -49,9 +52,96 @@ func LoadWithOptions(config *print.Config) (*Module, error) {
 func loadModule(path string) (*tfconfig.Module, error) {
 	module, diag := tfconfig.LoadModule(path)
 	if diag != nil && diag.HasErrors() {
-		return nil, diag
+		// Filter out "Invalid provider reference" errors which can happen with OpenTofu 'for_each' in providers
+		var filteredDiags tfconfig.Diagnostics
+		for i := range diag {
+			if diag[i].Severity == tfconfig.DiagError && (diag[i].Summary == "Invalid provider reference" || strings.Contains(diag[i].Detail, "Provider argument requires a provider name followed by an optional alias")) {
+				continue
+			}
+			filteredDiags = append(filteredDiags, diag[i])
+		}
+		if filteredDiags.HasErrors() {
+			return nil, filteredDiags
+		}
+	}
+	if err := fixOpenTofuProviders(module); err != nil {
+		return nil, err
 	}
 	return module, nil
+}
+
+func fixOpenTofuProviders(module *tfconfig.Module) error {
+	resources := []map[string]*tfconfig.Resource{module.ManagedResources, module.DataResources}
+	parser := hclparse.NewParser()
+
+	// cache parsed files to avoid re-reading/re-parsing
+	files := make(map[string]*hcl.File)
+
+	for _, resourceMap := range resources {
+		for _, r := range resourceMap {
+			// Check if provider is missing or default (empty name/alias issues)
+			// If r.Provider.Name is empty, it's definitely broken (since resourceTypeDefaultProviderName always returns something).
+			if r.Provider.Name != "" {
+				continue
+			}
+			f, err := getParsedFile(parser, r.Pos.Filename, files)
+			if err != nil {
+				return err
+			}
+			if f == nil {
+				continue
+			}
+			if name, alias, ok := findProviderInFile(f, r.Pos.Line); ok {
+				r.Provider.Name = name
+				r.Provider.Alias = alias
+			}
+		}
+	}
+	return nil
+}
+
+func getParsedFile(parser *hclparse.Parser, filename string, files map[string]*hcl.File) (*hcl.File, error) {
+	if f, ok := files[filename]; ok {
+		return f, nil
+	}
+	b, err := os.ReadFile(filepath.Clean(filename))
+	if err != nil {
+		return nil, err
+	}
+	f, _ := parser.ParseHCL(b, filename)
+	files[filename] = f
+	return f, nil
+}
+
+func findProviderInFile(f *hcl.File, line int) (string, string, bool) {
+	for _, b := range f.Body.(*hclsyntax.Body).Blocks {
+		if b.DefRange().Start.Line != line {
+			continue
+		}
+		attr, ok := b.Body.Attributes["provider"]
+		if !ok {
+			return "", "", false
+		}
+		expr := attr.Expr
+		if idxExpr, ok := expr.(*hclsyntax.IndexExpr); ok {
+			expr = idxExpr.Collection
+		}
+
+		// Try to get traversal
+		traversal, diags := hcl.AbsTraversalForExpr(expr)
+		if diags.HasErrors() || len(traversal) == 0 {
+			return "", "", false
+		}
+		providerName := traversal.RootName()
+		alias := ""
+		if len(traversal) > 1 {
+			if getAttr, ok := traversal[1].(hcl.TraverseAttr); ok {
+				alias = getAttr.Name
+			}
+		}
+		return providerName, alias, true
+	}
+	return "", "", false
 }
 
 func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, error) {
