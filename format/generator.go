@@ -217,6 +217,13 @@ func (g *generator) Render(tpl string) (string, error) {
 			}
 			return strings.TrimSuffix(string(content), "\n")
 		},
+		"include_optional": func(s string, fb string) string {
+			content, err := os.ReadFile(filepath.Join(g.path, filepath.Clean(s)))
+			if err != nil {
+				return fb
+			}
+			return strings.TrimSuffix(string(content), "\n")
+		},
 	})
 
 	data := struct {
