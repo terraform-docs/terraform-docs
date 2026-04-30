@@ -25,6 +25,10 @@
                         Default: {{ default "n/a" .GetValue | value }}
                     {{- end }}
                 {{- end }}
+                
+                {{ if $.Config.Settings.Sensitive }}
+                    Sensitive: {{ ternary .Sensitive "yes" "no" | type }}
+                {{- end }}
             {{- end }}
         {{- end }}
         {{- if not .Module.OptionalInputs -}}
@@ -51,6 +55,9 @@
                     {{ if or .HasDefault (not isRequired) }}
                         Default: {{ default "n/a" .GetValue | value }}
                     {{- end }}
+                {{- end }}
+                {{ if $.Config.Settings.Sensitive }}
+                    Sensitive: {{ ternary .Sensitive "yes" "no" | type }}
                 {{- end }}
             {{- end }}
         {{ end }}

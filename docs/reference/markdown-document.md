@@ -177,11 +177,15 @@ generates the following output:
 
     Type: `any`
 
+    Sensitive: `no`
+
     ### <a name="input_list-2"></a> [list-2](#input\_list-2)
 
     Description: It's list number two.
 
     Type: `list`
+
+    Sensitive: `no`
 
     ### <a name="input_map-2"></a> [map-2](#input\_map-2)
 
@@ -189,11 +193,15 @@ generates the following output:
 
     Type: `map`
 
+    Sensitive: `no`
+
     ### <a name="input_number-2"></a> [number-2](#input\_number-2)
 
     Description: It's number number two.
 
     Type: `number`
+
+    Sensitive: `no`
 
     ### <a name="input_string-2"></a> [string-2](#input\_string-2)
 
@@ -201,11 +209,15 @@ generates the following output:
 
     Type: `string`
 
+    Sensitive: `no`
+
     ### <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default)
 
     Description: n/a
 
     Type: `string`
+
+    Sensitive: `no`
 
     ### <a name="input_unquoted"></a> [unquoted](#input\_unquoted)
 
@@ -213,6 +225,7 @@ generates the following output:
 
     Type: `any`
 
+    Sensitive: `no`
     ## Optional Inputs
 
     The following input variables are optional (have default values):
@@ -225,6 +238,8 @@ generates the following output:
 
     Default: `true`
 
+    Sensitive: `no`
+
     ### <a name="input_bool-2"></a> [bool-2](#input\_bool-2)
 
     Description: It's bool number two.
@@ -232,6 +247,8 @@ generates the following output:
     Type: `bool`
 
     Default: `false`
+
+    Sensitive: `no`
 
     ### <a name="input_bool-3"></a> [bool-3](#input\_bool-3)
 
@@ -241,6 +258,8 @@ generates the following output:
 
     Default: `true`
 
+    Sensitive: `no`
+
     ### <a name="input_bool_default_false"></a> [bool\_default\_false](#input\_bool\_default\_false)
 
     Description: n/a
@@ -248,6 +267,8 @@ generates the following output:
     Type: `bool`
 
     Default: `false`
+
+    Sensitive: `no`
 
     ### <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block)
 
@@ -269,6 +290,8 @@ generates the following output:
     ]
     ```
 
+    Sensitive: `no`
+
     ### <a name="input_input-with-pipe"></a> [input-with-pipe](#input\_input-with-pipe)
 
     Description: It includes v1 | v2 | v3
@@ -276,6 +299,8 @@ generates the following output:
     Type: `string`
 
     Default: `"v1"`
+
+    Sensitive: `no`
 
     ### <a name="input_list-1"></a> [list-1](#input\_list-1)
 
@@ -293,6 +318,8 @@ generates the following output:
     ]
     ```
 
+    Sensitive: `no`
+
     ### <a name="input_list-3"></a> [list-3](#input\_list-3)
 
     Description: n/a
@@ -301,6 +328,8 @@ generates the following output:
 
     Default: `[]`
 
+    Sensitive: `no`
+
     ### <a name="input_list_default_empty"></a> [list\_default\_empty](#input\_list\_default\_empty)
 
     Description: n/a
@@ -308,6 +337,8 @@ generates the following output:
     Type: `list(string)`
 
     Default: `[]`
+
+    Sensitive: `no`
 
     ### <a name="input_long_type"></a> [long\_type](#input\_long\_type)
 
@@ -348,6 +379,8 @@ generates the following output:
     }
     ```
 
+    Sensitive: `no`
+
     ### <a name="input_map-1"></a> [map-1](#input\_map-1)
 
     Description: It's map number one.
@@ -364,6 +397,8 @@ generates the following output:
     }
     ```
 
+    Sensitive: `no`
+
     ### <a name="input_map-3"></a> [map-3](#input\_map-3)
 
     Description: n/a
@@ -371,6 +406,8 @@ generates the following output:
     Type: `map`
 
     Default: `{}`
+
+    Sensitive: `no`
 
     ### <a name="input_no-escape-default-value"></a> [no-escape-default-value](#input\_no-escape-default-value)
 
@@ -380,6 +417,8 @@ generates the following output:
 
     Default: `"VALUE_WITH_UNDERSCORE"`
 
+    Sensitive: `no`
+
     ### <a name="input_number-1"></a> [number-1](#input\_number-1)
 
     Description: It's number number one.
@@ -387,6 +426,8 @@ generates the following output:
     Type: `number`
 
     Default: `42`
+
+    Sensitive: `no`
 
     ### <a name="input_number-3"></a> [number-3](#input\_number-3)
 
@@ -396,6 +437,8 @@ generates the following output:
 
     Default: `"19"`
 
+    Sensitive: `no`
+
     ### <a name="input_number-4"></a> [number-4](#input\_number-4)
 
     Description: n/a
@@ -403,6 +446,8 @@ generates the following output:
     Type: `number`
 
     Default: `15.75`
+
+    Sensitive: `no`
 
     ### <a name="input_number_default_zero"></a> [number\_default\_zero](#input\_number\_default\_zero)
 
@@ -412,6 +457,8 @@ generates the following output:
 
     Default: `0`
 
+    Sensitive: `no`
+
     ### <a name="input_object_default_empty"></a> [object\_default\_empty](#input\_object\_default\_empty)
 
     Description: n/a
@@ -419,6 +466,8 @@ generates the following output:
     Type: `object({})`
 
     Default: `{}`
+
+    Sensitive: `no`
 
     ### <a name="input_string-1"></a> [string-1](#input\_string-1)
 
@@ -428,6 +477,8 @@ generates the following output:
 
     Default: `"bar"`
 
+    Sensitive: `no`
+
     ### <a name="input_string-3"></a> [string-3](#input\_string-3)
 
     Description: n/a
@@ -435,6 +486,8 @@ generates the following output:
     Type: `string`
 
     Default: `""`
+
+    Sensitive: `no`
 
     ### <a name="input_string-special-chars"></a> [string-special-chars](#input\_string-special-chars)
 
@@ -444,6 +497,8 @@ generates the following output:
 
     Default: `"\\.<>[]{}_-"`
 
+    Sensitive: `no`
+
     ### <a name="input_string_default_empty"></a> [string\_default\_empty](#input\_string\_default\_empty)
 
     Description: n/a
@@ -451,6 +506,8 @@ generates the following output:
     Type: `string`
 
     Default: `""`
+
+    Sensitive: `no`
 
     ### <a name="input_string_default_null"></a> [string\_default\_null](#input\_string\_default\_null)
 
@@ -460,6 +517,8 @@ generates the following output:
 
     Default: `null`
 
+    Sensitive: `no`
+
     ### <a name="input_with-url"></a> [with-url](#input\_with-url)
 
     Description: The description contains url. https://www.domain.com/foo/bar_baz.html
@@ -467,6 +526,8 @@ generates the following output:
     Type: `string`
 
     Default: `""`
+
+    Sensitive: `no`
 
     ## Outputs
 
