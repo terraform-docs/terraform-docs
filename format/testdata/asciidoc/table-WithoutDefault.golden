@@ -118,7 +118,7 @@ object({
 |`string`
 
 |with-url
-|The description contains url. https://www.domain.com/foo/bar_baz.html
+|The description contains url. <https://www.domain.com/foo/bar_baz.html>
 |`string`
 
 |string_default_empty
