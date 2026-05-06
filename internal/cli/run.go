@@ -285,19 +285,9 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 			return filepath.SkipDir
 		}
 
-		var cfg *print.Config
-
-		cfgfile := filepath.Join(path, r.config.File)
-		if _, err := os.Stat(cfgfile); !os.IsNotExist(err) {
-			v := viper.New()
-
-			if err = r.readConfig(v, cfgfile, path); err != nil {
-				return err
-			}
-
-			if cfg, err = r.mergeConfig(v); err != nil {
-				return err
-			}
+		cfg, err := r.loadModuleConfig(path)
+		if err != nil {
+			return err
 		}
 
 		modules = append(modules, module{rootDir: path, config: cfg})
@@ -309,6 +299,25 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 	}
 
 	return modules, nil
+}
+
+// loadModuleConfig attempts to load a module configuration from the given directory path.
+func (r *Runtime) loadModuleConfig(path string) (*print.Config, error) {
+	var cfg *print.Config
+
+	cfgfile := filepath.Join(path, r.config.File)
+	if _, err := os.Stat(cfgfile); !os.IsNotExist(err) {
+		v := viper.New()
+
+		if err = r.readConfig(v, cfgfile, path); err != nil {
+			return nil, err
+		}
+
+		if cfg, err = r.mergeConfig(v); err != nil {
+			return nil, err
+		}
+	}
+	return cfg, nil
 }
 
 // checkConstraint validates if current version of terraform-docs being executed
