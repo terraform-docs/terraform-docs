@@ -285,21 +285,15 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 			return filepath.SkipDir
 		}
 
-		hasTerraformFiles, err := containsTerraformFiles(path)
+		module, err := r.loadSubModule(path)
 		if err != nil {
 			return err
 		}
 
-		if !hasTerraformFiles {
-			return nil
+		if module != nil {
+			modules = append(modules, *module)
 		}
 
-		cfg, err := r.loadModuleConfig(path)
-		if err != nil {
-			return err
-		}
-
-		modules = append(modules, module{rootDir: path, config: cfg})
 		return nil
 	})
 
@@ -308,6 +302,25 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 	}
 
 	return modules, nil
+}
+
+// loadSubModule attempts to load a submodule from the given directory path.
+func (r *Runtime) loadSubModule(path string) (*module, error) {
+	hasTerraformFiles, err := containsTerraformFiles(path)
+	if err != nil {
+		return nil, err
+	}
+
+	if !hasTerraformFiles {
+		return nil, nil
+	}
+
+	cfg, err := r.loadModuleConfig(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return &module{rootDir: path, config: cfg}, nil
 }
 
 // loadModuleConfig attempts to load a module configuration from the given directory path.
