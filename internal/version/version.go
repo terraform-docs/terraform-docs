@@ -17,7 +17,7 @@ import (
 
 // current version
 const (
-	coreVersion = "0.23.0"
+	coreVersion = "0.24.0"
 	prerelease  = ""
 )
 
