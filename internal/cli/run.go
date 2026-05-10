@@ -285,12 +285,15 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 			return filepath.SkipDir
 		}
 
-		cfg, err := r.loadModuleConfig(path)
+		module, err := r.loadSubModule(path)
 		if err != nil {
 			return err
 		}
 
-		modules = append(modules, module{rootDir: path, config: cfg})
+		if module != nil {
+			modules = append(modules, *module)
+		}
+
 		return nil
 	})
 
@@ -299,6 +302,46 @@ func (r *Runtime) findSubmodules() ([]module, error) {
 	}
 
 	return modules, nil
+}
+
+// loadSubModule attempts to load a submodule from the given directory path.
+func (r *Runtime) loadSubModule(path string) (*module, error) {
+	hasTerraformFiles, err := containsTerraformFiles(path)
+	if err != nil {
+		return nil, err
+	}
+
+	if !hasTerraformFiles {
+		return nil, nil
+	}
+
+	cfg, err := r.loadModuleConfig(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return &module{rootDir: path, config: cfg}, nil
+}
+
+// containsTerraformFiles reports whether a directory contains Terraform files.
+func containsTerraformFiles(path string) (bool, error) {
+	files, err := os.ReadDir(path)
+	if err != nil {
+		return false, err
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+
+		name := file.Name()
+		if strings.HasSuffix(name, ".tf") || strings.HasSuffix(name, ".tf.json") {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }
 
 // loadModuleConfig attempts to load a module configuration from the given directory path.
