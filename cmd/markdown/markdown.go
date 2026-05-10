@@ -36,7 +36,7 @@ func NewCommand(runtime *cli.Runtime, config *print.Config) *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Settings.AtxClosed, "atx-closed", false, "close ATX style headers")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Default, "default", true, "show Default column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Escape, "escape", true, "escape special characters")
-	cmd.PersistentFlags().BoolVar(&config.Settings.HTML, "html", true, "use HTML tags in genereted output")
+	cmd.PersistentFlags().BoolVar(&config.Settings.HTML, "html", true, "use HTML tags in generated output")
 	cmd.PersistentFlags().BoolVar(&config.Settings.HideEmpty, "hide-empty", false, "hide empty sections (default false)")
 	cmd.PersistentFlags().IntVar(&config.Settings.Indent, "indent", 2, "indention level of Markdown sections [1, 2, 3, 4, 5]")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Required, "required", true, "show Required column or section")
