@@ -323,6 +323,27 @@ func (r *Runtime) loadSubModule(path string) (*module, error) {
 	return &module{rootDir: path, config: cfg}, nil
 }
 
+// containsTerraformFiles reports whether a directory contains Terraform files.
+func containsTerraformFiles(path string) (bool, error) {
+	files, err := os.ReadDir(path)
+	if err != nil {
+		return false, err
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+
+		name := file.Name()
+		if strings.HasSuffix(name, ".tf") || strings.HasSuffix(name, ".tf.json") {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
 // loadModuleConfig attempts to load a module configuration from the given directory path.
 func (r *Runtime) loadModuleConfig(path string) (*print.Config, error) {
 	var cfg *print.Config
@@ -361,27 +382,6 @@ func checkConstraint(versionRange string, currentVersion string) error {
 	}
 
 	return nil
-}
-
-// containsTerraformFiles reports whether a directory contains Terraform files.
-func containsTerraformFiles(path string) (bool, error) {
-	files, err := os.ReadDir(path)
-	if err != nil {
-		return false, err
-	}
-
-	for _, file := range files {
-		if file.IsDir() {
-			continue
-		}
-
-		name := file.Name()
-		if strings.HasSuffix(name, ".tf") || strings.HasSuffix(name, ".tf.json") {
-			return true, nil
-		}
-	}
-
-	return false, nil
 }
 
 // generateContent extracts print.Settings and terraform.Options from normalized
