@@ -349,7 +349,7 @@ Default: `"VALUE_WITH_UNDERSCORE"`
 
 ### <a name="input_with-url"></a> [with-url](#input_with-url)
 
-Description: The description contains url. https://www.domain.com/foo/bar_baz.html
+Description: The description contains url. <https://www.domain.com/foo/bar_baz.html>
 
 Type: `string`
 
