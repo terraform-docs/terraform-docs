@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -22,6 +23,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/hashicorp/hcl/v2/hclparse"
+	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
 	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
@@ -72,18 +75,20 @@ func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, 
 		return nil, err
 	}
 	providers := loadProviders(tfmodule, config)
+	providerFunctions := loadProviderFunctions(tfmodule, config)
 	requirements := loadRequirements(tfmodule)
 	resources := loadResources(tfmodule, config)
 
 	return &Module{
-		Header:       header,
-		Footer:       footer,
-		Inputs:       inputs,
-		ModuleCalls:  modulecalls,
-		Outputs:      outputs,
-		Providers:    providers,
-		Requirements: requirements,
-		Resources:    resources,
+		Header:           header,
+		Footer:           footer,
+		Inputs:           inputs,
+		ModuleCalls:      modulecalls,
+		Outputs:          outputs,
+		Providers:        providers,
+		ProviderFunctions: providerFunctions,
+		Requirements:     requirements,
+		Resources:        resources,
 
 		RequiredInputs: required,
 		OptionalInputs: optional,
@@ -437,6 +442,157 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 	return providers
 }
 
+func loadProviderFunctions(tfmodule *tfconfig.Module, config *print.Config) []*ProviderFunction {
+	providerVersions := make(map[string]string)
+	providerSources := make(map[string]string)
+	for name, provider := range tfmodule.RequiredProviders {
+		if len(provider.VersionConstraints) > 0 {
+			providerVersions[name] = strings.Join(provider.VersionConstraints, " ")
+		}
+		if len(provider.Source) > 0 {
+			providerSources[name] = provider.Source
+		} else {
+			providerSources[name] = fmt.Sprintf("%s/%s", "hashicorp", name)
+		}
+	}
+
+	discovered := make(map[string]*ProviderFunction)
+	parser := hclparse.NewParser()
+
+	filepath.WalkDir(config.ModuleRoot, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return nil
+		}
+		if d.IsDir() {
+			if strings.HasPrefix(d.Name(), ".") {
+				return fs.SkipDir
+			}
+			return nil
+		}
+		if filepath.Ext(path) != ".tf" {
+			return nil
+		}
+
+		file, diags := parser.ParseHCLFile(path)
+		if diags.HasErrors() {
+			return nil
+		}
+
+		body, ok := file.Body.(*hclsyntax.Body)
+		if !ok {
+			return nil
+		}
+
+		collectProviderFunctions(body, path, discovered, providerVersions, providerSources)
+		return nil
+	})
+
+	keys := make([]string, 0, len(discovered))
+	for key := range discovered {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	providerFunctions := make([]*ProviderFunction, 0, len(discovered))
+	for _, key := range keys {
+		providerFunctions = append(providerFunctions, discovered[key])
+	}
+
+	return providerFunctions
+}
+
+func collectProviderFunctions(body *hclsyntax.Body, filename string, discovered map[string]*ProviderFunction, versions map[string]string, sources map[string]string) {
+	for _, attr := range body.Attributes {
+		collectProviderFunctionsFromExpr(attr.Expr, filename, discovered, versions, sources)
+	}
+
+	for _, block := range body.Blocks {
+		collectProviderFunctions(block.Body, filename, discovered, versions, sources)
+	}
+}
+
+func collectProviderFunctionsFromExpr(expr hclsyntax.Expression, filename string, discovered map[string]*ProviderFunction, versions map[string]string, sources map[string]string) {
+	switch t := expr.(type) {
+	case *hclsyntax.FunctionCallExpr:
+		if strings.HasPrefix(t.Name, "provider::") {
+			parts := strings.SplitN(t.Name, "::", 3)
+			if len(parts) == 3 {
+				providerName := parts[1]
+				functionName := parts[2]
+				key := fmt.Sprintf("%s.%s", providerName, functionName)
+				if _, ok := discovered[key]; !ok {
+					version := types.String(versions[providerName])
+					source := sources[providerName]
+					if len(source) == 0 {
+						source = fmt.Sprintf("%s/%s", "hashicorp", providerName)
+					}
+					discovered[key] = &ProviderFunction{
+						ProviderName:   providerName,
+						Function:       functionName,
+						ProviderSource: source,
+						Version:        version,
+						Position: Position{
+							Filename: filename,
+							Line:     t.Range().Start.Line,
+						},
+					}
+				}
+			}
+		}
+		for _, arg := range t.Args {
+			collectProviderFunctionsFromExpr(arg, filename, discovered, versions, sources)
+		}
+	case *hclsyntax.TemplateExpr:
+		for _, part := range t.Parts {
+			collectProviderFunctionsFromExpr(part, filename, discovered, versions, sources)
+		}
+	case *hclsyntax.TemplateWrapExpr:
+		collectProviderFunctionsFromExpr(t.Wrapped, filename, discovered, versions, sources)
+	case *hclsyntax.TupleConsExpr:
+		for _, expr := range t.Exprs {
+			collectProviderFunctionsFromExpr(expr, filename, discovered, versions, sources)
+		}
+	case *hclsyntax.ObjectConsExpr:
+		for _, item := range t.Items {
+			collectProviderFunctionsFromExpr(item.KeyExpr, filename, discovered, versions, sources)
+			collectProviderFunctionsFromExpr(item.ValueExpr, filename, discovered, versions, sources)
+		}
+	case *hclsyntax.ConditionalExpr:
+		collectProviderFunctionsFromExpr(t.Condition, filename, discovered, versions, sources)
+		collectProviderFunctionsFromExpr(t.TrueResult, filename, discovered, versions, sources)
+		collectProviderFunctionsFromExpr(t.FalseResult, filename, discovered, versions, sources)
+	case *hclsyntax.ForExpr:
+		if t.KeyExpr != nil {
+			collectProviderFunctionsFromExpr(t.KeyExpr, filename, discovered, versions, sources)
+		}
+		if t.ValueExpr != nil {
+			collectProviderFunctionsFromExpr(t.ValueExpr, filename, discovered, versions, sources)
+		}
+		collectProviderFunctionsFromExpr(t.CollExpr, filename, discovered, versions, sources)
+		if t.CondExpr != nil {
+			collectProviderFunctionsFromExpr(t.CondExpr, filename, discovered, versions, sources)
+		}
+		collectProviderFunctionsFromExpr(t.ValExpr, filename, discovered, versions, sources)
+	case *hclsyntax.SplatExpr:
+		collectProviderFunctionsFromExpr(t.Source, filename, discovered, versions, sources)
+		if t.Each != nil {
+			collectProviderFunctionsFromExpr(t.Each, filename, discovered, versions, sources)
+		}
+	case *hclsyntax.IndexExpr:
+		collectProviderFunctionsFromExpr(t.Collection, filename, discovered, versions, sources)
+		collectProviderFunctionsFromExpr(t.Key, filename, discovered, versions, sources)
+	case *hclsyntax.UnaryOpExpr:
+		collectProviderFunctionsFromExpr(t.Val, filename, discovered, versions, sources)
+	case *hclsyntax.BinaryOpExpr:
+		collectProviderFunctionsFromExpr(t.LHS, filename, discovered, versions, sources)
+		collectProviderFunctionsFromExpr(t.RHS, filename, discovered, versions, sources)
+	case *hclsyntax.ParenthesesExpr:
+		collectProviderFunctionsFromExpr(t.Expression, filename, discovered, versions, sources)
+	case *hclsyntax.RelativeTraversalExpr:
+		collectProviderFunctionsFromExpr(t.Source, filename, discovered, versions, sources)
+	}
+}
+
 func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
 	var requirements = make([]*Requirement, 0)
 	for _, core := range tfmodule.RequiredCore {
@@ -581,6 +737,9 @@ func sortItems(tfmodule *Module, config *print.Config) {
 
 	// providers
 	providers(tfmodule.Providers).sort(config.Sort.Enabled, config.Sort.By)
+
+	// provider functions
+	providerFunctions(tfmodule.ProviderFunctions).sort(config.Sort.Enabled, config.Sort.By)
 
 	// resources
 	resources(tfmodule.Resources).sort(config.Sort.Enabled, config.Sort.By)
