@@ -28,6 +28,12 @@ brew install terraform-docs/tap/terraform-docs
 
 If you are a Windows user:
 
+### winget
+
+```bash
+winget install -e -h -s winget --id Terraform-docs.Terraform-docs
+```
+
 ### Scoop
 
 You can use [Scoop].
