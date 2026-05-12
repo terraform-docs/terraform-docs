@@ -24,7 +24,6 @@ import (
 
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/ext/typeexpr"
-	"github.com/hashicorp/hcl/v2/hclsimple"
 	"github.com/opentofu/opentofu-schema/earlydecoder"
 	"github.com/opentofu/opentofu-schema/module"
 	tfaddr "github.com/opentofu/registry-address"
@@ -35,8 +34,6 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
 )
-
-const ignoreMarker = "terraform-docs-ignore"
 
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
@@ -126,7 +123,7 @@ func loadModuleItems(meta *module.Meta, files map[string]*hcl.File, config *prin
 	if err != nil {
 		return nil, err
 	}
-	providers := loadProviders(meta, rawResources, config)
+	providers := loadProviders(meta, rawResources, files, config)
 	requirements := loadRequirements(meta)
 	resources := loadResources(meta, rawResources, config)
 
@@ -299,29 +296,6 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 	return inputs, required, optional
 }
 
-func formatSource(s, v string) (source, version string) {
-	substr := "?ref="
-
-	if v != "" {
-		return s, v
-	}
-
-	pos := strings.LastIndex(s, substr)
-	if pos == -1 {
-		return s, version
-	}
-
-	adjustedPos := pos + len(substr)
-	if adjustedPos >= len(s) {
-		return s, version
-	}
-
-	source = s[0:pos]
-	version = s[adjustedPos:]
-
-	return source, version
-}
-
 func loadModuleCalls(meta *module.Meta, files map[string]*hcl.File, config *print.Config) []*ModuleCall {
 	modules := make([]*ModuleCall, 0, len(meta.ModuleCalls))
 
@@ -366,31 +340,6 @@ func loadModuleCalls(meta *module.Meta, files map[string]*hcl.File, config *prin
 		})
 	}
 	return modules
-}
-
-// moduleSourceAndVersion flattens the typed ModuleSourceAddr back into a (source, version) pair compatible with the
-// old tfconfig output.
-func moduleSourceAndVersion(moduleCall *module.DeclaredModuleCall) (string, string) {
-	declaredVersion := ""
-	if len(moduleCall.Version) > 0 {
-		declaredVersion = moduleCall.Version.String()
-	}
-
-	switch source := moduleCall.SourceAddr.(type) {
-	case tfaddr.Module:
-		// registry address version comes from the `version = "..."` arg.
-		return source.ForDisplay(), declaredVersion
-	case module.LocalSourceAddr:
-		return string(source), declaredVersion
-	case module.RemoteSourceAddr:
-		// remote sources may carry `?ref=...` which should surface as version.
-		return formatSource(string(source), declaredVersion)
-	case module.UnknownSourceAddr:
-		return formatSource(string(source), declaredVersion)
-	default:
-		// nil SourceAddr falls back to raw string.
-		return formatSource(moduleCall.RawSourceAddr, declaredVersion)
-	}
 }
 
 func loadOutputs(meta *module.Meta, positions map[string]Position, config *print.Config) ([]*Output, error) {
@@ -465,60 +414,68 @@ func loadOutputValues(config *print.Config) (map[string]*output, error) {
 	return terraformOutputs, err
 }
 
-type lockedProvider struct {
-	Name        string   `hcl:"name,label"`
-	Version     string   `hcl:"version"`
-	Constraints *string  `hcl:"constraints"`
-	Hashes      []string `hcl:"hashes"`
-}
-
-type providerLockfile struct {
-	Provider []lockedProvider `hcl:"provider,block"`
-}
-
-func loadProviders(meta *module.Meta, resources []rawResource, config *print.Config) []*Provider {
+func loadProviders(meta *module.Meta, resources []rawResource, files map[string]*hcl.File, config *print.Config) []*Provider {
 	lock := loadProviderLockfile(config)
 	constraintFor := buildConstraintLookup(meta)
 
 	discovered := make(map[string]*Provider)
+
+	for _, block := range extractProviderBlocks(files) {
+		seedProviderFromBlock(discovered, block, lock, constraintFor)
+	}
+
 	for index := range resources {
 		addProviderFromResource(discovered, &resources[index], lock, constraintFor)
 	}
 	return sortedProviders(discovered)
 }
 
-func loadProviderLockfile(config *print.Config) map[string]lockedProvider {
-	if !config.Settings.LockFile {
-		return nil
-	}
-	var lockFile providerLockfile
-	filename := filepath.Join(config.ModuleRoot, ".terraform.lock.hcl")
-	if err := hclsimple.DecodeFile(filename, nil, &lockFile); err != nil {
-		return nil
-	}
-	out := make(map[string]lockedProvider, len(lockFile.Provider))
-	for index := range lockFile.Provider {
-		segments := strings.Split(lockFile.Provider[index].Name, "/")
-		name := segments[len(segments)-1]
-		out[name] = lockFile.Provider[index]
-	}
-	return out
-}
-
 func buildConstraintLookup(meta *module.Meta) func(string) string {
-	localNames := make(map[tfaddr.Provider]string, len(meta.ProviderReferences))
-	for reference := range meta.ProviderReferences {
-		if reference.Alias == "" {
-			localNames[meta.ProviderReferences[reference]] = reference.LocalName
+	constraints := make(map[string]string, len(meta.ProviderReferences))
+	for reference, address := range meta.ProviderReferences {
+		if reference.Alias != "" {
+			continue
+		}
+		if cs, ok := meta.ProviderRequirements[address]; ok && len(cs) > 0 {
+			constraints[reference.LocalName] = cs.String()
 		}
 	}
 	return func(localName string) string {
-		for address, constraint := range meta.ProviderRequirements {
-			if localNames[address] == localName && len(constraint) > 0 {
-				return constraint.String()
-			}
+		return constraints[localName]
+	}
+}
+
+func seedProviderFromBlock(
+	discovered map[string]*Provider,
+	block rawProviderBlock,
+	lock map[string]lockedProvider,
+	constraintFor func(string) string,
+) {
+	if _, ignored := isIgnored(block.Filename, block.Line); ignored {
+		return
+	}
+
+	version := constraintFor(block.LocalName)
+	if entry, ok := lock[block.LocalName]; ok {
+		version = entry.Version
+	}
+
+	position := Position{Filename: block.Filename, Line: block.Line}
+	key := fmt.Sprintf("%s.%s", block.LocalName, block.Alias)
+
+	if existing, ok := discovered[key]; ok {
+		if position.Filename < existing.Position.Filename ||
+			(position.Filename == existing.Position.Filename && position.Line < existing.Position.Line) {
+			existing.Position = position
 		}
-		return ""
+		return
+	}
+
+	discovered[key] = &Provider{
+		Name:     block.LocalName,
+		Alias:    types.String(block.Alias),
+		Version:  types.String(version),
+		Position: position,
 	}
 }
 
@@ -697,28 +654,6 @@ func resourceVersion(constraints []string) string {
 	return "latest"
 }
 
-func loadComments(filename string, lineNum int) string {
-	lines := reader.Lines{
-		FileName: filename,
-		LineNum:  lineNum,
-		Condition: func(line string) bool {
-			return strings.HasPrefix(line, "#") || strings.HasPrefix(line, "//")
-		},
-		Parser: func(line string) (string, bool) {
-			line = strings.TrimSpace(line)
-			line = strings.TrimPrefix(line, "#")
-			line = strings.TrimPrefix(line, "//")
-			line = strings.TrimSpace(line)
-			return line, true
-		},
-	}
-	comment, err := lines.Extract()
-	if err != nil {
-		return "" // absorb the error, we don't need to bubble it up or break the execution
-	}
-	return strings.Join(comment, " ")
-}
-
 func sortItems(tfmodule *Module, config *print.Config) {
 	// inputs
 	inputs(tfmodule.Inputs).sort(config.Sort.Enabled, config.Sort.By)
@@ -742,8 +677,8 @@ func resolveProviderSource(resource *rawResource, meta *module.Meta, localToAttr
 	attribute, ok := localToAttribute[resource.ProviderName]
 	version := ""
 
-	if !ok {
-		return fmt.Sprintf("hashicorp/%s", resource.ProviderName), ""
+	if !ok || attribute.Namespace == "-" {
+		return fmt.Sprintf("hashicorp/%s", resource.ProviderName), resourceVersion(nil)
 	}
 
 	if vs, ok := meta.ProviderRequirements[attribute]; ok && len(vs) > 0 {
@@ -754,7 +689,4 @@ func resolveProviderSource(resource *rawResource, meta *module.Meta, localToAttr
 	return attribute.ForDisplay(), version
 }
 
-func isIgnored(filename string, line int) (comments string, ignored bool) {
-	comments = loadComments(filename, line)
-	return comments, strings.Contains(comments, ignoreMarker)
-}
+

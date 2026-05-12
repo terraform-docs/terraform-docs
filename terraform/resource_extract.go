@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/hcl/v2"
+	"github.com/zclconf/go-cty/cty"
 )
 
 type rawResource struct {
@@ -62,15 +63,23 @@ func extractResources(files map[string]*hcl.File) []rawResource {
 			}
 			if attribute, ok := inner.Attributes["provider"]; ok {
 				// provider = aws.useast1 -> Traversal: [aws, useast1]
-				traversal, _ := hcl.AbsTraversalForExpr(attribute.Expr)
-				if len(traversal) >= 1 {
-					if root, ok := traversal[0].(hcl.TraverseRoot); ok {
-						providerName = root.Name
+				if traversal, diags := hcl.AbsTraversalForExpr(attribute.Expr); !diags.HasErrors() {
+					if len(traversal) >= 1 {
+						if root, ok := traversal[0].(hcl.TraverseRoot); ok {
+							providerName = root.Name
+						}
 					}
-				}
-				if len(traversal) >= 2 {
-					if attribute, ok := traversal[1].(hcl.TraverseAttr); ok {
-						providerAlias = attribute.Name
+					if len(traversal) >= 2 {
+						if attribute, ok := traversal[1].(hcl.TraverseAttr); ok {
+							providerAlias = attribute.Name
+						}
+					}
+				} else if value, diags := attribute.Expr.Value(nil); !diags.HasErrors() && value.Type() == cty.String {
+					// provider = "aws.useast1" (legacy string-literal form)
+					parts := strings.SplitN(value.AsString(), ".", 2)
+					providerName = parts[0]
+					if len(parts) == 2 {
+						providerAlias = parts[1]
 					}
 				}
 			}
