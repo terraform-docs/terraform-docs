@@ -92,6 +92,20 @@ func ctyValueToString(v cty.Value) string {
 	return string(b)
 }
 
+func ctyValueToTypesValue(value cty.Value) types.Value {
+	if value == cty.NilVal {
+		return new(types.Nil)
+	}
+	if value.IsNull() {
+		return new(types.Nil)
+	}
+	var raw interface{}
+	if err := json.Unmarshal([]byte(ctyValueToString(value)), &raw); err != nil {
+		return new(types.Nil)
+	}
+	return types.ValueOf(raw)
+}
+
 func loadModuleItems(meta *module.Meta, files map[string]*hcl.File, config *print.Config) (*Module, error) {
 	header, err := loadHeader(config)
 	if err != nil {
