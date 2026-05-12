@@ -40,29 +40,30 @@ import (
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
 func LoadWithOptions(config *print.Config) (*Module, error) {
-	tfmodule, err := loadModule(config.ModuleRoot)
+	meta, files, err := loadModule(config.ModuleRoot)
 	if err != nil {
 		return nil, err
 	}
 
-	module, err := loadModuleItems(tfmodule, config)
+	module, err := loadModuleItems(meta, files, config)
 	if err != nil {
 		return nil, err
 	}
+
 	sortItems(module, config)
 	return module, nil
 }
 
-func loadModule(path string) (*module.Meta, error) {
+func loadModule(path string) (*module.Meta, map[string]*hcl.File, error) {
 	files, diags := parseModuleFiles(path)
 	if diags.HasErrors() {
-		return nil, diags
+		return nil, nil, diags
 	}
 	meta, diags := earlydecoder.LoadModule(path, files)
 	if diags.HasErrors() {
-		return nil, diags
+		return nil, nil, diags
 	}
-	return meta, nil
+	return meta, files, nil
 }
 
 func ctyTypetoString(t cty.Type) string {
