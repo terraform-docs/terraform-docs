@@ -60,9 +60,16 @@ func loadModule(path string) (*module.Meta, map[string]*hcl.File, error) {
 	if diags.HasErrors() {
 		return nil, nil, diags
 	}
-	meta, diags := earlydecoder.LoadModule(path, files)
-	if diags.HasErrors() {
-		return nil, nil, diags
+	// earlydecoder may emit diagnostics for constructs it cannot fully
+	// resolve (e.g. legacy `type = "string"`, `var.foo` references in
+	// places it does not evaluate, etc.). These are non-fatal for our
+	// metadata extraction: it still populates meta with what it could
+	// parse. Mirror the lenient behavior of the previous
+	// terraform-config-inspect loader and only fail if no metadata at
+	// all came back.meta, _ := earlydecoder.LoadModule(path, files)
+	meta, _ := earlydecoder.LoadModule(path, files)
+	if meta == nil {
+		return nil, nil, fmt.Errorf("failed to load module from %q", path)
 	}
 	return meta, files, nil
 }
