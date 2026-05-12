@@ -22,6 +22,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/ext/typeexpr"
 	"github.com/hashicorp/hcl/v2/hclsimple"
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
@@ -82,7 +83,7 @@ func ctyValueToString(v cty.Value) string {
 	return string(b)
 }
 
-func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, error) {
+func loadModuleItems(meta *module.Meta, files map[string]*hcl.File, config *print.Config) (*Module, error) {
 	header, err := loadHeader(config)
 	if err != nil {
 		return nil, err
@@ -93,26 +94,28 @@ func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, 
 		return nil, err
 	}
 
-	inputs, required, optional := loadInputs(tfmodule, config)
-	modulecalls := loadModulecalls(tfmodule, config)
-	outputs, err := loadOutputs(tfmodule, config)
+	variablePositions := extractBlockPositions(files, "variables")
+	outputPositions := extractBlockPositions(files, "output")
+	rawResources := extractResources(files)
+	inputs, required, optional := loadInputs(meta, variablePositions, config)
+	moduleCalls := loadModuleCalls(meta, config)
+	outputs, err := loadOutputs(meta, outputPositions, config)
 	if err != nil {
 		return nil, err
 	}
-	providers := loadProviders(tfmodule, config)
-	requirements := loadRequirements(tfmodule)
-	resources := loadResources(tfmodule, config)
+	providers := loadProviders(meta, rawResources, config)
+	requirements := loadRequirements(meta)
+	resources := loadResources(meta, rawResources, config)
 
 	return &Module{
-		Header:       header,
-		Footer:       footer,
-		Inputs:       inputs,
-		ModuleCalls:  modulecalls,
-		Outputs:      outputs,
-		Providers:    providers,
-		Requirements: requirements,
-		Resources:    resources,
-
+		Header:         header,
+		Footer:         footer,
+		Inputs:         inputs,
+		ModuleCalls:    moduleCalls,
+		Outputs:        outputs,
+		Providers:      providers,
+		Requirements:   requirements,
+		Resources:      resources,
 		RequiredInputs: required,
 		OptionalInputs: optional,
 	}, nil
