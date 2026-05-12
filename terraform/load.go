@@ -309,9 +309,10 @@ func loadModulecalls(tfmodule *tfconfig.Module, config *print.Config) []*ModuleC
 	return modules
 }
 
-func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, error) {
-	outputs := make([]*Output, 0, len(tfmodule.Outputs))
+func loadOutputs(meta *module.Meta, positions map[string]Position, config *print.Config) ([]*Output, error) {
+	outputs := make([]*Output, 0, len(meta.Outputs))
 	values := make(map[string]*output)
+
 	if config.OutputValues.Enabled {
 		var err error
 		values, err = loadOutputValues(config)
@@ -319,43 +320,42 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 			return nil, err
 		}
 	}
-	for _, o := range tfmodule.Outputs {
-		comments := loadComments(o.Pos.Filename, o.Pos.Line)
 
-		// skip over outputs that are marked as being ignored
+	for name, output := range meta.Outputs {
+		position := positions[name]
+		comments := loadComments(position.Filename, position.Line)
+
+		// Skip over outputs that are marked as being ignored
 		if strings.Contains(comments, "terraform-docs-ignore") {
 			continue
 		}
 
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/584)
-		description := strings.ReplaceAll(o.Description, "\r\n", "\n")
+		description := strings.ReplaceAll(output.Description, "\r\n", "\n")
 		if description == "" && config.Settings.ReadComments {
 			description = comments
 		}
 
-		output := &Output{
-			Name:        o.Name,
+		out := &Output{
+			Name:        name,
 			Description: types.String(description),
-			Position: Position{
-				Filename: o.Pos.Filename,
-				Line:     o.Pos.Line,
-			},
-			ShowValue: config.OutputValues.Enabled,
+			Position:    position,
+			ShowValue:   config.OutputValues.Enabled,
 		}
 
 		if config.OutputValues.Enabled {
-			if value, ok := values[output.Name]; ok {
-				output.Sensitive = value.Sensitive
-				output.Value = types.ValueOf(value.Value)
+			if value, ok := values[out.Name]; ok {
+				out.Sensitive = value.Sensitive
+				out.Value = types.ValueOf(value.Value)
 			} else {
-				output.Value = types.ValueOf("null")
+				out.Value = types.ValueOf("null")
 			}
 
-			if output.Sensitive {
-				output.Value = types.ValueOf(`<sensitive>`)
+			if out.Sensitive {
+				out.Value = types.ValueOf(`<sensitive>`)
 			}
 		}
-		outputs = append(outputs, output)
+		outputs = append(outputs, out)
 	}
 	return outputs, nil
 }
