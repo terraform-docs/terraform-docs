@@ -315,6 +315,31 @@ func loadModuleCalls(meta *module.Meta, config *print.Config) []*ModuleCall {
 	return modules
 }
 
+// moduleSourceAndVersion flattens the typed ModuleSourceAddr back into a (source, version) pair compatible with the
+// old tfconfig output.
+func moduleSourceAndVersion(moduleCall module.DeclaredModuleCall) (string, string) {
+	declaredVersion := ""
+	if len(moduleCall.Version) > 0 {
+		declaredVersion = moduleCall.Version.String()
+	}
+
+	switch source := moduleCall.SourceAddr.(type) {
+	case tfaddr.Module:
+		// registry address version comes from the `version = "..."` arg.
+		return source.ForDisplay(), declaredVersion
+	case module.LocalSourceAddr:
+		return string(source), declaredVersion
+	case module.RemoteSourceAddr:
+		// remote sources may carry `?ref=...` which should surface as version.
+		return formatSource(string(source), declaredVersion)
+	case module.UnknownSourceAddr:
+		return formatSource(string(source), declaredVersion)
+	default:
+		// nil SourceAddr falls back to raw string.
+		return formatSource(module.RawSourceAddr, declaredVersion)
+	}
+}
+
 func loadOutputs(meta *module.Meta, positions map[string]Position, config *print.Config) ([]*Output, error) {
 	outputs := make([]*Output, 0, len(meta.Outputs))
 	values := make(map[string]*output)
