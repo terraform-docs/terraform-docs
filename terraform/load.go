@@ -210,35 +210,35 @@ func loadSection(config *print.Config, file string, section string) (string, err
 	return strings.Join(sectionText, "\n"), nil
 }
 
-func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*Input, []*Input) {
-	var inputs = make([]*Input, 0, len(tfmodule.Variables))
-	var required = make([]*Input, 0, len(tfmodule.Variables))
-	var optional = make([]*Input, 0, len(tfmodule.Variables))
+func loadInputs(meta *module.Meta, positions map[string]Position, config *print.Config) ([]*Input, []*Input, []*Input) {
+	inputs := make([]*Input, 0, len(meta.Variables))
+	required := make([]*Input, 0)
+	optional := make([]*Input, 0)
 
-	for _, input := range tfmodule.Variables {
-		comments := loadComments(input.Pos.Filename, input.Pos.Line)
+	for name, input := range meta.Variables {
+		position := positions[name]
+		comments := loadComments(position.Filename, position.Line)
 
-		// skip over inputs that are marked as being ignored
+		// Skip over inputs that are marked as being ignored
 		if strings.Contains(comments, "terraform-docs-ignore") {
 			continue
 		}
 
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
-		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
-		if inputDescription == "" && config.Settings.ReadComments {
-			inputDescription = comments
+		description := strings.ReplaceAll(input.Description, "\r\n", "\n")
+		if description == "" && config.Settings.ReadComments {
+			description = comments
 		}
 
+		isRequired := input.DefaultValue == cty.NilVal
+
 		i := &Input{
-			Name:        input.Name,
-			Type:        types.TypeOf(input.Type, input.Default),
-			Description: types.String(inputDescription),
-			Default:     types.ValueOf(input.Default),
-			Required:    input.Required,
-			Position: Position{
-				Filename: input.Pos.Filename,
-				Line:     input.Pos.Line,
-			},
+			Name:        name,
+			Type:        types.String(ctyTypetoString(input.Type)),
+			Description: types.String(description),
+			Default:     types.String(ctyValueToString(input.DefaultValue)),
+			Required:    isRequired,
+			Position:    position,
 		}
 
 		inputs = append(inputs, i)
