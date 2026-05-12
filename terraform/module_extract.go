@@ -34,11 +34,13 @@ func moduleSourceAndVersion(moduleCall *module.DeclaredModuleCall) (string, stri
 		return source.ForDisplay(), declaredVersion
 	case module.LocalSourceAddr:
 		return string(source), declaredVersion
-	case module.RemoteSourceAddr:
-		// remote sources may carry `?ref=...` which should surface as version.
-		return formatSource(string(source), declaredVersion)
-	case module.UnknownSourceAddr:
-		return formatSource(string(source), declaredVersion)
+	case module.RemoteSourceAddr, module.UnknownSourceAddr:
+		// Remote/unknown sources may carry `?ref=...` which should surface as
+		// version. Prefer RawSourceAddr to preserve the user's original syntax
+		// (e.g. SCP-style `git@github.com:org/repo` rather than go-getter's
+		// canonicalized `git::ssh://git@github.com/org/repo`).
+		_ = source
+		return formatSource(moduleCall.RawSourceAddr, declaredVersion)
 	default:
 		// nil SourceAddr falls back to raw string.
 		return formatSource(moduleCall.RawSourceAddr, declaredVersion)
