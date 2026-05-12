@@ -14,6 +14,10 @@
                 {{ printf "\n" }}
                 {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
+                {{ if and $.Config.Settings.Deprecated .IsDeprecated -}}
+                > **Deprecated** — {{ tostring .Deprecated | sanitizeDoc }}
+
+                {{ end -}}
                 Description: {{ tostring .Description | sanitizeDoc }}
 
                 {{ if $.Config.Settings.Type -}}
@@ -41,6 +45,10 @@
                 {{ printf "\n" }}
                 {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
+                {{ if and $.Config.Settings.Deprecated .IsDeprecated -}}
+                > **Deprecated** — {{ tostring .Deprecated | sanitizeDoc }}
+
+                {{ end -}}
                 Description: {{ tostring .Description | sanitizeDoc }}
 
                 {{ if $.Config.Settings.Type -}}
@@ -69,6 +77,10 @@
                 {{ printf "\n" }}
                 {{ indent 1 "#" }} {{ anchorNameMarkdown "input" .Name }}{{ if $.Config.Settings.AtxClosed }} {{ indent 1 "#" }}{{ end }}
 
+                {{ if and $.Config.Settings.Deprecated .IsDeprecated -}}
+                > **Deprecated** — {{ tostring .Deprecated | sanitizeDoc }}
+
+                {{ end -}}
                 Description: {{ tostring .Description | sanitizeDoc }}
 
                 {{ if $.Config.Settings.Type -}}

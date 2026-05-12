@@ -256,7 +256,7 @@ func (o *output) validate() error {
 	}
 
 	// No extra validation is needed for mode 'replace',
-	// the followings only apply for every other modes.
+	// the following only apply for every other modes.
 	if o.Mode == OutputModeReplace {
 		return nil
 	}
@@ -387,6 +387,7 @@ type settings struct {
 	AtxClosed    bool `mapstructure:"atx-closed"`
 	Color        bool `mapstructure:"color"`
 	Default      bool `mapstructure:"default"`
+	Deprecated   bool `mapstructure:"deprecated"`
 	Description  bool `mapstructure:"description"`
 	Escape       bool `mapstructure:"escape"`
 	HideEmpty    bool `mapstructure:"hide-empty"`
@@ -405,6 +406,7 @@ func defaultSettings() settings {
 		AtxClosed:    false,
 		Color:        true,
 		Default:      true,
+		Deprecated:   false,
 		Description:  false,
 		Escape:       true,
 		HideEmpty:    false,

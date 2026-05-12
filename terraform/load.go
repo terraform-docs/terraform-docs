@@ -283,6 +283,7 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 			Description: types.String(description),
 			Default:     defaultValue,
 			Required:    isRequired,
+			Deprecated:  types.String(input.Deprecated),
 			Position:    position,
 		}
 
@@ -422,6 +423,7 @@ func loadOutputs(meta *module.Meta, positions map[string]Position, config *print
 		out := &Output{
 			Name:        name,
 			Description: types.String(description),
+			Deprecated:  types.String(output.Deprecated),
 			Position:    position,
 			ShowValue:   config.OutputValues.Enabled,
 		}
