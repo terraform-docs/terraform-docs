@@ -3,11 +3,13 @@ package terraform
 import "github.com/hashicorp/hcl/v2"
 
 type rawResource struct {
-	Mode     string // "managed" || "data"
-	Type     string
-	Name     string
-	Filename string
-	Line     int
+	Mode          string // "managed" || "data"
+	Type          string
+	Name          string
+	Filename      string
+	Line          int
+	ProviderName  string
+	ProviderAlias string
 }
 
 func extractResources(files map[string]*hcl.File) []rawResource {
