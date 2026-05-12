@@ -72,7 +72,7 @@ func TestLoadModule(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
-			_, err := loadModule(filepath.Join("testdata", tt.path))
+			_, _, err := loadModule(filepath.Join("testdata", tt.path))
 			if tt.wantErr {
 				assert.NotNil(err)
 			} else {
@@ -516,8 +516,9 @@ func TestLoadInputs(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			inputs, requireds, optionals := loadInputs(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			positions := extractBlockPositions(files, "variable")
+			inputs, requireds, optionals := loadInputs(module, positions, config)
 
 			assert.Equal(tt.expected.inputs, len(inputs))
 			assert.Equal(tt.expected.requireds, len(requireds))
@@ -548,8 +549,8 @@ func TestLoadModulecalls(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			modulecalls := loadModulecalls(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			modulecalls := loadModuleCalls(module, files, config)
 
 			assert.Equal(tt.expected, len(modulecalls))
 		})
@@ -578,8 +579,9 @@ func TestLoadInputsLineEnding(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			inputs, _, _ := loadInputs(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			positions := extractBlockPositions(files, "variable")
+			inputs, _, _ := loadInputs(module, positions, config)
 
 			assert.Equal(1, len(inputs))
 			assert.Equal(tt.expected, string(inputs[0].Description))
@@ -616,8 +618,9 @@ func TestLoadOutputs(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			outputs, err := loadOutputs(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			positions := extractBlockPositions(files, "output")
+			outputs, err := loadOutputs(module, positions, config)
 
 			assert.Nil(err)
 			assert.Equal(tt.expected.outputs, len(outputs))
@@ -651,8 +654,9 @@ func TestLoadOutputsLineEnding(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			outputs, _ := loadOutputs(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			positions := extractBlockPositions(files, "output")
+			outputs, _ := loadOutputs(module, positions, config)
 
 			assert.Equal(1, len(outputs))
 			assert.Equal(tt.expected, string(outputs[0].Description))
@@ -703,8 +707,9 @@ func TestLoadOutputsValues(t *testing.T) {
 			config.OutputValues.Enabled = true
 			config.OutputValues.From = filepath.Join("testdata", tt.path, tt.outputPath)
 
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			outputs, err := loadOutputs(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			positions := extractBlockPositions(files, "output")
+			outputs, err := loadOutputs(module, positions, config)
 
 			if tt.wantErr {
 				assert.NotNil(err)
@@ -770,8 +775,9 @@ func TestLoadProviders(t *testing.T) {
 			config.ModuleRoot = filepath.Join("testdata", tt.path)
 			config.Settings.LockFile = tt.lockfile
 
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			providers := loadProviders(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			rawResources := extractResources(files)
+			providers := loadProviders(module, rawResources, config)
 
 			actual := []string{}
 
@@ -813,7 +819,7 @@ func TestLoadRequirements(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			module, _, _ := loadModule(filepath.Join("testdata", tt.path))
 			requirements := loadRequirements(module)
 
 			assert.Equal(len(tt.expected.requirements), len(requirements))
@@ -854,8 +860,9 @@ func TestLoadResources(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			resources := loadResources(module, config)
+			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
+			rawResources := extractResources(files)
+			resources := loadResources(module, rawResources, config)
 
 			assert.Equal(len(tt.expected.resources), len(resources))
 
@@ -903,11 +910,12 @@ func TestLoadProvidersDeterministic(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, err := loadModule(filepath.Join("testdata", tt.path))
+			module, files, err := loadModule(filepath.Join("testdata", tt.path))
 			assert.Nil(err)
+			rawResources := extractResources(files)
 
 			for i := 0; i < 100; i++ {
-				pp := loadProviders(module, config)
+				pp := loadProviders(module, rawResources, config)
 				providers(pp).sort(tt.sortenabled, "")
 
 				actual := make([]string, len(pp))
@@ -937,11 +945,12 @@ func TestLoadResourcesDeterministic(t *testing.T) {
 			assert := assert.New(t)
 
 			config := print.NewConfig()
-			module, err := loadModule(filepath.Join("testdata", tt.path))
+			module, files, err := loadModule(filepath.Join("testdata", tt.path))
 			assert.Nil(err)
+			rawResources := extractResources(files)
 
 			for i := 0; i < 100; i++ {
-				rr := loadResources(module, config)
+				rr := loadResources(module, rawResources, config)
 
 				actual := make([]string, len(rr))
 				for j, r := range rr {
@@ -1036,15 +1045,18 @@ func TestReadComments(t *testing.T) {
 			config := print.NewConfig()
 			config.Settings.ReadComments = tt.readComments
 
-			module, err := loadModule(filepath.Join("testdata", tt.path))
+			module, files, err := loadModule(filepath.Join("testdata", tt.path))
 
 			assert.Nil(err)
 
-			inputs, _, _ := loadInputs(module, config)
+			variablePositions := extractBlockPositions(files, "variable")
+			outputPositions := extractBlockPositions(files, "output")
+
+			inputs, _, _ := loadInputs(module, variablePositions, config)
 			assert.Equal(1, len(inputs))
 			assert.Equal(tt.expected, string(inputs[0].Description))
 
-			outputs, _ := loadOutputs(module, config)
+			outputs, _ := loadOutputs(module, outputPositions, config)
 			assert.Equal(1, len(outputs))
 			assert.Equal(tt.expected, string(outputs[0].Description))
 		})
@@ -1155,8 +1167,8 @@ func TestSortItems(t *testing.T) {
 			config.Sort.Enabled = tt.sortenabled
 			config.Sort.By = tt.sorttype
 
-			tfmodule, _ := loadModule(path)
-			module, err := loadModuleItems(tfmodule, config)
+			tfmodule, files, _ := loadModule(path)
+			module, err := loadModuleItems(tfmodule, files, config)
 
 			assert.Nil(err)
 			sortItems(module, config)
