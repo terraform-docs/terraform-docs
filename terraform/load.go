@@ -22,9 +22,14 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/hashicorp/hcl/v2/ext/typeexpr"
 	"github.com/hashicorp/hcl/v2/hclsimple"
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
+	"github.com/opentofu/opentofu-schema/earlydecoder"
+	"github.com/opentofu/opentofu-schema/module"
+	"github.com/zclconf/go-cty/cty"
+	ctyjson "github.com/zclconf/go-cty/cty/json"
 
-	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
 	"github.com/terraform-docs/terraform-docs/internal/reader"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
@@ -46,12 +51,34 @@ func LoadWithOptions(config *print.Config) (*Module, error) {
 	return module, nil
 }
 
-func loadModule(path string) (*tfconfig.Module, error) {
-	module, diag := tfconfig.LoadModule(path)
-	if diag != nil && diag.HasErrors() {
-		return nil, diag
+func loadModule(path string) (*module.Meta, error) {
+	files, diags := parseModuleFiles(path)
+	if diags.HasErrors() {
+		return nil, diags
 	}
-	return module, nil
+	meta, diags := earlydecoder.LoadModule(path, files)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	return meta, nil
+}
+
+func ctyTypetoString(t cty.Type) string {
+	if t == cty.NilType {
+		return ""
+	}
+	return typeexpr.TypeString(t)
+}
+
+func ctyValueToString(v cty.Value) string {
+	if v == cty.NilVal {
+		return ""
+	}
+	b, err := ctyjson.Marshal(v, v.Type())
+	if err != nil {
+		return ""
+	}
+	return string(b)
 }
 
 func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, error) {
