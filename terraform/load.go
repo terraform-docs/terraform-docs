@@ -27,6 +27,7 @@ import (
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/opentofu/opentofu-schema/earlydecoder"
 	"github.com/opentofu/opentofu-schema/module"
+	tfaddr "github.com/opentofu/registry-address"
 	"github.com/zclconf/go-cty/cty"
 	ctyjson "github.com/zclconf/go-cty/cty/json"
 
@@ -276,14 +277,19 @@ func formatSource(s, v string) (source, version string) {
 	return source, version
 }
 
-func loadModulecalls(tfmodule *tfconfig.Module, config *print.Config) []*ModuleCall {
-	var modules = make([]*ModuleCall, 0)
-	var source, version string
+func loadModuleCalls(meta *module.Meta, config *print.Config) []*ModuleCall {
+	modules := make([]*ModuleCall, 0, len(meta.ModuleCalls))
 
-	for _, m := range tfmodule.ModuleCalls {
-		comments := loadComments(m.Pos.Filename, m.Pos.Line)
+	for _, moduleCall := range meta.ModuleCalls {
+		var filename string
+		var line int
 
-		// skip over modules that are marked as being ignored
+		if moduleCall.RangePtr != nil {
+			filename = moduleCall.RangePtr.Filename
+			line = moduleCall.RangePtr.Start.Line
+		}
+
+		comments := loadComments(filename, line)
 		if strings.Contains(comments, "terraform-docs-ignore") {
 			continue
 		}
@@ -293,16 +299,16 @@ func loadModulecalls(tfmodule *tfconfig.Module, config *print.Config) []*ModuleC
 			description = comments
 		}
 
-		source, version = formatSource(m.Source, m.Version)
+		source, version := moduleSourceAndVersion(moduleCall)
 
 		modules = append(modules, &ModuleCall{
-			Name:        m.Name,
+			Name:        moduleCall.LocalName,
 			Source:      source,
 			Version:     version,
 			Description: types.String(description),
 			Position: Position{
-				Filename: m.Pos.Filename,
-				Line:     m.Pos.Line,
+				Filename: filename,
+				Line:     line,
 			},
 		})
 	}
