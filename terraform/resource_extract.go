@@ -50,10 +50,10 @@ func extractResources(files map[string]*hcl.File) []rawResource {
 		},
 	}
 
-	for name, file := range files {
+	for _, file := range files {
 		content, _, _ := file.Body.PartialContent(schema)
 		for _, block := range content.Blocks {
-			var mode string = "managed"
+			mode := "managed"
 			inner, _, _ := block.Body.PartialContent(bodySchema)
 			providerName := strings.SplitN(block.Labels[0], "_", 2)[0]
 			providerAlias := ""
@@ -78,7 +78,7 @@ func extractResources(files map[string]*hcl.File) []rawResource {
 				Mode:          mode,
 				Type:          block.Labels[0],
 				Name:          block.Labels[1],
-				Filename:      name,
+				Filename:      block.DefRange.Filename,
 				Line:          block.DefRange.Start.Line,
 				ProviderName:  providerName,
 				ProviderAlias: providerAlias,

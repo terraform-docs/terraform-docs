@@ -22,7 +22,7 @@ func extractBlockPositions(files map[string]*hcl.File, blockType string) map[str
 			},
 		},
 	}
-	for name, file := range files {
+	for _, file := range files {
 		content, _, _ := file.Body.PartialContent(schema)
 		for _, block := range content.Blocks {
 			if len(block.Labels) == 0 {
@@ -36,7 +36,7 @@ func extractBlockPositions(files map[string]*hcl.File, blockType string) map[str
 			}
 
 			output[label] = Position{
-				Filename: name,
+				Filename: block.DefRange.Filename,
 				Line:     block.DefRange.Start.Line,
 			}
 		}
