@@ -258,12 +258,13 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 		}
 
 		isRequired := input.DefaultValue == cty.NilVal
+		defaultValue := ctyValueToTypesValue(input.DefaultValue)
 
 		in := &Input{
 			Name:        name,
 			Type:        types.String(ctyTypetoString(input.Type)),
 			Description: types.String(description),
-			Default:     types.String(ctyValueToString(input.DefaultValue)),
+			Default:     defaultValue,
 			Required:    isRequired,
 			Position:    position,
 		}
