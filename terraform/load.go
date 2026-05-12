@@ -107,7 +107,7 @@ func loadModuleItems(meta *module.Meta, files map[string]*hcl.File, config *prin
 	outputPositions := extractBlockPositions(files, "output")
 	rawResources := extractResources(files)
 	inputs, required, optional := loadInputs(meta, variablePositions, config)
-	moduleCalls := loadModuleCalls(meta, config)
+	moduleCalls := loadModuleCalls(meta, files, config)
 	outputs, err := loadOutputs(meta, outputPositions, config)
 	if err != nil {
 		return nil, err
@@ -228,7 +228,8 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 	required := make([]*Input, 0)
 	optional := make([]*Input, 0)
 
-	for name, input := range meta.Variables {
+	for name := range meta.Variables {
+		input := meta.Variables[name]
 		position := positions[name]
 		comments, ignored := isIgnored(position.Filename, position.Line)
 
@@ -288,10 +289,13 @@ func formatSource(s, v string) (source, version string) {
 	return source, version
 }
 
-func loadModuleCalls(meta *module.Meta, config *print.Config) []*ModuleCall {
+func loadModuleCalls(meta *module.Meta, files map[string]*hcl.File, config *print.Config) []*ModuleCall {
 	modules := make([]*ModuleCall, 0, len(meta.ModuleCalls))
 
-	for _, moduleCall := range meta.ModuleCalls {
+	versionOverrides := resolveModuleVersions(files, meta)
+
+	for localName := range meta.ModuleCalls {
+		moduleCall := meta.ModuleCalls[localName]
 		var filename string
 		var line int
 
@@ -310,10 +314,15 @@ func loadModuleCalls(meta *module.Meta, config *print.Config) []*ModuleCall {
 			description = comments
 		}
 
-		source, version := moduleSourceAndVersion(moduleCall)
+		source, version := moduleSourceAndVersion(&moduleCall)
+		if version == "" {
+			if v, ok := versionOverrides[localName]; ok && v != "" {
+				version = v
+			}
+		}
 
 		modules = append(modules, &ModuleCall{
-			Name:        moduleCall.LocalName,
+			Name:        localName,
 			Source:      source,
 			Version:     version,
 			Description: types.String(description),
@@ -328,7 +337,7 @@ func loadModuleCalls(meta *module.Meta, config *print.Config) []*ModuleCall {
 
 // moduleSourceAndVersion flattens the typed ModuleSourceAddr back into a (source, version) pair compatible with the
 // old tfconfig output.
-func moduleSourceAndVersion(moduleCall module.DeclaredModuleCall) (string, string) {
+func moduleSourceAndVersion(moduleCall *module.DeclaredModuleCall) (string, string) {
 	declaredVersion := ""
 	if len(moduleCall.Version) > 0 {
 		declaredVersion = moduleCall.Version.String()
@@ -347,7 +356,7 @@ func moduleSourceAndVersion(moduleCall module.DeclaredModuleCall) (string, strin
 		return formatSource(string(source), declaredVersion)
 	default:
 		// nil SourceAddr falls back to raw string.
-		return formatSource(module.RawSourceAddr, declaredVersion)
+		return formatSource(moduleCall.RawSourceAddr, declaredVersion)
 	}
 }
 
@@ -363,7 +372,8 @@ func loadOutputs(meta *module.Meta, positions map[string]Position, config *print
 		}
 	}
 
-	for name, output := range meta.Outputs {
+	for name := range meta.Outputs {
+		output := meta.Outputs[name]
 		position := positions[name]
 		comments, ignored := isIgnored(position.Filename, position.Line)
 
@@ -442,19 +452,19 @@ func loadProviders(meta *module.Meta, resources []rawResource, config *print.Con
 		var lf lockfile
 		filename := filepath.Join(config.ModuleRoot, ".terraform.lock.hcl")
 		if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
-			for i := range lf.Provider {
-				segments := strings.Split(lf.Provider[i].Name, "/")
+			for index := range lf.Provider {
+				segments := strings.Split(lf.Provider[index].Name, "/")
 				name := segments[len(segments)-1]
-				lock[name] = lf.Provider[i]
+				lock[name] = lf.Provider[index]
 			}
 		}
 	}
 
 	// Reverse map: tfaddr.Provider -> local name
 	localNames := make(map[tfaddr.Provider]string, len(meta.ProviderReferences))
-	for ref, address := range meta.ProviderReferences {
-		if ref.Alias == "" {
-			localNames[address] = ref.LocalName
+	for reference := range meta.ProviderReferences {
+		if reference.Alias == "" {
+			localNames[meta.ProviderReferences[reference]] = reference.LocalName
 		}
 	}
 
@@ -479,13 +489,13 @@ func loadProviders(meta *module.Meta, resources []rawResource, config *print.Con
 		}
 
 		version := ""
-		if provider, ok := lock[resource.Name]; ok {
+		if provider, ok := lock[resource.ProviderName]; ok {
 			version = provider.Version
 		} else {
-			version = constraintFor(resource.Name)
+			version = constraintFor(resource.ProviderName)
 		}
 
-		key := fmt.Sprintf("%s.%s", &resource.Name, resource.ProviderAlias)
+		key := fmt.Sprintf("%s.%s", resource.ProviderName, resource.ProviderAlias)
 		if existing, ok := discovered[key]; ok {
 			if resource.Filename < existing.Position.Filename ||
 				(resource.Filename == existing.Position.Filename && resource.Line < existing.Position.Line) {
@@ -540,9 +550,9 @@ func loadRequirements(meta *module.Meta) []*Requirement {
 
 	// reverse map: tfaddr.Provider -> local name (un-aliased ref)
 	localNamesByProvider := make(map[tfaddr.Provider]string, len(meta.ProviderReferences))
-	for providerRef, providerAddr := range meta.ProviderReferences {
-		if providerRef.Alias == "" {
-			localNamesByProvider[providerAddr] = providerRef.LocalName
+	for providerReference := range meta.ProviderReferences {
+		if providerReference.Alias == "" {
+			localNamesByProvider[meta.ProviderReferences[providerReference]] = providerReference.LocalName
 		}
 	}
 
@@ -559,7 +569,8 @@ func loadRequirements(meta *module.Meta) []*Requirement {
 		return providerEntries[i].localName < providerEntries[j].localName
 	})
 
-	for _, entry := range providerEntries {
+	for index := range providerEntries {
+		entry := &providerEntries[index]
 		for _, versionConstraint := range meta.ProviderRequirements[entry.address] {
 			requirements = append(requirements, &Requirement{
 				Name:    entry.localName,
@@ -570,49 +581,45 @@ func loadRequirements(meta *module.Meta) []*Requirement {
 	return requirements
 }
 
-func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource {
-	allResources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
+func loadResources(meta *module.Meta, resources []rawResource, config *print.Config) []*Resource {
+	// build localName -> tfaddr.Provider once
+	localToAttribute := make(map[string]tfaddr.Provider)
+	for reference := range meta.ProviderReferences {
+		if reference.Alias == "" {
+			localToAttribute[reference.LocalName] = meta.ProviderReferences[reference]
+		}
+	}
+
 	discovered := make(map[string]*Resource)
-
-	for _, resource := range allResources {
-		for _, r := range resource {
-			comments := loadComments(r.Pos.Filename, r.Pos.Line)
-
-			// skip over resources that are marked as being ignored
-			if strings.Contains(comments, "terraform-docs-ignore") {
-				continue
-			}
-
-			var version string
-			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok {
-				version = resourceVersion(rv.VersionConstraints)
-			}
+	for index := range resources {
+		resource := &resources[index]
+		comments, ignored := isIgnored(resource.Filename, resource.Line)
 
 		if ignored {
 			continue
 		}
 
-			rType := strings.TrimPrefix(r.Type, r.Provider.Name+"_")
-			key := fmt.Sprintf("%s.%s.%s.%s", r.Provider.Name, r.Mode, rType, r.Name)
+		source, version := resolveProviderSource(resource, meta, localToAttribute)
 
-			description := ""
-			if config.Settings.ReadComments {
-				description = comments
-			}
+		resourceType := strings.TrimPrefix(resource.Type, resource.ProviderName+"_")
+		key := fmt.Sprintf("%s.%s.%s.%s", resource.ProviderName, resource.Mode, resourceType, resource.Name)
+		description := ""
+		if config.Settings.ReadComments {
+			description = comments
+		}
 
-			discovered[key] = &Resource{
-				Type:           rType,
-				Name:           r.Name,
-				Mode:           r.Mode.String(),
-				ProviderName:   r.Provider.Name,
-				ProviderSource: source,
-				Version:        types.String(version),
-				Description:    types.String(description),
-				Position: Position{
-					Filename: r.Pos.Filename,
-					Line:     r.Pos.Line,
-				},
-			}
+		discovered[key] = &Resource{
+			Type:           resourceType,
+			Name:           resource.Name,
+			Mode:           resource.Mode,
+			ProviderName:   resource.ProviderName,
+			ProviderSource: source,
+			Version:        types.String(version),
+			Description:    types.String(description),
+			Position: Position{
+				Filename: resource.Filename,
+				Line:     resource.Line,
+			},
 		}
 
 	}
@@ -623,11 +630,11 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 	}
 	sort.Strings(resourceKeys)
 
-	resources := make([]*Resource, 0, len(discovered))
+	allResources := make([]*Resource, 0, len(discovered))
 	for _, key := range resourceKeys {
-		resources = append(resources, discovered[key])
+		allResources = append(allResources, discovered[key])
 	}
-	return resources
+	return allResources
 }
 
 func resourceVersion(constraints []string) string {
