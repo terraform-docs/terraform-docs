@@ -232,7 +232,7 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 
 		isRequired := input.DefaultValue == cty.NilVal
 
-		i := &Input{
+		in := &Input{
 			Name:        name,
 			Type:        types.String(ctyTypetoString(input.Type)),
 			Description: types.String(description),
@@ -241,12 +241,12 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 			Position:    position,
 		}
 
-		inputs = append(inputs, i)
+		inputs = append(inputs, in)
 
-		if i.HasDefault() {
-			optional = append(optional, i)
+		if in.HasDefault() {
+			optional = append(optional, in)
 		} else {
-			required = append(required, i)
+			required = append(required, in)
 		}
 	}
 
