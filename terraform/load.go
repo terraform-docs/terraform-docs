@@ -183,32 +183,49 @@ func loadFooter(config *print.Config) (string, error) {
 	return loadSection(config, config.FooterFrom, "footer")
 }
 
-func loadSection(config *print.Config, file string, section string) (string, error) { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
-
+func loadSection(config *print.Config, file, section string) (string, error) {
 	if section == "" {
 		return "", errors.New("section is missing")
 	}
-	filename := filepath.Join(config.ModuleRoot, file)
 	if ok, err := isFileFormatSupported(file, section); !ok {
 		return "", err
 	}
-	if info, err := os.Stat(filename); os.IsNotExist(err) || info.IsDir() {
-		if section == "header" && file == "main.tf" {
-			return "", nil // absorb the error to not break workflow for default value of header and missing 'main.tf'
-		}
-		return "", err // user explicitly asked for a file which doesn't exist
+
+	filename, err := resolveSectionFile(config.ModuleRoot, file, section)
+	if err != nil || filename == "" {
+		return "", err
 	}
-	format := getFileFormat(file)
-	if format != ".tf" && format != ".tofu" {
-		content, err := os.ReadFile(filepath.Clean(filename))
-		if err != nil {
-			return "", err
-		}
-		return string(content), nil
+
+	if format := getFileFormat(file); format != ".tf" && format != ".tofu" {
+		return readPlainFile(filename)
 	}
+	return extractTerraformDocComment(filename)
+}
+
+// resolveSectionFile returns the absolute path of the section file, or
+// ("", nil) when the implicit default header file is missing (which is
+// silently allowed to keep the legacy workflow intact).
+func resolveSectionFile(root, file, section string) (string, error) {
+	filename := filepath.Join(root, file)
+	info, err := os.Stat(filename)
+	if err == nil && !info.IsDir() {
+		return filename, nil
+	}
+	if section == "header" && file == "main.tf" {
+		return "", nil
+	}
+	return "", err
+}
+
+func readPlainFile(filename string) (string, error) {
+	content, err := os.ReadFile(filepath.Clean(filename))
+	if err != nil {
+		return "", err
+	}
+	return string(content), nil
+}
+
+func extractTerraformDocComment(filename string) (string, error) {
 	lines := reader.Lines{
 		FileName: filename,
 		LineNum:  -1,
@@ -446,45 +463,54 @@ func loadOutputValues(config *print.Config) (map[string]*output, error) {
 	return terraformOutputs, err
 }
 
-func loadProviders(meta *module.Meta, resources []rawResource, config *print.Config) []*Provider { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
+type lockedProvider struct {
+	Name        string   `hcl:"name,label"`
+	Version     string   `hcl:"version"`
+	Constraints *string  `hcl:"constraints"`
+	Hashes      []string `hcl:"hashes"`
+}
 
-	type provider struct {
-		Name        string   `hcl:"name,label"`
-		Version     string   `hcl:"version"`
-		Constraints *string  `hcl:"constraints"`
-		Hashes      []string `hcl:"hashes"`
+type providerLockfile struct {
+	Provider []lockedProvider `hcl:"provider,block"`
+}
+
+func loadProviders(meta *module.Meta, resources []rawResource, config *print.Config) []*Provider {
+	lock := loadProviderLockfile(config)
+	constraintFor := buildConstraintLookup(meta)
+
+	discovered := make(map[string]*Provider)
+	for index := range resources {
+		addProviderFromResource(discovered, &resources[index], lock, constraintFor)
 	}
+	return sortedProviders(discovered)
+}
 
-	type lockfile struct {
-		Provider []provider `hcl:"provider,block"`
+func loadProviderLockfile(config *print.Config) map[string]lockedProvider {
+	if !config.Settings.LockFile {
+		return nil
 	}
-	lock := make(map[string]provider)
-
-	if config.Settings.LockFile {
-		var lf lockfile
-		filename := filepath.Join(config.ModuleRoot, ".terraform.lock.hcl")
-		if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
-			for index := range lf.Provider {
-				segments := strings.Split(lf.Provider[index].Name, "/")
-				name := segments[len(segments)-1]
-				lock[name] = lf.Provider[index]
-			}
-		}
+	var lockFile providerLockfile
+	filename := filepath.Join(config.ModuleRoot, ".terraform.lock.hcl")
+	if err := hclsimple.DecodeFile(filename, nil, &lockFile); err != nil {
+		return nil
 	}
+	out := make(map[string]lockedProvider, len(lockFile.Provider))
+	for index := range lockFile.Provider {
+		segments := strings.Split(lockFile.Provider[index].Name, "/")
+		name := segments[len(segments)-1]
+		out[name] = lockFile.Provider[index]
+	}
+	return out
+}
 
-	// Reverse map: tfaddr.Provider -> local name
+func buildConstraintLookup(meta *module.Meta) func(string) string {
 	localNames := make(map[tfaddr.Provider]string, len(meta.ProviderReferences))
 	for reference := range meta.ProviderReferences {
 		if reference.Alias == "" {
 			localNames[meta.ProviderReferences[reference]] = reference.LocalName
 		}
 	}
-
-	// Helper to look up constraints string by local name
-	constraintFor := func(localName string) string {
+	return func(localName string) string {
 		for address, constraint := range meta.ProviderRequirements {
 			if localNames[address] == localName && len(constraint) > 0 {
 				return constraint.String()
@@ -492,47 +518,43 @@ func loadProviders(meta *module.Meta, resources []rawResource, config *print.Con
 		}
 		return ""
 	}
+}
 
-	discovered := make(map[string]*Provider)
-
-	for index := range resources {
-		resource := &resources[index]
-		_, ignored := isIgnored(resource.Filename, resource.Line)
-
-		if ignored {
-			continue
-		}
-
-		version := ""
-		if provider, ok := lock[resource.ProviderName]; ok {
-			version = provider.Version
-		} else {
-			version = constraintFor(resource.ProviderName)
-		}
-
-		key := fmt.Sprintf("%s.%s", resource.ProviderName, resource.ProviderAlias)
-		if existing, ok := discovered[key]; ok {
-			if resource.Filename < existing.Position.Filename ||
-				(resource.Filename == existing.Position.Filename && resource.Line < existing.Position.Line) {
-				existing.Position = Position{
-					Filename: resource.Filename,
-					Line:     resource.Line,
-				}
-			}
-			continue
-		}
-
-		discovered[key] = &Provider{
-			Name:    resource.ProviderName,
-			Alias:   types.String(resource.ProviderAlias),
-			Version: types.String(version),
-			Position: Position{
-				Filename: resource.Filename,
-				Line:     resource.Line,
-			},
-		}
+func addProviderFromResource(
+	discovered map[string]*Provider,
+	resource *rawResource,
+	lock map[string]lockedProvider,
+	constraintFor func(string) string,
+) {
+	if _, ignored := isIgnored(resource.Filename, resource.Line); ignored {
+		return
 	}
 
+	version := constraintFor(resource.ProviderName)
+	if entry, ok := lock[resource.ProviderName]; ok {
+		version = entry.Version
+	}
+
+	position := Position{Filename: resource.Filename, Line: resource.Line}
+	key := fmt.Sprintf("%s.%s", resource.ProviderName, resource.ProviderAlias)
+
+	if existing, ok := discovered[key]; ok {
+		if position.Filename < existing.Position.Filename ||
+			(position.Filename == existing.Position.Filename && position.Line < existing.Position.Line) {
+			existing.Position = position
+		}
+		return
+	}
+
+	discovered[key] = &Provider{
+		Name:     resource.ProviderName,
+		Alias:    types.String(resource.ProviderAlias),
+		Version:  types.String(version),
+		Position: position,
+	}
+}
+
+func sortedProviders(discovered map[string]*Provider) []*Provider {
 	keys := make([]string, 0, len(discovered))
 	for key := range discovered {
 		keys = append(keys, key)
@@ -543,7 +565,6 @@ func loadProviders(meta *module.Meta, resources []rawResource, config *print.Con
 	for _, key := range keys {
 		providers = append(providers, discovered[key])
 	}
-
 	return providers
 }
 
