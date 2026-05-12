@@ -117,7 +117,7 @@ func loadModuleItems(meta *module.Meta, files map[string]*hcl.File, config *prin
 		return nil, err
 	}
 
-	variablePositions := extractBlockPositions(files, "variables")
+	variablePositions := extractBlockPositions(files, "variable")
 	outputPositions := extractBlockPositions(files, "output")
 	rawResources := extractResources(files)
 	inputs, required, optional := loadInputs(meta, variablePositions, config)
