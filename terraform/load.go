@@ -411,7 +411,7 @@ func loadOutputValues(config *print.Config) (map[string]*output, error) {
 	return terraformOutputs, err
 }
 
-func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider { //nolint:gocyclo
+func loadProviders(meta *module.Meta, resources []rawResource, config *print.Config) []*Provider { //nolint:gocyclo
 	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
 	// Be wary when adding branches, and look for functionality that could
 	// be reasonably moved into an injected dependency.
@@ -422,6 +422,7 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 		Constraints *string  `hcl:"constraints"`
 		Hashes      []string `hcl:"hashes"`
 	}
+
 	type lockfile struct {
 		Provider []provider `hcl:"provider,block"`
 	}
@@ -429,7 +430,6 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 
 	if config.Settings.LockFile {
 		var lf lockfile
-
 		filename := filepath.Join(config.ModuleRoot, ".terraform.lock.hcl")
 		if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
 			for i := range lf.Provider {
@@ -440,44 +440,61 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 		}
 	}
 
-	resources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
+	// Reverse map: tfaddr.Provider -> local name
+	localNames := make(map[tfaddr.Provider]string, len(meta.ProviderReferences))
+	for ref, address := range meta.ProviderReferences {
+		if ref.Alias == "" {
+			localNames[address] = ref.LocalName
+		}
+	}
+
+	// Helper to look up constraints string by local name
+	constraintFor := func(localName string) string {
+		for address, constraint := range meta.ProviderRequirements {
+			if localNames[address] == localName && len(constraint) > 0 {
+				return constraint.String()
+			}
+		}
+		return ""
+	}
+
 	discovered := make(map[string]*Provider)
 
 	for _, resource := range resources {
-		for _, r := range resource {
-			comments := loadComments(r.Pos.Filename, r.Pos.Line)
+		comments := loadComments(resource.Filename, resource.Line)
 
-			// skip over resources that are marked as being ignored
-			if strings.Contains(comments, "terraform-docs-ignore") {
-				continue
-			}
+		// Skip over resources that are marked as being ignored
+		if strings.Contains(comments, "terraform-docs-ignore") {
+			continue
+		}
 
-			var version = ""
-			if l, ok := lock[r.Provider.Name]; ok {
-				version = l.Version
-			} else if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok && len(rv.VersionConstraints) > 0 {
-				version = strings.Join(rv.VersionConstraints, " ")
-			}
+		version := ""
+		if provider, ok := lock[resource.Name]; ok {
+			version = provider.Version
+		} else {
+			version = constraintFor(resource.Name)
+		}
 
-			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
-			if existing, ok := discovered[key]; ok {
-				// keep the earliest position across all resources of this provider
-				if r.Pos.Filename < existing.Position.Filename ||
-					(r.Pos.Filename == existing.Position.Filename && r.Pos.Line < existing.Position.Line) {
-					existing.Position = Position{Filename: r.Pos.Filename, Line: r.Pos.Line}
+		key := fmt.Sprintf("%s.%s", &resource.Name, resource.ProviderAlias)
+		if existing, ok := discovered[key]; ok {
+			if resource.Filename < existing.Position.Filename ||
+				(resource.Filename == existing.Position.Filename && resource.Line < existing.Position.Line) {
+				existing.Position = Position{
+					Filename: resource.Filename,
+					Line:     resource.Line,
 				}
-				continue
 			}
+			continue
+		}
 
-			discovered[key] = &Provider{
-				Name:    r.Provider.Name,
-				Alias:   types.String(r.Provider.Alias),
-				Version: types.String(version),
-				Position: Position{
-					Filename: r.Pos.Filename,
-					Line:     r.Pos.Line,
-				},
-			}
+		discovered[key] = &Provider{
+			Name:    resource.ProviderName,
+			Alias:   types.String(resource.ProviderAlias),
+			Version: types.String(version),
+			Position: Position{
+				Filename: resource.Filename,
+				Line:     resource.Line,
+			},
 		}
 	}
 
