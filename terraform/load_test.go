@@ -777,7 +777,7 @@ func TestLoadProviders(t *testing.T) {
 
 			module, files, _ := loadModule(filepath.Join("testdata", tt.path))
 			rawResources := extractResources(files)
-			providers := loadProviders(module, rawResources, config)
+			providers := loadProviders(module, rawResources, files, config)
 
 			actual := []string{}
 
@@ -915,7 +915,7 @@ func TestLoadProvidersDeterministic(t *testing.T) {
 			rawResources := extractResources(files)
 
 			for i := 0; i < 100; i++ {
-				pp := loadProviders(module, rawResources, config)
+				pp := loadProviders(module, rawResources, files, config)
 				providers(pp).sort(tt.sortenabled, "")
 
 				actual := make([]string, len(pp))
