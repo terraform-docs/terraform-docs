@@ -25,7 +25,6 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/ext/typeexpr"
 	"github.com/hashicorp/hcl/v2/hclsimple"
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/opentofu/opentofu-schema/earlydecoder"
 	"github.com/opentofu/opentofu-schema/module"
 	tfaddr "github.com/opentofu/registry-address"
