@@ -262,7 +262,7 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 
 		in := &Input{
 			Name:        name,
-			Type:        types.String(ctyTypetoString(input.Type)),
+			Type:        types.TypeOf(ctyTypetoString(input.Type), defaultValue.Raw()),
 			Description: types.String(description),
 			Default:     defaultValue,
 			Required:    isRequired,
