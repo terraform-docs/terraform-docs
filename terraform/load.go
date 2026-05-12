@@ -512,27 +512,48 @@ func loadProviders(meta *module.Meta, resources []rawResource, config *print.Con
 	return providers
 }
 
-func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
-	var requirements = make([]*Requirement, 0)
-	for _, core := range tfmodule.RequiredCore {
+func loadRequirements(meta *module.Meta) []*Requirement {
+	requirements := make([]*Requirement, 0)
+
+	type providerEntry struct {
+		localName string
+		address   tfaddr.Provider
+	}
+
+	// terraform / opentofu core
+	for _, coreConstraint := range meta.CoreRequirements {
 		requirements = append(requirements, &Requirement{
 			Name:    "terraform",
-			Version: types.String(core),
+			Version: types.String(coreConstraint.String()),
 		})
 	}
 
-	names := make([]string, 0, len(tfmodule.RequiredProviders))
-	for n := range tfmodule.RequiredProviders {
-		names = append(names, n)
+	// reverse map: tfaddr.Provider -> local name (un-aliased ref)
+	localNamesByProvider := make(map[tfaddr.Provider]string, len(meta.ProviderReferences))
+	for providerRef, providerAddr := range meta.ProviderReferences {
+		if providerRef.Alias == "" {
+			localNamesByProvider[providerAddr] = providerRef.LocalName
+		}
 	}
 
-	sort.Strings(names)
+	// stable ordering by local name
+	providerEntries := make([]providerEntry, 0, len(meta.ProviderRequirements))
+	for providerAddr := range meta.ProviderRequirements {
+		localName, hasLocalName := localNamesByProvider[providerAddr]
+		if !hasLocalName {
+			localName = providerAddr.Type // fallback: bare type
+		}
+		providerEntries = append(providerEntries, providerEntry{localName: localName, address: providerAddr})
+	}
+	sort.Slice(providerEntries, func(i, j int) bool {
+		return providerEntries[i].localName < providerEntries[j].localName
+	})
 
-	for _, name := range names {
-		for _, version := range tfmodule.RequiredProviders[name].VersionConstraints {
+	for _, entry := range providerEntries {
+		for _, versionConstraint := range meta.ProviderRequirements[entry.address] {
 			requirements = append(requirements, &Requirement{
-				Name:    name,
-				Version: types.String(version),
+				Name:    entry.localName,
+				Version: types.String(versionConstraint.String()),
 			})
 		}
 	}
