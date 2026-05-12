@@ -112,6 +112,9 @@ func (o *Output) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		fn(o.Value, "value")         //nolint:errcheck,gosec
 		fn(o.Sensitive, "sensitive") //nolint:errcheck,gosec
 	}
+	if o.IsDeprecated() {
+		fn(o.Deprecated, "deprecated") //nolint:errcheck,gosec
+	}
 	return e.EncodeToken(start.End())
 }
 
