@@ -37,6 +37,8 @@ import (
 	"github.com/terraform-docs/terraform-docs/print"
 )
 
+const ignoreMarker = "terraform-docs-ignore"
+
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
 func LoadWithOptions(config *print.Config) (*Module, error) {
@@ -222,10 +224,9 @@ func loadInputs(meta *module.Meta, positions map[string]Position, config *print.
 
 	for name, input := range meta.Variables {
 		position := positions[name]
-		comments := loadComments(position.Filename, position.Line)
+		comments, ignored := isIgnored(position.Filename, position.Line)
 
-		// Skip over inputs that are marked as being ignored
-		if strings.Contains(comments, "terraform-docs-ignore") {
+		if ignored {
 			continue
 		}
 
@@ -293,8 +294,8 @@ func loadModuleCalls(meta *module.Meta, config *print.Config) []*ModuleCall {
 			line = moduleCall.RangePtr.Start.Line
 		}
 
-		comments := loadComments(filename, line)
-		if strings.Contains(comments, "terraform-docs-ignore") {
+		comments, ignored := isIgnored(filename, line)
+		if ignored {
 			continue
 		}
 
@@ -358,10 +359,9 @@ func loadOutputs(meta *module.Meta, positions map[string]Position, config *print
 
 	for name, output := range meta.Outputs {
 		position := positions[name]
-		comments := loadComments(position.Filename, position.Line)
+		comments, ignored := isIgnored(position.Filename, position.Line)
 
-		// Skip over outputs that are marked as being ignored
-		if strings.Contains(comments, "terraform-docs-ignore") {
+		if ignored {
 			continue
 		}
 
@@ -464,11 +464,11 @@ func loadProviders(meta *module.Meta, resources []rawResource, config *print.Con
 
 	discovered := make(map[string]*Provider)
 
-	for _, resource := range resources {
-		comments := loadComments(resource.Filename, resource.Line)
+	for index := range resources {
+		resource := &resources[index]
+		_, ignored := isIgnored(resource.Filename, resource.Line)
 
-		// Skip over resources that are marked as being ignored
-		if strings.Contains(comments, "terraform-docs-ignore") {
+		if ignored {
 			continue
 		}
 
@@ -582,12 +582,9 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 				version = resourceVersion(rv.VersionConstraints)
 			}
 
-			var source string
-			if len(tfmodule.RequiredProviders[r.Provider.Name].Source) > 0 {
-				source = tfmodule.RequiredProviders[r.Provider.Name].Source
-			} else {
-				source = fmt.Sprintf("%s/%s", "hashicorp", r.Provider.Name)
-			}
+		if ignored {
+			continue
+		}
 
 			rType := strings.TrimPrefix(r.Type, r.Provider.Name+"_")
 			key := fmt.Sprintf("%s.%s.%s.%s", r.Provider.Name, r.Mode, rType, r.Name)
@@ -611,6 +608,7 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 				},
 			}
 		}
+
 	}
 
 	resourceKeys := make([]string, 0, len(discovered))
@@ -687,4 +685,25 @@ func sortItems(tfmodule *Module, config *print.Config) {
 
 	// modules
 	modulecalls(tfmodule.ModuleCalls).sort(config.Sort.Enabled, config.Sort.By)
+}
+
+func resolveProviderSource(resource *rawResource, meta *module.Meta, localToAttribute map[string]tfaddr.Provider) (string, string) {
+	attribute, ok := localToAttribute[resource.ProviderName]
+	version := ""
+
+	if !ok {
+		return fmt.Sprintf("hashicorp/%s", resource.ProviderName), ""
+	}
+
+	if vs, ok := meta.ProviderRequirements[attribute]; ok && len(vs) > 0 {
+		version = resourceVersion([]string{
+			vs.String(),
+		})
+	}
+	return attribute.ForDisplay(), version
+}
+
+func isIgnored(filename string, line int) (comments string, ignored bool) {
+	comments = loadComments(filename, line)
+	return comments, strings.Contains(comments, ignoreMarker)
 }
