@@ -74,11 +74,11 @@ func loadModule(path string) (*module.Meta, map[string]*hcl.File, error) {
 	return meta, files, nil
 }
 
-func ctyTypetoString(t cty.Type) string {
-	if t == cty.NilType {
+func ctyTypetoString(input cty.Type) string {
+	if input == cty.NilType || input == cty.DynamicPseudoType {
 		return ""
 	}
-	return typeexpr.TypeString(t)
+	return typeexpr.TypeString(input)
 }
 
 func ctyValueToString(v cty.Value) string {
