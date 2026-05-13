@@ -212,7 +212,7 @@ func (e Empty) MarshalJSON() ([]byte, error) {
 	return []byte(`""`), nil
 }
 
-// Number represents a 'number' value which is marshaled to `null` when emty in JSON and YAML
+// Number represents a 'number' value which is marshaled to `null` when empty in JSON and YAML
 type Number float64
 
 // nolint

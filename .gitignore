@@ -38,3 +38,6 @@ site/
 
 # contributors.list
 contributors.list
+
+# local notes
+.local/

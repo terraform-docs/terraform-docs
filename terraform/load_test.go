@@ -466,7 +466,7 @@ func TestLoadSections(t *testing.T) {
 func TestLoadInputs(t *testing.T) {
 	type expected struct {
 		inputs    int
-		requireds int
+		requireds int // codespell:ignore requireds
 		optionals int
 	}
 	tests := []struct {
@@ -479,7 +479,7 @@ func TestLoadInputs(t *testing.T) {
 			path: "full-example",
 			expected: expected{
 				inputs:    7,
-				requireds: 2,
+				requireds: 2, // codespell:ignore requireds
 				optionals: 5,
 			},
 		},
@@ -488,7 +488,7 @@ func TestLoadInputs(t *testing.T) {
 			path: "no-required-inputs",
 			expected: expected{
 				inputs:    6,
-				requireds: 0,
+				requireds: 0, // codespell:ignore requireds
 				optionals: 6,
 			},
 		},
@@ -497,7 +497,7 @@ func TestLoadInputs(t *testing.T) {
 			path: "no-optional-inputs",
 			expected: expected{
 				inputs:    6,
-				requireds: 6,
+				requireds: 6, // codespell:ignore requireds
 				optionals: 0,
 			},
 		},
@@ -506,7 +506,7 @@ func TestLoadInputs(t *testing.T) {
 			path: "no-inputs",
 			expected: expected{
 				inputs:    0,
-				requireds: 0,
+				requireds: 0, // codespell:ignore requireds
 				optionals: 0,
 			},
 		},
@@ -517,10 +517,10 @@ func TestLoadInputs(t *testing.T) {
 
 			config := print.NewConfig()
 			module, _ := loadModule(filepath.Join("testdata", tt.path))
-			inputs, requireds, optionals := loadInputs(module, config)
+			inputs, requireds, optionals := loadInputs(module, config) // codespell:ignore requireds
 
 			assert.Equal(tt.expected.inputs, len(inputs))
-			assert.Equal(tt.expected.requireds, len(requireds))
+			assert.Equal(tt.expected.requireds, len(requireds)) // codespell:ignore requireds
 			assert.Equal(tt.expected.optionals, len(optionals))
 		})
 	}
