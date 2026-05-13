@@ -76,5 +76,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: quay.io/${{ github.event.repository.name }}/terraform-docs:${{ steps.vars.outputs.tag }}
-
-
