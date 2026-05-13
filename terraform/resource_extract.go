@@ -54,45 +54,71 @@ func extractResources(files map[string]*hcl.File) []rawResource {
 	for _, file := range files {
 		content, _, _ := file.Body.PartialContent(schema)
 		for _, block := range content.Blocks {
-			mode := "managed"
-			inner, _, _ := block.Body.PartialContent(bodySchema)
-			providerName := strings.SplitN(block.Labels[0], "_", 2)[0]
-			providerAlias := ""
-			if block.Type == "data" {
-				mode = "data"
-			}
-			if attribute, ok := inner.Attributes["provider"]; ok {
-				// provider = aws.useast1 -> Traversal: [aws, useast1]
-				if traversal, diags := hcl.AbsTraversalForExpr(attribute.Expr); !diags.HasErrors() {
-					if len(traversal) >= 1 {
-						if root, ok := traversal[0].(hcl.TraverseRoot); ok {
-							providerName = root.Name
-						}
-					}
-					if len(traversal) >= 2 {
-						if attribute, ok := traversal[1].(hcl.TraverseAttr); ok {
-							providerAlias = attribute.Name
-						}
-					}
-				} else if value, diags := attribute.Expr.Value(nil); !diags.HasErrors() && value.Type() == cty.String {
-					// provider = "aws.useast1" (legacy string-literal form)
-					parts := strings.SplitN(value.AsString(), ".", 2)
-					providerName = parts[0]
-					if len(parts) == 2 {
-						providerAlias = parts[1]
-					}
-				}
-			}
-			out = append(out, rawResource{
-				Mode:          mode,
-				Type:          block.Labels[0],
-				Name:          block.Labels[1],
-				Filename:      block.DefRange.Filename,
-				Line:          block.DefRange.Start.Line,
-				ProviderName:  providerName,
-				ProviderAlias: providerAlias,
-			})
+			out = append(out, buildResource(block, bodySchema))
 		}
 	}
 	return out
+}
+
+func buildResource(block *hcl.Block, bodySchema *hcl.BodySchema) rawResource {
+	mode := "managed"
+	if block.Type == "data" {
+		mode = "data"
+	}
+
+	providerName := strings.SplitN(block.Labels[0], "_", 2)[0]
+	providerAlias := ""
+
+	inner, _, _ := block.Body.PartialContent(bodySchema)
+	if attribute, ok := inner.Attributes["provider"]; ok {
+		providerName, providerAlias = parseProvider(attribute, providerName)
+	}
+
+	return rawResource{
+		Mode:          mode,
+		Type:          block.Labels[0],
+		Name:          block.Labels[1],
+		Filename:      block.DefRange.Filename,
+		Line:          block.DefRange.Start.Line,
+		ProviderName:  providerName,
+		ProviderAlias: providerAlias,
+	}
+}
+
+func parseProvider(attribute *hcl.Attribute, defaultName string) (string, string) {
+	// provider = aws.useast1 -> Traversal: [aws, useast1]
+	if traversal, diags := hcl.AbsTraversalForExpr(attribute.Expr); !diags.HasErrors() {
+		return providerFromTraversal(traversal, defaultName)
+	}
+	// provider = "aws.useast1" (legacy string-literal form)
+	if value, diags := attribute.Expr.Value(nil); !diags.HasErrors() && value.Type() == cty.String {
+		return providerFromString(value.AsString(), defaultName)
+	}
+	return defaultName, ""
+}
+
+func providerFromTraversal(traversal hcl.Traversal, defaultName string) (string, string) {
+	name := defaultName
+	alias := ""
+	if len(traversal) >= 1 {
+		if root, ok := traversal[0].(hcl.TraverseRoot); ok {
+			name = root.Name
+		}
+	}
+	if len(traversal) >= 2 {
+		if attr, ok := traversal[1].(hcl.TraverseAttr); ok {
+			alias = attr.Name
+		}
+	}
+	return name, alias
+}
+
+func providerFromString(value string, _ string) (string, string) {
+	parts := strings.SplitN(value, ".", 2)
+	name := parts[0]
+	alias := ""
+	if len(parts) == 2 {
+		alias = parts[1]
+	}
+	return name, alias
 }
