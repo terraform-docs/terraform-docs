@@ -22,7 +22,7 @@ It's string number one.
 input.string-special-chars ("\\.<>[]{}_-")
 n/a
 
-input.number-3 ("19")
+input.number-3 (19)
 n/a
 
 input.number-4 (15.75)
