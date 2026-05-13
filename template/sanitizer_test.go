@@ -378,21 +378,21 @@ func TestConvertMultiLineText(t *testing.T) {
 			filename: "indentations",
 			isTable:  false,
 			showHTML: true,
-			expected: "This is is a multline test which works\n\nKey  \n  Foo1: blah  \n  Foo2: blah\n\nKey2  \nFoo1: bar1  \nFoo2: bar2",
+			expected: "This is is a multiline test which works\n\nKey  \n  Foo1: blah  \n  Foo2: blah\n\nKey2  \nFoo1: bar1  \nFoo2: bar2",
 		},
 		{
 			name:     "convert multi-line indentations",
 			filename: "indentations",
 			isTable:  true,
 			showHTML: true,
-			expected: "This is is a multline test which works<br/><br/>Key<br/>  Foo1: blah<br/>  Foo2: blah<br/><br/>Key2<br/>Foo1: bar1<br/>Foo2: bar2",
+			expected: "This is is a multiline test which works<br/><br/>Key<br/>  Foo1: blah<br/>  Foo2: blah<br/><br/>Key2<br/>Foo1: bar1<br/>Foo2: bar2",
 		},
 		{
 			name:     "convert multi-line indentations",
 			filename: "indentations",
 			isTable:  true,
 			showHTML: false,
-			expected: "This is is a multline test which works  Key   Foo1: blah   Foo2: blah  Key2 Foo1: bar1 Foo2: bar2",
+			expected: "This is is a multiline test which works  Key   Foo1: blah   Foo2: blah  Key2 Foo1: bar1 Foo2: bar2",
 		},
 	}
 	for _, tt := range tests {

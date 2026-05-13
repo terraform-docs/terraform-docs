@@ -237,11 +237,11 @@ func normalize(s string, trimSpace bool) string {
 	if !trimSpace {
 		return s
 	}
-	splitted := strings.Split(s, "\n")
-	for i, v := range splitted {
-		splitted[i] = strings.TrimSpace(v)
+	split := strings.Split(s, "\n")
+	for i, v := range split {
+		split[i] = strings.TrimSpace(v)
 	}
-	return strings.Join(splitted, "\n")
+	return strings.Join(split, "\n")
 }
 
 // GenerateIndentation generates indentation of Markdown and AsciiDoc headers
