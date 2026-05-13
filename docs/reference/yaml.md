@@ -144,7 +144,7 @@ generates the following output:
           - c
         required: false
       - name: list-2
-        type: list
+        type: any
         description: It's list number two.
         default: null
         required: true
@@ -159,14 +159,7 @@ generates the following output:
         default: []
         required: false
       - name: long_type
-        type: |-
-          object({
-              name = string,
-              foo  = object({ foo = string, bar = string }),
-              bar  = object({ foo = string, bar = string }),
-              fizz = list(string),
-              buzz = list(string)
-            })
+        type: object({bar=object({bar=string,foo=string}),buzz=list(string),fizz=list(string),foo=object({bar=string,foo=string}),name=string})
         description: |
           This description is itself markdown.
 
@@ -193,7 +186,7 @@ generates the following output:
           c: 3
         required: false
       - name: map-2
-        type: map
+        type: any
         description: It's map number two.
         default: null
         required: true
@@ -213,14 +206,14 @@ generates the following output:
         default: 42
         required: false
       - name: number-2
-        type: number
+        type: any
         description: It's number number two.
         default: null
         required: true
       - name: number-3
         type: number
         description: null
-        default: "19"
+        default: 19
         required: false
       - name: number-4
         type: number
@@ -243,7 +236,7 @@ generates the following output:
         default: bar
         required: false
       - name: string-2
-        type: string
+        type: any
         description: It's string number two.
         default: null
         required: true
@@ -337,7 +330,7 @@ generates the following output:
       - type: resource
         name: baz
         provider: foo
-        source: https://registry.acme.com/foo
+        source: registry.acme.com/namespace/foo
         mode: managed
         version: latest
         description: null
