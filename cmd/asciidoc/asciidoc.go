@@ -34,8 +34,9 @@ func NewCommand(runtime *cli.Runtime, config *print.Config) *cobra.Command {
 	// flags
 	cmd.PersistentFlags().BoolVar(&config.Settings.Anchor, "anchor", true, "create anchor links")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Default, "default", true, "show Default column or section")
+	cmd.PersistentFlags().BoolVar(&config.Settings.Deprecated, "deprecated", false, "show Deprecated footnote or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.HideEmpty, "hide-empty", false, "hide empty sections (default false)")
-	cmd.PersistentFlags().IntVar(&config.Settings.Indent, "indent", 2, "indention level of AsciiDoc sections [1, 2, 3, 4, 5]")
+	cmd.PersistentFlags().IntVar(&config.Settings.Indent, "indent", 2, "indentation level of AsciiDoc sections [1, 2, 3, 4, 5]")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Required, "required", true, "show Required column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Sensitive, "sensitive", true, "show Sensitive column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Type, "type", true, "show Type column or section")

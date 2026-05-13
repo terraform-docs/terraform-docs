@@ -263,7 +263,7 @@ type List []interface{}
 
 // Underlying returns the underlying elements in the form of '[]interface {}'
 func (l List) Underlying() []interface{} {
-	r := make([]interface{}, 0)
+	r := make([]interface{}, 0, len(l))
 	for _, i := range l {
 		r = append(r, i)
 	}

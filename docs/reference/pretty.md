@@ -209,7 +209,7 @@ generates the following output:
     input.number-2 (required)
     It's number number two.
 
-    input.number-3 ("19")
+    input.number-3 (19)
     n/a
 
     input.number-4 (15.75)

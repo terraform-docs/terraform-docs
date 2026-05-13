@@ -17,7 +17,7 @@
         {{- if .Config.Settings.Default }} ------- |{{ end }}
         {{- if .Config.Settings.Required }} :------: |{{ end }}
         {{- range .Module.Inputs }}
-            | {{ anchorNameMarkdown "input" .Name }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
+            | {{ anchorNameMarkdown "input" .Name }}{{ if and $.Config.Settings.Deprecated .IsDeprecated }}[^{{ .Name }}_deprecated]{{ end }} | {{ tostring .Description | sanitizeMarkdownTbl }} |
             {{- if $.Config.Settings.Type -}}
                 {{ printf " " }}{{ tostring .Type | type | sanitizeMarkdownTbl }} |
             {{- end -}}
@@ -27,6 +27,14 @@
             {{- if $.Config.Settings.Required -}}
                 {{ printf " " }}{{ ternary .Required "yes" "no" }} |
             {{- end -}}
+        {{- end }}
+        {{- if $.Config.Settings.Deprecated }}
+            {{- range .Module.Inputs }}
+                {{- if .IsDeprecated }}
+
+[^{{ .Name }}_deprecated]: **Deprecated** — {{ tostring .Deprecated | sanitizeMarkdownTbl }}
+                {{- end -}}
+            {{- end }}
         {{- end }}
     {{ end }}
 {{ end -}}

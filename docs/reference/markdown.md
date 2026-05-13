@@ -22,11 +22,12 @@ terraform-docs markdown [PATH] [flags]
       --anchor       create anchor links (default true)
       --atx-closed   close ATX style headers
       --default      show Default column or section (default true)
+      --deprecated   show Deprecated footnote or section
       --escape       escape special characters (default true)
   -h, --help         help for markdown
       --hide-empty   hide empty sections (default false)
       --html         use HTML tags in generated output (default true)
-      --indent int   indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
+      --indent int   indentation level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --required     show Required column or section (default true)
       --sensitive    show Sensitive column or section (default true)
       --type         show Type column or section (default true)

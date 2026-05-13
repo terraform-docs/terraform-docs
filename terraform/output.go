@@ -25,8 +25,15 @@ type Output struct {
 	Description types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
 	Value       types.Value  `json:"value,omitempty" toml:"value,omitempty" xml:"value,omitempty" yaml:"value,omitempty"`
 	Sensitive   bool         `json:"sensitive,omitempty" toml:"sensitive,omitempty" xml:"sensitive,omitempty" yaml:"sensitive,omitempty"`
+	Deprecated  types.String `json:"deprecated,omitempty" toml:"deprecated,omitempty" xml:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
 	ShowValue   bool         `json:"-" toml:"-" xml:"-" yaml:"-"`
+}
+
+// IsDeprecated reports whether the output has a non-empty `deprecated = "..."`
+// attribute (Terraform 1.14+ / OpenTofu 1.10+).
+func (o *Output) IsDeprecated() bool {
+	return string(o.Deprecated) != ""
 }
 
 type withvalue struct {
@@ -34,6 +41,7 @@ type withvalue struct {
 	Description types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
 	Value       types.Value  `json:"value" toml:"value" xml:"value" yaml:"value"`
 	Sensitive   bool         `json:"sensitive" toml:"sensitive" xml:"sensitive" yaml:"sensitive"`
+	Deprecated  types.String `json:"deprecated,omitempty" toml:"deprecated,omitempty" xml:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
 	ShowValue   bool         `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
@@ -103,6 +111,9 @@ func (o *Output) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if o.ShowValue {
 		fn(o.Value, "value")         //nolint:errcheck,gosec
 		fn(o.Sensitive, "sensitive") //nolint:errcheck,gosec
+	}
+	if o.IsDeprecated() {
+		fn(o.Deprecated, "deprecated") //nolint:errcheck,gosec
 	}
 	return e.EncodeToken(start.End())
 }

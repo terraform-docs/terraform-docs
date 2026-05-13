@@ -22,9 +22,14 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/hcl/v2/hclsimple"
+	"github.com/hashicorp/hcl/v2"
+	"github.com/hashicorp/hcl/v2/ext/typeexpr"
+	"github.com/opentofu/opentofu-schema/earlydecoder"
+	"github.com/opentofu/opentofu-schema/module"
+	tfaddr "github.com/opentofu/registry-address"
+	"github.com/zclconf/go-cty/cty"
+	ctyjson "github.com/zclconf/go-cty/cty/json"
 
-	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
 	"github.com/terraform-docs/terraform-docs/internal/reader"
 	"github.com/terraform-docs/terraform-docs/internal/types"
 	"github.com/terraform-docs/terraform-docs/print"
@@ -33,28 +38,72 @@ import (
 // LoadWithOptions returns new instance of Module with all the inputs and
 // outputs discovered from provided 'path' containing Terraform config
 func LoadWithOptions(config *print.Config) (*Module, error) {
-	tfmodule, err := loadModule(config.ModuleRoot)
+	meta, files, err := loadModule(config.ModuleRoot)
 	if err != nil {
 		return nil, err
 	}
 
-	module, err := loadModuleItems(tfmodule, config)
+	module, err := loadModuleItems(meta, files, config)
 	if err != nil {
 		return nil, err
 	}
+
 	sortItems(module, config)
 	return module, nil
 }
 
-func loadModule(path string) (*tfconfig.Module, error) {
-	module, diag := tfconfig.LoadModule(path)
-	if diag != nil && diag.HasErrors() {
-		return nil, diag
+func loadModule(path string) (*module.Meta, map[string]*hcl.File, error) {
+	files, diags := parseModuleFiles(path)
+	if diags.HasErrors() {
+		return nil, nil, diags
 	}
-	return module, nil
+	// earlydecoder may emit diagnostics for constructs it cannot fully
+	// resolve (e.g. legacy `type = "string"`, `var.foo` references in
+	// places it does not evaluate, etc.). These are non-fatal for our
+	// metadata extraction: it still populates meta with what it could
+	// parse. Mirror the lenient behavior of the previous
+	// terraform-config-inspect loader and only fail if no metadata at
+	// all came back.meta, _ := earlydecoder.LoadModule(path, files)
+	meta, _ := earlydecoder.LoadModule(path, files)
+	if meta == nil {
+		return nil, nil, fmt.Errorf("failed to load module from %q", path)
+	}
+	return meta, files, nil
 }
 
-func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, error) {
+func ctyTypetoString(input cty.Type) string {
+	if input == cty.NilType || input == cty.DynamicPseudoType {
+		return ""
+	}
+	return typeexpr.TypeString(input)
+}
+
+func ctyValueToString(v cty.Value) string {
+	if v == cty.NilVal {
+		return ""
+	}
+	b, err := ctyjson.Marshal(v, v.Type())
+	if err != nil {
+		return ""
+	}
+	return string(b)
+}
+
+func ctyValueToTypesValue(value cty.Value) types.Value {
+	if value == cty.NilVal {
+		return new(types.Nil)
+	}
+	if value.IsNull() {
+		return new(types.Nil)
+	}
+	var raw interface{}
+	if err := json.Unmarshal([]byte(ctyValueToString(value)), &raw); err != nil {
+		return new(types.Nil)
+	}
+	return types.ValueOf(raw)
+}
+
+func loadModuleItems(meta *module.Meta, files map[string]*hcl.File, config *print.Config) (*Module, error) {
 	header, err := loadHeader(config)
 	if err != nil {
 		return nil, err
@@ -65,26 +114,28 @@ func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, 
 		return nil, err
 	}
 
-	inputs, required, optional := loadInputs(tfmodule, config)
-	modulecalls := loadModulecalls(tfmodule, config)
-	outputs, err := loadOutputs(tfmodule, config)
+	variablePositions := extractBlockPositions(files, "variable")
+	outputPositions := extractBlockPositions(files, "output")
+	rawResources := extractResources(files)
+	inputs, required, optional := loadInputs(meta, variablePositions, config)
+	moduleCalls := loadModuleCalls(meta, files, config)
+	outputs, err := loadOutputs(meta, outputPositions, config)
 	if err != nil {
 		return nil, err
 	}
-	providers := loadProviders(tfmodule, config)
-	requirements := loadRequirements(tfmodule)
-	resources := loadResources(tfmodule, config)
+	providers := loadProviders(meta, rawResources, files, config)
+	requirements := loadRequirements(meta)
+	resources := loadResources(meta, rawResources, config)
 
 	return &Module{
-		Header:       header,
-		Footer:       footer,
-		Inputs:       inputs,
-		ModuleCalls:  modulecalls,
-		Outputs:      outputs,
-		Providers:    providers,
-		Requirements: requirements,
-		Resources:    resources,
-
+		Header:         header,
+		Footer:         footer,
+		Inputs:         inputs,
+		ModuleCalls:    moduleCalls,
+		Outputs:        outputs,
+		Providers:      providers,
+		Requirements:   requirements,
+		Resources:      resources,
 		RequiredInputs: required,
 		OptionalInputs: optional,
 	}, nil
@@ -129,32 +180,49 @@ func loadFooter(config *print.Config) (string, error) {
 	return loadSection(config, config.FooterFrom, "footer")
 }
 
-func loadSection(config *print.Config, file string, section string) (string, error) { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
-
+func loadSection(config *print.Config, file, section string) (string, error) {
 	if section == "" {
 		return "", errors.New("section is missing")
 	}
-	filename := filepath.Join(config.ModuleRoot, file)
 	if ok, err := isFileFormatSupported(file, section); !ok {
 		return "", err
 	}
-	if info, err := os.Stat(filename); os.IsNotExist(err) || info.IsDir() {
-		if section == "header" && file == "main.tf" {
-			return "", nil // absorb the error to not break workflow for default value of header and missing 'main.tf'
-		}
-		return "", err // user explicitly asked for a file which doesn't exist
+
+	filename, err := resolveSectionFile(config.ModuleRoot, file, section)
+	if err != nil || filename == "" {
+		return "", err
 	}
-	format := getFileFormat(file)
-	if format != ".tf" && format != ".tofu" {
-		content, err := os.ReadFile(filepath.Clean(filename))
-		if err != nil {
-			return "", err
-		}
-		return string(content), nil
+
+	if format := getFileFormat(file); format != ".tf" && format != ".tofu" {
+		return readPlainFile(filename)
 	}
+	return extractTerraformDocComment(filename)
+}
+
+// resolveSectionFile returns the absolute path of the section file, or
+// ("", nil) when the implicit default header file is missing (which is
+// silently allowed to keep the legacy workflow intact).
+func resolveSectionFile(root, file, section string) (string, error) {
+	filename := filepath.Join(root, file)
+	info, err := os.Stat(filename)
+	if err == nil && !info.IsDir() {
+		return filename, nil
+	}
+	if section == "header" && file == "main.tf" {
+		return "", nil
+	}
+	return "", err
+}
+
+func readPlainFile(filename string) (string, error) {
+	content, err := os.ReadFile(filepath.Clean(filename))
+	if err != nil {
+		return "", err
+	}
+	return string(content), nil
+}
+
+func extractTerraformDocComment(filename string) (string, error) {
 	lines := reader.Lines{
 		FileName: filename,
 		LineNum:  -1,
@@ -183,81 +251,68 @@ func loadSection(config *print.Config, file string, section string) (string, err
 	return strings.Join(sectionText, "\n"), nil
 }
 
-func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*Input, []*Input) {
-	var inputs = make([]*Input, 0, len(tfmodule.Variables))
-	var required = make([]*Input, 0, len(tfmodule.Variables))
-	var optional = make([]*Input, 0, len(tfmodule.Variables))
+func loadInputs(meta *module.Meta, positions map[string]Position, config *print.Config) ([]*Input, []*Input, []*Input) {
+	inputs := make([]*Input, 0, len(meta.Variables))
+	required := make([]*Input, 0)
+	optional := make([]*Input, 0)
 
-	for _, input := range tfmodule.Variables {
-		comments := loadComments(input.Pos.Filename, input.Pos.Line)
+	for name := range meta.Variables {
+		input := meta.Variables[name]
+		position := positions[name]
+		comments, ignored := isIgnored(position.Filename, position.Line)
 
-		// skip over inputs that are marked as being ignored
-		if strings.Contains(comments, "terraform-docs-ignore") {
+		if ignored {
 			continue
 		}
 
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
-		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
-		if inputDescription == "" && config.Settings.ReadComments {
-			inputDescription = comments
+		description := strings.ReplaceAll(input.Description, "\r\n", "\n")
+		if description == "" && config.Settings.ReadComments {
+			description = comments
 		}
 
-		i := &Input{
-			Name:        input.Name,
-			Type:        types.TypeOf(input.Type, input.Default),
-			Description: types.String(inputDescription),
-			Default:     types.ValueOf(input.Default),
-			Required:    input.Required,
-			Position: Position{
-				Filename: input.Pos.Filename,
-				Line:     input.Pos.Line,
-			},
+		isRequired := input.DefaultValue == cty.NilVal
+		defaultValue := ctyValueToTypesValue(input.DefaultValue)
+
+		in := &Input{
+			Name:        name,
+			Type:        types.TypeOf(ctyTypetoString(input.Type), defaultValue.Raw()),
+			Description: types.String(description),
+			Default:     defaultValue,
+			Required:    isRequired,
+			Deprecated:  types.String(input.Deprecated),
+			Position:    position,
 		}
 
-		inputs = append(inputs, i)
+		inputs = append(inputs, in)
 
-		if i.HasDefault() {
-			optional = append(optional, i)
+		if in.HasDefault() {
+			optional = append(optional, in)
 		} else {
-			required = append(required, i)
+			required = append(required, in)
 		}
 	}
 
 	return inputs, required, optional
 }
 
-func formatSource(s, v string) (source, version string) {
-	substr := "?ref="
+func loadModuleCalls(meta *module.Meta, files map[string]*hcl.File, config *print.Config) []*ModuleCall {
+	modules := make([]*ModuleCall, 0, len(meta.ModuleCalls))
 
-	if v != "" {
-		return s, v
-	}
+	versionOverrides := resolveModuleVersions(files, meta)
 
-	pos := strings.LastIndex(s, substr)
-	if pos == -1 {
-		return s, version
-	}
+	for localName := range meta.ModuleCalls {
+		moduleCall := meta.ModuleCalls[localName]
+		var filename string
+		var line int
 
-	adjustedPos := pos + len(substr)
-	if adjustedPos >= len(s) {
-		return s, version
-	}
+		if moduleCall.RangePtr != nil {
+			filename = moduleCall.RangePtr.Filename
+			line = moduleCall.RangePtr.Start.Line
+		}
 
-	source = s[0:pos]
-	version = s[adjustedPos:]
-
-	return source, version
-}
-
-func loadModulecalls(tfmodule *tfconfig.Module, config *print.Config) []*ModuleCall {
-	var modules = make([]*ModuleCall, 0)
-	var source, version string
-
-	for _, m := range tfmodule.ModuleCalls {
-		comments := loadComments(m.Pos.Filename, m.Pos.Line)
-
-		// skip over modules that are marked as being ignored
-		if strings.Contains(comments, "terraform-docs-ignore") {
+		comments, ignored := isIgnored(filename, line)
+		if ignored {
 			continue
 		}
 
@@ -266,25 +321,31 @@ func loadModulecalls(tfmodule *tfconfig.Module, config *print.Config) []*ModuleC
 			description = comments
 		}
 
-		source, version = formatSource(m.Source, m.Version)
+		source, version := moduleSourceAndVersion(&moduleCall)
+		if version == "" {
+			if v, ok := versionOverrides[localName]; ok && v != "" {
+				version = v
+			}
+		}
 
 		modules = append(modules, &ModuleCall{
-			Name:        m.Name,
+			Name:        localName,
 			Source:      source,
 			Version:     version,
 			Description: types.String(description),
 			Position: Position{
-				Filename: m.Pos.Filename,
-				Line:     m.Pos.Line,
+				Filename: filename,
+				Line:     line,
 			},
 		})
 	}
 	return modules
 }
 
-func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, error) {
-	outputs := make([]*Output, 0, len(tfmodule.Outputs))
+func loadOutputs(meta *module.Meta, positions map[string]Position, config *print.Config) ([]*Output, error) {
+	outputs := make([]*Output, 0, len(meta.Outputs))
 	values := make(map[string]*output)
+
 	if config.OutputValues.Enabled {
 		var err error
 		values, err = loadOutputValues(config)
@@ -292,43 +353,43 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 			return nil, err
 		}
 	}
-	for _, o := range tfmodule.Outputs {
-		comments := loadComments(o.Pos.Filename, o.Pos.Line)
 
-		// skip over outputs that are marked as being ignored
-		if strings.Contains(comments, "terraform-docs-ignore") {
+	for name := range meta.Outputs {
+		output := meta.Outputs[name]
+		position := positions[name]
+		comments, ignored := isIgnored(position.Filename, position.Line)
+
+		if ignored {
 			continue
 		}
 
 		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/584)
-		description := strings.ReplaceAll(o.Description, "\r\n", "\n")
+		description := strings.ReplaceAll(output.Description, "\r\n", "\n")
 		if description == "" && config.Settings.ReadComments {
 			description = comments
 		}
 
-		output := &Output{
-			Name:        o.Name,
+		out := &Output{
+			Name:        name,
 			Description: types.String(description),
-			Position: Position{
-				Filename: o.Pos.Filename,
-				Line:     o.Pos.Line,
-			},
-			ShowValue: config.OutputValues.Enabled,
+			Deprecated:  types.String(output.Deprecated),
+			Position:    position,
+			ShowValue:   config.OutputValues.Enabled,
 		}
 
 		if config.OutputValues.Enabled {
-			if value, ok := values[output.Name]; ok {
-				output.Sensitive = value.Sensitive
-				output.Value = types.ValueOf(value.Value)
+			if value, ok := values[out.Name]; ok {
+				out.Sensitive = value.Sensitive
+				out.Value = types.ValueOf(value.Value)
 			} else {
-				output.Value = types.ValueOf("null")
+				out.Value = types.ValueOf("null")
 			}
 
-			if output.Sensitive {
-				output.Value = types.ValueOf(`<sensitive>`)
+			if out.Sensitive {
+				out.Value = types.ValueOf(`<sensitive>`)
 			}
 		}
-		outputs = append(outputs, output)
+		outputs = append(outputs, out)
 	}
 	return outputs, nil
 }
@@ -353,76 +414,108 @@ func loadOutputValues(config *print.Config) (map[string]*output, error) {
 	return terraformOutputs, err
 }
 
-func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider { //nolint:gocyclo
-	// NOTE(khos2ow): this function is over our cyclomatic complexity goal.
-	// Be wary when adding branches, and look for functionality that could
-	// be reasonably moved into an injected dependency.
+func loadProviders(meta *module.Meta, resources []rawResource, files map[string]*hcl.File, config *print.Config) []*Provider {
+	lock := loadProviderLockfile(config)
+	constraintFor := buildConstraintLookup(meta)
 
-	type provider struct {
-		Name        string   `hcl:"name,label"`
-		Version     string   `hcl:"version"`
-		Constraints *string  `hcl:"constraints"`
-		Hashes      []string `hcl:"hashes"`
-	}
-	type lockfile struct {
-		Provider []provider `hcl:"provider,block"`
-	}
-	lock := make(map[string]provider)
-
-	if config.Settings.LockFile {
-		var lf lockfile
-
-		filename := filepath.Join(config.ModuleRoot, ".terraform.lock.hcl")
-		if err := hclsimple.DecodeFile(filename, nil, &lf); err == nil {
-			for i := range lf.Provider {
-				segments := strings.Split(lf.Provider[i].Name, "/")
-				name := segments[len(segments)-1]
-				lock[name] = lf.Provider[i]
-			}
-		}
-	}
-
-	resources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
 	discovered := make(map[string]*Provider)
 
-	for _, resource := range resources {
-		for _, r := range resource {
-			comments := loadComments(r.Pos.Filename, r.Pos.Line)
-
-			// skip over resources that are marked as being ignored
-			if strings.Contains(comments, "terraform-docs-ignore") {
-				continue
-			}
-
-			var version = ""
-			if l, ok := lock[r.Provider.Name]; ok {
-				version = l.Version
-			} else if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok && len(rv.VersionConstraints) > 0 {
-				version = strings.Join(rv.VersionConstraints, " ")
-			}
-
-			key := fmt.Sprintf("%s.%s", r.Provider.Name, r.Provider.Alias)
-			if existing, ok := discovered[key]; ok {
-				// keep the earliest position across all resources of this provider
-				if r.Pos.Filename < existing.Position.Filename ||
-					(r.Pos.Filename == existing.Position.Filename && r.Pos.Line < existing.Position.Line) {
-					existing.Position = Position{Filename: r.Pos.Filename, Line: r.Pos.Line}
-				}
-				continue
-			}
-
-			discovered[key] = &Provider{
-				Name:    r.Provider.Name,
-				Alias:   types.String(r.Provider.Alias),
-				Version: types.String(version),
-				Position: Position{
-					Filename: r.Pos.Filename,
-					Line:     r.Pos.Line,
-				},
-			}
-		}
+	for index := range extractProviderBlocks(files) {
+		block := extractProviderBlocks(files)[index]
+		seedProviderFromBlock(discovered, block, lock, constraintFor)
 	}
 
+	for index := range resources {
+		addProviderFromResource(discovered, &resources[index], lock, constraintFor)
+	}
+	return sortedProviders(discovered)
+}
+
+func buildConstraintLookup(meta *module.Meta) func(string) string {
+	constraints := make(map[string]string, len(meta.ProviderReferences))
+	for reference := range meta.ProviderReferences {
+		address := meta.ProviderReferences[reference]
+		if reference.Alias != "" {
+			continue
+		}
+		if cs, ok := meta.ProviderRequirements[address]; ok && len(cs) > 0 {
+			constraints[reference.LocalName] = cs.String()
+		}
+	}
+	return func(localName string) string {
+		return constraints[localName]
+	}
+}
+
+func seedProviderFromBlock(
+	discovered map[string]*Provider,
+	block rawProviderBlock,
+	lock map[string]lockedProvider,
+	constraintFor func(string) string,
+) {
+	if _, ignored := isIgnored(block.Filename, block.Line); ignored {
+		return
+	}
+
+	version := constraintFor(block.LocalName)
+	if entry, ok := lock[block.LocalName]; ok {
+		version = entry.Version
+	}
+
+	position := Position{Filename: block.Filename, Line: block.Line}
+	key := fmt.Sprintf("%s.%s", block.LocalName, block.Alias)
+
+	if existing, ok := discovered[key]; ok {
+		if position.Filename < existing.Position.Filename ||
+			(position.Filename == existing.Position.Filename && position.Line < existing.Position.Line) {
+			existing.Position = position
+		}
+		return
+	}
+
+	discovered[key] = &Provider{
+		Name:     block.LocalName,
+		Alias:    types.String(block.Alias),
+		Version:  types.String(version),
+		Position: position,
+	}
+}
+
+func addProviderFromResource(
+	discovered map[string]*Provider,
+	resource *rawResource,
+	lock map[string]lockedProvider,
+	constraintFor func(string) string,
+) {
+	if _, ignored := isIgnored(resource.Filename, resource.Line); ignored {
+		return
+	}
+
+	version := constraintFor(resource.ProviderName)
+	if entry, ok := lock[resource.ProviderName]; ok {
+		version = entry.Version
+	}
+
+	position := Position{Filename: resource.Filename, Line: resource.Line}
+	key := fmt.Sprintf("%s.%s", resource.ProviderName, resource.ProviderAlias)
+
+	if existing, ok := discovered[key]; ok {
+		if position.Filename < existing.Position.Filename ||
+			(position.Filename == existing.Position.Filename && position.Line < existing.Position.Line) {
+			existing.Position = position
+		}
+		return
+	}
+
+	discovered[key] = &Provider{
+		Name:     resource.ProviderName,
+		Alias:    types.String(resource.ProviderAlias),
+		Version:  types.String(version),
+		Position: position,
+	}
+}
+
+func sortedProviders(discovered map[string]*Provider) []*Provider {
 	keys := make([]string, 0, len(discovered))
 	for key := range discovered {
 		keys = append(keys, key)
@@ -433,84 +526,99 @@ func loadProviders(tfmodule *tfconfig.Module, config *print.Config) []*Provider 
 	for _, key := range keys {
 		providers = append(providers, discovered[key])
 	}
-
 	return providers
 }
 
-func loadRequirements(tfmodule *tfconfig.Module) []*Requirement {
-	var requirements = make([]*Requirement, 0)
-	for _, core := range tfmodule.RequiredCore {
+func loadRequirements(meta *module.Meta) []*Requirement {
+	requirements := make([]*Requirement, 0)
+
+	type providerEntry struct {
+		localName string
+		address   tfaddr.Provider
+	}
+
+	// terraform / opentofu core
+	for _, coreConstraint := range meta.CoreRequirements {
 		requirements = append(requirements, &Requirement{
 			Name:    "terraform",
-			Version: types.String(core),
+			Version: types.String(coreConstraint.String()),
 		})
 	}
 
-	names := make([]string, 0, len(tfmodule.RequiredProviders))
-	for n := range tfmodule.RequiredProviders {
-		names = append(names, n)
+	// reverse map: tfaddr.Provider -> local name (un-aliased ref)
+	localNamesByProvider := make(map[tfaddr.Provider]string, len(meta.ProviderReferences))
+	for providerReference := range meta.ProviderReferences {
+		if providerReference.Alias == "" {
+			localNamesByProvider[meta.ProviderReferences[providerReference]] = providerReference.LocalName
+		}
 	}
 
-	sort.Strings(names)
+	// stable ordering by local name
+	providerEntries := make([]providerEntry, 0, len(meta.ProviderRequirements))
+	for providerAddr := range meta.ProviderRequirements {
+		localName, hasLocalName := localNamesByProvider[providerAddr]
+		if !hasLocalName {
+			localName = providerAddr.Type // fallback: bare type
+		}
+		providerEntries = append(providerEntries, providerEntry{localName: localName, address: providerAddr})
+	}
+	sort.Slice(providerEntries, func(i, j int) bool {
+		return providerEntries[i].localName < providerEntries[j].localName
+	})
 
-	for _, name := range names {
-		for _, version := range tfmodule.RequiredProviders[name].VersionConstraints {
+	for index := range providerEntries {
+		entry := &providerEntries[index]
+		for _, versionConstraint := range meta.ProviderRequirements[entry.address] {
 			requirements = append(requirements, &Requirement{
-				Name:    name,
-				Version: types.String(version),
+				Name:    entry.localName,
+				Version: types.String(versionConstraint.String()),
 			})
 		}
 	}
 	return requirements
 }
 
-func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource {
-	allResources := []map[string]*tfconfig.Resource{tfmodule.ManagedResources, tfmodule.DataResources}
-	discovered := make(map[string]*Resource)
-
-	for _, resource := range allResources {
-		for _, r := range resource {
-			comments := loadComments(r.Pos.Filename, r.Pos.Line)
-
-			// skip over resources that are marked as being ignored
-			if strings.Contains(comments, "terraform-docs-ignore") {
-				continue
-			}
-
-			var version string
-			if rv, ok := tfmodule.RequiredProviders[r.Provider.Name]; ok {
-				version = resourceVersion(rv.VersionConstraints)
-			}
-
-			var source string
-			if len(tfmodule.RequiredProviders[r.Provider.Name].Source) > 0 {
-				source = tfmodule.RequiredProviders[r.Provider.Name].Source
-			} else {
-				source = fmt.Sprintf("%s/%s", "hashicorp", r.Provider.Name)
-			}
-
-			rType := strings.TrimPrefix(r.Type, r.Provider.Name+"_")
-			key := fmt.Sprintf("%s.%s.%s.%s", r.Provider.Name, r.Mode, rType, r.Name)
-
-			description := ""
-			if config.Settings.ReadComments {
-				description = comments
-			}
-
-			discovered[key] = &Resource{
-				Type:           rType,
-				Name:           r.Name,
-				Mode:           r.Mode.String(),
-				ProviderName:   r.Provider.Name,
-				ProviderSource: source,
-				Version:        types.String(version),
-				Description:    types.String(description),
-				Position: Position{
-					Filename: r.Pos.Filename,
-					Line:     r.Pos.Line,
-				},
-			}
+func loadResources(meta *module.Meta, resources []rawResource, config *print.Config) []*Resource {
+	// build localName -> tfaddr.Provider once
+	localToAttribute := make(map[string]tfaddr.Provider)
+	for reference := range meta.ProviderReferences {
+		if reference.Alias == "" {
+			localToAttribute[reference.LocalName] = meta.ProviderReferences[reference]
 		}
+	}
+
+	discovered := make(map[string]*Resource)
+	for index := range resources {
+		resource := &resources[index]
+		comments, ignored := isIgnored(resource.Filename, resource.Line)
+
+		if ignored {
+			continue
+		}
+
+		source, version := resolveProviderSource(resource, meta, localToAttribute)
+
+		resourceType := strings.TrimPrefix(resource.Type, resource.ProviderName+"_")
+		key := fmt.Sprintf("%s.%s.%s.%s", resource.ProviderName, resource.Mode, resourceType, resource.Name)
+		description := ""
+		if config.Settings.ReadComments {
+			description = comments
+		}
+
+		discovered[key] = &Resource{
+			Type:           resourceType,
+			Name:           resource.Name,
+			Mode:           resource.Mode,
+			ProviderName:   resource.ProviderName,
+			ProviderSource: source,
+			Version:        types.String(version),
+			Description:    types.String(description),
+			Position: Position{
+				Filename: resource.Filename,
+				Line:     resource.Line,
+			},
+		}
+
 	}
 
 	resourceKeys := make([]string, 0, len(discovered))
@@ -519,11 +627,11 @@ func loadResources(tfmodule *tfconfig.Module, config *print.Config) []*Resource 
 	}
 	sort.Strings(resourceKeys)
 
-	resources := make([]*Resource, 0, len(discovered))
+	allResources := make([]*Resource, 0, len(discovered))
 	for _, key := range resourceKeys {
-		resources = append(resources, discovered[key])
+		allResources = append(allResources, discovered[key])
 	}
-	return resources
+	return allResources
 }
 
 func resourceVersion(constraints []string) string {
@@ -548,28 +656,6 @@ func resourceVersion(constraints []string) string {
 	return "latest"
 }
 
-func loadComments(filename string, lineNum int) string {
-	lines := reader.Lines{
-		FileName: filename,
-		LineNum:  lineNum,
-		Condition: func(line string) bool {
-			return strings.HasPrefix(line, "#") || strings.HasPrefix(line, "//")
-		},
-		Parser: func(line string) (string, bool) {
-			line = strings.TrimSpace(line)
-			line = strings.TrimPrefix(line, "#")
-			line = strings.TrimPrefix(line, "//")
-			line = strings.TrimSpace(line)
-			return line, true
-		},
-	}
-	comment, err := lines.Extract()
-	if err != nil {
-		return "" // absorb the error, we don't need to bubble it up or break the execution
-	}
-	return strings.Join(comment, " ")
-}
-
 func sortItems(tfmodule *Module, config *print.Config) {
 	// inputs
 	inputs(tfmodule.Inputs).sort(config.Sort.Enabled, config.Sort.By)
@@ -587,4 +673,20 @@ func sortItems(tfmodule *Module, config *print.Config) {
 
 	// modules
 	modulecalls(tfmodule.ModuleCalls).sort(config.Sort.Enabled, config.Sort.By)
+}
+
+func resolveProviderSource(resource *rawResource, meta *module.Meta, localToAttribute map[string]tfaddr.Provider) (string, string) {
+	attribute, ok := localToAttribute[resource.ProviderName]
+	version := ""
+
+	if !ok || attribute.Namespace == "-" {
+		return fmt.Sprintf("hashicorp/%s", resource.ProviderName), resourceVersion(nil)
+	}
+
+	if vs, ok := meta.ProviderRequirements[attribute]; ok && len(vs) > 0 {
+		version = resourceVersion([]string{
+			vs.String(),
+		})
+	}
+	return attribute.ForDisplay(), version
 }

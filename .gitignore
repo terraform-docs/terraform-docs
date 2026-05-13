@@ -38,3 +38,6 @@ site/
 
 # contributors.list
 contributors.list
+
+# ignore local note dir
+.local/

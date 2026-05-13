@@ -28,11 +28,12 @@ terraform-docs asciidoc document [PATH] [flags]
       --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
       --default                     show Default column or section (default true)
+      --deprecated                  show Deprecated footnote or section
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-empty                  hide empty sections (default false)
-      --indent int                  indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
+      --indent int                  indentation level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
       --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-check                check if content of output file is up to date (default false)
       --output-file string          file path to insert output into (default "")
@@ -179,25 +180,25 @@ generates the following output:
 
     Description: It's list number two.
 
-    Type: `list`
+    Type: `any`
 
     === [[input_map-2]] <<input_map-2,map-2>>
 
     Description: It's map number two.
 
-    Type: `map`
+    Type: `any`
 
     === [[input_number-2]] <<input_number-2,number-2>>
 
     Description: It's number number two.
 
-    Type: `number`
+    Type: `any`
 
     === [[input_string-2]] <<input_string-2,string-2>>
 
     Description: It's string number two.
 
-    Type: `string`
+    Type: `any`
 
     === [[input_string_no_default]] <<input_string_no_default,string_no_default>>
 
@@ -313,17 +314,7 @@ generates the following output:
 
     It spans over multiple lines.
 
-    Type:
-    [source,hcl]
-    ----
-    object({
-        name = string,
-        foo  = object({ foo = string, bar = string }),
-        bar  = object({ foo = string, bar = string }),
-        fizz = list(string),
-        buzz = list(string)
-      })
-    ----
+    Type: `object({bar=object({bar=string,foo=string}),buzz=list(string),fizz=list(string),foo=object({bar=string,foo=string}),name=string})`
 
     Default:
     [source,json]
@@ -392,7 +383,7 @@ generates the following output:
 
     Type: `number`
 
-    Default: `"19"`
+    Default: `19`
 
     === [[input_number-4]] <<input_number-4,number-4>>
 

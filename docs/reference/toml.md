@@ -117,7 +117,7 @@ generates the following output:
 
     [[inputs]]
       name = "list-2"
-      type = "list"
+      type = "any"
       description = "It's list number two."
       required = true
       [inputs.default]
@@ -138,7 +138,7 @@ generates the following output:
 
     [[inputs]]
       name = "long_type"
-      type = "object({\n    name = string,\n    foo  = object({ foo = string, bar = string }),\n    bar  = object({ foo = string, bar = string }),\n    fizz = list(string),\n    buzz = list(string)\n  })"
+      type = "object({bar=object({bar=string,foo=string}),buzz=list(string),fizz=list(string),foo=object({bar=string,foo=string}),name=string})"
       description = "This description is itself markdown.\n\nIt spans over multiple lines.\n"
       required = false
       [inputs.default]
@@ -164,7 +164,7 @@ generates the following output:
 
     [[inputs]]
       name = "map-2"
-      type = "map"
+      type = "any"
       description = "It's map number two."
       required = true
       [inputs.default]
@@ -192,7 +192,7 @@ generates the following output:
 
     [[inputs]]
       name = "number-2"
-      type = "number"
+      type = "any"
       description = "It's number number two."
       required = true
       [inputs.default]
@@ -201,7 +201,7 @@ generates the following output:
       name = "number-3"
       type = "number"
       description = ""
-      default = "19"
+      default = 19.0
       required = false
 
     [[inputs]]
@@ -234,7 +234,7 @@ generates the following output:
 
     [[inputs]]
       name = "string-2"
-      type = "string"
+      type = "any"
       description = "It's string number two."
       required = true
       [inputs.default]
@@ -373,7 +373,7 @@ generates the following output:
       type = "resource"
       name = "baz"
       provider = "foo"
-      source = "https://registry.acme.com/foo"
+      source = "registry.acme.com/namespace/foo"
       mode = "managed"
       version = "latest"
       description = ""

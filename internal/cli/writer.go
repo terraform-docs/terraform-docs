@@ -180,5 +180,18 @@ func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 	}
 
 	fmt.Printf("%s updated successfully\n", filename)
-	return len(p), os.WriteFile(filename, p, 0644)
+	root, err := os.OpenRoot(filepath.Dir(filename))
+	if err != nil {
+		return 0, err
+	}
+	defer func() { _ = root.Close() }()
+	f, err := root.OpenFile(filepath.Base(filename), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		return 0, err
+	}
+	n, werr := f.Write(p)
+	if cerr := f.Close(); werr == nil {
+		werr = cerr
+	}
+	return n, werr
 }
