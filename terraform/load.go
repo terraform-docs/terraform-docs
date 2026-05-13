@@ -420,7 +420,8 @@ func loadProviders(meta *module.Meta, resources []rawResource, files map[string]
 
 	discovered := make(map[string]*Provider)
 
-	for _, block := range extractProviderBlocks(files) {
+	for index := range extractProviderBlocks(files) {
+		block := extractProviderBlocks(files)[index]
 		seedProviderFromBlock(discovered, block, lock, constraintFor)
 	}
 
@@ -432,7 +433,8 @@ func loadProviders(meta *module.Meta, resources []rawResource, files map[string]
 
 func buildConstraintLookup(meta *module.Meta) func(string) string {
 	constraints := make(map[string]string, len(meta.ProviderReferences))
-	for reference, address := range meta.ProviderReferences {
+	for reference := range meta.ProviderReferences {
+		address := meta.ProviderReferences[reference]
 		if reference.Alias != "" {
 			continue
 		}
@@ -688,5 +690,3 @@ func resolveProviderSource(resource *rawResource, meta *module.Meta, localToAttr
 	}
 	return attribute.ForDisplay(), version
 }
-
-
