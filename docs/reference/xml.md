@@ -66,6 +66,7 @@ generates the following output:
           <description>It&#39;s bool number one.</description>
           <default>true</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>bool-2</name>
@@ -73,6 +74,7 @@ generates the following output:
           <description>It&#39;s bool number two.</description>
           <default>false</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>bool-3</name>
@@ -80,6 +82,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default>true</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>bool_default_false</name>
@@ -87,6 +90,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default>false</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>input-with-code-block</name>
@@ -96,6 +100,7 @@ generates the following output:
             <item>name rack:location</item>
           </default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>input-with-pipe</name>
@@ -103,6 +108,7 @@ generates the following output:
           <description>It includes v1 | v2 | v3</description>
           <default>v1</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>input_with_underscores</name>
@@ -110,6 +116,7 @@ generates the following output:
           <description>A variable with underscores.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>list-1</name>
@@ -121,6 +128,7 @@ generates the following output:
             <item>c</item>
           </default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>list-2</name>
@@ -128,6 +136,7 @@ generates the following output:
           <description>It&#39;s list number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>list-3</name>
@@ -135,6 +144,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>list_default_empty</name>
@@ -142,6 +152,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>long_type</name>
@@ -164,6 +175,7 @@ generates the following output:
             <name>hello</name>
           </default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>map-1</name>
@@ -175,6 +187,7 @@ generates the following output:
             <c>3</c>
           </default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>map-2</name>
@@ -182,6 +195,7 @@ generates the following output:
           <description>It&#39;s map number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>map-3</name>
@@ -189,6 +203,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>no-escape-default-value</name>
@@ -196,6 +211,7 @@ generates the following output:
           <description>The description contains `something_with_underscore`. Defaults to &#39;VALUE_WITH_UNDERSCORE&#39;.</description>
           <default>VALUE_WITH_UNDERSCORE</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>number-1</name>
@@ -203,6 +219,7 @@ generates the following output:
           <description>It&#39;s number number one.</description>
           <default>42</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>number-2</name>
@@ -210,6 +227,7 @@ generates the following output:
           <description>It&#39;s number number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>number-3</name>
@@ -217,6 +235,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default>19</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>number-4</name>
@@ -224,6 +243,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default>15.75</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>number_default_zero</name>
@@ -231,6 +251,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default>0</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>object_default_empty</name>
@@ -238,6 +259,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>string-1</name>
@@ -245,6 +267,7 @@ generates the following output:
           <description>It&#39;s string number one.</description>
           <default>bar</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>string-2</name>
@@ -252,6 +275,7 @@ generates the following output:
           <description>It&#39;s string number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>string-3</name>
@@ -259,6 +283,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>string-special-chars</name>
@@ -266,6 +291,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default>\.&lt;&gt;[]{}_-</default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>string_default_empty</name>
@@ -273,6 +299,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>string_default_null</name>
@@ -280,6 +307,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default xsi:nil="true"></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>string_no_default</name>
@@ -287,6 +315,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default xsi:nil="true"></default>
           <required>true</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>unquoted</name>
@@ -294,6 +323,7 @@ generates the following output:
           <description xsi:nil="true"></description>
           <default xsi:nil="true"></default>
           <required>true</required>
+          <sensitive>false</sensitive>
         </input>
         <input>
           <name>with-url</name>
@@ -301,6 +331,7 @@ generates the following output:
           <description>The description contains url. https://www.domain.com/foo/bar_baz.html</description>
           <default></default>
           <required>false</required>
+          <sensitive>false</sensitive>
         </input>
       </inputs>
       <modules>

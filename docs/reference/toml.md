@@ -65,6 +65,7 @@ generates the following output:
       description = "It's bool number one."
       default = true
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "bool-2"
@@ -72,6 +73,7 @@ generates the following output:
       description = "It's bool number two."
       default = false
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "bool-3"
@@ -79,6 +81,7 @@ generates the following output:
       description = ""
       default = true
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "bool_default_false"
@@ -86,6 +89,7 @@ generates the following output:
       description = ""
       default = false
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "input-with-code-block"
@@ -93,6 +97,7 @@ generates the following output:
       description = "This is a complicated one. We need a newline.  \nAnd an example in a code block\n```\ndefault     = [\n  \"machine rack01:neptune\"\n]\n```\n"
       default = ["name rack:location"]
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "input-with-pipe"
@@ -100,12 +105,14 @@ generates the following output:
       description = "It includes v1 | v2 | v3"
       default = "v1"
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "input_with_underscores"
       type = "any"
       description = "A variable with underscores."
       required = true
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -114,12 +121,14 @@ generates the following output:
       description = "It's list number one."
       default = ["a", "b", "c"]
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "list-2"
       type = "list"
       description = "It's list number two."
       required = true
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -128,6 +137,7 @@ generates the following output:
       description = ""
       default = []
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "list_default_empty"
@@ -135,12 +145,14 @@ generates the following output:
       description = ""
       default = []
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "long_type"
       type = "object({\n    name = string,\n    foo  = object({ foo = string, bar = string }),\n    bar  = object({ foo = string, bar = string }),\n    fizz = list(string),\n    buzz = list(string)\n  })"
       description = "This description is itself markdown.\n\nIt spans over multiple lines.\n"
       required = false
+      sensitive = false
       [inputs.default]
         buzz = ["fizz", "buzz"]
         fizz = []
@@ -157,6 +169,7 @@ generates the following output:
       type = "map"
       description = "It's map number one."
       required = false
+      sensitive = false
       [inputs.default]
         a = 1.0
         b = 2.0
@@ -167,6 +180,7 @@ generates the following output:
       type = "map"
       description = "It's map number two."
       required = true
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -174,6 +188,7 @@ generates the following output:
       type = "map"
       description = ""
       required = false
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -182,6 +197,7 @@ generates the following output:
       description = "The description contains `something_with_underscore`. Defaults to 'VALUE_WITH_UNDERSCORE'."
       default = "VALUE_WITH_UNDERSCORE"
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "number-1"
@@ -189,12 +205,14 @@ generates the following output:
       description = "It's number number one."
       default = 42.0
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "number-2"
       type = "number"
       description = "It's number number two."
       required = true
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -203,6 +221,7 @@ generates the following output:
       description = ""
       default = "19"
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "number-4"
@@ -210,6 +229,7 @@ generates the following output:
       description = ""
       default = 15.75
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "number_default_zero"
@@ -217,12 +237,14 @@ generates the following output:
       description = ""
       default = 0.0
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "object_default_empty"
       type = "object({})"
       description = ""
       required = false
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -231,12 +253,14 @@ generates the following output:
       description = "It's string number one."
       default = "bar"
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "string-2"
       type = "string"
       description = "It's string number two."
       required = true
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -245,6 +269,7 @@ generates the following output:
       description = ""
       default = ""
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "string-special-chars"
@@ -252,6 +277,7 @@ generates the following output:
       description = ""
       default = "\\.<>[]{}_-"
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "string_default_empty"
@@ -259,12 +285,14 @@ generates the following output:
       description = ""
       default = ""
       required = false
+      sensitive = false
 
     [[inputs]]
       name = "string_default_null"
       type = "string"
       description = ""
       required = false
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -272,6 +300,7 @@ generates the following output:
       type = "string"
       description = ""
       required = true
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -279,6 +308,7 @@ generates the following output:
       type = "any"
       description = ""
       required = true
+      sensitive = false
       [inputs.default]
 
     [[inputs]]
@@ -287,6 +317,7 @@ generates the following output:
       description = "The description contains url. https://www.domain.com/foo/bar_baz.html"
       default = ""
       required = false
+      sensitive = false
 
     [[modules]]
       name = "bar"
