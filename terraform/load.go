@@ -74,10 +74,12 @@ func loadModuleItems(tfmodule *tfconfig.Module, config *print.Config) (*Module, 
 	providers := loadProviders(tfmodule, config)
 	requirements := loadRequirements(tfmodule)
 	resources := loadResources(tfmodule, config)
+	examples := loadExamples(config)
 
 	return &Module{
 		Header:       header,
 		Footer:       footer,
+		Examples:     examples,
 		Inputs:       inputs,
 		ModuleCalls:  modulecalls,
 		Outputs:      outputs,
@@ -113,6 +115,14 @@ func isFileFormatSupported(filename string, section string) (bool, error) {
 		return true, nil
 	}
 	return false, fmt.Errorf("only .adoc, .md, .tf, .tofu and .txt formats are supported to read %s from", section)
+}
+
+func loadExamples(config *print.Config) []*Example {
+	Loader := NewExampleLoader(config)
+
+	Loader.SearchFolder()
+
+	return Loader.examples
 }
 
 func loadHeader(config *print.Config) (string, error) {
