@@ -38,9 +38,10 @@ Sections visibility (i.e. `sections.show` and `sections.hide`) takes precedence
 over the `content`.
 {{< /alert >}}
 
-`content` also has the following function:
+`content` also has the following functions:
 
 - `{{ include "relative/path/to/file" }}`
+- `{{ include_optional "relative/path/to/file" "fallback" }}`
 
 Additionally there's also one extra special variable available to the `content`:
 

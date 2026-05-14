@@ -73,6 +73,20 @@ func TestExecuteTemplate(t *testing.T) {
 			expected: "",
 			wantErr:  true,
 		},
+		"Compatible with template optional include file": {
+			complex:  true,
+			content:  "this is the header\nthis is the footer",
+			template: "{{ include_optional \"testdata/generator/sample-file.txt\" \"\" }}",
+			expected: "Sample file to be included.",
+			wantErr:  false,
+		},
+		"Compatible with template optional include unknown file": {
+			complex:  true,
+			content:  "this is the header\nthis is the footer",
+			template: "{{ include_optional \"file-not-found\" \"This file does not exist\" }}",
+			expected: "This file does not exist",
+			wantErr:  false,
+		},
 		"Incompatible without template": {
 			complex:  false,
 			content:  "header: \"this is the header\"\nfooter: \"this is the footer\"",
