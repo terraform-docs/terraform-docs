@@ -20,6 +20,8 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/aymanbagabas/go-udiff"
+
 	"github.com/terraform-docs/terraform-docs/print"
 )
 
@@ -159,15 +161,21 @@ func (fw *fileWriter) inject(filename string, content string, generated string) 
 // write the content to io.Writer. If no io.Writer is available,
 // it will be written to 'filename'.
 func (fw *fileWriter) write(filename string, p []byte) (int, error) {
+	// read the file to provide diff or check
+	f, err := os.ReadFile(filepath.Clean(filename))
+	if err != nil && !os.IsNotExist(err) {
+		return 0, err
+	}
+
 	// if run in check mode return exit 1
 	if fw.check {
-		f, err := os.ReadFile(filepath.Clean(filename))
 		if err != nil {
 			return 0, err
 		}
 
 		// check for changes and print changed file
 		if !bytes.Equal(f, p) {
+			printDiff(filename, f, p)
 			return 0, fmt.Errorf("%s is out of date", filename)
 		}
 
@@ -179,6 +187,15 @@ func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 		return fw.writer.Write(p)
 	}
 
+	if err == nil && !bytes.Equal(f, p) {
+		printDiff(filename, f, p)
+	}
+
 	fmt.Printf("%s updated successfully\n", filename)
 	return len(p), os.WriteFile(filename, p, 0644)
+}
+
+func printDiff(file string, oldContent, newContent []byte) {
+	d := udiff.Unified(file, file, string(oldContent), string(newContent))
+	fmt.Print(d)
 }
