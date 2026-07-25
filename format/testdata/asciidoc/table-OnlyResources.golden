@@ -4,6 +4,6 @@
 |===
 |Name |Type
 |foo_resource.baz |resource
-|https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.foo] |resource
-|https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key[tls_private_key.baz] |resource
+|[null_resource.foo](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) |resource
+|[tls_private_key.baz](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) |resource
 |===

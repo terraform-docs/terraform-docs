@@ -57,11 +57,79 @@ func TestSanitizeMarkdown(t *testing.T) {
 			markdown: "Lorem ipsum dolor sit amet,\n\n\n\n\nconsectetur adipiscing elit",
 			expected: "Lorem ipsum dolor sit amet,\n\nconsectetur adipiscing elit",
 		},
+		{
+			name:     "sanitize link",
+			markdown: "https://www.domain.com/",
+			expected: "<https://www.domain.com/>",
+		},
+		{
+			name:     "sanitize link in paragraph",
+			markdown: "This is a domain https://www.domain.com/ inline in a paragraph of text",
+			expected: "This is a domain <https://www.domain.com/> inline in a paragraph of text",
+		},
+		{
+			name:     "sanitize link with valid format",
+			markdown: "This is a valid link <https://www.domain.com/> already",
+			expected: "This is a valid link <https://www.domain.com/> already",
+		},
+		{
+			name:     "sanitize link with valid markdown format",
+			markdown: "This is a valid [link](https://www.domain.com/) already",
+			expected: "This is a valid [link](https://www.domain.com/) already",
+		},
+		{
+			name:     "sanitize link with multiple occurrences",
+			markdown: "Link 1: [link](https://www.domain.com/). Link 2: https://www.domain.com/",
+			expected: "Link 1: [link](https://www.domain.com/). Link 2: <https://www.domain.com/>",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert := assert.New(t)
 			actual := sanitize(tt.markdown)
+
+			assert.Equal(tt.expected, actual)
+		})
+	}
+}
+
+func TestSanitizeBareLinks(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "sanitize link",
+			input:    "https://www.domain.com/",
+			expected: "<https://www.domain.com/>",
+		},
+		{
+			name:     "sanitize link in paragraph",
+			input:    "This is a domain https://www.domain.com/ inline in a paragraph of text",
+			expected: "This is a domain <https://www.domain.com/> inline in a paragraph of text",
+		},
+		{
+			name:     "sanitize link with valid format",
+			input:    "This is a valid link <https://www.domain.com/> already",
+			expected: "This is a valid link <https://www.domain.com/> already",
+		},
+		{
+			name:     "sanitize link with valid markdown format",
+			input:    "This is a valid [link](https://www.domain.com/) already",
+			expected: "This is a valid [link](https://www.domain.com/) already",
+		},
+		{
+			name:     "sanitize link with multiple occurrences",
+			input:    "Link 1: [link](https://www.domain.com/). Link 2: https://www.domain.com/",
+			expected: "Link 1: [link](https://www.domain.com/). Link 2: <https://www.domain.com/>",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			actual := SanitizeBareLinks(tt.input)
 
 			assert.Equal(tt.expected, actual)
 		})

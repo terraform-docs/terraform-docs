@@ -152,7 +152,7 @@ It spans over multiple lines.
 |`"VALUE_WITH_UNDERSCORE"`
 
 |with-url
-|The description contains url. https://www.domain.com/foo/bar_baz.html
+|The description contains url. <https://www.domain.com/foo/bar_baz.html>
 |`""`
 
 |string_default_empty
