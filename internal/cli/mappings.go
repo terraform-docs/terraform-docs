@@ -35,6 +35,7 @@ var flagMappings = map[string]string{
 	"anchor":        "settings.anchor",
 	"color":         "settings.color",
 	"default":       "settings.default",
+	"deprecated":    "settings.deprecated",
 	"description":   "settings.description",
 	"escape":        "settings.escape",
 	"indent":        "settings.indent",

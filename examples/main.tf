@@ -44,7 +44,7 @@ terraform {
     random = ">= 2.2.0"
     aws    = ">= 2.15.0"
     foo = {
-      source  = "https://registry.acme.com/foo"
+      source  = "registry.acme.com/namespace/foo"
       version = ">= 1.0"
     }
   }

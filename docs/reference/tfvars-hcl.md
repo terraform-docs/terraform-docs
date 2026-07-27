@@ -100,7 +100,7 @@ generates the following output:
     no-escape-default-value = "VALUE_WITH_UNDERSCORE"
     number-1                = 42
     number-2                = ""
-    number-3                = "19"
+    number-3                = 19
     number-4                = 15.75
     number_default_zero     = 0
     object_default_empty    = {}

@@ -11,7 +11,7 @@
       <type>resource</type>
       <name>baz</name>
       <provider>foo</provider>
-      <source>https://registry.acme.com/foo</source>
+      <source>registry.acme.com/namespace/foo</source>
       <mode>managed</mode>
       <version>latest</version>
       <description xsi:nil="true"></description>

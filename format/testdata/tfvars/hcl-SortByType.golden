@@ -1,4 +1,8 @@
 input_with_underscores = ""
+list-2                 = ""
+map-2                  = ""
+number-2               = ""
+string-2               = ""
 unquoted               = ""
 bool-1                 = true
 bool-2                 = false
@@ -12,7 +16,6 @@ list-1 = [
   "b",
   "c"
 ]
-list-2             = ""
 list-3             = []
 list_default_empty = []
 map-1 = {
@@ -20,11 +23,9 @@ map-1 = {
   "b": 2,
   "c": 3
 }
-map-2               = ""
 map-3               = {}
 number-1            = 42
-number-2            = ""
-number-3            = "19"
+number-3            = 19
 number-4            = 15.75
 number_default_zero = 0
 long_type = {
@@ -47,7 +48,6 @@ object_default_empty    = {}
 input-with-pipe         = "v1"
 no-escape-default-value = "VALUE_WITH_UNDERSCORE"
 string-1                = "bar"
-string-2                = ""
 string-3                = ""
 string-special-chars    = "\\.<>[]{}_-"
 string_default_empty    = ""

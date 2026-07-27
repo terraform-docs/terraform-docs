@@ -124,7 +124,7 @@ generates the following output:
         </input>
         <input>
           <name>list-2</name>
-          <type>list</type>
+          <type>any</type>
           <description>It&#39;s list number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
@@ -145,7 +145,7 @@ generates the following output:
         </input>
         <input>
           <name>long_type</name>
-          <type>object({&#xA;    name = string,&#xA;    foo  = object({ foo = string, bar = string }),&#xA;    bar  = object({ foo = string, bar = string }),&#xA;    fizz = list(string),&#xA;    buzz = list(string)&#xA;  })</type>
+          <type>object({bar=object({bar=string,foo=string}),buzz=list(string),fizz=list(string),foo=object({bar=string,foo=string}),name=string})</type>
           <description>This description is itself markdown.&#xA;&#xA;It spans over multiple lines.&#xA;</description>
           <default>
             <bar>
@@ -178,7 +178,7 @@ generates the following output:
         </input>
         <input>
           <name>map-2</name>
-          <type>map</type>
+          <type>any</type>
           <description>It&#39;s map number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
@@ -206,7 +206,7 @@ generates the following output:
         </input>
         <input>
           <name>number-2</name>
-          <type>number</type>
+          <type>any</type>
           <description>It&#39;s number number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
@@ -248,7 +248,7 @@ generates the following output:
         </input>
         <input>
           <name>string-2</name>
-          <type>string</type>
+          <type>any</type>
           <description>It&#39;s string number two.</description>
           <default xsi:nil="true"></default>
           <required>true</required>
@@ -397,7 +397,7 @@ generates the following output:
           <type>resource</type>
           <name>baz</name>
           <provider>foo</provider>
-          <source>https://registry.acme.com/foo</source>
+          <source>registry.acme.com/namespace/foo</source>
           <mode>managed</mode>
           <version>latest</version>
           <description xsi:nil="true"></description>

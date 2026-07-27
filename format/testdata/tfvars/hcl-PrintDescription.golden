@@ -16,7 +16,7 @@ string-2 = ""
 string-1 = "bar"
 
 string-special-chars = "\\.<>[]{}_-"
-number-3             = "19"
+number-3             = 19
 number-4             = 15.75
 
 # It's number number two.

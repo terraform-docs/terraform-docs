@@ -27,7 +27,14 @@ type Input struct {
 	Description types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
 	Default     types.Value  `json:"default" toml:"default" xml:"default" yaml:"default"`
 	Required    bool         `json:"required" toml:"required" xml:"required" yaml:"required"`
+	Deprecated  types.String `json:"deprecated,omitempty" toml:"deprecated,omitempty" xml:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
+}
+
+// IsDeprecated reports whether the input has a non-empty `deprecated = "..."`
+// attribute (Terraform 1.14+ / OpenTofu 1.10+).
+func (i *Input) IsDeprecated() bool {
+	return string(i.Deprecated) != ""
 }
 
 // GetValue returns JSON representation of the 'Default' value, which is an 'interface'.

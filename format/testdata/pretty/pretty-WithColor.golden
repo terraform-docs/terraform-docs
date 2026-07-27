@@ -87,7 +87,7 @@ followed by another line of text.
 [36minput.string-special-chars[0m ("\\.<>[]{}_-")
 [90mn/a[0m
 
-[36minput.number-3[0m ("19")
+[36minput.number-3[0m (19)
 [90mn/a[0m
 
 [36minput.number-4[0m (15.75)

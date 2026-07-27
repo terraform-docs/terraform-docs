@@ -28,11 +28,12 @@ terraform-docs asciidoc table [PATH] [flags]
       --anchor                      create anchor links (default true)
   -c, --config string               config file name (default ".terraform-docs.yml")
       --default                     show Default column or section (default true)
+      --deprecated                  show Deprecated footnote or section
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-empty                  hide empty sections (default false)
-      --indent int                  indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
+      --indent int                  indentation level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
       --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-check                check if content of output file is up to date (default false)
       --output-file string          file path to insert output into (default "")
@@ -228,7 +229,7 @@ generates the following output:
 
     |[[input_list-2]] <<input_list-2,list-2>>
     |It's list number two.
-    |`list`
+    |`any`
     |n/a
     |yes
 
@@ -249,19 +250,7 @@ generates the following output:
 
     It spans over multiple lines.
 
-    |
-
-    [source]
-    ----
-    object({
-        name = string,
-        foo  = object({ foo = string, bar = string }),
-        bar  = object({ foo = string, bar = string }),
-        fizz = list(string),
-        buzz = list(string)
-      })
-    ----
-
+    |`object({bar=object({bar=string,foo=string}),buzz=list(string),fizz=list(string),foo=object({bar=string,foo=string}),name=string})`
     |
 
     [source]
@@ -304,7 +293,7 @@ generates the following output:
 
     |[[input_map-2]] <<input_map-2,map-2>>
     |It's map number two.
-    |`map`
+    |`any`
     |n/a
     |yes
 
@@ -328,14 +317,14 @@ generates the following output:
 
     |[[input_number-2]] <<input_number-2,number-2>>
     |It's number number two.
-    |`number`
+    |`any`
     |n/a
     |yes
 
     |[[input_number-3]] <<input_number-3,number-3>>
     |n/a
     |`number`
-    |`"19"`
+    |`19`
     |no
 
     |[[input_number-4]] <<input_number-4,number-4>>
@@ -364,7 +353,7 @@ generates the following output:
 
     |[[input_string-2]] <<input_string-2,string-2>>
     |It's string number two.
-    |`string`
+    |`any`
     |n/a
     |yes
 

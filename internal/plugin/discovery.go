@@ -102,13 +102,17 @@ func findPlugins(dir string) (*List, error) {
 }
 
 func getPluginPath(dir string, name string) (string, error) {
+	if strings.ContainsAny(name, `/\`) || strings.Contains(name, "..") {
+		return "", fmt.Errorf("invalid plugin name: %s", name)
+	}
+
 	suffix := ""
 
 	if runtime.GOOS == "windows" {
 		suffix += ".exe"
 	}
 
-	path := filepath.Join(dir, fmt.Sprintf("%s%s%s", namePrefix, name, suffix))
+	path := filepath.Clean(filepath.Join(dir, fmt.Sprintf("%s%s%s", namePrefix, name, suffix)))
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return "", os.ErrNotExist

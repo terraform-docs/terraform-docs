@@ -15,7 +15,7 @@
         {{- if .Config.Settings.Default }} |Default{{ end }}
         {{- if .Config.Settings.Required }} |Required{{ end }}
         {{- range .Module.Inputs }}
-            |{{ anchorNameAsciidoc "input" .Name }}
+            |{{ anchorNameAsciidoc "input" .Name }}{{ if and $.Config.Settings.Deprecated .IsDeprecated }}footnote:[Deprecated — {{ tostring .Deprecated }}]{{ end }}
             |{{ tostring .Description | sanitizeAsciidocTbl }}
             {{- if $.Config.Settings.Type }}{{ printf "\n" }}|{{ tostring .Type | type | sanitizeAsciidocTbl }}{{ end }}
             {{- if $.Config.Settings.Default }}{{ printf "\n" }}|{{ value .GetValue | sanitizeAsciidocTbl }}{{ end }}

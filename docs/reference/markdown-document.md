@@ -29,13 +29,14 @@ terraform-docs markdown document [PATH] [flags]
       --atx-closed                  close ATX style headers
   -c, --config string               config file name (default ".terraform-docs.yml")
       --default                     show Default column or section (default true)
+      --deprecated                  show Deprecated footnote or section
       --escape                      escape special characters (default true)
       --footer-from string          relative path of a file to read footer from (default "")
       --header-from string          relative path of a file to read header from (default "main.tf")
       --hide strings                hide section [all, data-sources, footer, header, inputs, modules, outputs, providers, requirements, resources]
       --hide-empty                  hide empty sections (default false)
       --html                        use HTML tags in generated output (default true)
-      --indent int                  indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
+      --indent int                  indentation level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --lockfile                    read .terraform.lock.hcl if exist (default true)
       --output-check                check if content of output file is up to date (default false)
       --output-file string          file path to insert output into (default "")
@@ -182,25 +183,25 @@ generates the following output:
 
     Description: It's list number two.
 
-    Type: `list`
+    Type: `any`
 
     ### <a name="input_map-2"></a> [map-2](#input\_map-2)
 
     Description: It's map number two.
 
-    Type: `map`
+    Type: `any`
 
     ### <a name="input_number-2"></a> [number-2](#input\_number-2)
 
     Description: It's number number two.
 
-    Type: `number`
+    Type: `any`
 
     ### <a name="input_string-2"></a> [string-2](#input\_string-2)
 
     Description: It's string number two.
 
-    Type: `string`
+    Type: `any`
 
     ### <a name="input_string_no_default"></a> [string\_no\_default](#input\_string\_no\_default)
 
@@ -316,17 +317,7 @@ generates the following output:
 
     It spans over multiple lines.
 
-    Type:
-
-    ```hcl
-    object({
-        name = string,
-        foo  = object({ foo = string, bar = string }),
-        bar  = object({ foo = string, bar = string }),
-        fizz = list(string),
-        buzz = list(string)
-      })
-    ```
+    Type: `object({bar=object({bar=string,foo=string}),buzz=list(string),fizz=list(string),foo=object({bar=string,foo=string}),name=string})`
 
     Default:
 
@@ -395,7 +386,7 @@ generates the following output:
 
     Type: `number`
 
-    Default: `"19"`
+    Default: `19`
 
     ### <a name="input_number-4"></a> [number-4](#input\_number-4)
 

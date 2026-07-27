@@ -7,7 +7,7 @@
   "string-2": null,
   "string-1": "bar",
   "string-special-chars": "\\.<>[]{}_-",
-  "number-3": "19",
+  "number-3": 19,
   "number-4": 15.75,
   "number-2": null,
   "number-1": 42,

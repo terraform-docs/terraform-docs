@@ -13,6 +13,10 @@
 
             {{ indent 1 "=" }} {{ anchorNameAsciidoc "output" .Name }}
 
+            {{ if and $.Config.Settings.Deprecated .IsDeprecated -}}
+            WARNING: *Deprecated* — {{ tostring .Deprecated | sanitizeDoc }}
+
+            {{ end -}}
             Description: {{ tostring .Description | sanitizeDoc }}
 
             {{ if $.Config.OutputValues.Enabled }}
