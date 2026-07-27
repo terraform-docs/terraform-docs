@@ -1,0 +1,16 @@
+<module>
+  <header></header>
+  <footer></footer>
+  <examples>
+    <example>
+      <name>exampleA</name>
+      <content>module full-example{&#xA;    source = &#34;github.com/terraform-docs/terraform-docs//examples&#34;&#xA;&#xA;    input_with_underscores = &#34;input_any&#34;&#xA;    list-2 = [&#xA;        &#34;value_1&#34;,&#xA;        &#34;value_2&#34;&#xA;    ]&#xA;    map-2 = {&#xA;        &#34;1&#34; = &#34;value&#34;&#xA;        &#34;2&#34; = &#34;value_2&#34;&#xA;    }&#xA;    number-2 = 2&#xA;    string-2 = &#34;2&#34;&#xA;    string_no_default = &#34;string_value&#34;&#xA;    unquoted = test&#xA;}</content>
+    </example>
+  </examples>
+  <inputs></inputs>
+  <modules></modules>
+  <outputs></outputs>
+  <providers></providers>
+  <requirements></requirements>
+  <resources></resources>
+</module>
