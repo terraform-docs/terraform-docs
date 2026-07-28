@@ -13,10 +13,10 @@ package asciidoc
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/terraform-docs/terraform-docs/cmd/asciidoc/document"
-	"github.com/terraform-docs/terraform-docs/cmd/asciidoc/table"
-	"github.com/terraform-docs/terraform-docs/internal/cli"
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/cmd/asciidoc/document"
+	"github.com/rquadling/terraform-docs/cmd/asciidoc/table"
+	"github.com/rquadling/terraform-docs/internal/cli"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 // NewCommand returns a new cobra.Command for 'asciidoc' formatter

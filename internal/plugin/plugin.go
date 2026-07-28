@@ -13,7 +13,7 @@ package plugin
 import (
 	goplugin "github.com/hashicorp/go-plugin"
 
-	pluginsdk "github.com/terraform-docs/terraform-docs/plugin"
+	pluginsdk "github.com/rquadling/terraform-docs/plugin"
 )
 
 // namePrefix is the mandatory prefix for name of the plugin file. What

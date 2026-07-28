@@ -16,19 +16,19 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/terraform-docs/terraform-docs/cmd/asciidoc"
-	"github.com/terraform-docs/terraform-docs/cmd/completion"
-	"github.com/terraform-docs/terraform-docs/cmd/json"
-	"github.com/terraform-docs/terraform-docs/cmd/markdown"
-	"github.com/terraform-docs/terraform-docs/cmd/pretty"
-	"github.com/terraform-docs/terraform-docs/cmd/tfvars"
-	"github.com/terraform-docs/terraform-docs/cmd/toml"
-	versioncmd "github.com/terraform-docs/terraform-docs/cmd/version"
-	"github.com/terraform-docs/terraform-docs/cmd/xml"
-	"github.com/terraform-docs/terraform-docs/cmd/yaml"
-	"github.com/terraform-docs/terraform-docs/internal/cli"
-	"github.com/terraform-docs/terraform-docs/internal/version"
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/cmd/asciidoc"
+	"github.com/rquadling/terraform-docs/cmd/completion"
+	"github.com/rquadling/terraform-docs/cmd/json"
+	"github.com/rquadling/terraform-docs/cmd/markdown"
+	"github.com/rquadling/terraform-docs/cmd/pretty"
+	"github.com/rquadling/terraform-docs/cmd/tfvars"
+	"github.com/rquadling/terraform-docs/cmd/toml"
+	versioncmd "github.com/rquadling/terraform-docs/cmd/version"
+	"github.com/rquadling/terraform-docs/cmd/xml"
+	"github.com/rquadling/terraform-docs/cmd/yaml"
+	"github.com/rquadling/terraform-docs/internal/cli"
+	"github.com/rquadling/terraform-docs/internal/version"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.

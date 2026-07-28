@@ -16,10 +16,10 @@ import (
 	"strings"
 	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/template"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/template"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
 //go:embed templates/tfvars_hcl.tmpl

@@ -13,8 +13,8 @@ package format
 import (
 	"fmt"
 
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
 // Type represents an output format type (e.g. json, markdown table, yaml, etc).

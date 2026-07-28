@@ -6,7 +6,7 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/terraform-docs/terraform-docs/internal/version.commit={{ .ShortCommit }}
+      - -X github.com/rquadling/terraform-docs/internal/version.commit={{ .ShortCommit }}
     goos:
       - darwin
       - linux
@@ -47,8 +47,8 @@ release:
   footer: |
     ## Docker images
 
-    - `docker pull quay.io/terraform-docs/terraform-docs:latest`
-    - `docker pull quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}`
+    - `docker pull quay.io/rquadling/terraform-docs:latest`
+    - `docker pull quay.io/rquadling/terraform-docs:{{ .RawVersion }}`
 
     ## Contributors
 
@@ -82,16 +82,16 @@ changelog:
 dockers:
   - dockerfile: scripts/release/Dockerfile
     image_templates:
-      - "quay.io/terraform-docs/terraform-docs:latest-amd64"
-      - "quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}-amd64"
+      - "quay.io/rquadling/terraform-docs:latest-amd64"
+      - "quay.io/rquadling/terraform-docs:{{ .RawVersion }}-amd64"
     use: buildx
     build_flag_templates:
     - "--pull"
     - "--platform=linux/amd64"
   - dockerfile: scripts/release/Dockerfile
     image_templates:
-      - "quay.io/terraform-docs/terraform-docs:latest-arm64"
-      - "quay.io/terraform-docs/terraform-docs:{{ .RawVersion }}-arm64"
+      - "quay.io/rquadling/terraform-docs:latest-arm64"
+      - "quay.io/rquadling/terraform-docs:{{ .RawVersion }}-arm64"
     use: buildx
     build_flag_templates:
     - "--pull"
@@ -105,7 +105,7 @@ brews:
     commit_author:
       name: terraform-docs-bot
       email: bot@terraform-docs.io
-    url_template: "https://github.com/terraform-docs/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/rquadling/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     homepage: "https://github.com/terraform-docs/"
     description: "Generate documentation from Terraform modules in various output formats"
     test: |
@@ -119,7 +119,7 @@ scoops:
       name: terraform-docs-bot
       email: bot@terraform-docs.io
     commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
-    url_template: "https://github.com/terraform-docs/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/rquadling/terraform-docs/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     homepage: "https://github.com/terraform-docs/"
     description: "Generate documentation from Terraform modules in various output formats"
     license: MIT
