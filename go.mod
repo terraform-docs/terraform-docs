@@ -1,4 +1,4 @@
-module github.com/terraform-docs/terraform-docs
+module github.com/rquadling/terraform-docs
 
 go 1.25.0
 
@@ -14,11 +14,11 @@ require (
 	github.com/hashicorp/hcl/v2 v2.24.0
 	github.com/iancoleman/orderedmap v0.3.0
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/rquadling/terraform-config-inspect v0.0.0-20260724153847-326d8064dedc
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/terraform-docs/terraform-config-inspect v0.0.0-20250408153412-5b88c7ed5b63
 	golang.org/x/exp v0.0.0-20251209150349-8475f28825e9
 	gopkg.in/yaml.v3 v3.0.1
 	honnef.co/go/tools v0.7.0

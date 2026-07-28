@@ -11,7 +11,7 @@ the root directory of this source tree.
 package terraform
 
 import (
-	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/internal/types"
 )
 
 // Requirement represents a requirement for Terraform module.

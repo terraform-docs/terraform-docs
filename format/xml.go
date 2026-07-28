@@ -14,8 +14,8 @@ import (
 	xmlsdk "encoding/xml"
 	"strings"
 
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
 // xml represents XML format.

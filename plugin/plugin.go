@@ -16,7 +16,7 @@ import (
 
 	goplugin "github.com/hashicorp/go-plugin"
 
-	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/internal/types"
 )
 
 // Ensure formatter fully satisfy plugin interface.
