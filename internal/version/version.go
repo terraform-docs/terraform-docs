@@ -17,7 +17,7 @@ import (
 
 // current version
 const (
-	coreVersion = "0.24.0"
+	coreVersion = "0.24.0-raq.1"
 	prerelease  = ""
 )
 
