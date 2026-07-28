@@ -397,6 +397,7 @@ type settings struct {
 	Required     bool `mapstructure:"required"`
 	Sensitive    bool `mapstructure:"sensitive"`
 	Type         bool `mapstructure:"type"`
+	Validation   bool `mapstructure:"validation"`
 }
 
 func defaultSettings() settings {
@@ -415,6 +416,7 @@ func defaultSettings() settings {
 		Required:     true,
 		Sensitive:    true,
 		Type:         true,
+		Validation:   true,
 	}
 }
 

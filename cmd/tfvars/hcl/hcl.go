@@ -28,5 +28,6 @@ func NewCommand(runtime *cli.Runtime, config *print.Config) *cobra.Command {
 		RunE:        runtime.RunEFunc,
 	}
 	cmd.PersistentFlags().BoolVar(&config.Settings.Description, "description", false, "show Descriptions on variables")
+	cmd.PersistentFlags().BoolVar(&config.Settings.Description, "validation", false, "show Validations on variables")
 	return cmd
 }

@@ -215,6 +215,10 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 			},
 		}
 
+		for _, validation := range input.Validation {
+			i.Validation = append(i.Validation, types.String(validation))
+		}
+
 		inputs = append(inputs, i)
 
 		if i.HasDefault() {
