@@ -1,0 +1,112 @@
+# Pre-commit hooks for terraform-docs contributors.
+#
+# Install:
+#   pip install pre-commit   # or: brew install pre-commit, uv tool install pre-commit
+#   pre-commit install
+#
+# Run against everything once:
+#   pre-commit run --all-files
+#
+# Hooks here mirror the `validate` job in .github/workflows/ci.yaml so
+# failures are caught locally before they hit CI.
+minimum_pre_commit_version: "3.5.0"
+default_install_hook_types: [pre-commit, pre-push]
+# Never touch test fixtures, they are intentional inputs/outputs and must be
+# preserved byte-for-byte.
+exclude: |
+  (?x)^(
+    .*/testdata/.*|
+    testdata/.*
+  )$
+repos:
+  # ---------------------------------------------------------------------------
+  # General hygiene
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(examples/|docs/)
+      - id: end-of-file-fixer
+        exclude: ^(examples/|docs/)
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-added-large-files
+        args: [--maxkb=512]
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+  # ---------------------------------------------------------------------------
+  # Go formatting & linting (mirrors `make checkfmt lint staticcheck`)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v2.7.2 # keep in sync with GOLANGCI_VERSION in Makefile
+    hooks:
+      - id: golangci-lint
+        args: [--timeout=5m]
+  - repo: local
+    hooks:
+      - id: goimports
+        name: goimports (-local github.com/terraform-docs)
+        description: Format Go imports with project-local grouping
+        entry: goimports
+        language: system
+        types: [go]
+        args:
+          - -w
+          - -local
+          - github.com/terraform-docs
+      - id: go-mod-tidy
+        name: go mod tidy
+        description: Ensure go.mod/go.sum are tidy
+        entry: bash -c 'go mod tidy && git diff --exit-code -- go.mod go.sum'
+        language: system
+        pass_filenames: false
+        files: (go\.mod|go\.sum|\.go)$
+      - id: go-mod-verify
+        name: go mod verify
+        description: Verify module dependencies (mirrors `make verify`)
+        entry: go mod verify
+        language: system
+        pass_filenames: false
+        files: (go\.mod|go\.sum)$
+      - id: go-vet
+        name: go vet
+        entry: go vet ./...
+        language: system
+        pass_filenames: false
+        types: [go]
+      - id: staticcheck
+        name: staticcheck
+        description: Run staticcheck (mirrors `make staticcheck`)
+        entry: go run honnef.co/go/tools/cmd/staticcheck@2025.1.1 ./...
+        language: system
+        pass_filenames: false
+        types: [go]
+        stages: [pre-push]
+      - id: addlicense
+        name: addlicense (check headers)
+        description: Verify license headers on Go/sh/Dockerfile (mirrors CI)
+        entry: bash -c 'command -v addlicense >/dev/null || go install github.com/google/addlicense@latest; addlicense -check $(git ls-files "*.go" "*.sh" "Dockerfile")'
+        language: system
+        pass_filenames: false
+        files: (\.go|\.sh|Dockerfile)$
+      - id: generate-docs
+        name: regenerate formatter docs (make docs)
+        description: Ensure scripts/docs output is committed
+        entry: bash -c 'make docs && git diff --exit-code'
+        language: system
+        pass_filenames: false
+        files: ^(scripts/docs/|format/|print/|template/|cmd/)
+        stages: [pre-push]
+      # Eat our own dog food: run the locally built binary against examples/
+      # so changes to the hook definitions or formatters get exercised.
+      - id: terraform-docs-self
+        name: terraform-docs (self-test against examples/)
+        description: Run the built binary against examples/ to catch regressions
+        entry: bash -c 'go run . markdown table --output-file /dev/null examples/ >/dev/null'
+        language: system
+        pass_filenames: false
+        files: ^(format/|print/|template/|cmd/|terraform/|examples/)
+        stages: [pre-push]

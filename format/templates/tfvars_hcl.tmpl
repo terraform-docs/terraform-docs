@@ -1,6 +1,6 @@
 {{- if .Module.Inputs -}}
     {{- range $i, $k := .Module.Inputs -}}
-      {{ if and $k.Description showDescription -}} 
+      {{ if and $k.Description showDescription -}}
           {{ convertToComment $k.Description }}
           {{ align $k.Name $i }} = {{ value $k.GetValue }}
 
