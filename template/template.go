@@ -165,6 +165,9 @@ func builtinFuncs(config *print.Config) gotemplate.FuncMap { // nolint:gocyclo
 		"tostring": func(s types.String) string {
 			return string(s)
 		},
+		"visibleResources": func(resources []*terraform.Resource) []*terraform.Resource {
+			return VisibleResources(resources, config)
+		},
 
 		// trim
 		"trim": func(cut string, s string) string {
@@ -242,6 +245,30 @@ func normalize(s string, trimSpace bool) string {
 		splitted[i] = strings.TrimSpace(v)
 	}
 	return strings.Join(splitted, "\n")
+}
+
+// VisibleResources filters a module's resources down to the ones that should
+// actually be shown, honoring the independent Sections.Resources (managed
+// resources) and Sections.DataSources (data sources) visibility flags.
+// Templates must use this - instead of ranging over .Module.Resources
+// directly and filtering per-entry - so that "is there anything to show"
+// (used to decide between the section header/table and the "No resources."
+// placeholder) is computed against the same filtered set that's actually
+// rendered. Previously a module containing only resources of the
+// currently-hidden kind (e.g. all managed resources, with
+// `sections.hide: [resources]`) would still print an empty "## Resources"
+// table instead of "No resources.", since the emptiness check ran against
+// the unfiltered list.
+func VisibleResources(resources []*terraform.Resource, config *print.Config) []*terraform.Resource {
+	visible := make([]*terraform.Resource, 0, len(resources))
+	for _, r := range resources {
+		isResource := config.Sections.Resources && r.GetMode() == "resource"
+		isDataResource := config.Sections.DataSources && r.GetMode() == "data source"
+		if isResource || isDataResource {
+			visible = append(visible, r)
+		}
+	}
+	return visible
 }
 
 // GenerateIndentation generates indentation of Markdown and AsciiDoc headers
