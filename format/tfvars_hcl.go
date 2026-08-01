@@ -47,7 +47,7 @@ func NewTfvarsHCL(config *print.Config) Type {
 			return fmt.Sprintf("%-*s", padding[i], s)
 		},
 		"value": func(s string) string {
-			if s == "" || s == "null" {
+			if s == "" {
 				return "\"\""
 			}
 			return s

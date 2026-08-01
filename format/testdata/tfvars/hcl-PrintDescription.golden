@@ -95,7 +95,7 @@ no-escape-default-value = "VALUE_WITH_UNDERSCORE"
 with-url = ""
 
 string_default_empty = ""
-string_default_null  = ""
+string_default_null  = null
 string_no_default    = ""
 number_default_zero  = 0
 bool_default_false   = false
