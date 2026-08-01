@@ -556,3 +556,83 @@ func TestNormalize(t *testing.T) {
 		})
 	}
 }
+
+// TestVisibleResources is a regression test for the terraform-docs#603 bug: a
+// module containing only resources of the currently-hidden kind (e.g. all
+// managed resources with `sections.hide: [resources]`, and no data sources at
+// all) used to still print an empty "## Resources" table instead of "No
+// resources.", because emptiness was checked against the raw, unfiltered
+// resource list rather than the list actually rendered.
+func TestVisibleResources(t *testing.T) {
+	managed := &terraform.Resource{Type: "instance", Name: "example", ProviderName: "aws", Mode: "managed"}
+	dataSource := &terraform.Resource{Type: "caller_identity", Name: "current", ProviderName: "aws", Mode: "data"}
+
+	tests := []struct {
+		name           string
+		resources      []*terraform.Resource
+		showResources  bool
+		showDataSrc    bool
+		expectedLength int
+	}{
+		{
+			name:           "both sections shown returns all resources",
+			resources:      []*terraform.Resource{managed, dataSource},
+			showResources:  true,
+			showDataSrc:    true,
+			expectedLength: 2,
+		},
+		{
+			name:           "only resources shown filters out data sources",
+			resources:      []*terraform.Resource{managed, dataSource},
+			showResources:  true,
+			showDataSrc:    false,
+			expectedLength: 1,
+		},
+		{
+			name:           "only data sources shown filters out managed resources",
+			resources:      []*terraform.Resource{managed, dataSource},
+			showResources:  false,
+			showDataSrc:    true,
+			expectedLength: 1,
+		},
+		{
+			name:           "neither section shown returns empty",
+			resources:      []*terraform.Resource{managed, dataSource},
+			showResources:  false,
+			showDataSrc:    false,
+			expectedLength: 0,
+		},
+		{
+			// The exact #603 scenario: data-sources is visible (not hidden),
+			// but the module has none - resources is hidden, and the module's
+			// only entry is a managed resource. The result must be empty so
+			// templates render "No resources." rather than an empty table.
+			name:           "module has only the hidden kind returns empty",
+			resources:      []*terraform.Resource{managed},
+			showResources:  false,
+			showDataSrc:    true,
+			expectedLength: 0,
+		},
+		{
+			name:           "empty input returns empty",
+			resources:      []*terraform.Resource{},
+			showResources:  true,
+			showDataSrc:    true,
+			expectedLength: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			config := &print.Config{}
+			config.Sections.Resources = tt.showResources
+			config.Sections.DataSources = tt.showDataSrc
+
+			actual := VisibleResources(tt.resources, config)
+
+			assert.Len(actual, tt.expectedLength)
+			assert.NotNil(actual, "should return an empty slice, not nil, so text/template's `not` treats it consistently")
+		})
+	}
+}
