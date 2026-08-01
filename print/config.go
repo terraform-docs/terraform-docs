@@ -256,7 +256,7 @@ func (o *output) validate() error {
 	}
 
 	// No extra validation is needed for mode 'replace',
-	// the followings only apply for every other modes.
+	// the following only applies for every other modes.
 	if o.Mode == OutputModeReplace {
 		return nil
 	}

@@ -147,6 +147,7 @@ func TestSanitizeDocument(t *testing.T) {
 		name     string
 		filename string
 		escape   bool
+		expected string
 	}{
 		{
 			name:     "sanitize document item empty",
@@ -162,6 +163,10 @@ func TestSanitizeDocument(t *testing.T) {
 			name:     "sanitize document item codeblock",
 			filename: "codeblock",
 			escape:   true,
+			expected: "This is a complicated one. We need a newline.  \n" +
+				"And an example in a code block. Available options  \n" +
+				"are: foo | bar | baz\n\n" +
+				"```\ndefault = [\n  \"foo\"\n]\n```",
 		},
 	}
 	for _, tt := range tests {
@@ -172,11 +177,13 @@ func TestSanitizeDocument(t *testing.T) {
 			assert.Nil(err)
 
 			actual := SanitizeDocument(string(bytes), tt.escape, false)
-
-			expected, err := os.ReadFile(filepath.Join("testdata", "document", tt.filename+".expected"))
-			assert.Nil(err)
-
-			assert.Equal(string(expected), actual)
+			expected := tt.expected
+			if expected == "" {
+				b, err := os.ReadFile(filepath.Join("testdata", "document", tt.filename+".expected"))
+				assert.Nil(err)
+				expected = string(b)
+			}
+			assert.Equal(expected, actual)
 		})
 	}
 }
@@ -378,21 +385,21 @@ func TestConvertMultiLineText(t *testing.T) {
 			filename: "indentations",
 			isTable:  false,
 			showHTML: true,
-			expected: "This is is a multline test which works\n\nKey  \n  Foo1: blah  \n  Foo2: blah\n\nKey2  \nFoo1: bar1  \nFoo2: bar2",
+			expected: "This is a multiline test which works\n\nKey  \n  Foo1: blah  \n  Foo2: blah\n\nKey2  \nFoo1: bar1  \nFoo2: bar2",
 		},
 		{
 			name:     "convert multi-line indentations",
 			filename: "indentations",
 			isTable:  true,
 			showHTML: true,
-			expected: "This is is a multline test which works<br/><br/>Key<br/>  Foo1: blah<br/>  Foo2: blah<br/><br/>Key2<br/>Foo1: bar1<br/>Foo2: bar2",
+			expected: "This is a multiline test which works<br/><br/>Key<br/>  Foo1: blah<br/>  Foo2: blah<br/><br/>Key2<br/>Foo1: bar1<br/>Foo2: bar2",
 		},
 		{
 			name:     "convert multi-line indentations",
 			filename: "indentations",
 			isTable:  true,
 			showHTML: false,
-			expected: "This is is a multline test which works  Key   Foo1: blah   Foo2: blah  Key2 Foo1: bar1 Foo2: bar2",
+			expected: "This is a multiline test which works  Key   Foo1: blah   Foo2: blah  Key2 Foo1: bar1 Foo2: bar2",
 		},
 	}
 	for _, tt := range tests {

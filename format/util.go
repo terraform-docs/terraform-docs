@@ -49,7 +49,7 @@ func sanitize(markdown string) string {
 // PrintFencedCodeBlock prints codes in fences, it automatically detects if
 // the input 'code' contains '\n' it will use multi line fence, otherwise it
 // wraps the 'code' inside single-tick block.
-// If the fenced is multi-line it also appens an extra '\n` at the end and
+// If the fenced is multi-line it also appends an extra '\n` at the end and
 // returns true accordingly, otherwise returns false for non-carriage return.
 func PrintFencedCodeBlock(code string, language string) (string, bool) {
 	if strings.Contains(code, "\n") {
@@ -61,7 +61,7 @@ func PrintFencedCodeBlock(code string, language string) (string, bool) {
 // PrintFencedAsciidocCodeBlock prints codes in fences, it automatically detects if
 // the input 'code' contains '\n' it will use multi line fence, otherwise it
 // wraps the 'code' inside single-tick block.
-// If the fenced is multi-line it also appens an extra '\n` at the end and
+// If the fenced is multi-line it also appends an extra '\n` at the end and
 // returns true accordingly, otherwise returns false for non-carriage return.
 func PrintFencedAsciidocCodeBlock(code string, language string) (string, bool) {
 	if strings.Contains(code, "\n") {

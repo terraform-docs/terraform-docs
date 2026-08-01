@@ -197,7 +197,7 @@ func (r *Runtime) unmarshalConfig(v *viper.Viper, config *print.Config) error {
 	}
 
 	// explicitly setting formatter to Config for non-root commands this
-	// will effectively override formattter properties from config file
+	// will effectively override formatter properties from config file
 	// if 1) config file exists and 2) formatter is set and 3) explicitly
 	// a subcommand was executed in the terminal
 	if r.formatter != "root" {

@@ -55,7 +55,7 @@ func SanitizeSection(s string, escape bool, html bool) string {
 				lastbreak = "\n"
 			}
 
-			// Adjust indention and linebreak for indented codeblock
+			// Adjust indentation and linebreak for indented codeblock
 			// https://github.com/terraform-docs/terraform-docs/issues/521
 			lastindent := ""
 			lines := strings.Split(segment, "\n")
@@ -206,9 +206,9 @@ func ConvertMultiLineText(s string, isTable bool, isHeader bool, showHTML bool) 
 // ConvertOneLineCodeBlock converts a multi-line code block into a one-liner.
 // Line breaks are replaced with single space.
 func ConvertOneLineCodeBlock(s string) string {
-	splitted := strings.Split(s, "\n")
+	split := strings.Split(s, "\n")
 	result := []string{}
-	for _, segment := range splitted {
+	for _, segment := range split {
 		if len(strings.TrimSpace(segment)) == 0 {
 			continue
 		}

@@ -23,7 +23,7 @@ terraform-docs asciidoc [PATH] [flags]
       --default      show Default column or section (default true)
   -h, --help         help for asciidoc
       --hide-empty   hide empty sections (default false)
-      --indent int   indention level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
+      --indent int   indentation level of AsciiDoc sections [1, 2, 3, 4, 5] (default 2)
       --required     show Required column or section (default true)
       --sensitive    show Sensitive column or section (default true)
       --type         show Type column or section (default true)

@@ -152,34 +152,34 @@ func newGenerator(config *print.Config, canRender bool, fns ...generateFunc) *ge
 	return g
 }
 
-// Content returns generted all the sections combined based on the underlying format.
+// Content returns generated all the sections combined based on the underlying format.
 func (g *generator) Content() string { return g.content }
 
-// Header returns generted header section based on the underlying format.
+// Header returns generated header section based on the underlying format.
 func (g *generator) Header() string { return g.header }
 
-// Footer returns generted footer section based on the underlying format.
+// Footer returns generated footer section based on the underlying format.
 func (g *generator) Footer() string { return g.footer }
 
-// Inputs returns generted inputs section based on the underlying format.
+// Inputs returns generated inputs section based on the underlying format.
 func (g *generator) Inputs() string { return g.inputs }
 
-// Modules returns generted modules section based on the underlying format.
+// Modules returns generated modules section based on the underlying format.
 func (g *generator) Modules() string { return g.modules }
 
-// Outputs returns generted outputs section based on the underlying format.
+// Outputs returns generated outputs section based on the underlying format.
 func (g *generator) Outputs() string { return g.outputs }
 
-// Providers returns generted providers section based on the underlying format.
+// Providers returns generated providers section based on the underlying format.
 func (g *generator) Providers() string { return g.providers }
 
-// Requirements returns generted resources section based on the underlying format.
+// Requirements returns generated resources section based on the underlying format.
 func (g *generator) Requirements() string { return g.requirements }
 
-// Resources returns generted requirements section based on the underlying format.
+// Resources returns generated requirements section based on the underlying format.
 func (g *generator) Resources() string { return g.resources }
 
-// Module returns generted requirements section based on the underlying format.
+// Module returns generated requirements section based on the underlying format.
 func (g *generator) Module() *terraform.Module { return g.module }
 
 // funcs adds GenerateFunc to the list of available functions, for further use

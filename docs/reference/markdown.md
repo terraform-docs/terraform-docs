@@ -26,7 +26,7 @@ terraform-docs markdown [PATH] [flags]
   -h, --help         help for markdown
       --hide-empty   hide empty sections (default false)
       --html         use HTML tags in generated output (default true)
-      --indent int   indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
+      --indent int   indentation level of Markdown sections [1, 2, 3, 4, 5] (default 2)
       --required     show Required column or section (default true)
       --sensitive    show Sensitive column or section (default true)
       --type         show Type column or section (default true)

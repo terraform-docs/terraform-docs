@@ -45,5 +45,5 @@ the root directory of this source tree.
 // • `{{ .Providers }}`
 // • `{{ .Requirements }}`
 // • `{{ .Resources }}`
-// • `{{ include "path/fo/file" }}`
+// • `{{ include "path/to/file" }}`
 package print

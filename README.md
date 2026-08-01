@@ -250,7 +250,7 @@ when formatter is set to `markdown table`.
 Note that sections visibility (i.e. `sections.show` and `sections.hide`) takes
 precedence over the `content`.
 
-Additionally there's also one extra special variable avaialble to the `content`:
+Additionally there's also one extra special variable available to the `content`:
 
 - `{{ .Module }}`
 
