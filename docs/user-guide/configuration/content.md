@@ -137,6 +137,12 @@ content: |-
   {{ range .Module.Resources }}
   - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
   {{- end }}
+
+  ## Provider Functions
+
+  {{ range .Module.ProviderFunctions }}
+  - {{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
+  {{- end }}
 ```
 
 [Terraform module]: https://pkg.go.dev/github.com/terraform-docs/terraform-docs/terraform#Module

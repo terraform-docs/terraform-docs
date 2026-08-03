@@ -866,6 +866,48 @@ func TestLoadResources(t *testing.T) {
 	}
 }
 
+func TestLoadProviderFunctions(t *testing.T) {
+	type expected struct {
+		providerFunctions []string
+	}
+	tests := []struct {
+		name     string
+		path     string
+		expected expected
+	}{
+		{
+			name: "load module provider functions from path",
+			path: "full-example",
+			expected: expected{
+				providerFunctions: []string{"provider::aws::arn_parse"},
+			},
+		},
+		{
+			name: "load module provider functions from path",
+			path: "no-resources",
+			expected: expected{
+				providerFunctions: []string{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert := assert.New(t)
+
+			config := print.NewConfig()
+			config.ModuleRoot = filepath.Join("testdata", tt.path)
+			module, _ := loadModule(filepath.Join("testdata", tt.path))
+			providerFunctions := loadProviderFunctions(module, config)
+
+			assert.Equal(len(tt.expected.providerFunctions), len(providerFunctions))
+
+			for _, pf := range providerFunctions {
+				assert.True(slices.Contains(tt.expected.providerFunctions, pf.Spec()))
+			}
+		})
+	}
+}
+
 func TestLoadProvidersDeterministic(t *testing.T) {
 	tests := []struct {
 		name        string

@@ -289,6 +289,12 @@ content: |-
   {{ range .Module.Resources }}
   - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
   {{- end }}
+
+  ## Provider Functions
+
+  {{ range .Module.ProviderFunctions }}
+  - {{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
+  {{- end }}
 ````
 
 ## Build on top of terraform-docs

@@ -22,10 +22,11 @@ type Module struct {
 	Footer       string         `json:"footer" toml:"footer" xml:"footer" yaml:"footer"`
 	Inputs       []*Input       `json:"inputs" toml:"inputs" xml:"inputs>input" yaml:"inputs"`
 	ModuleCalls  []*ModuleCall  `json:"modules" toml:"modules" xml:"modules>module" yaml:"modules"`
-	Outputs      []*Output      `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
-	Providers    []*Provider    `json:"providers" toml:"providers" xml:"providers>provider" yaml:"providers"`
-	Requirements []*Requirement `json:"requirements" toml:"requirements" xml:"requirements>requirement" yaml:"requirements"`
-	Resources    []*Resource    `json:"resources" toml:"resources" xml:"resources>resource" yaml:"resources"`
+	Outputs         []*Output         `json:"outputs" toml:"outputs" xml:"outputs>output" yaml:"outputs"`
+	Providers       []*Provider       `json:"providers" toml:"providers" xml:"providers>provider" yaml:"providers"`
+	ProviderFunctions []*ProviderFunction `json:"provider_functions" toml:"provider_functions" xml:"provider_functions>provider_function" yaml:"provider_functions"`
+	Requirements    []*Requirement    `json:"requirements" toml:"requirements" xml:"requirements>requirement" yaml:"requirements"`
+	Resources       []*Resource       `json:"resources" toml:"resources" xml:"resources>resource" yaml:"resources"`
 
 	RequiredInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
 	OptionalInputs []*Input `json:"-" toml:"-" xml:"-" yaml:"-"`
@@ -59,6 +60,11 @@ func (m *Module) HasOutputs() bool {
 // HasProviders indicates if the module has providers.
 func (m *Module) HasProviders() bool {
 	return len(m.Providers) > 0
+}
+
+// HasProviderFunctions indicates if the module has provider functions.
+func (m *Module) HasProviderFunctions() bool {
+	return len(m.ProviderFunctions) > 0
 }
 
 // HasRequirements indicates if the module has requirements.
