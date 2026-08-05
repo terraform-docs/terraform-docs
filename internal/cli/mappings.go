@@ -39,6 +39,7 @@ var flagMappings = map[string]string{
 	"escape":        "settings.escape",
 	"indent":        "settings.indent",
 	"read-comments": "settings.read-comments",
+	"registry-url":  "settings.registry-url",
 	"required":      "settings.required",
 	"sensitive":     "settings.sensitive",
 	"type":          "settings.type",
