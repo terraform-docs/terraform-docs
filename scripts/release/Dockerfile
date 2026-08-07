@@ -7,7 +7,7 @@
 # the root directory of this source tree.
 
 FROM docker.io/library/alpine:3.23.4
-
-COPY terraform-docs /usr/local/bin/terraform-docs
+ARG TARGETPLATFORM
+COPY $TARGETPLATFORM/terraform-docs /usr/local/bin/
 
 ENTRYPOINT ["terraform-docs"]
