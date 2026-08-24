@@ -56,6 +56,8 @@ func (s *Server) Version(args interface{}, resp *string) error {
 
 // Execute returns the generated output.
 func (s *Server) Execute(args *ExecuteArgs, resp *string) error {
+	repairModule(args.Module)
+
 	r, err := s.impl.Execute(args)
 	*resp = r
 	return err
