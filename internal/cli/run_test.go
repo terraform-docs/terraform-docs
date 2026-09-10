@@ -146,3 +146,62 @@ func TestVersionConstraint(t *testing.T) {
 		})
 	}
 }
+
+
+func TestContainsTerraformFiles(t *testing.T) {
+	tests := map[string]struct {
+		files   []string
+		want    bool
+		wantErr bool
+	}{
+		"TfFile": {
+			files: []string{"main.tf"},
+			want:  true,
+		},
+		"TfJSONFile": {
+			files: []string{"main.tf.json"},
+			want:  true,
+		},
+		"TofuFile": {
+			files: []string{"main.tofu"},
+			want:  true,
+		},
+		"TofuJSONFile": {
+			files: []string{"main.tofu.json"},
+			want:  true,
+		},
+		"MixedWithTofuOnly": {
+			files: []string{"README.md", "main.tofu"},
+			want:  true,
+		},
+		"NoModuleFiles": {
+			files: []string{"README.md", "notes.txt"},
+			want:  false,
+		},
+		"EmptyDir": {
+			files: []string{},
+			want:  false,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			assert := assert.New(t)
+			dir := t.TempDir()
+			for _, file := range tt.files {
+				path := filepath.Join(dir, file)
+				if err := os.WriteFile(path, []byte("x"), 0o644); err != nil {
+					t.Fatal(err)
+				}
+			}
+
+			got, err := containsTerraformFiles(dir)
+			if tt.wantErr {
+				assert.NotNil(err)
+				return
+			}
+			assert.Nil(err)
+			assert.Equal(tt.want, got)
+		})
+	}
+}
