@@ -18,8 +18,22 @@ The whole file content is being extracted as module header when extracting from
 `.adoc`, `.md`, or `.txt`.
 {{< /alert >}}
 
-To extract header from `.tf` or `.tofu` file you need to use following javascript, c, or java
-like multi-line comment.
+To extract a header from a `.tf` or `.tofu` file, use consecutive `#` comments:
+
+```tf
+# # Main title
+#
+# Everything in this comment block will get extracted.
+#
+# You can put simple text or complete Markdown content
+# here. Subsequently if you want to render AsciiDoc format
+# you can put AsciiDoc compatible content in this comment
+# block.
+
+resource "foo" "bar" { ... }
+```
+
+JavaScript-, C-, or Java-like multi-line comments are also supported:
 
 ```tf
 /**
