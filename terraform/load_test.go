@@ -1179,3 +1179,65 @@ func TestSortItems(t *testing.T) {
 		})
 	}
 }
+
+func TestFormatSource(t *testing.T) {
+	tests := []struct {
+		name            string
+		source          string
+		version         string
+		expectedSource  string
+		expectedVersion string
+	}{
+		{
+			name:            "no query string",
+			source:          "git::https://example.com/vpc.git",
+			expectedSource:  "git::https://example.com/vpc.git",
+			expectedVersion: "",
+		},
+		{
+			name:            "explicit version takes precedence",
+			source:          "git::https://example.com/vpc.git?ref=v1.2.0",
+			version:         "v9.9.9",
+			expectedSource:  "git::https://example.com/vpc.git?ref=v1.2.0",
+			expectedVersion: "v9.9.9",
+		},
+		{
+			name:            "ref only",
+			source:          "git::https://example.com/vpc.git?ref=v1.2.0",
+			expectedSource:  "git::https://example.com/vpc.git",
+			expectedVersion: "v1.2.0",
+		},
+		{
+			name:            "ref after depth",
+			source:          "git::https://example.com/vpc.git?depth=1&ref=v1.2.0",
+			expectedSource:  "git::https://example.com/vpc.git?depth=1",
+			expectedVersion: "v1.2.0",
+		},
+		{
+			name:            "ref before depth",
+			source:          "git::https://example.com/vpc.git?ref=v1.2.0&depth=1",
+			expectedSource:  "git::https://example.com/vpc.git?depth=1",
+			expectedVersion: "v1.2.0",
+		},
+		{
+			name:            "query without ref",
+			source:          "git::https://example.com/vpc.git?depth=1",
+			expectedSource:  "git::https://example.com/vpc.git?depth=1",
+			expectedVersion: "",
+		},
+		{
+			name:            "scp-style source with ref",
+			source:          "git@github.com:module/path?ref=v7.8.9",
+			expectedSource:  "git@github.com:module/path",
+			expectedVersion: "v7.8.9",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			source, version := formatSource(tt.source, tt.version)
+			assert.Equal(t, tt.expectedSource, source)
+			assert.Equal(t, tt.expectedVersion, version)
+		})
+	}
+}
