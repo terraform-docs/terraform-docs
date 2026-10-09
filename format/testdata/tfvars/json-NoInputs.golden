@@ -54,5 +54,8 @@
   "number_default_zero": 0,
   "bool_default_false": false,
   "list_default_empty": [],
-  "object_default_empty": {}
+  "object_default_empty": {},
+  "variable_with_no_validation": "",
+  "variable_with_one_validation": "",
+  "variable_with_two_validations": null
 }

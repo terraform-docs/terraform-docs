@@ -16,8 +16,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 // Input represents a Terraform input.
@@ -27,6 +27,7 @@ type Input struct {
 	Description types.String `json:"description" toml:"description" xml:"description" yaml:"description"`
 	Default     types.Value  `json:"default" toml:"default" xml:"default" yaml:"default"`
 	Required    bool         `json:"required" toml:"required" xml:"required" yaml:"required"`
+	Validation  types.List   `json:"validation" toml:"validation" xml:"validation" yaml:"validation"`
 	Position    Position     `json:"-" toml:"-" xml:"-" yaml:"-"`
 }
 

@@ -16,9 +16,9 @@ import (
 	"regexp"
 	gotemplate "text/template"
 
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/template"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/template"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
 //go:embed templates/pretty.tmpl

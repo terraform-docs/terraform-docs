@@ -22,13 +22,13 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/terraform-docs/terraform-docs/cmd"
-	"github.com/terraform-docs/terraform-docs/format"
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/cmd"
+	"github.com/rquadling/terraform-docs/format"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
-// These are practiaclly a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go
+// These are practically a copy/paste of https://github.com/spf13/cobra/blob/master/doc/md_docs.go
 // The reason we've decided to bring them over and not use them directly
 // from cobra module was that we wanted to inject custom "Example" section
 // with generated output based on the "examples" folder.

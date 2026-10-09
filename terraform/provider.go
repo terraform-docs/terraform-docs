@@ -14,7 +14,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/terraform-docs/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/internal/types"
 )
 
 // Provider represents a Terraform output.

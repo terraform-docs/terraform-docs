@@ -20,9 +20,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
 func TestTemplateRender(t *testing.T) {

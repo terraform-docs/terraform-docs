@@ -24,10 +24,11 @@ import (
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
-	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
-	"github.com/terraform-docs/terraform-docs/internal/reader"
-	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-config-inspect/tfconfig"
+
+	"github.com/rquadling/terraform-docs/internal/reader"
+	"github.com/rquadling/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 // LoadWithOptions returns new instance of Module with all the inputs and
@@ -196,7 +197,7 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 			continue
 		}
 
-		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
+		// convert CRLF to LF early on (https://github.com/rquadling/terraform-docs/issues/305)
 		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
 		if inputDescription == "" && config.Settings.ReadComments {
 			inputDescription = comments
@@ -212,6 +213,10 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 				Filename: input.Pos.Filename,
 				Line:     input.Pos.Line,
 			},
+		}
+
+		for _, validation := range input.Validation {
+			i.Validation = append(i.Validation, types.String(validation))
 		}
 
 		inputs = append(inputs, i)
@@ -300,7 +305,7 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 			continue
 		}
 
-		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/584)
+		// convert CRLF to LF early on (https://github.com/rquadling/terraform-docs/issues/584)
 		description := strings.ReplaceAll(o.Description, "\r\n", "\n")
 		if description == "" && config.Settings.ReadComments {
 			description = comments

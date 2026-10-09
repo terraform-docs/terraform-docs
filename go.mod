@@ -1,4 +1,4 @@
-module github.com/terraform-docs/terraform-docs
+module github.com/rquadling/terraform-docs
 
 go 1.25.0
 
@@ -14,11 +14,11 @@ require (
 	github.com/hashicorp/hcl/v2 v2.24.0
 	github.com/iancoleman/orderedmap v0.3.0
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/rquadling/terraform-config-inspect v0.0.0-20261005163830-40e8fdf15795
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/terraform-docs/terraform-config-inspect v0.0.0-20250408153412-5b88c7ed5b63
 	golang.org/x/exp v0.0.0-20251209150349-8475f28825e9
 	gopkg.in/yaml.v3 v3.0.1
 	honnef.co/go/tools v0.7.0
@@ -64,8 +64,13 @@ require (
 	golang.org/x/sys v0.45.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/tools v0.44.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260414002931-afd174a4e478 // indirect
-	google.golang.org/grpc v1.82.1 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260526163538-3dc84a4a5aaa // indirect
+	google.golang.org/grpc v1.83.1 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+)
+
+retract (
+	v0.24.0-raq.2 // tag pointed at the wrong commit;
+	v0.24.0-raq.3 // forgot to increase the version
 )

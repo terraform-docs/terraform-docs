@@ -18,7 +18,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 func TestReadConfigAbsolutePath(t *testing.T) {

@@ -18,7 +18,7 @@ in the root of your Git repo with at least the following content:
 
    ```yaml
    repos:
-     - repo: https://github.com/terraform-docs/terraform-docs
+     - repo: https://github.com/rquadling/terraform-docs
        rev: "<VERSION, TAG, OR SHA TO USE>"             # e.g. "v0.11.2"
        hooks:
          - id: terraform-docs-go
@@ -53,7 +53,7 @@ repos:
       - id: terraform-docs
         name: terraform-docs
         language: docker_image
-        entry: quay.io/terraform-docs/terraform-docs:latest  # or, change latest to pin to a specific version
+        entry: quay.io/rquadling/terraform-docs:latest  # or, change latest to pin to a specific version
         args: ["ARGS", "TO PASS", "INCLUDING PATH"]          # e.g. ["--output-file", "README.md", "./mymodule/path"]
         pass_filenames: false
 ```

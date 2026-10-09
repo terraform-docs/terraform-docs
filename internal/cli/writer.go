@@ -20,7 +20,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 // stdoutWriter writes content to os.Stdout.

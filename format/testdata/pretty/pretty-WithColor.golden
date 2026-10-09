@@ -189,6 +189,15 @@ It spans over multiple lines.[0m
 [36minput.object_default_empty[0m ({})
 [90mn/a[0m
 
+[36minput.variable_with_no_validation[0m ("")
+[90mThis variable has no validation[0m
+
+[36minput.variable_with_one_validation[0m ("")
+[90mThis variable has one validation[0m
+
+[36minput.variable_with_two_validations[0m (required)
+[90mThis variable has two validations[0m
+
 
 [36moutput.unquoted[0m
 [90mIt's unquoted output.[0m

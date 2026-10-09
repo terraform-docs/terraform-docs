@@ -236,3 +236,21 @@ Default: `[]`
 Description: n/a
 
 Default: `{}`
+
+=== variable_with_no_validation
+
+Description: This variable has no validation
+
+Default: `""`
+
+=== variable_with_one_validation
+
+Description: This variable has one validation
+
+Default: `""`
+
+=== variable_with_two_validations
+
+Description: This variable has two validations
+
+Default: n/a
