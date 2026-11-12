@@ -17,6 +17,12 @@ import (
 	"github.com/terraform-docs/terraform-docs/terraform"
 )
 
+const (
+	TypeFunc       = "type"
+	ValueFunc      = "value"
+	IsRequiredFunc = "isRequired"
+)
+
 // Type represents an output format type (e.g. json, markdown table, yaml, etc).
 type Type interface {
 	Generate(*terraform.Module) error // generate the Terraform module
