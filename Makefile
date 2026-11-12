@@ -69,7 +69,7 @@ lint:   ## Run linter
 .PHONY: staticcheck
 staticcheck:   ## Run staticcheck
 	@ $(MAKE) --no-print-directory log-$@
-	$(GO) run honnef.co/go/tools/cmd/staticcheck@2025.1.1 -- ./...
+	$(GO) run honnef.co/go/tools/cmd/staticcheck@2026.2.2 -- ./...
 
 .PHONY: test
 test:   ## Run tests
