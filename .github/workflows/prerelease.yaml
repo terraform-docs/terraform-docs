@@ -29,7 +29,7 @@ jobs:
         if: env.REGISTRY_USERNAME != ''
         with:
           distribution: goreleaser
-          version: 1.26.2
+          version: '~> v2'
           args: release --clean --skip=publish --skip=sign
 
       - name: Release
