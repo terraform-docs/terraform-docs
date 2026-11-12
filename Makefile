@@ -38,7 +38,7 @@ DOCKER_IMAGE := quay.io/$(PROJECT_OWNER)/$(PROJECT_NAME)
 DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
-GOLANGCI_VERSION  := v2.7.2
+GOLANGCI_VERSION  := v2.15.0
 
 .PHONY: all
 all: clean verify checkfmt lint test build
@@ -69,7 +69,7 @@ lint:   ## Run linter
 .PHONY: staticcheck
 staticcheck:   ## Run staticcheck
 	@ $(MAKE) --no-print-directory log-$@
-	$(GO) run honnef.co/go/tools/cmd/staticcheck@2025.1.1 -- ./...
+	$(GO) run honnef.co/go/tools/cmd/staticcheck@2026.2.2 -- ./...
 
 .PHONY: test
 test:   ## Run tests
@@ -121,7 +121,7 @@ endif
 .PHONY: golangci
 golangci:   ## Install golangci
 ifeq (, $(shell which golangci-lint))
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell $(GO) env GOPATH)/bin $(GOLANGCI_VERSION)
+	curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b $(shell $(GO) env GOPATH)/bin $(GOLANGCI_VERSION)
 endif
 
 .PHONY: tools
