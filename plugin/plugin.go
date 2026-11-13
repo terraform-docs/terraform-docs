@@ -67,6 +67,8 @@ func (*formatter) Client(b *goplugin.MuxBroker, c *rpc.Client) (interface{}, err
 }
 
 func init() {
+	gob.Register([]interface{}{})
+	gob.Register(map[string]interface{}{})
 	gob.Register(new(types.Bool))
 	gob.Register(new(types.Empty))
 	gob.Register(new(types.List))
