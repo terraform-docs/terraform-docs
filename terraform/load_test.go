@@ -82,6 +82,21 @@ func TestLoadModule(t *testing.T) {
 	}
 }
 
+func TestLoadModuleWithConstModuleVersion(t *testing.T) {
+	module, err := loadModule(filepath.Join("testdata", "module-const-version"))
+	if !assert.NoError(t, err) {
+		return
+	}
+
+	call, ok := module.ModuleCalls["vpc"]
+	if !assert.True(t, ok) {
+		return
+	}
+
+	assert.Equal(t, "terraform-aws-modules/vpc/aws", call.Source)
+	assert.Equal(t, "var.version", call.Version)
+}
+
 func TestGetFileFormat(t *testing.T) {
 	tests := []struct {
 		name     string
