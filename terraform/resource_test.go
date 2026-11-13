@@ -101,6 +101,36 @@ func TestResourceURL(t *testing.T) {
 			},
 			expectValue: "",
 		},
+		"Built-in resource": {
+			resource: Resource{
+				Type:           "data",
+				ProviderName:   "terraform",
+				ProviderSource: "hashicorp/terraform",
+				Mode:           "managed",
+				Version:        types.String("latest"),
+			},
+			expectValue: "https://developer.hashicorp.com/terraform/language/resources/terraform-data",
+		},
+		"Built-in data source": {
+			resource: Resource{
+				Type:           "remote_state",
+				ProviderName:   "terraform",
+				ProviderSource: "hashicorp/terraform",
+				Mode:           "data",
+				Version:        types.String("latest"),
+			},
+			expectValue: "https://developer.hashicorp.com/terraform/language/state/remote-state-data",
+		},
+		"Unknown built-in resource": {
+			resource: Resource{
+				Type:           "future",
+				ProviderName:   "terraform",
+				ProviderSource: "hashicorp/terraform",
+				Mode:           "managed",
+				Version:        types.String("latest"),
+			},
+			expectValue: "",
+		},
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {

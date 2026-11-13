@@ -18,6 +18,20 @@ import (
 	"github.com/terraform-docs/terraform-docs/internal/types"
 )
 
+// builtinProviderName is the local name of Terraform's built-in provider. It is
+// reserved and cannot be declared in required_providers, so a resource carrying
+// it is always built-in and never the deprecated 'hashicorp/terraform' provider
+// published on the registry.
+const builtinProviderName = "terraform"
+
+// builtinResourceURLs maps the resource types of the built-in provider to their
+// documentation, which lives alongside the Terraform language reference instead
+// of on the registry.
+var builtinResourceURLs = map[string]string{
+	"terraform_data":         "https://developer.hashicorp.com/terraform/language/resources/terraform-data",
+	"terraform_remote_state": "https://developer.hashicorp.com/terraform/language/state/remote-state-data",
+}
+
 // Resource represents a managed or data type that is created by the module
 type Resource struct {
 	Type           string       `json:"type" toml:"type" xml:"type" yaml:"type"`
@@ -60,6 +74,12 @@ func (r *Resource) URL() string {
 		kind = "data-sources"
 	default:
 		return ""
+	}
+
+	// Resources of the built-in provider are not published on the registry, so
+	// the source synthesized for them points at an unrelated deprecated provider.
+	if r.ProviderName == builtinProviderName {
+		return builtinResourceURLs[r.ProviderName+"_"+r.Type]
 	}
 
 	if strings.Count(r.ProviderSource, "/") > 1 {
