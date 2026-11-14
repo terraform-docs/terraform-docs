@@ -403,6 +403,7 @@ func generateContent(config *print.Config) error {
 		if perr != nil {
 			return fmt.Errorf("formatter '%s' not found", config.Formatter)
 		}
+		defer plugins.Clean()
 
 		client, found := plugins.Get(config.Formatter)
 		if !found {

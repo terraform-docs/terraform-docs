@@ -31,6 +31,7 @@ func NewCommand() *cobra.Command {
 			if err != nil {
 				return
 			}
+			defer plugins.Clean()
 			for _, f := range plugins.All() {
 				name, err := f.Name()
 				if err != nil {
