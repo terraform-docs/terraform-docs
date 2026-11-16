@@ -157,7 +157,7 @@ generates the following output:
 
     Source: git@github.com:module/path
 
-    Version: v7.8.9
+    Version: v10.9.8
 
     ## Resources
 
@@ -264,7 +264,7 @@ generates the following output:
 
     ### <a name="input_input-with-code-block"></a> [input-with-code-block](#input\_input-with-code-block)
 
-    Description: This is a complicated one. We need a newline.
+    Description: This is a complicated one. We need a newline.  
     And an example in a code block
     ```
     default     = [

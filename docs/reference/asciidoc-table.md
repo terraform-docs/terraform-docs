@@ -133,7 +133,7 @@ generates the following output:
     |[[module_bar]] <<module_bar,bar>> |baz |4.5.6
     |[[module_baz]] <<module_baz,baz>> |baz |4.5.6
     |[[module_foo]] <<module_foo,foo>> |bar |1.2.3
-    |[[module_foobar]] <<module_foobar,foobar>> |git@github.com:module/path |v7.8.9
+    |[[module_foobar]] <<module_foobar,foobar>> |git@github.com:module/path |v10.9.8
     |===
 
     == Resources
@@ -182,7 +182,7 @@ generates the following output:
     |no
 
     |[[input_input-with-code-block]] <<input_input-with-code-block,input-with-code-block>>
-    |This is a complicated one. We need a newline.
+    |This is a complicated one. We need a newline.  
     And an example in a code block
     [source]
     ----

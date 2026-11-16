@@ -332,7 +332,7 @@ generates the following output:
     [[modules]]
       name = "foobar"
       source = "git@github.com:module/path"
-      version = "v7.8.9"
+      version = "v10.9.8"
       description = ""
 
     [[outputs]]

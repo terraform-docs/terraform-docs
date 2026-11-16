@@ -112,7 +112,7 @@ generates the following output:
     module.bar (baz,4.5.6)
     module.baz (baz,4.5.6)
     module.foo (bar,1.2.3)
-    module.foobar (git@github.com:module/path,v7.8.9)
+    module.foobar (git@github.com:module/path,v10.9.8)
 
 
     resource.foo_resource.baz (resource)
@@ -137,7 +137,7 @@ generates the following output:
     input.input-with-code-block ([
       "name rack:location"
     ])
-    This is a complicated one. We need a newline.
+    This is a complicated one. We need a newline.  
     And an example in a code block
     ```
     default     = [

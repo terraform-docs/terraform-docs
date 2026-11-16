@@ -349,7 +349,7 @@ generates the following output:
         description: another type of description for module foo
       - name: foobar
         source: git@github.com:module/path
-        version: v7.8.9
+        version: v10.9.8
         description: null
     outputs:
       - name: output-0.12

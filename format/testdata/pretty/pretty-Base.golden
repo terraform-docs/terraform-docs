@@ -53,7 +53,7 @@ provider.null
 module.bar (baz,4.5.6)
 module.foo (bar,1.2.3)
 module.baz (baz,4.5.6)
-module.foobar (git@github.com:module/path,v7.8.9)
+module.foobar (git@github.com:module/path,v10.9.8)
 
 
 resource.foo_resource.baz (resource)

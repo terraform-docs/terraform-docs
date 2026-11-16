@@ -385,7 +385,7 @@ generates the following output:
         <module>
           <name>foobar</name>
           <source>git@github.com:module/path</source>
-          <version>v7.8.9</version>
+          <version>v10.9.8</version>
           <description xsi:nil="true"></description>
         </module>
       </modules>
