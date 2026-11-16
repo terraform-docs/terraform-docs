@@ -17,9 +17,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/terraform-docs/terraform-docs/print"
-	"github.com/terraform-docs/terraform-docs/template"
-	"github.com/terraform-docs/terraform-docs/terraform"
+	"github.com/rquadling/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/template"
+	"github.com/rquadling/terraform-docs/terraform"
 )
 
 // sanitize cleans a Markdown document to soothe linters.

@@ -28,10 +28,10 @@ the root directory of this source tree.
 //	import (
 //	    _ "embed" //nolint
 //
-//	    "github.com/terraform-docs/terraform-docs/plugin"
-//	    "github.com/terraform-docs/terraform-docs/print"
-//	    "github.com/terraform-docs/terraform-docs/template"
-//	    "github.com/terraform-docs/terraform-docs/terraform"
+//	    "github.com/rquadling/terraform-docs/plugin"
+//	    "github.com/rquadling/terraform-docs/print"
+//	    "github.com/rquadling/terraform-docs/template"
+//	    "github.com/rquadling/terraform-docs/terraform"
 //	)
 //
 //	func main() {

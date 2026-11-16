@@ -1,0 +1,64 @@
+unquoted             = ""
+bool-3               = true
+bool-2               = false
+bool-1               = true
+string-3             = ""
+string-2             = ""
+string-1             = "bar"
+string-special-chars = "\\.<>[]{}_-"
+number-3             = "19"
+number-4             = 15.75
+number-2             = ""
+number-1             = 42
+map-3                = {}
+map-2                = ""
+map-1 = {
+  "a": 1,
+  "b": 2,
+  "c": 3
+}
+list-3 = []
+list-2 = ""
+list-1 = [
+  "a",
+  "b",
+  "c"
+]
+input_with_underscores = ""
+input-with-pipe        = "v1"
+input-with-code-block = [
+  "name rack:location"
+]
+long_type = {
+  "bar": {
+    "bar": "bar",
+    "foo": "bar"
+  },
+  "buzz": [
+    "fizz",
+    "buzz"
+  ],
+  "fizz": [],
+  "foo": {
+    "bar": "foo",
+    "foo": "foo"
+  },
+  "name": "hello"
+}
+no-escape-default-value     = "VALUE_WITH_UNDERSCORE"
+with-url                    = ""
+string_default_empty        = ""
+string_default_null         = null
+string_no_default           = ""
+number_default_zero         = 0
+bool_default_false          = false
+list_default_empty          = []
+object_default_empty        = {}
+variable_with_no_validation = ""
+
+# var.variable_with_one_validation must be empty or 10 characters long.
+variable_with_one_validation = ""
+
+# var.variable_with_two_validations must be 10 characters long.
+# var.variable_with_two_validations must start with 'magic'.
+variable_with_two_validations = ""

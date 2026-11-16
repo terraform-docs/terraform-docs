@@ -12,12 +12,14 @@
         |===
         |Name |Description
         {{- if .Config.Settings.Type }} |Type{{ end }}
+        {{- if .Config.Settings.Validation }} |Validation{{ end }}
         {{- if .Config.Settings.Default }} |Default{{ end }}
         {{- if .Config.Settings.Required }} |Required{{ end }}
         {{- range .Module.Inputs }}
             |{{ anchorNameAsciidoc "input" .Name }}
             |{{ tostring .Description | sanitizeAsciidocTbl }}
             {{- if $.Config.Settings.Type }}{{ printf "\n" }}|{{ tostring .Type | type | sanitizeAsciidocTbl }}{{ end }}
+            {{- if $.Config.Settings.Validation }}{{ printf "\n" }}|{{ if .Validation }}{{ range $index, $validation := .Validation }}{{ if $index }}+{{ end }}{{ tostring $validation | sanitizeAsciidocTbl }}{{ end }}{{ else }}None{{ end }}{{ end }}
             {{- if $.Config.Settings.Default }}{{ printf "\n" }}|{{ value .GetValue | sanitizeAsciidocTbl }}{{ end }}
             {{- if $.Config.Settings.Required }}{{ printf "\n" }}|{{ ternary .Required "yes" "no" }}{{ end }}
         {{ end }}

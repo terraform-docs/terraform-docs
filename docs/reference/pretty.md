@@ -112,7 +112,7 @@ generates the following output:
     module.bar (baz,4.5.6)
     module.baz (baz,4.5.6)
     module.foo (bar,1.2.3)
-    module.foobar (git@github.com:module/path,v7.8.9)
+    module.foobar (git@github.com:module/path,v10.9.8)
 
 
     resource.foo_resource.baz (resource)
@@ -245,6 +245,15 @@ generates the following output:
     input.unquoted (required)
     n/a
 
+    input.variable_with_no_validation ("")
+    This variable has no validation
+
+    input.variable_with_one_validation ("")
+    This variable has one validation
+
+    input.variable_with_two_validations (required)
+    This variable has two validations
+
     input.with-url ("")
     The description contains url. https://www.domain.com/foo/bar_baz.html
 
@@ -265,4 +274,4 @@ generates the following output:
 
     It looks exactly like a header, but is placed at the end of the document
 
-[examples]: https://github.com/terraform-docs/terraform-docs/tree/master/examples
+[examples]: https://github.com/rquadling/terraform-docs/tree/master/examples

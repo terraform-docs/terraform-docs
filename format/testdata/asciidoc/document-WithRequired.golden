@@ -88,7 +88,7 @@ Version: 4.5.6
 
 Source: git@github.com:module/path
 
-Version: v7.8.9
+Version: v10.9.8
 
 == Resources
 
@@ -143,6 +143,12 @@ Type: `any`
 === string_no_default
 
 Description: n/a
+
+Type: `string`
+
+=== variable_with_two_validations
+
+Description: This variable has two validations
 
 Type: `string`
 
@@ -400,6 +406,22 @@ Description: n/a
 Type: `object({})`
 
 Default: `{}`
+
+=== variable_with_no_validation
+
+Description: This variable has no validation
+
+Type: `string`
+
+Default: `""`
+
+=== variable_with_one_validation
+
+Description: This variable has one validation
+
+Type: `string`
+
+Default: `""`
 
 == Outputs
 

@@ -22,7 +22,7 @@ import (
 	goplugin "github.com/hashicorp/go-plugin"
 	"github.com/mitchellh/go-homedir"
 
-	pluginsdk "github.com/terraform-docs/terraform-docs/plugin"
+	pluginsdk "github.com/rquadling/terraform-docs/plugin"
 )
 
 // Discover plugins and registers them. The lookup priority of plugins is as

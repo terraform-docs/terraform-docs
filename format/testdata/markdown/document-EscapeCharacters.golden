@@ -88,7 +88,7 @@ Version: 4.5.6
 
 Source: git@github.com:module/path
 
-Version: v7.8.9
+Version: v10.9.8
 
 ## Resources
 
@@ -410,6 +410,30 @@ Description: n/a
 Type: `object({})`
 
 Default: `{}`
+
+### variable\_with\_no\_validation
+
+Description: This variable has no validation
+
+Type: `string`
+
+Default: `""`
+
+### variable\_with\_one\_validation
+
+Description: This variable has one validation
+
+Type: `string`
+
+Default: `""`
+
+### variable\_with\_two\_validations
+
+Description: This variable has two validations
+
+Type: `string`
+
+Default: n/a
 
 ## Outputs
 

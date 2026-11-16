@@ -7,6 +7,7 @@
     "string-2",
     "string_no_default",
     "unquoted",
+    "variable_with_two_validations",
     "bool-1",
     "bool-2",
     "bool-3",
@@ -30,6 +31,8 @@
     "string-special-chars",
     "string_default_empty",
     "string_default_null",
+    "variable_with_no_validation",
+    "variable_with_one_validation",
     "with-url"
   ],
   "modules": [

@@ -101,3 +101,12 @@ number_default_zero  = 0
 bool_default_false   = false
 list_default_empty   = []
 object_default_empty = {}
+
+# This variable has no validation
+variable_with_no_validation = ""
+
+# This variable has one validation
+variable_with_one_validation = ""
+
+# This variable has two validations
+variable_with_two_validations = ""

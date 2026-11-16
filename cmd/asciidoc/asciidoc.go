@@ -13,10 +13,10 @@ package asciidoc
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/terraform-docs/terraform-docs/cmd/asciidoc/document"
-	"github.com/terraform-docs/terraform-docs/cmd/asciidoc/table"
-	"github.com/terraform-docs/terraform-docs/internal/cli"
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/cmd/asciidoc/document"
+	"github.com/rquadling/terraform-docs/cmd/asciidoc/table"
+	"github.com/rquadling/terraform-docs/internal/cli"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 // NewCommand returns a new cobra.Command for 'asciidoc' formatter
@@ -39,6 +39,7 @@ func NewCommand(runtime *cli.Runtime, config *print.Config) *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&config.Settings.Required, "required", true, "show Required column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Sensitive, "sensitive", true, "show Sensitive column or section")
 	cmd.PersistentFlags().BoolVar(&config.Settings.Type, "type", true, "show Type column or section")
+	cmd.PersistentFlags().BoolVar(&config.Settings.Validation, "validation", true, "show Validation column or section")
 
 	// subcommands
 	cmd.AddCommand(document.NewCommand(runtime, config))

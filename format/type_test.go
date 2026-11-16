@@ -16,7 +16,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 func TestFormatType(t *testing.T) {

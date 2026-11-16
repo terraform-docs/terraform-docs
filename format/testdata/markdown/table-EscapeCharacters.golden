@@ -62,7 +62,7 @@ followed by another line of text.
 | bar | baz | 4.5.6 |
 | foo | bar | 1.2.3 |
 | baz | baz | 4.5.6 |
-| foobar | git@github.com:module/path | v7.8.9 |
+| foobar | git@github.com:module/path | v10.9.8 |
 
 ## Resources
 
@@ -109,6 +109,9 @@ followed by another line of text.
 | bool\_default\_false | n/a | `bool` | `false` |
 | list\_default\_empty | n/a | `list(string)` | `[]` |
 | object\_default\_empty | n/a | `object({})` | `{}` |
+| variable\_with\_no\_validation | This variable has no validation | `string` | `""` |
+| variable\_with\_one\_validation | This variable has one validation | `string` | `""` |
+| variable\_with\_two\_validations | This variable has two validations | `string` | n/a |
 
 ## Outputs
 

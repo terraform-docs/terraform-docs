@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -24,10 +25,11 @@ import (
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
-	"github.com/terraform-docs/terraform-config-inspect/tfconfig"
-	"github.com/terraform-docs/terraform-docs/internal/reader"
-	"github.com/terraform-docs/terraform-docs/internal/types"
-	"github.com/terraform-docs/terraform-docs/print"
+	"github.com/rquadling/terraform-config-inspect/tfconfig"
+
+	"github.com/rquadling/terraform-docs/internal/reader"
+	"github.com/rquadling/terraform-docs/internal/types"
+	"github.com/rquadling/terraform-docs/print"
 )
 
 // LoadWithOptions returns new instance of Module with all the inputs and
@@ -196,7 +198,7 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 			continue
 		}
 
-		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/305)
+		// convert CRLF to LF early on (https://github.com/rquadling/terraform-docs/issues/305)
 		inputDescription := strings.ReplaceAll(input.Description, "\r\n", "\n")
 		if inputDescription == "" && config.Settings.ReadComments {
 			inputDescription = comments
@@ -214,6 +216,10 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 			},
 		}
 
+		for _, validation := range input.Validation {
+			i.Validation = append(i.Validation, types.String(validation))
+		}
+
 		inputs = append(inputs, i)
 
 		if i.HasDefault() {
@@ -227,24 +233,31 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 }
 
 func formatSource(s, v string) (source, version string) {
-	substr := "?ref="
-
 	if v != "" {
 		return s, v
 	}
 
-	pos := strings.LastIndex(s, substr)
+	pos := strings.Index(s, "?")
 	if pos == -1 {
 		return s, version
 	}
 
-	adjustedPos := pos + len(substr)
-	if adjustedPos >= len(s) {
+	query, err := url.ParseQuery(s[pos+1:])
+	if err != nil {
 		return s, version
 	}
 
-	source = s[0:pos]
-	version = s[adjustedPos:]
+	ref := query.Get("ref")
+	if ref == "" {
+		return s, version
+	}
+
+	query.Del("ref")
+	source = s[:pos]
+	if encoded := query.Encode(); encoded != "" {
+		source += "?" + encoded
+	}
+	version = ref
 
 	return source, version
 }
@@ -300,7 +313,7 @@ func loadOutputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Output, er
 			continue
 		}
 
-		// convert CRLF to LF early on (https://github.com/terraform-docs/terraform-docs/issues/584)
+		// convert CRLF to LF early on (https://github.com/rquadling/terraform-docs/issues/584)
 		description := strings.ReplaceAll(o.Description, "\r\n", "\n")
 		if description == "" && config.Settings.ReadComments {
 			description = comments

@@ -53,7 +53,7 @@ provider.null
 module.bar (baz,4.5.6)
 module.foo (bar,1.2.3)
 module.baz (baz,4.5.6)
-module.foobar (git@github.com:module/path,v7.8.9)
+module.foobar (git@github.com:module/path,v10.9.8)
 
 
 resource.foo_resource.baz (resource)
@@ -188,6 +188,15 @@ n/a
 
 input.object_default_empty ({})
 n/a
+
+input.variable_with_no_validation ("")
+This variable has no validation
+
+input.variable_with_one_validation ("")
+This variable has one validation
+
+input.variable_with_two_validations (required)
+This variable has two validations
 
 
 output.unquoted

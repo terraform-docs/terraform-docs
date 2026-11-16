@@ -15,8 +15,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/terraform-docs/terraform-docs/internal/plugin"
-	"github.com/terraform-docs/terraform-docs/internal/version"
+	"github.com/rquadling/terraform-docs/internal/plugin"
+	"github.com/rquadling/terraform-docs/internal/version"
 )
 
 // NewCommand returns a new cobra.Command for 'version' command

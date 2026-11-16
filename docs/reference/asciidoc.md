@@ -27,6 +27,7 @@ terraform-docs asciidoc [PATH] [flags]
       --required[=true|false]     show Required column or section (default true)
       --sensitive[=true|false]    show Sensitive column or section (default true)
       --type[=true|false]         show Type column or section (default true)
+      --validation[=true|false]   show Validation column or section (default true)
 ```
 
 ## Inherited Options

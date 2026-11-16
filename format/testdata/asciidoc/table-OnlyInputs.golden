@@ -226,4 +226,19 @@ object({
 |`object({})`
 |`{}`
 
+|variable_with_no_validation
+|This variable has no validation
+|`string`
+|`""`
+
+|variable_with_one_validation
+|This variable has one validation
+|`string`
+|`""`
+
+|variable_with_two_validations
+|This variable has two validations
+|`string`
+|n/a
+
 |===
