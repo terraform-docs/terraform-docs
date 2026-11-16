@@ -36,14 +36,14 @@ func NewMarkdownDocument(config *print.Config) Type {
 
 	tt := template.New(config, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
-		"type": func(t string) string {
+		TypeFunc: func(t string) string {
 			result, extraline := PrintFencedCodeBlock(t, "hcl")
 			if !extraline {
 				result += "\n"
 			}
 			return result
 		},
-		"value": func(v string) string {
+		ValueFunc: func(v string) string {
 			if v == "n/a" {
 				return v
 			}
@@ -53,7 +53,7 @@ func NewMarkdownDocument(config *print.Config) Type {
 			}
 			return result
 		},
-		"isRequired": func() bool {
+		IsRequiredFunc: func() bool {
 			return config.Settings.Required
 		},
 	})

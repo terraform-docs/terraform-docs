@@ -38,11 +38,11 @@ func NewAsciidocTable(config *print.Config) Type {
 
 	tt := template.New(config, items...)
 	tt.CustomFunc(gotemplate.FuncMap{
-		"type": func(t string) string {
+		TypeFunc: func(t string) string {
 			inputType, _ := PrintFencedCodeBlock(t, "")
 			return inputType
 		},
-		"value": func(v string) string {
+		ValueFunc: func(v string) string {
 			var result = "n/a"
 			if v != "" {
 				result, _ = PrintFencedCodeBlock(v, "")

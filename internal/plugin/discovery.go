@@ -26,7 +26,7 @@ import (
 )
 
 // Discover plugins and registers them. The lookup priority of plugins is as
-// follow:
+// follows:
 //
 // 1. `TFDOCS_PLUGIN_DIR` environment variable (if it's set)
 // 2. Current directory (./.tfdocs.d/plugins)
@@ -110,6 +110,7 @@ func getPluginPath(dir string, name string) (string, error) {
 
 	path := filepath.Join(dir, fmt.Sprintf("%s%s%s", namePrefix, name, suffix))
 
+	// #nosec G703 -- path comes from trusted env var
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return "", os.ErrNotExist
 	}

@@ -46,7 +46,7 @@ func NewTfvarsHCL(config *print.Config) Type {
 		"align": func(s string, i int) string {
 			return fmt.Sprintf("%-*s", padding[i], s)
 		},
-		"value": func(s string) string {
+		ValueFunc: func(s string) string {
 			if s == "" {
 				return "\"\""
 			}

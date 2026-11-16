@@ -82,6 +82,7 @@ func (fw *fileWriter) Write(p []byte) (int, error) {
 		return fw.write(filename, buf.Bytes())
 	}
 
+	// #nosec G703 -- path comes from trusted config file
 	content, err := os.ReadFile(filepath.Clean(filename))
 	if err != nil {
 		// In mode 'inject', if target file not found:
@@ -161,6 +162,7 @@ func (fw *fileWriter) inject(filename string, content string, generated string) 
 func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 	// if run in check mode return exit 1
 	if fw.check {
+		// #nosec G703 -- path comes from trusted config file
 		f, err := os.ReadFile(filepath.Clean(filename))
 		if err != nil {
 			return 0, err
@@ -180,5 +182,6 @@ func (fw *fileWriter) write(filename string, p []byte) (int, error) {
 	}
 
 	fmt.Printf("%s updated successfully\n", filename)
+	// #nosec G703 -- path comes from trusted config file
 	return len(p), os.WriteFile(filename, p, 0644)
 }

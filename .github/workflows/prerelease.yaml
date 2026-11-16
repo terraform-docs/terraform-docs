@@ -6,7 +6,7 @@ on:
       - "v*.*.*-*"
 
 env:
-  GO_VERSION: "1.25.8"
+  GO_VERSION: "1.27.4"
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
         if: env.REGISTRY_USERNAME != ''
         with:
           distribution: goreleaser
-          version: 1.26.2
+          version: '~> v2'
           args: release --clean --skip=publish --skip=sign
 
       - name: Release
@@ -75,6 +75,6 @@ jobs:
           outputs: "type=registry,push=true"
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/${{ github.event.repository.name }}/terraform-docs:${{ steps.vars.outputs.tag }}
+          tags: quay.io/${{ github.event.repository.name }}/terraform-docs:${{ env.release_tag }}
 
 
