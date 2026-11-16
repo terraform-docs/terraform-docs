@@ -323,7 +323,7 @@ func (r *Runtime) loadSubModule(path string) (*module, error) {
 	return &module{rootDir: path, config: cfg}, nil
 }
 
-// containsTerraformFiles reports whether a directory contains Terraform files.
+// containsTerraformFiles reports whether a directory contains Terraform or OpenTofu module files.
 func containsTerraformFiles(path string) (bool, error) {
 	files, err := os.ReadDir(path)
 	if err != nil {
@@ -336,7 +336,10 @@ func containsTerraformFiles(path string) (bool, error) {
 		}
 
 		name := file.Name()
-		if strings.HasSuffix(name, ".tf") || strings.HasSuffix(name, ".tf.json") {
+		if strings.HasSuffix(name, ".tf") ||
+			strings.HasSuffix(name, ".tf.json") ||
+			strings.HasSuffix(name, ".tofu") ||
+			strings.HasSuffix(name, ".tofu.json") {
 			return true, nil
 		}
 	}
