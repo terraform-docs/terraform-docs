@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -227,24 +228,31 @@ func loadInputs(tfmodule *tfconfig.Module, config *print.Config) ([]*Input, []*I
 }
 
 func formatSource(s, v string) (source, version string) {
-	substr := "?ref="
-
 	if v != "" {
 		return s, v
 	}
 
-	pos := strings.LastIndex(s, substr)
+	pos := strings.Index(s, "?")
 	if pos == -1 {
 		return s, version
 	}
 
-	adjustedPos := pos + len(substr)
-	if adjustedPos >= len(s) {
+	query, err := url.ParseQuery(s[pos+1:])
+	if err != nil {
 		return s, version
 	}
 
-	source = s[0:pos]
-	version = s[adjustedPos:]
+	ref := query.Get("ref")
+	if ref == "" {
+		return s, version
+	}
+
+	query.Del("ref")
+	source = s[:pos]
+	if encoded := query.Encode(); encoded != "" {
+		source += "?" + encoded
+	}
+	version = ref
 
 	return source, version
 }
