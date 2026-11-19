@@ -160,7 +160,7 @@ func loadSection(config *print.Config, file string, section string) (string, err
 		LineNum:  -1,
 		Condition: func(line string) bool {
 			line = strings.TrimSpace(line)
-			return strings.HasPrefix(line, "/*") || strings.HasPrefix(line, "*") || strings.HasPrefix(line, "*/")
+			return strings.HasPrefix(line, "#") || strings.HasPrefix(line, "/*") || strings.HasPrefix(line, "*") || strings.HasPrefix(line, "*/")
 		},
 		Parser: func(line string) (string, bool) {
 			tmp := strings.TrimSpace(line)
@@ -172,6 +172,11 @@ func loadSection(config *print.Config, file string, section string) (string, err
 			}
 			line = strings.TrimLeft(line, " ")
 			line = strings.TrimRight(line, "\r\n")
+			if strings.HasPrefix(line, "#") {
+				line = strings.TrimPrefix(line, "#")
+				line = strings.TrimPrefix(line, " ")
+				return line, true
+			}
 			line = strings.TrimPrefix(line, "* ")
 			return line, true
 		},

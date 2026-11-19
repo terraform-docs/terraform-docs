@@ -12,9 +12,9 @@ the root directory of this source tree.
 //
 // It contains:
 //
-// • Header:        Module header found in shape of multi line '*.tf' comments or an entire file
+// • Header:        Module header found in leading '.tf' or '.tofu' comments or an entire file
 //
-// • Footer:        Module footer found in shape of multi line '*.tf' comments or an entire file
+// • Footer:        Module footer found in leading '.tf' or '.tofu' comments or an entire file
 //
 // • Inputs:        List of input 'variables' extracted from the Terraform module .tf files
 //
