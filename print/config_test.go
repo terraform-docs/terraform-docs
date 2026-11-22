@@ -196,6 +196,23 @@ func TestConfigOutput(t *testing.T) {
 			errMsg:  "",
 		},
 
+		"ModeInvalid": {
+			output: output{
+				File:     "README.md",
+				Mode:     "bogus",
+				Template: fmt.Sprintf("%s\n%s\n%s", OutputBeginComment, OutputContent, OutputEndComment),
+			},
+			wantErr: true,
+			errMsg:  "value of '--output-mode' is invalid, must be one of: " + OutputModes,
+		},
+		"ModeInvalidWithoutFile": {
+			output: output{
+				Mode:     "bogus",
+				Template: fmt.Sprintf("%s\n%s\n%s", OutputBeginComment, OutputContent, OutputEndComment),
+			},
+			wantErr: true,
+			errMsg:  "value of '--output-mode' is invalid, must be one of: " + OutputModes,
+		},
 		"ModeEmpty": {
 			output: output{
 				File:     "README.md",
