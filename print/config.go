@@ -234,6 +234,11 @@ func defaultOutput() output {
 }
 
 func (o *output) validate() error {
+	// an unknown mode silently behaved like 'inject' and still reported the file as updated
+	if o.Mode != "" && o.Mode != OutputModeInject && o.Mode != OutputModeReplace {
+		return fmt.Errorf("value of '--output-mode' is invalid, must be one of: %s", OutputModes)
+	}
+
 	if o.File == "" {
 		return nil
 	}
