@@ -81,7 +81,7 @@ func TestResourceURL(t *testing.T) {
 		resource    Resource
 		expectValue string
 	}{
-		"Generic URL construction": {
+		"Default Terraform registry": {
 			resource: Resource{
 				Type:           "private_key",
 				ProviderName:   "tls",
@@ -91,6 +91,16 @@ func TestResourceURL(t *testing.T) {
 			},
 			expectValue: "https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key",
 		},
+		"Default Terraform registry data source": {
+			resource: Resource{
+				Type:           "caller_identity",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "data",
+				Version:        types.String("latest"),
+			},
+			expectValue: "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity",
+		},
 		"Unable to construct URL": {
 			resource: Resource{
 				Type:           "custom",
@@ -98,6 +108,50 @@ func TestResourceURL(t *testing.T) {
 				ProviderSource: "http://nih.tld/some/path/to/provider/source",
 				Mode:           "managed",
 				Version:        types.String("latest"),
+			},
+			expectValue: "",
+		},
+		"OpenTofu registry with VersionWithV on specific version": {
+			resource: Resource{
+				Type:           "instance",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "managed",
+				Version:        types.String("5.65.0"),
+				RegistryURL:    "https://search.opentofu.org/provider/{{.Namespace}}/{{.Provider}}/{{.VersionWithV}}/docs/{{.Kind}}/{{.Type}}",
+			},
+			expectValue: "https://search.opentofu.org/provider/hashicorp/aws/v5.65.0/docs/resources/instance",
+		},
+		"OpenTofu registry with VersionWithV on latest": {
+			resource: Resource{
+				Type:           "instance",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "managed",
+				Version:        types.String("latest"),
+				RegistryURL:    "https://search.opentofu.org/provider/{{.Namespace}}/{{.Provider}}/{{.VersionWithV}}/docs/{{.Kind}}/{{.Type}}",
+			},
+			expectValue: "https://search.opentofu.org/provider/hashicorp/aws/latest/docs/resources/instance",
+		},
+		"Custom private registry": {
+			resource: Resource{
+				Type:           "bucket",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "managed",
+				Version:        types.String("4.0.0"),
+				RegistryURL:    "https://registry.company.com/providers/{{.Namespace}}/{{.Provider}}/{{.Version}}/docs/{{.Kind}}/{{.Type}}",
+			},
+			expectValue: "https://registry.company.com/providers/hashicorp/aws/4.0.0/docs/resources/bucket",
+		},
+		"Invalid template returns empty string": {
+			resource: Resource{
+				Type:           "instance",
+				ProviderName:   "aws",
+				ProviderSource: "hashicorp/aws",
+				Mode:           "managed",
+				Version:        types.String("latest"),
+				RegistryURL:    "https://registry.example.com/{{.Invalid",
 			},
 			expectValue: "",
 		},
